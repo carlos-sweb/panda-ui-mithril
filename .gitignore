@@ -1,0 +1,6 @@
+node_modules/
+dist/
+dist-playground/
+styled-system/
+*.log
+.DS_Store

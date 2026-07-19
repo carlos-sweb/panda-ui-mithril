@@ -1,0 +1,48 @@
+{
+  "name": "panda-ui-mithril",
+  "version": "0.1.0",
+  "description": "Mithril.js component library styled with Panda CSS, daisyUI-compatible class naming",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "prepare": "panda codegen",
+    "codegen": "panda codegen",
+    "dev": "vite",
+    "build": "vite build --mode playground",
+    "build:lib": "vite build --mode library",
+    "typecheck": "tsc --noEmit --project tsconfig.lib.json"
+  },
+  "peerDependencies": {
+    "mithril": ">=2.3.8"
+  },
+  "dependencies": {
+    "lucide-mithril": "^1.0.6"
+  },
+  "devDependencies": {
+    "@pandacss/dev": "^0.53.0",
+    "mithril": "^2.3.8",
+    "postcss": "^8.4.49",
+    "typescript": "^5.4.0",
+    "vite": "^6.0.0"
+  },
+  "keywords": [
+    "mithril",
+    "panda-css",
+    "daisyui",
+    "component-library",
+    "ui-components",
+    "lucide"
+  ],
+  "license": "MIT"
+}
