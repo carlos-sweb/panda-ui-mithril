@@ -1,6 +1,7 @@
 import m from 'mithril'
 import { css } from '../../styled-system/css'
 import { MousePointerClick, AppWindow, Link, MessageCircleMore, PenLine, PanelsTopLeft, X } from 'lucide-mithril'
+import { SidebarItem } from './SidebarItem.jsx'
 
 const categories = [
   {
@@ -34,23 +35,6 @@ const categories = [
     items: ['hero', 'divider', 'stack', 'join', 'accordion', 'collapse', 'carousel', 'diff'],
   },
 ]
-
-const linkStyle = css({
-  display: 'block',
-  padding: '0.375rem 0.75rem',
-  borderRadius: '0.375rem',
-  fontSize: '0.8125rem',
-  textDecoration: 'none',
-  color: 'base-content',
-  transition: 'background 0.15s',
-  _hover: { background: 'base-300' },
-})
-
-const activeLinkStyle = css({
-  background: 'primary',
-  color: 'primary-content',
-  _hover: { background: 'primary' },
-})
 
 const categoryHeader = css({
   display: 'flex',
@@ -132,13 +116,7 @@ const SidebarContent = {
           </button>
         </div>
 
-        <a
-          href="#/"
-          onclick={(e) => { e.preventDefault(); m.route.set('/'); onclose && onclose() }}
-          className={current === '/' ? activeLinkStyle : linkStyle}
-        >
-          Home
-        </a>
+        <SidebarItem label="Home" route="/" active={current === '/'} onclick={onclose} />
 
         {categories.map((cat) => (
           <div key={cat.title} style={css({ marginTop: '0.5rem' })}>
@@ -151,14 +129,13 @@ const SidebarContent = {
               {cat.items.map((key) => {
                 const label = key.charAt(0).toUpperCase() + key.slice(1)
                 return (
-                  <a
+                  <SidebarItem
                     key={key}
-                    href={`#${key}`}
-                    onclick={(e) => { e.preventDefault(); m.route.set(`/${key}`); onclose && onclose() }}
-                    className={current === `/${key}` ? activeLinkStyle : linkStyle}
-                  >
-                    {label}
-                  </a>
+                    label={label}
+                    route={`/${key}`}
+                    active={current === `/${key}`}
+                    onclick={onclose}
+                  />
                 )
               })}
             </div>
