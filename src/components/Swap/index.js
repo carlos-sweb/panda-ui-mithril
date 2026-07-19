@@ -1,24 +1,7 @@
 import m from 'mithril'
-import { cva } from '../../../styled-system/css'
+import { swapStyles } from '../../recipes/swap'
 import { cx } from '../../utils/cx'
 
-const swapStyles = cva({
-  base: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    cursor: 'pointer',
-    position: 'relative',
-    w: '5',
-    h: '5',
-  },
-  variants: {
-    style: {
-      rotate: {},
-      flip: {},
-    },
-  },
-})
 
 export const Swap = {
   view(vnode) {

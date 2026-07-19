@@ -1,15 +1,7 @@
 import m from 'mithril'
-import { cva } from '../../../styled-system/css'
+import { paginationStyles } from '../../recipes/pagination'
 import { cx } from '../../utils/cx'
 
-const paginationStyles = cva({
-  base: {
-    display: 'inline-flex',
-    overflow: 'hidden',
-    rounded: 'field',
-  },
-  variants: {},
-})
 
 export const Pagination = {
   view(vnode) {

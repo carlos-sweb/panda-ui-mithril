@@ -1,16 +1,7 @@
 import m from 'mithril'
-import { cva } from '../../../styled-system/css'
+import { listStyles } from '../../recipes/list'
 import { cx } from '../../utils/cx'
 
-const listStyles = cva({
-  base: {
-    display: 'flex',
-    flexDirection: 'column',
-    list: 'none',
-    p: '0',
-    m: '0',
-  },
-})
 
 export const List = {
   view(vnode) {

@@ -1,19 +1,7 @@
 import m from 'mithril'
-import { cva } from '../../../styled-system/css'
+import { joinStyles } from '../../recipes/join'
 import { cx } from '../../utils/cx'
 
-const joinStyles = cva({
-  base: {
-    display: 'inline-flex',
-    overflow: 'hidden',
-    rounded: 'field',
-  },
-  variants: {
-    vertical: {
-      true: { flexDirection: 'column' },
-    },
-  },
-})
 
 export const Join = {
   view(vnode) {

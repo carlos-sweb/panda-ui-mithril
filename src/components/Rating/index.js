@@ -1,14 +1,7 @@
 import m from 'mithril'
-import { cva } from '../../../styled-system/css'
+import { ratingStyles } from '../../recipes/rating'
 import { cx } from '../../utils/cx'
 
-const ratingStyles = cva({
-  base: {
-    display: 'inline-flex',
-    gap: '0.25',
-    position: 'relative',
-  },
-})
 
 export const Rating = {
   view(vnode) {

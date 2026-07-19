@@ -1,23 +1,7 @@
 import m from 'mithril'
-import { cva } from '../../../styled-system/css'
+import { carouselStyles } from '../../recipes/carousel'
 import { cx } from '../../utils/cx'
 
-const carouselStyles = cva({
-  base: {
-    display: 'flex',
-    overflowX: 'auto',
-    gap: '1',
-    scrollSnapType: 'x mandatory',
-    w: 'full',
-    '&::-webkit-scrollbar': { display: 'none' },
-  },
-  variants: {
-    direction: {
-      horizontal: { flexDirection: 'row' },
-      vertical: { flexDirection: 'column', overflowY: 'auto', overflowX: 'hidden', h: 'full' },
-    },
-  },
-})
 
 export const Carousel = {
   view(vnode) {

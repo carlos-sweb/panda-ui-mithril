@@ -1,12 +1,7 @@
 import m from 'mithril'
-import { cva } from '../../../styled-system/css'
+import { calendarStyles } from '../../recipes/calendar'
 import { cx } from '../../utils/cx'
 
-const calendarStyles = cva({
-  base: {
-    display: 'block',
-  },
-})
 
 export const Calendar = {
   view(vnode) {
