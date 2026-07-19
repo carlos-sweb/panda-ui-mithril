@@ -109,8 +109,8 @@ const SidebarContent = {
     const current = m.route.get()
 
     return (
-      <div style={css({ flex: '1', overflowY: 'auto', padding: '0.75rem' })}>
-        <div style={css({ display: 'flex', justifyContent: 'flex-end', marginBottom: '0.5rem', '@media (min-width: 769px)': { display: 'none' } })}>
+      <div className={css({ flex: '1', overflowY: 'auto', padding: '0.75rem' })}>
+        <div className={css({ display: 'flex', justifyContent: 'flex-end', marginBottom: '0.5rem', '@media (min-width: 769px)': { display: 'none' } })}>
           <button className={closeBtn} onclick={onclose}>
             <X size={18} />
           </button>
@@ -119,13 +119,13 @@ const SidebarContent = {
         <SidebarItem label="Home" route="/" active={current === '/'} onclick={onclose} />
 
         {categories.map((cat) => (
-          <div key={cat.title} style={css({ marginTop: '0.5rem' })}>
+          <div key={cat.title} className={css({ marginTop: '0.5rem' })}>
             <div className={categoryHeader}>
-              <cat.icon size={14} style={css({ marginRight: '0.375rem' })} />
+              <cat.icon size={14} className={css({ marginRight: '0.375rem' })} />
               <span>{cat.title}</span>
-              <span style={css({ fontSize: '0.625rem', opacity: 0.4 })}>{cat.items.length}</span>
+              <span className={css({ fontSize: '0.625rem', opacity: 0.4 })}>{cat.items.length}</span>
             </div>
-            <div style={css({ display: 'flex', flexDirection: 'column', gap: '1px' })}>
+            <div className={css({ display: 'flex', flexDirection: 'column', gap: '1px' })}>
               {cat.items.map((key) => {
                 const label = key.charAt(0).toUpperCase() + key.slice(1)
                 return (

@@ -10,6 +10,6 @@ export default {
   description: 'Toast component for showing temporary notifications.',
 
   view() {
-    return <div className={stack}>{<h1 style={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>Toast</h1>}{<p style={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>Toast component for showing temporary notifications.</p>}{<Toast position="bottom end">{<Alert color="info">Toast notification!</Alert>}</Toast>}</div>
+    return <div className={stack}>{<h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>Toast</h1>}{<p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>Toast component for showing temporary notifications.</p>}{<Toast position="bottom end">{<Alert color="info">Toast notification!</Alert>}</Toast>}</div>
   }
 }

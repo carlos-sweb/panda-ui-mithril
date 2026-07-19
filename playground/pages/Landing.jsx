@@ -51,38 +51,38 @@ const features = [
 export const Landing = {
   view() {
     return (
-      <div style={css({ maxWidth: '960px' })}>
+      <div className={css({ maxWidth: '960px' })}>
         <div className={heroSection}>
-          <h1 style={css({ fontSize: '2.75rem', fontWeight: '800', marginBottom: '1rem', letterSpacing: '-0.02em' })}>panda-ui</h1>
-          <p style={css({ fontSize: '1.125rem', color: 'base-content', opacity: 0.6, maxWidth: '600px', margin: '0 auto 2rem' })}>
+          <h1 className={css({ fontSize: '2.75rem', fontWeight: '800', marginBottom: '1rem', letterSpacing: '-0.02em' })}>panda-ui-mithril</h1>
+          <p className={css({ fontSize: '1.125rem', color: 'base-content', opacity: 0.6, maxWidth: '600px', margin: '0 auto 2rem' })}>
             A Mithril.js component library styled with Panda CSS. 56 production-ready components with daisyUI-compatible class naming.
           </p>
-          <div style={css({ display: 'flex', gap: '0.75rem', justifyContent: 'center', flexWrap: 'wrap' })}>
+          <div className={css({ display: 'flex', gap: '0.75rem', justifyContent: 'center', flexWrap: 'wrap' })}>
             <Button color="primary" size="lg" onclick={() => m.route.set('/button')}>Get Started</Button>
-            <Button variant="outline" size="lg" onclick={() => window.open('https://github.com/carlos-sweb/panda-ui-mithril', '_blank')}>GitHub</Button>
+            <Button variant="outline" size="lg" onclick={() => window.open('https://github.com/carlos-sweb/panda-ui-mithril-mithril', '_blank')}>GitHub</Button>
           </div>
         </div>
 
         <div className={featureGrid}>
           {features.map((f) => (
-            <div key={f.title} style={css({ padding: '1.25rem', background: 'base-200', borderRadius: '0.75rem' })}>
-              <h3 style={css({ fontSize: '1rem', fontWeight: '600', marginBottom: '0.375rem' })}>{f.title}</h3>
-              <p style={css({ fontSize: '0.8125rem', color: 'base-content', opacity: 0.6 })}>{f.desc}</p>
+            <div key={f.title} className={css({ padding: '1.25rem', background: 'base-200', borderRadius: '0.75rem' })}>
+              <h3 className={css({ fontSize: '1rem', fontWeight: '600', marginBottom: '0.375rem' })}>{f.title}</h3>
+              <p className={css({ fontSize: '0.8125rem', color: 'base-content', opacity: 0.6 })}>{f.desc}</p>
             </div>
           ))}
         </div>
 
-        <h2 style={css({ fontSize: '1.5rem', fontWeight: '700', marginBottom: '1rem' })}>Install</h2>
-        <div className={installBlock}>npm install panda-ui-mithril mithril lucide-mithril</div>
+        <h2 className={css({ fontSize: '1.5rem', fontWeight: '700', marginBottom: '1rem' })}>Install</h2>
+        <div className={installBlock}>npm install panda-ui-mithril-mithril mithril lucide-mithril</div>
 
-        <h2 style={css({ fontSize: '1.5rem', fontWeight: '700', marginBottom: '1rem', marginTop: '2.5rem' })}>Quick Start</h2>
+        <h2 className={css({ fontSize: '1.5rem', fontWeight: '700', marginBottom: '1rem', marginTop: '2.5rem' })}>Quick Start</h2>
         <div className={codeBlock}>{`import m from 'mithril'
-import { Button, Alert, Card } from 'panda-ui-mithril'
+import { Button, Alert, Card } from 'panda-ui-mithril-mithril'
 
 const App = {
   view() {
     return m('div', [
-      m(Alert, { color: 'info' }, 'Welcome to panda-ui!'),
+      m(Alert, { color: 'info' }, 'Welcome to panda-ui-mithril!'),
       m(Card, { border: true }, [
         m(CardBody, null, [
           m('h2', 'Hello World'),
@@ -95,15 +95,15 @@ const App = {
 
 m.mount(document.body, App)`}</div>
 
-        <h2 style={css({ fontSize: '1.5rem', fontWeight: '700', marginBottom: '1rem', marginTop: '2.5rem' })}>Component Preview</h2>
-        <div style={css({ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginBottom: '2rem' })}>
+        <h2 className={css({ fontSize: '1.5rem', fontWeight: '700', marginBottom: '1rem', marginTop: '2.5rem' })}>Component Preview</h2>
+        <div className={css({ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginBottom: '2rem' })}>
           <Button color="primary">Primary</Button>
           <Button color="secondary">Secondary</Button>
           <Button color="accent">Accent</Button>
           <Button variant="outline">Outline</Button>
           <Button variant="ghost">Ghost</Button>
         </div>
-        <div style={css({ display: 'flex', gap: '0.5rem', marginBottom: '1rem' })}>
+        <div className={css({ display: 'flex', gap: '0.5rem', marginBottom: '1rem' })}>
           <Badge color="primary">Primary</Badge>
           <Badge color="secondary">Secondary</Badge>
           <Badge color="accent">Accent</Badge>
@@ -112,26 +112,26 @@ m.mount(document.body, App)`}</div>
           <Badge color="warning">Warning</Badge>
           <Badge color="error">Error</Badge>
         </div>
-        <div style={css({ display: 'flex', gap: '1rem', alignItems: 'center', marginBottom: '1rem' })}>
+        <div className={css({ display: 'flex', gap: '1rem', alignItems: 'center', marginBottom: '1rem' })}>
           <Toggle checked />
           <Checkbox checked />
           <Radio checked />
           <Progress value={60} max={100} color="primary" />
         </div>
-        <div style={css({ display: 'flex', gap: '1rem', alignItems: 'center', marginBottom: '1rem' })}>
+        <div className={css({ display: 'flex', gap: '1rem', alignItems: 'center', marginBottom: '1rem' })}>
           <Loading variant="spinner" />
           <Loading variant="ring" />
           <Loading variant="ball" />
           <Loading variant="bars" />
           <Loading variant="infinity" />
         </div>
-        <div style={css({ display: 'flex', gap: '0.5rem', marginBottom: '2rem' })}>
-          <TextInput placeholder="Enter text..." style={css({ maxWidth: '300px' })} />
+        <div className={css({ display: 'flex', gap: '0.5rem', marginBottom: '2rem' })}>
+          <TextInput placeholder="Enter text..." style={{ maxWidth: '300px' }} />
           <Button color="primary">Submit</Button>
         </div>
 
-        <h2 style={css({ fontSize: '1.5rem', fontWeight: '700', marginBottom: '0.75rem', marginTop: '2.5rem' })}>Browse All Components</h2>
-        <p style={css({ marginBottom: '1.5rem', color: 'base-content', opacity: 0.6 })}>56 components organized by category. Click any to see the full demo.</p>
+        <h2 className={css({ fontSize: '1.5rem', fontWeight: '700', marginBottom: '0.75rem', marginTop: '2.5rem' })}>Browse All Components</h2>
+        <p className={css({ marginBottom: '1.5rem', color: 'base-content', opacity: 0.6 })}>56 components organized by category. Click any to see the full demo.</p>
 
         {[
           { title: 'Actions', desc: 'Buttons, links, and interactive triggers', items: ['Button', 'FAB', 'Link', 'Swap', 'Filter', 'ThemeController'] },
@@ -141,10 +141,10 @@ m.mount(document.body, App)`}</div>
           { title: 'Data Input', desc: 'Forms, selects, and input controls', items: ['TextInput', 'Textarea', 'Select', 'Checkbox', 'Radio', 'Toggle', 'Range', 'FileInput', 'OTP', 'Rating', 'Calendar', 'Fieldset', 'Label'] },
           { title: 'Layout', desc: 'Structure, spacing, and visual hierarchy', items: ['Hero', 'Divider', 'Stack', 'Join', 'Accordion', 'Collapse', 'Carousel', 'Diff'] },
         ].map((cat) => (
-          <div key={cat.title} style={css({ marginBottom: '1.5rem' })}>
-            <h3 style={css({ fontSize: '1rem', fontWeight: '600', marginBottom: '0.25rem' })}>{cat.title}</h3>
-            <p style={css({ fontSize: '0.8125rem', color: 'base-content', opacity: 0.5, marginBottom: '0.75rem' })}>{cat.desc}</p>
-            <div style={css({ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' })}>
+          <div key={cat.title} className={css({ marginBottom: '1.5rem' })}>
+            <h3 className={css({ fontSize: '1rem', fontWeight: '600', marginBottom: '0.25rem' })}>{cat.title}</h3>
+            <p className={css({ fontSize: '0.8125rem', color: 'base-content', opacity: 0.5, marginBottom: '0.75rem' })}>{cat.desc}</p>
+            <div className={css({ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' })}>
               {cat.items.map((name) => (
                 <Button
                   key={name}

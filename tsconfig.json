@@ -6,9 +6,10 @@
     "strict": false,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "jsx": "preserve",
+    "jsx": "react",
     "jsxFactory": "m",
-    "types": ["vite/client"],
+    "jsxFragmentFactory" : "m.Fragment",
+    "types": [],
     "baseUrl": ".",
     "paths": {
       "panda-ui/*": ["./styled-system/*"],

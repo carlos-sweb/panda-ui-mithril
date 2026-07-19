@@ -12,12 +12,12 @@ export default {
   view() {
     return (
       <div>
-        <h1 style={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>FAB</h1>
-        <p style={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
+        <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>FAB</h1>
+        <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
           Floating Action Button represents the primary action of a screen. It appears in front of all screen content.
         </p>
 
-        <div className={row} style={css({ height: '300px', position: 'relative' })}>
+        <div className={`${row} ${css({ height: '300px', position: 'relative' })}`}>
           <FAB>
             <FABMain><Button color="primary" circle size="lg">+</Button></FABMain>
             <FABAction label="Add"><Button circle size="lg">A</Button></FABAction>

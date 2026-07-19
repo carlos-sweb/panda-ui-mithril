@@ -7,7 +7,7 @@ const linkBase = css({
   gap: '0.5rem',
   padding: '0.375rem 0.75rem',
   borderRadius: '0.375rem',
-  fontSize: '0.8125rem',
+  fontSize: '1rem',
   textDecoration: 'none',
   color: 'base-content',
   transition: 'background 0.15s, color 0.15s',

@@ -15,8 +15,8 @@ export default {
   view() {
     return (
       <div className={stack}>
-        <h1 style={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>Checkbox</h1>
-        <p style={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
+        <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>Checkbox</h1>
+        <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
           Checkbox component for toggling options on/off.
         </p>
 

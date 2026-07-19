@@ -18,9 +18,9 @@
   "scripts": {
     "prepare": "panda codegen",
     "codegen": "panda codegen",
-    "dev": "vite",
-    "build": "vite build --mode playground",
-    "build:lib": "vite build --mode library",
+    "dev": "bun playground/index.html",
+    "build": "bun run scripts/build.ts",
+    "build:lib": "bun run scripts/build-lib.ts",
     "typecheck": "tsc --noEmit --project tsconfig.lib.json"
   },
   "peerDependencies": {
@@ -33,9 +33,7 @@
   "devDependencies": {
     "@pandacss/dev": "^0.53.0",
     "mithril": "^2.3.8",
-    "postcss": "^8.4.49",
-    "typescript": "^5.4.0",
-    "vite": "^6.0.0"
+    "typescript": "^5.4.0"
   },
   "keywords": [
     "mithril",

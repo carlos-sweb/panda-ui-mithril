@@ -98,7 +98,7 @@ export const Navbar = {
               color: 'base-content',
             })}
           >
-            panda-ui
+panda-ui-mithril
           </a>
         </div>
 

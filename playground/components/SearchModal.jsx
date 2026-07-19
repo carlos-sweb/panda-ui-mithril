@@ -220,15 +220,14 @@ export const SearchModal = {
                       <a
                         key={comp.name}
                         href={`#${comp.route}`}
-                        className={resultItem}
-                        style={globalIndex === vnode.state.selectedIndex ? css({ background: 'base-200' }) : ''}
+                        className={globalIndex === vnode.state.selectedIndex ? `${resultItem} ${css({ background: 'base-200' })}` : resultItem}
                         onclick={(e) => {
                           e.preventDefault()
                           m.route.set(comp.route)
                           onclose()
                         }}
                       >
-                        <span style={css({ fontWeight: '500' })}>{comp.name.charAt(0).toUpperCase() + comp.name.slice(1)}</span>
+                        <span className={css({ fontWeight: '500' })}>{comp.name.charAt(0).toUpperCase() + comp.name.slice(1)}</span>
                         <ArrowRight size={14} className={css({ opacity: 0.3 })} />
                       </a>
                     )

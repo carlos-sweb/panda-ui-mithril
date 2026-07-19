@@ -12,8 +12,8 @@ export default {
   view() {
     return (
       <div>
-        <h1 style={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>ThemeController</h1>
-        <p style={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
+        <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>ThemeController</h1>
+        <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
           Theme controller toggle for switching between light and dark themes.
         </p>
 

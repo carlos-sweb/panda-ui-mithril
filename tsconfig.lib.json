@@ -15,7 +15,7 @@
     "paths": {
       "panda-ui/*": ["./styled-system/*"]
     },
-    "types": ["vite/client"]
+    "types": [],
   },
   "include": ["src/**/*", "styled-system/**/*"],
   "exclude": ["node_modules", "dist", "playground"]

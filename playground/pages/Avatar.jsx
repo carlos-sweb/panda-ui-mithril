@@ -15,8 +15,8 @@ export default {
   view() {
     return (
       <div className={stack}>
-        <h1 style={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>Avatar</h1>
-        <p style={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
+        <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>Avatar</h1>
+        <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
           Avatar component represents a user or entity with an image or initials.
         </p>
 
@@ -34,7 +34,7 @@ export default {
         <section className={section}>
           <h3 className={heading}>With Indicator</h3>
           <div className={row}>
-            <div style={css({ position: 'relative', display: 'inline-block' })}>
+            <div className={css({ position: 'relative', display: 'inline-block' })}>
               <Avatar src="https://i.pravatar.cc/150?u=6" />
               <Badge color="success" className={css({ position: 'absolute', bottom: 0, right: 0, borderRadius: '9999px', padding: '2px 6px', fontSize: '0.625rem' })}>Online</Badge>
             </div>

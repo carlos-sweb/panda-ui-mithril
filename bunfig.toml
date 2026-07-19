@@ -1,0 +1,9 @@
+# JSX config for Mithril (classic transform with m() factory)
+jsx = "react"
+jsxFactory = "m"
+jsxFragmentFactory = "m.Fragment"
+
+[resolve]
+# Aliases matching tsconfig.json paths and vite.config.js aliases
+panda-ui-mithril = "./src/index.js"
+panda-ui = "./styled-system"
