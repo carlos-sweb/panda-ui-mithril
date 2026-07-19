@@ -29,12 +29,20 @@ routes['/:component...'] = {
   render: () => m(Landing)
 }
 
+// Theme persistence
+const getSavedTheme = () => localStorage.getItem('panda-ui-theme') || 'light'
+const setSavedTheme = (theme) => localStorage.setItem('panda-ui-theme', theme)
+
+// Apply saved theme before mount
+const savedTheme = getSavedTheme()
+document.documentElement.setAttribute('data-theme', savedTheme)
+
 // Layout component - mounted once on body, persists across route changes
 const Layout = {
   oninit(vnode) {
     vnode.state.isMobileOpen = false
     vnode.state.isSearchOpen = false
-    vnode.state.isDark = document.documentElement.getAttribute('data-theme') === 'dark'
+    vnode.state.isDark = getSavedTheme() === 'dark'
   },
 
   oncreate(vnode) {
@@ -57,7 +65,9 @@ const Layout = {
             isDark={vnode.state.isDark}
             onToggleTheme={() => {
               vnode.state.isDark = !vnode.state.isDark
-              document.documentElement.setAttribute('data-theme', vnode.state.isDark ? 'dark' : 'light')
+              const theme = vnode.state.isDark ? 'dark' : 'light'
+              document.documentElement.setAttribute('data-theme', theme)
+              setSavedTheme(theme)
             }}
           />
 

@@ -12,30 +12,79 @@ export default defineConfig({
   importMap: {
     'panda-ui': './styled-system'
   },
+  conditions: {
+    dark: '&:is([data-theme="dark"], [data-theme="dark"] *)',
+  },
   theme: {
+    tokens: {
+      colors: {
+        'white': { value: '#ffffff' },
+        'black': { value: '#000000' },
+      },
+    },
     extend: {
-      tokens: {
+      semanticTokens: {
         colors: {
-          'base-100': { value: '#ffffff' },
-          'base-200': { value: '#f2f2f2' },
-          'base-300': { value: '#e5e5e5' },
-          'base-content': { value: '#1f2937' },
-          primary: { value: '#570df8' },
-          'primary-content': { value: '#ffffff' },
-          secondary: { value: '#f000b8' },
-          'secondary-content': { value: '#ffffff' },
-          accent: { value: '#37cdbe' },
-          'accent-content': { value: '#163849' },
-          neutral: { value: '#3d4451' },
-          'neutral-content': { value: '#ffffff' },
-          info: { value: '#3abff8' },
-          'info-content': { value: '#083344' },
-          success: { value: '#36d399' },
-          'success-content': { value: '#083144' },
-          warning: { value: '#fbbd23' },
-          'warning-content': { value: '#422006' },
-          error: { value: '#f87272' },
-          'error-content': { value: '#450a0a' },
+          'base-100': {
+            value: { base: '#ffffff', _dark: '#1d232a' },
+          },
+          'base-200': {
+            value: { base: '#f2f2f2', _dark: '#191e24' },
+          },
+          'base-300': {
+            value: { base: '#e5e5e5', _dark: '#15191e' },
+          },
+          'base-content': {
+            value: { base: '#1f2937', _dark: '#d1d5db' },
+          },
+          primary: {
+            value: { base: '#570df8', _dark: '#a78bfa' },
+          },
+          'primary-content': {
+            value: { base: '#ffffff', _dark: '#1e1b4b' },
+          },
+          secondary: {
+            value: { base: '#f000b8', _dark: '#f472b6' },
+          },
+          'secondary-content': {
+            value: { base: '#ffffff', _dark: '#1a0a14' },
+          },
+          accent: {
+            value: { base: '#37cdbe', _dark: '#2dd4bf' },
+          },
+          'accent-content': {
+            value: { base: '#163849', _dark: '#042f2e' },
+          },
+          neutral: {
+            value: { base: '#3d4451', _dark: '#a3a6ad' },
+          },
+          'neutral-content': {
+            value: { base: '#ffffff', _dark: '#1f2937' },
+          },
+          info: {
+            value: { base: '#3abff8', _dark: '#7dd3fc' },
+          },
+          'info-content': {
+            value: { base: '#083344', _dark: '#0c4a6e' },
+          },
+          success: {
+            value: { base: '#36d399', _dark: '#4ade80' },
+          },
+          'success-content': {
+            value: { base: '#083144', _dark: '#052e16' },
+          },
+          warning: {
+            value: { base: '#fbbd23', _dark: '#facc15' },
+          },
+          'warning-content': {
+            value: { base: '#422006', _dark: '#422006' },
+          },
+          error: {
+            value: { base: '#f87272', _dark: '#f87171' },
+          },
+          'error-content': {
+            value: { base: '#450a0a', _dark: '#450a0a' },
+          },
         },
       },
 
