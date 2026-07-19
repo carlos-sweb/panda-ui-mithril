@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { cx } from '../../styled-system/css'
+import { cx } from '../../../styled-system/css'
 
 export const Hero = {
   view(vnode) {

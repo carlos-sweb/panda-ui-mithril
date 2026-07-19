@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { cva } from '../../styled-system/css'
+import { cva } from '../../../styled-system/css'
 import { cx } from '../../utils/cx'
 
 const progressStyles = cva({

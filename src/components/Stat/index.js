@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { sva } from '../../styled-system/css'
+import { sva } from '../../../styled-system/css'
 import { cx } from '../../utils/cx'
 
 const statStyles = sva({
