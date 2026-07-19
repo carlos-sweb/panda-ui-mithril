@@ -27,6 +27,7 @@
     "mithril": ">=2.3.8"
   },
   "dependencies": {
+    "@fontsource/poppins": "^5.3.0",
     "lucide-mithril": "^1.0.6"
   },
   "devDependencies": {

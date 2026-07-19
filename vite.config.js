@@ -2,6 +2,10 @@ import { defineConfig } from 'vite'
 import path from 'path'
 
 export default defineConfig(({ mode }) => ({
+  esbuild: {
+    jsxFactory: 'm',
+    jsxFragment: 'm.Fragment',
+  },
   resolve: {
     alias: {
       'panda-ui-mithril': path.resolve(__dirname, 'src/index.js'),
@@ -26,9 +30,9 @@ export default defineConfig(({ mode }) => ({
       cssCodeSplit: false,
     },
   } : {
-    root: 'playground',
+    root: path.resolve(__dirname, 'playground'),
     build: {
-      outDir: '../dist-playground',
+      outDir: path.resolve(__dirname, 'dist-playground'),
     },
     server: {
       port: 5173,

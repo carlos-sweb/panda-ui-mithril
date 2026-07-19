@@ -1,0 +1,44 @@
+@import '../src/index.css';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+  line-height: 1.6;
+  color: var(--colors-base-content);
+  background-color: var(--colors-base-100);
+}
+
+#app {
+  min-height: 100vh;
+}
+
+::selection {
+  background-color: var(--colors-primary);
+  color: var(--colors-primary-content);
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--colors-base-300);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--colors-base-content);
+  opacity: 0.3;
+}
