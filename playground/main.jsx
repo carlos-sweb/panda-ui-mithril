@@ -12,7 +12,7 @@ import { SearchModal } from './components/SearchModal.jsx'
 import { Landing } from './pages/Landing.jsx'
 
 // Dynamic import of all component pages
-const componentPages = import.meta.glob('./pages/components/*.jsx', { eager: true })
+const componentPages = import.meta.glob('./pages/*.jsx', { eager: true })
 
 const Layout = {
   oninit(vnode) {
@@ -82,7 +82,7 @@ const routes = {
 
 // Map component page files to routes
 Object.keys(componentPages).forEach(path => {
-  // Extract component name from path: ./pages/components/Button.jsx -> button
+  // Extract component name from path: ./pages/Button.jsx -> button
   const fileName = path.split('/').pop().replace('.jsx', '')
   const routeName = `/${fileName.toLowerCase()}`
   const Component = componentPages[path].default
