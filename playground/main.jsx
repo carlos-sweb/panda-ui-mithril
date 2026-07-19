@@ -11,9 +11,25 @@ import { Sidebar } from './components/Sidebar.jsx'
 import { SearchModal } from './components/SearchModal.jsx'
 import { Landing } from './pages/Landing.jsx'
 
-// Dynamic import of all component pages
 const componentPages = import.meta.glob('./pages/*.jsx', { eager: true })
 
+// Build routes - only page components, no layout wrapper
+const routes = {
+  '/': { render: () => m(Landing) },
+}
+
+Object.keys(componentPages).forEach(path => {
+  const fileName = path.split('/').pop().replace('.jsx', '')
+  const routeName = `/${fileName.toLowerCase()}`
+  const Component = componentPages[path].default
+  routes[routeName] = { render: () => m(Component) }
+})
+
+routes['/:component...'] = {
+  render: () => m(Landing)
+}
+
+// Layout component - mounted once on body, persists across route changes
 const Layout = {
   oninit(vnode) {
     vnode.state.isMobileOpen = false
@@ -21,38 +37,32 @@ const Layout = {
     vnode.state.isDark = document.documentElement.getAttribute('data-theme') === 'dark'
   },
 
+  oncreate(vnode) {
+    m.route.prefix = '#!'
+    m.route(document.getElementById('view-dynamic'), '/', routes)
+  },
+
   view(vnode) {
     return (
-      <div style={css({ minHeight: '100vh' })}>
-        <Navbar
-          onSearchOpen={() => { vnode.state.isSearchOpen = true }}
-          onToggleSidebar={() => { vnode.state.isMobileOpen = !vnode.state.isMobileOpen }}
-          isDark={vnode.state.isDark}
-          onToggleTheme={() => {
-            vnode.state.isDark = !vnode.state.isDark
-            document.documentElement.setAttribute('data-theme', vnode.state.isDark ? 'dark' : 'light')
-          }}
-        />
-
+      <div style={css({ display: 'flex', height: '100vh', overflow: 'hidden' })}>
         <Sidebar
           isMobileOpen={vnode.state.isMobileOpen}
           onMobileClose={() => { vnode.state.isMobileOpen = false }}
         />
 
-        <main
-          style={css({
-            marginLeft: '260px',
-            marginTop: '64px',
-            padding: '2rem 3rem',
-            minHeight: 'calc(100vh - 64px)',
-            '@media (max-width: 768px)': {
-              marginLeft: 0,
-              padding: '1.5rem',
-            },
-          })}
-        >
-          {vnode.children}
-        </main>
+        <div style={css({ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 })}>
+          <Navbar
+            onSearchOpen={() => { vnode.state.isSearchOpen = true }}
+            onToggleSidebar={() => { vnode.state.isMobileOpen = !vnode.state.isMobileOpen }}
+            isDark={vnode.state.isDark}
+            onToggleTheme={() => {
+              vnode.state.isDark = !vnode.state.isDark
+              document.documentElement.setAttribute('data-theme', vnode.state.isDark ? 'dark' : 'light')
+            }}
+          />
+
+          <main id="view-dynamic" />
+        </div>
 
         {vnode.state.isSearchOpen && (
           <SearchModal onclose={() => { vnode.state.isSearchOpen = false }} />
@@ -75,27 +85,5 @@ const Layout = {
   }
 }
 
-// Build routes from component pages
-const routes = {
-  '/': { render: () => <Layout><Landing /></Layout> },
-}
-
-// Map component page files to routes
-Object.keys(componentPages).forEach(path => {
-  // Extract component name from path: ./pages/Button.jsx -> button
-  const fileName = path.split('/').pop().replace('.jsx', '')
-  const routeName = `/${fileName.toLowerCase()}`
-  const Component = componentPages[path].default
-  
-  routes[routeName] = {
-    render: () => <Layout><Component /></Layout>
-  }
-})
-
-// Fallback route for unknown paths
-routes['/:component...'] = {
-  render: () => <Layout><Landing /></Layout>
-}
-
-m.route.prefix = '#'
-m.route(document.getElementById('app'), '/', routes)
+// Mount layout once on body - never re-mounts
+m.mount(document.body, Layout)

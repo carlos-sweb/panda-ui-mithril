@@ -15,8 +15,20 @@ body {
   background-color: var(--colors-base-100);
 }
 
-#app {
-  min-height: 100vh;
+#view-dynamic {
+  flex: 1;
+  overflow-y: auto;
+  margin-left: 260px;
+  margin-top: 64px;
+  padding: 2rem 3rem;
+  min-height: calc(100vh - 64px);
+}
+
+@media (max-width: 768px) {
+  #view-dynamic {
+    margin-left: 0;
+    padding: 1.5rem;
+  }
 }
 
 ::selection {
