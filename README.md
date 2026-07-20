@@ -1,5 +1,7 @@
 # panda-ui-mithril
 
+> **[Demo en vivo →](https://panda-ui-mithril.netlify.app/)**
+
 Biblioteca de componentes UI para [Mithril.js](https://mithril.js.org/) estilizados con [Panda CSS](https://panda-css.com/). Nombres de clases compatibles con [daisyUI](https://daisyui.com/). Iconos via [lucide-mithril](https://github.com/your-repo/lucide-mithril).
 
 ## Stack

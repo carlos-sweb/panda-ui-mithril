@@ -2,7 +2,7 @@ import { defineConfig } from '@pandacss/dev'
 
 export default defineConfig({
   preflight: true,
-  include: ['./src/**/*.{js,jsx}', './playground/**/*.{js,jsx}'],
+  include: ['./src/**/*.{js,jsx,ts}', './playground/**/*.{js,jsx}'],
   exclude: [],
   outdir: 'styled-system',
   jsxFramework: 'mithril',
@@ -23,6 +23,11 @@ export default defineConfig({
       },
     },
     extend: {
+      tokens: {
+        radii: {
+          btn: { value: '4px' },
+        },
+      },
       semanticTokens: {
         colors: {
           'base-100': {
@@ -123,8 +128,21 @@ export default defineConfig({
     },
   },
   globalCss: {
-    '*': {
-      boxSizing: 'border-box',
-    },
+    ':root': {
+      /* Button tokens (daisyUI-compatible) */
+      '--btn-radius': '4px',
+      '--btn-p': '1rem',
+      '--btn-bg': 'var(--colors-neutral)',
+      '--btn-fg': 'var(--colors-neutral-content)',
+      '--btn-border': 'var(--btn-bg)',
+      '--btn-border-style': 'solid',
+      '--btn-shadow': '0 1px 2px 0 oklch(0% 0 0 / 0.05)',
+      '--btn-inset': '0 .5px 0 .5px oklch(100% 0 0 / calc(var(--depth, 1) * 6%))',
+      '--size': '2.75rem',
+      '--fontsize': '.875rem',
+      '--depth': '1',
+      '--noise': '0',
+      '--fx-noise': 'none',
+    }
   },
 })
