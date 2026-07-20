@@ -5,23 +5,33 @@ import { cx } from '../../utils/cx'
 
 export const Button = {
   view(vnode) {
-    const { color, variant, size, active, disabled, block, wide, square, circle, shape, className, children, ...rest } = vnode.attrs
-    const tag = vnode.attrs.href ? 'a' : 'button'
+    const { color, variant, size, active, disabled, block, wide, square, circle, className, ...rest } = vnode.attrs
+    const isLink = !!vnode.attrs.href
 
-    return m(tag, {
-      className: cx(
-        'btn',
-        buttonStyles({ color, variant, size }),
-        active && 'btn-active',
-        disabled && 'btn-disabled',
-        block && 'btn-block',
-        wide && 'btn-wide',
-        square && 'btn-square',
-        circle && 'btn-circle',
-        className
-      ),
-      disabled: tag === 'button' ? disabled : undefined,
-      ...rest
-    }, children)
+    const styles = cx(
+      buttonStyles({
+        color,
+        variant,
+        size,
+        active,
+        shape: circle ? 'circle' : square ? 'square' : undefined,
+        fluid: wide ? 'wide' : block ? 'block' : undefined,
+      }),
+      className
+    )
+
+    if (isLink) {
+      return (
+        <a className={styles} {...rest}>
+          {vnode.children}
+        </a>
+      )
+    }
+
+    return (
+      <button className={styles} disabled={disabled} {...rest}>
+        {vnode.children}
+      </button>
+    )
   }
 }
