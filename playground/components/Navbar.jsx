@@ -98,7 +98,8 @@ export const Navbar = {
               color: 'base-content',
             })}
           >
-panda-ui-mithril
+            <span className={css({ display: { base: 'none', md: 'inline' } })}>panda-ui-mithril</span>
+            <span className={css({ display: { base: 'inline', md: 'none' } })}>PUM</span>
           </a>
         </div>
 
