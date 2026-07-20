@@ -1,0 +1,11 @@
+[build]
+  command = "bun run build"
+  publish = "dist-playground"
+
+[build.environment]
+  BUN_VERSION = "1.3.12"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
