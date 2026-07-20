@@ -58,7 +58,7 @@ export const Landing = {
             A Mithril.js component library styled with Panda CSS. 56 production-ready components with daisyUI-compatible class naming.
           </p>
           <div className={css({ display: 'flex', gap: '0.75rem', justifyContent: 'center', flexWrap: 'wrap' })}>
-            <Button color="primary" size="lg" onclick={() => m.route.set('/button')}>Get Started</Button>
+            <Button color="primary" size="lg" href="#quick-start" >Get Started</Button>
             <Button variant="outline" size="lg" onclick={() => window.open('https://github.com/carlos-sweb/panda-ui-mithril-mithril', '_blank')}>GitHub</Button>
           </div>
         </div>
@@ -75,7 +75,7 @@ export const Landing = {
         <h2 className={css({ fontSize: '1.5rem', fontWeight: '700', marginBottom: '1rem' })}>Install</h2>
         <div className={installBlock}>npm install panda-ui-mithril-mithril mithril lucide-mithril</div>
 
-        <h2 className={css({ fontSize: '1.5rem', fontWeight: '700', marginBottom: '1rem', marginTop: '2.5rem' })}>Quick Start</h2>
+        <h2 id="quick-start" className={css({ fontSize: '1.5rem', fontWeight: '700', marginBottom: '1rem', marginTop: '2.5rem' })}>Quick Start</h2>
         <div className={codeBlock}>{`import m from 'mithril'
 import { Button, Alert, Card } from 'panda-ui-mithril-mithril'
 
