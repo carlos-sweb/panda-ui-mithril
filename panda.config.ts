@@ -27,6 +27,10 @@ export default defineConfig({
         radii: {
           btn: { value: '4px' },
         },
+        fonts: {
+          sans: { value: 'Inter, system-ui, sans-serif' },
+          mono: { value: 'JetBrains Mono, monospace' },
+        },
       },
       semanticTokens: {
         colors: {
@@ -40,16 +44,16 @@ export default defineConfig({
             value: { base: '#e5e5e5', _dark: '#15191e' },
           },
           'base-content': {
-            value: { base: '#1f2937', _dark: '#d1d5db' },
+            value: { base: 'oklch(21% 0.006 285.885)', _dark: 'oklch(80% 0.008 285.885)' },
           },
           primary: {
-            value: { base: '#570df8', _dark: '#a78bfa' },
+            value: { base: 'oklch(45% 0.24 277.023)', _dark: '#a78bfa' },
           },
           'primary-content': {
             value: { base: '#ffffff', _dark: '#1e1b4b' },
           },
           secondary: {
-            value: { base: '#f000b8', _dark: '#f472b6' },
+            value: { base: 'oklch(65% 0.241 354.308)', _dark: '#f472b6' },
           },
           'secondary-content': {
             value: { base: '#ffffff', _dark: '#1a0a14' },
@@ -61,7 +65,7 @@ export default defineConfig({
             value: { base: '#163849', _dark: '#042f2e' },
           },
           neutral: {
-            value: { base: '#3d4451', _dark: '#a3a6ad' },
+            value: { base: 'oklch(14% 0.005 285.823)', _dark: '#a3a6ad' },
           },
           'neutral-content': {
             value: { base: '#ffffff', _dark: '#1f2937' },
@@ -129,12 +133,17 @@ export default defineConfig({
   },
   globalCss: {
     ':root': {
+      fontFamily: 'Inter, system-ui, sans-serif',
+      '--size-field': '.25rem',
+      '--size': 'calc(var(--size-field,.25rem) * 10)',
       /* Button tokens (daisyUI-compatible) */
+      '--border':'1px',
       '--btn-radius': '4px',
       '--btn-p': '1rem',
-      '--btn-bg': 'var(--colors-neutral)',
-      '--btn-fg': 'var(--colors-neutral-content)',
-      '--btn-border': 'var(--btn-bg)',
+      '--btn-color': 'var(--colors-base-200)',
+      '--btn-bg': 'var(--btn-color)',
+      '--btn-fg': 'var(--colors-base-content)',
+      '--btn-border': 'color-mix(in oklab, var(--btn-color, var(--colors-base-200)), #000 calc(var(--depth) * 5%))',
       '--btn-border-style': 'solid',
       '--btn-shadow': '0 1px 2px 0 oklch(0% 0 0 / 0.05)',
       '--btn-inset': '0 .5px 0 .5px oklch(100% 0 0 / calc(var(--depth, 1) * 6%))',
