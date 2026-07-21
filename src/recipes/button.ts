@@ -155,6 +155,7 @@ export const buttonStyles = cva({
     },
   },
   defaultVariants: {
+    color: 'neutral',
     size: 'md',
   },
   compoundVariants: [
