@@ -1,12 +1,11 @@
 import { cva } from '../../styled-system/css'
-
 export const buttonStyles = cva({
   base: {
     // Layout
     display: 'inline-flex',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: '2',
+    gap: '.375rem',
     cursor: 'pointer',
     textDecoration: 'none',
     userSelect: 'none',
@@ -15,7 +14,7 @@ export const buttonStyles = cva({
     // daisyUI-compatible sizing
     height: 'var(--size)',
     paddingInline: 'var(--btn-p)',
-    fontSize: 'var(--fontsize)',
+    fontSize: 'var(--fontsize,.875rem)',
     fontWeight: '600',
     lineHeight: '1em',
     letterSpacing: '0.01em',
@@ -23,6 +22,7 @@ export const buttonStyles = cva({
     // Colors via CSS variables
     backgroundColor: 'var(--btn-bg)',
     color: 'var(--btn-fg)',
+    borderWidth: 'var(--border, 1px)',
     borderColor: 'var(--btn-border)',
     borderStyle: 'var(--btn-border-style, solid)',
     borderRadius: 'var(--btn-radius)',
@@ -36,6 +36,17 @@ export const buttonStyles = cva({
     // Effects
     fontSmoothing: 'antialiased',
     transition: 'all 0.2s ease',
+
+    // Hover
+    _hover: {
+      filter: 'brightness(0.92)',
+    },
+
+    // Active (pressed)
+    _active: {
+      transform: 'translateY(1px)',
+      boxShadow: 'none',
+    },
 
     // Focus
     _focusVisible: {
@@ -101,16 +112,12 @@ export const buttonStyles = cva({
     variant: {
       outline: {
         '--btn-bg': 'transparent',
-        '--btn-border': 'currentColor',
-        '--btn-fg': 'currentColor',
-        _hover: { '--btn-bg': 'color-mix(in srgb, var(--colors-base-content) 5%, transparent)' },
+        _hover: { '--btn-bg': 'color-mix(in srgb, var(--btn-border, var(--colors-base-content)) 10%, transparent)' },
       },
       dash: {
         '--btn-bg': 'transparent',
-        '--btn-border': 'currentColor',
         '--btn-border-style': 'dashed',
-        '--btn-fg': 'currentColor',
-        _hover: { '--btn-bg': 'color-mix(in srgb, var(--colors-base-content) 5%, transparent)' },
+        _hover: { '--btn-bg': 'color-mix(in srgb, var(--btn-border, var(--colors-base-content)) 10%, transparent)' },
       },
       soft: {
         '--btn-bg': 'color-mix(in srgb, var(--colors-base-content) 10%, transparent)',
@@ -148,7 +155,202 @@ export const buttonStyles = cva({
     },
   },
   defaultVariants: {
-    color: 'neutral',
     size: 'md',
   },
+  compoundVariants: [
+    // Outline variants
+    {
+      variant: 'outline',
+      color: 'neutral',
+      css: {
+        '--btn-fg': 'var(--colors-neutral)',
+        _hover: {
+          '--btn-bg': 'var(--colors-neutral)',
+          '--btn-fg': 'var(--colors-neutral-content)',
+          filter: 'none',
+        },
+      },
+    },
+    {
+      variant: 'outline',
+      color: 'primary',
+      css: {
+        '--btn-fg': 'var(--colors-primary)',
+        _hover: {
+          '--btn-bg': 'var(--colors-primary)',
+          '--btn-fg': 'var(--colors-primary-content)',
+          filter: 'none',
+        },
+      },
+    },
+    {
+      variant: 'outline',
+      color: 'secondary',
+      css: {
+        '--btn-fg': 'var(--colors-secondary)',
+        _hover: {
+          '--btn-bg': 'var(--colors-secondary)',
+          '--btn-fg': 'var(--colors-secondary-content)',
+          filter: 'none',
+        },
+      },
+    },
+    {
+      variant: 'outline',
+      color: 'accent',
+      css: {
+        '--btn-fg': 'var(--colors-accent)',
+        _hover: {
+          '--btn-bg': 'var(--colors-accent)',
+          '--btn-fg': 'var(--colors-accent-content)',
+          filter: 'none',
+        },
+      },
+    },
+    {
+      variant: 'outline',
+      color: 'info',
+      css: {
+        '--btn-fg': 'var(--colors-info)',
+        _hover: {
+          '--btn-bg': 'var(--colors-info)',
+          '--btn-fg': 'var(--colors-info-content)',
+          filter: 'none',
+        },
+      },
+    },
+    {
+      variant: 'outline',
+      color: 'success',
+      css: {
+        '--btn-fg': 'var(--colors-success)',
+        _hover: {
+          '--btn-bg': 'var(--colors-success)',
+          '--btn-fg': 'var(--colors-success-content)',
+          filter: 'none',
+        },
+      },
+    },
+    {
+      variant: 'outline',
+      color: 'warning',
+      css: {
+        '--btn-fg': 'var(--colors-warning)',
+        _hover: {
+          '--btn-bg': 'var(--colors-warning)',
+          '--btn-fg': 'var(--colors-warning-content)',
+          filter: 'none',
+        },
+      },
+    },
+    {
+      variant: 'outline',
+      color: 'error',
+      css: {
+        '--btn-fg': 'var(--colors-error)',
+        _hover: {
+          '--btn-bg': 'var(--colors-error)',
+          '--btn-fg': 'var(--colors-error-content)',
+          filter: 'none',
+        },
+      },
+    },
+    // Dash variants
+    {
+      variant: 'dash',
+      color: 'neutral',
+      css: {
+        '--btn-fg': 'var(--colors-neutral)',
+        _hover: {
+          '--btn-bg': 'var(--colors-neutral)',
+          '--btn-fg': 'var(--colors-neutral-content)',
+          filter: 'none',
+        },
+      },
+    },
+    {
+      variant: 'dash',
+      color: 'primary',
+      css: {
+        '--btn-fg': 'var(--colors-primary)',
+        _hover: {
+          '--btn-bg': 'var(--colors-primary)',
+          '--btn-fg': 'var(--colors-primary-content)',
+          filter: 'none',
+        },
+      },
+    },
+    {
+      variant: 'dash',
+      color: 'secondary',
+      css: {
+        '--btn-fg': 'var(--colors-secondary)',
+        _hover: {
+          '--btn-bg': 'var(--colors-secondary)',
+          '--btn-fg': 'var(--colors-secondary-content)',
+          filter: 'none',
+        },
+      },
+    },
+    {
+      variant: 'dash',
+      color: 'accent',
+      css: {
+        '--btn-fg': 'var(--colors-accent)',
+        _hover: {
+          '--btn-bg': 'var(--colors-accent)',
+          '--btn-fg': 'var(--colors-accent-content)',
+          filter: 'none',
+        },
+      },
+    },
+    {
+      variant: 'dash',
+      color: 'info',
+      css: {
+        '--btn-fg': 'var(--colors-info)',
+        _hover: {
+          '--btn-bg': 'var(--colors-info)',
+          '--btn-fg': 'var(--colors-info-content)',
+          filter: 'none',
+        },
+      },
+    },
+    {
+      variant: 'dash',
+      color: 'success',
+      css: {
+        '--btn-fg': 'var(--colors-success)',
+        _hover: {
+          '--btn-bg': 'var(--colors-success)',
+          '--btn-fg': 'var(--colors-success-content)',
+          filter: 'none',
+        },
+      },
+    },
+    {
+      variant: 'dash',
+      color: 'warning',
+      css: {
+        '--btn-fg': 'var(--colors-warning)',
+        _hover: {
+          '--btn-bg': 'var(--colors-warning)',
+          '--btn-fg': 'var(--colors-warning-content)',
+          filter: 'none',
+        },
+      },
+    },
+    {
+      variant: 'dash',
+      color: 'error',
+      css: {
+        '--btn-fg': 'var(--colors-error)',
+        _hover: {
+          '--btn-bg': 'var(--colors-error)',
+          '--btn-fg': 'var(--colors-error-content)',
+          filter: 'none',
+        },
+      },
+    },
+  ],
 })
