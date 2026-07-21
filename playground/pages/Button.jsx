@@ -145,15 +145,6 @@ export default {
         </section>
 
         <section className={section}>
-          <h3 className={heading}>Any HTML tags</h3>
-          <div className={row}>
-            <a role="button" className="btn">Link</a>
-            <Button type="submit">Button</Button>
-            <input type="button" value="Input" className="btn" />
-          </div>
-        </section>
-
-        <section className={section}>
           <h3 className={heading}>Disabled</h3>
           <div className={row}>
             <Button disabled>Disabled (attribute)</Button>
