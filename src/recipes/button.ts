@@ -60,6 +60,12 @@ export const buttonStyles = cva({
   },
   variants: {
     color: {
+      default: {
+        '--btn-bg': 'var(--colors-base-200)',
+        '--btn-fg': 'var(--colors-base-content)',
+        '--btn-border': 'var(--colors-base-300)',
+        _hover: { '--btn-bg': 'var(--colors-base-300)' },
+      },
       neutral: {
         '--btn-bg': 'var(--colors-neutral)',
         '--btn-fg': 'var(--colors-neutral-content)',
@@ -155,7 +161,7 @@ export const buttonStyles = cva({
     },
   },
   defaultVariants: {
-    color: 'neutral',
+    color: 'default',
     size: 'md',
   },
   compoundVariants: [
