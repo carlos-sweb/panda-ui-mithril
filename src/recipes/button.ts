@@ -153,7 +153,7 @@ export const buttonStyles = cva({
     },
     shape: {
       square: { aspectRatio: '1', p: '0', minW: 'auto' },
-      circle: { aspectRatio: '1', p: '0', borderRadius: 'full', minW: 'auto' },
+      circle: { width: 'var(--size)', p: '0', borderRadius: 'full', minW: 'auto' },
     },
     fluid: {
       block: { w: 'full', display: 'flex' },
