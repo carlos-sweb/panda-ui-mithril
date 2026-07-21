@@ -352,5 +352,78 @@ export const buttonStyles = cva({
         },
       },
     },
+    // Soft variants
+    {
+      variant: 'soft',
+      color: 'neutral',
+      css: {
+        '--btn-fg': 'var(--colors-neutral)',
+        '--btn-border': 'transparent',
+        _hover: { '--btn-bg': 'color-mix(in srgb, var(--colors-neutral) 15%, transparent)' },
+      },
+    },
+    {
+      variant: 'soft',
+      color: 'primary',
+      css: {
+        '--btn-fg': 'var(--colors-primary)',
+        '--btn-border': 'transparent',
+        _hover: { '--btn-bg': 'color-mix(in srgb, var(--colors-primary) 15%, transparent)' },
+      },
+    },
+    {
+      variant: 'soft',
+      color: 'secondary',
+      css: {
+        '--btn-fg': 'var(--colors-secondary)',
+        '--btn-border': 'transparent',
+        _hover: { '--btn-bg': 'color-mix(in srgb, var(--colors-secondary) 15%, transparent)' },
+      },
+    },
+    {
+      variant: 'soft',
+      color: 'accent',
+      css: {
+        '--btn-fg': 'var(--colors-accent)',
+        '--btn-border': 'transparent',
+        _hover: { '--btn-bg': 'color-mix(in srgb, var(--colors-accent) 15%, transparent)' },
+      },
+    },
+    {
+      variant: 'soft',
+      color: 'info',
+      css: {
+        '--btn-fg': 'var(--colors-info)',
+        '--btn-border': 'transparent',
+        _hover: { '--btn-bg': 'color-mix(in srgb, var(--colors-info) 15%, transparent)' },
+      },
+    },
+    {
+      variant: 'soft',
+      color: 'success',
+      css: {
+        '--btn-fg': 'var(--colors-success)',
+        '--btn-border': 'transparent',
+        _hover: { '--btn-bg': 'color-mix(in srgb, var(--colors-success) 15%, transparent)' },
+      },
+    },
+    {
+      variant: 'soft',
+      color: 'warning',
+      css: {
+        '--btn-fg': 'var(--colors-warning)',
+        '--btn-border': 'transparent',
+        _hover: { '--btn-bg': 'color-mix(in srgb, var(--colors-warning) 15%, transparent)' },
+      },
+    },
+    {
+      variant: 'soft',
+      color: 'error',
+      css: {
+        '--btn-fg': 'var(--colors-error)',
+        '--btn-border': 'transparent',
+        _hover: { '--btn-bg': 'color-mix(in srgb, var(--colors-error) 15%, transparent)' },
+      },
+    },
   ],
 })
