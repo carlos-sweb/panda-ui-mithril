@@ -143,7 +143,7 @@ export const buttonStyles = cva({
       xl: { '--size': '4.5rem', '--btn-p': '2rem', '--fontsize': '1.125rem' },
     },
     active: {
-      true: { '--btn-bg': 'color-mix(in srgb, var(--colors-base-content) 15%, transparent)', transform: 'translateY(1px)' },
+      true: { transform: 'translateY(1px)', boxShadow: 'none', filter: 'brightness(0.92)' },
     },
     shape: {
       square: { aspectRatio: '1', p: '0', minW: 'auto' },
