@@ -364,6 +364,7 @@ export const buttonStyles = cva({
       variant: 'soft',
       color: 'neutral',
       css: {
+        '--btn-bg': 'color-mix(in srgb, var(--colors-neutral) 10%, transparent)',
         '--btn-fg': 'var(--colors-neutral)',
         '--btn-border': 'transparent',
         _hover: { '--btn-bg': 'color-mix(in srgb, var(--colors-neutral) 15%, transparent)' },
@@ -373,6 +374,7 @@ export const buttonStyles = cva({
       variant: 'soft',
       color: 'primary',
       css: {
+        '--btn-bg': 'color-mix(in srgb, var(--colors-primary) 10%, transparent)',
         '--btn-fg': 'var(--colors-primary)',
         '--btn-border': 'transparent',
         _hover: { '--btn-bg': 'color-mix(in srgb, var(--colors-primary) 15%, transparent)' },
@@ -382,6 +384,7 @@ export const buttonStyles = cva({
       variant: 'soft',
       color: 'secondary',
       css: {
+        '--btn-bg': 'color-mix(in srgb, var(--colors-secondary) 10%, transparent)',
         '--btn-fg': 'var(--colors-secondary)',
         '--btn-border': 'transparent',
         _hover: { '--btn-bg': 'color-mix(in srgb, var(--colors-secondary) 15%, transparent)' },
@@ -391,6 +394,7 @@ export const buttonStyles = cva({
       variant: 'soft',
       color: 'accent',
       css: {
+        '--btn-bg': 'color-mix(in srgb, var(--colors-accent) 10%, transparent)',
         '--btn-fg': 'var(--colors-accent)',
         '--btn-border': 'transparent',
         _hover: { '--btn-bg': 'color-mix(in srgb, var(--colors-accent) 15%, transparent)' },
@@ -400,6 +404,7 @@ export const buttonStyles = cva({
       variant: 'soft',
       color: 'info',
       css: {
+        '--btn-bg': 'color-mix(in srgb, var(--colors-info) 10%, transparent)',
         '--btn-fg': 'var(--colors-info)',
         '--btn-border': 'transparent',
         _hover: { '--btn-bg': 'color-mix(in srgb, var(--colors-info) 15%, transparent)' },
@@ -409,6 +414,7 @@ export const buttonStyles = cva({
       variant: 'soft',
       color: 'success',
       css: {
+        '--btn-bg': 'color-mix(in srgb, var(--colors-success) 10%, transparent)',
         '--btn-fg': 'var(--colors-success)',
         '--btn-border': 'transparent',
         _hover: { '--btn-bg': 'color-mix(in srgb, var(--colors-success) 15%, transparent)' },
@@ -418,6 +424,7 @@ export const buttonStyles = cva({
       variant: 'soft',
       color: 'warning',
       css: {
+        '--btn-bg': 'color-mix(in srgb, var(--colors-warning) 10%, transparent)',
         '--btn-fg': 'var(--colors-warning)',
         '--btn-border': 'transparent',
         _hover: { '--btn-bg': 'color-mix(in srgb, var(--colors-warning) 15%, transparent)' },
@@ -427,6 +434,7 @@ export const buttonStyles = cva({
       variant: 'soft',
       color: 'error',
       css: {
+        '--btn-bg': 'color-mix(in srgb, var(--colors-error) 10%, transparent)',
         '--btn-fg': 'var(--colors-error)',
         '--btn-border': 'transparent',
         _hover: { '--btn-bg': 'color-mix(in srgb, var(--colors-error) 15%, transparent)' },
