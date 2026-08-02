@@ -103,10 +103,20 @@ const closeBtn = css({
   _hover: { background: 'base-300' },
 })
 
+// `m.route.get()` only reflects reality once the router (mounted separately,
+// in a different root, inside Layout's oncreate) has resolved — on a hard
+// reload the very first Layout/Sidebar render happens before that, so it
+// would report the wrong (empty) route and no sidebar item would highlight.
+// `location.hash` is set by the browser before any JS runs, so it's correct
+// from the first paint.
+function getCurrentPath() {
+  return location.hash.replace(/^#!/, '') || '/'
+}
+
 const SidebarContent = {
   view(vnode) {
     const { onclose } = vnode.attrs
-    const current = m.route.get()
+    const current = getCurrentPath()
 
     return (
       <div className={css({ flex: '1', overflowY: 'auto', padding: '0.75rem' })}>

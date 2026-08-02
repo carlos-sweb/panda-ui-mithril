@@ -5,6 +5,7 @@ import '@fontsource/inter/500.css'
 import '@fontsource/inter/600.css'
 import '@fontsource/inter/700.css'
 import '@fontsource/jetbrains-mono/400.css'
+import 'highlight.js/styles/atom-one-dark-reasonable.css'
 import './style.css'
 
 import { Navbar } from './components/Navbar.jsx'
@@ -60,7 +61,7 @@ import Rating from './pages/Rating.jsx'
 import Select from './pages/Select.jsx'
 import Skeleton from './pages/Skeleton.jsx'
 import Stack from './pages/Stack.jsx'
-import Stats from './pages/Stats.jsx'
+import Stat from './pages/Stat.jsx'
 import Status from './pages/Status.jsx'
 import Steps from './pages/Steps.jsx'
 import Swap from './pages/Swap.jsx'
@@ -122,14 +123,14 @@ const routes = {
   '/select': { render: () => m(Select) },
   '/skeleton': { render: () => m(Skeleton) },
   '/stack': { render: () => m(Stack) },
-  '/stats': { render: () => m(Stats) },
+  '/stat': { render: () => m(Stat) },
   '/status': { render: () => m(Status) },
   '/steps': { render: () => m(Steps) },
   '/swap': { render: () => m(Swap) },
   '/table': { render: () => m(Table) },
   '/tabs': { render: () => m(Tabs) },
   '/textarea': { render: () => m(Textarea) },
-  '/themecontroller': { render: () => m(ThemeController) },
+  '/themectrl': { render: () => m(ThemeController) },
   '/timeline': { render: () => m(Timeline) },
   '/toast': { render: () => m(Toast) },
   '/toggle': { render: () => m(Toggle) },
@@ -159,6 +160,19 @@ const Layout = {
   oncreate(vnode) {
     m.route.prefix = '#!'
     m.route(document.getElementById('view-dynamic'), '/', routes)
+
+    vnode.state.onKeydown = (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault()
+        vnode.state.isSearchOpen = true
+        m.redraw()
+      }
+    }
+    window.addEventListener('keydown', vnode.state.onKeydown)
+  },
+
+  onremove(vnode) {
+    window.removeEventListener('keydown', vnode.state.onKeydown)
   },
 
   view(vnode) {

@@ -30,6 +30,12 @@ src/index.js       -> Barrel file re-exporting all components
 - Icon components from 'lucide-mithril': `import { IconName } from 'lucide-mithril'`
 - One component per file. Named exports only, no default exports.
 - Type definitions in adjacent .d.ts files, exported from src/index.d.ts
+- Never write literal Tailwind-style utility class strings (`shrink-0`,
+  `font-bold`, `text-xs`, `flex`, `gap-2`, `min-w-0`, etc.) — this project has
+  no Tailwind, so those classes resolve to nothing. Any styling beyond the
+  recipe must go through `css()` from `../styled-system/css`, or match a real
+  descendant selector already defined in that component's recipe (e.g.
+  `.alert-description` in `recipes/alert.ts`).
 
 ## Component Pattern
 
@@ -38,6 +44,51 @@ Each component folder contains:
 - `index.js` -> Mithril component (view function)
 - `index.d.ts` -> TypeScript declarations
 - `*.styles.js` -> cva/sva recipe definitions
+
+Canonical single-element component body:
+
+```js
+import m from 'mithril'
+import { cardStyles } from '../../recipes/card'
+import { cx } from '../../utils/cx'
+
+export const Card = {
+  view(vnode) {
+    const { size, border, className, ...rest } = vnode.attrs
+
+    return m('div', {
+      className: cx('card', cardStyles({ size, border }), className),
+      ...rest
+    }, vnode.children)
+  }
+}
+```
+
+## Children Handling (critical)
+
+Mithril's hyperscript stores JSX/`m()` nested children in `vnode.children` —
+never in `vnode.attrs.children`. Destructuring `children` out of `vnode.attrs`
+silently returns `undefined`: the component renders with no content, no error
+is thrown, and `tsc --noEmit` stays green. This is the single most common way
+a component silently breaks in this codebase.
+
+Correct — read from `vnode.children`:
+```js
+return m('div', { className: cx(...), ...rest }, vnode.children)
+```
+
+Wrong — destructuring `children` out of `attrs` (always `undefined` for
+JSX-nested content):
+```js
+const { size, border, className, children, ...rest } = vnode.attrs
+return m('div', { className: cx(...), ...rest }, children)
+```
+
+Do not wrap `vnode.children` in extra `<div>`/`<span>` unless the recipe's
+CSS explicitly requires a wrapper element (e.g. a grid/flex layout that
+depends on direct children). An unnecessary wrapper breaks layout selectors
+like `gridAutoFlow: 'column'` that expect the icon and content to be direct
+siblings.
 
 ## Naming Convention
 
@@ -48,6 +99,94 @@ All CSS class names follow daisyUI convention:
 - Parts: `{component}-{part}` -> `card-body`, `modal-box`
 - Colors: `{component}-{color}` -> `btn-primary`, `badge-error`
 - Sizes: `{component}-{size}` -> `btn-lg`, `input-sm`
+
+Every top-level component element must apply the daisyUI base class name
+first, before the recipe-generated styles, before any user-supplied
+`className`:
+
+```js
+cx('alert', alertStyles({ variant, color, direction }), className)
+```
+
+## Verifying Component Changes
+
+`npm run typecheck` does not verify that a component actually renders
+content — broken children handling (see above) passes typecheck cleanly
+while producing an empty DOM node. After changing any component's `view()`
+logic, run `npm run dev` and check the corresponding `playground/pages/*.jsx`
+page in a browser before considering the change done.
+
+## Replicating daisyUI Component Styles
+
+When porting or fixing a component's visual styling to match daisyUI, don't
+rely on the rendered docs site or memory of "roughly what it looks like" —
+daisyui.com is JS-heavy and often fails to fetch cleanly, and approximate
+values pass a visual glance while still being wrong. Pull the real source:
+
+1. **Component CSS** — fetch the raw source file from GitHub, not the docs
+   page:
+   ```
+   https://raw.githubusercontent.com/saadeghi/daisyui/master/packages/daisyui/src/components/{component}.css
+   ```
+   This gives the exact selectors, padding/gap/border-radius values, CSS
+   custom properties, and responsive behavior (e.g. alert's
+   `&:has(:nth-child(2))` rule that grows the content column only once
+   there's a second child).
+
+2. **Example markup** — also fetch the component's docs markdown:
+   ```
+   https://raw.githubusercontent.com/saadeghi/daisyui/master/packages/docs/src/routes/(routes)/components/{component}/+page.md
+   ```
+   The CSS alone won't tell you this: daisyUI's alert icons are sized via
+   `class="h-6 w-6 shrink-0 stroke-current"` in the HTML (1.5rem), and title/
+   description text relies on the consumer adding plain Tailwind utilities
+   (`font-bold`, `text-xs`) directly rather than the component CSS styling
+   them.
+
+3. **Theme variable values** — daisyUI components reference CSS custom
+   properties (`--radius-box`, `--alert-color`, etc.) defined in the *theme*
+   layer, not the component layer. Get their real values from:
+   ```
+   https://raw.githubusercontent.com/saadeghi/daisyui/master/packages/daisyui/src/themes/{light,dark}.css
+   ```
+   Check both themes — if a value differs between them it needs the `dark`
+   condition in `panda.config.ts`; if identical (common for radius/size
+   tokens), one `:root` value is enough.
+
+4. **Verify the variable actually resolves in this project.** A recipe can
+   correctly write `var(--radius-box)` and still render with zero radius if
+   `--radius-box` is never declared anywhere — `var()` with no fallback
+   silently computes to nothing, with no build error or lint warning. Before
+   trusting a `var(--x)` reference, grep `panda.config.ts`'s `globalCss` for
+   the declaration.
+
+5. **Numeric spacing values aren't automatically rem-scaled.** This project's
+   `panda.config.ts` has no spacing token preset, so `paddingInline: '4'`
+   resolves to a literal `4px`, not the `1rem` it would be under Tailwind's
+   default scale. When matching daisyUI's `px-4`/`gap-4`/etc., use explicit
+   rem literals (`'1rem'`) in the recipe instead of bare numeric tokens.
+
+6. **Verify with computed styles, not just a screenshot.** A screenshot can
+   look plausible even when a value is off by 4x (a 4px padding still renders
+   a visible box). Check exact values in the browser and compare against the
+   real daisyUI number from step 1:
+   ```js
+   getComputedStyle(document.querySelector('[role="alert"]')).paddingInlineStart
+   ```
+
+7. **After editing `panda.config.ts` (globalCss/theme tokens), run
+   `npx panda cssgen`, not just `npm run codegen`.** `codegen` only
+   regenerates the JS/TS helpers (`css()`, tokens, patterns, jsx); the static
+   `styled-system/styles.css` that `playground/index.html` links via `<link>`
+   needs the separate `cssgen` command to pick up root-variable changes.
+   Then restart the dev server — Bun serves a bundled/hashed copy that can
+   lag behind a plain page reload.
+
+8. **Check blast radius before changing a shared value.** Adding a variable
+   to `globalCss: { ':root': {...} }` is shared infrastructure. Before doing
+   it, grep which recipes reference that variable
+   (`grep -rl "radius-box" src/recipes/`) so you know whether the fix is
+   scoped to one component today or affects several.
 
 ## Playground Rules
 
