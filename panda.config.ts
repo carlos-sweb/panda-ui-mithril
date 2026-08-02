@@ -46,29 +46,33 @@ export default defineConfig({
           'base-content': {
             value: { base: 'oklch(21% 0.006 285.885)', _dark: 'oklch(80% 0.008 285.885)' },
           },
+          // Brand colors — overridable by the consuming app via --pum-* custom
+          // properties (falls back to these defaults when unset), so a parent
+          // project's own theme/color-picker can drive them without needing
+          // to know panda-ui-mithril's internal token names.
           primary: {
-            value: { base: 'oklch(45% 0.24 277.023)', _dark: '#a78bfa' },
+            value: { base: 'var(--pum-primary, oklch(45% 0.24 277.023))', _dark: 'var(--pum-primary, #a78bfa)' },
           },
           'primary-content': {
-            value: { base: '#ffffff', _dark: '#1e1b4b' },
+            value: { base: 'var(--pum-primary-content, #ffffff)', _dark: 'var(--pum-primary-content, #1e1b4b)' },
           },
           secondary: {
-            value: { base: 'oklch(65% 0.241 354.308)', _dark: '#f472b6' },
+            value: { base: 'var(--pum-secondary, oklch(65% 0.241 354.308))', _dark: 'var(--pum-secondary, #f472b6)' },
           },
           'secondary-content': {
-            value: { base: '#ffffff', _dark: '#1a0a14' },
+            value: { base: 'var(--pum-secondary-content, #ffffff)', _dark: 'var(--pum-secondary-content, #1a0a14)' },
           },
           accent: {
-            value: { base: '#37cdbe', _dark: '#2dd4bf' },
+            value: { base: 'var(--pum-accent, #37cdbe)', _dark: 'var(--pum-accent, #2dd4bf)' },
           },
           'accent-content': {
-            value: { base: '#163849', _dark: '#042f2e' },
+            value: { base: 'var(--pum-accent-content, #163849)', _dark: 'var(--pum-accent-content, #042f2e)' },
           },
           neutral: {
-            value: { base: 'oklch(14% 0.005 285.823)', _dark: '#a3a6ad' },
+            value: { base: 'var(--pum-neutral, oklch(14% 0.005 285.823))', _dark: 'var(--pum-neutral, #a3a6ad)' },
           },
           'neutral-content': {
-            value: { base: '#ffffff', _dark: '#1f2937' },
+            value: { base: 'var(--pum-neutral-content, #ffffff)', _dark: 'var(--pum-neutral-content, #1f2937)' },
           },
           info: {
             value: { base: '#3abff8', _dark: '#7dd3fc' },

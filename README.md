@@ -86,9 +86,32 @@ Con Vite, webpack, Parcel, etc. ese `import` de un `.css` desde `node_modules` f
 
 Ambas hojas declaran las mismas capas (`@layer reset, base, tokens, recipes, utilities`), así que **se fusionan por capa** en vez de pisarse por completo — la primera hoja que carga fija el orden de las capas, la segunda solo agrega reglas dentro de ellas.
 
+#### Personalizar los colores de marca (`--pum-*`)
+
+`primary`, `secondary`, `accent` y `neutral` (y sus `-content`) son colores de **marca** — se espera que cada proyecto los redefina, a diferencia de `info`/`success`/`warning`/`error`, que son colores **semánticos de estado** y se mantienen fijos sin importar el tema. Para sobreescribir los de marca, no necesitas tocar Panda ni conocer el nombre interno del token — cada uno tiene un hook con fallback (`var(--pum-primary, <valor por defecto>)`), así que basta con declarar la custom property en tu propio CSS, en cualquier `:root` que cargue (sea estático o generado dinámicamente por un selector de color en runtime):
+
+```css
+:root {
+  --pum-primary: oklch(55% 0.2 250);
+  --pum-primary-content: white;
+  --pum-secondary: #d946ef;
+  --pum-secondary-content: white;
+  --pum-accent: ...;
+  --pum-neutral: ...;
+}
+```
+
+No hace falta declarar los cuatro — cualquiera que dejes sin definir usa el valor por defecto de la librería. Si tu app ya tiene un selector de color en runtime (ej. clases `.primary-{color}` que cambian una custom property propia), simplemente enlázalo:
+
+```css
+:root {
+  --pum-primary: var(--primary-500); /* tu propia escala reactiva */
+}
+```
+
 #### Colisión de tokens semánticos
 
-La única fricción real son los **tokens con el mismo nombre**: esta librería sigue la convención de daisyUI (`primary`, `secondary`, `accent`, `base-100`, `base-content`, etc. — ver [Tema](#tema)). Si tu proyecto define esos mismos nombres en su propio `panda.config.ts` con otros valores, gana el `:root`/`[data-theme]` que se cargue **después** en el DOM. Dos formas de resolverlo, de más a menos recomendada:
+Si además quieres que **tu propio** `css()`/`cva()` (no solo los componentes de esta librería) resuelva `primary`/`base-100`/etc. al mismo valor — por ejemplo para pintar tu propio UI con el mismo color de marca — hay dos formas, de más a menos recomendada:
 
 1. **Reusa los tokens de la librería en vez de duplicarlos.** Esta librería expone sus colores como custom properties reales (`--colors-primary`, `--colors-base-100`, ...) que cambian solas con `data-theme`. En tu propio `panda.config.ts` puedes referenciarlas directamente en vez de declarar tus propios valores hardcodeados:
 
