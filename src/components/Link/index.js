@@ -5,11 +5,11 @@ import { cx } from '../../utils/cx'
 
 export const Link = {
   view(vnode) {
-    const { color, hover = true, className, children, ...rest } = vnode.attrs
+    const { color, hover = true, className, ...rest } = vnode.attrs
 
     return m('a', {
       className: cx('link', linkStyles({ color, hover }), className),
       ...rest
-    }, children)
+    }, vnode.children)
   }
 }

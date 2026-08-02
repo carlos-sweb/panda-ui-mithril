@@ -1,48 +1,47 @@
 import m from 'mithril'
-import { cx } from '../../../styled-system/css'
+import { timelineStyles, timelineBoxStyles } from '../../recipes/timeline'
+import { cx } from '../../utils/cx'
 
 export const Timeline = {
   view(vnode) {
-    const { horizontal, vertical, snapIcon, compact, className, children, ...rest } = vnode.attrs
+    const { horizontal, vertical, snapIcon, className, ...rest } = vnode.attrs
+    const direction = vertical && !horizontal ? 'vertical' : 'horizontal'
 
     return m('ul', {
-      className: cx(
-        'timeline',
-        horizontal && 'timeline-horizontal',
-        vertical !== false && !horizontal && 'timeline-vertical',
-        snapIcon && 'timeline-snap-icon',
-        compact && 'timeline-compact',
-        className
-      ),
+      className: cx('timeline', timelineStyles({ direction, snapIcon }), className),
       ...rest
-    }, children)
+    }, vnode.children)
   }
 }
 
 export const TimelineItem = {
   view(vnode) {
-    const { className, children, ...rest } = vnode.attrs
-    return m('li', { className: cx(className), ...rest }, children)
+    const { hrBefore, hrAfter, className, ...rest } = vnode.attrs
+    return m('li', { className, ...rest }, [
+      hrBefore && m('hr'),
+      vnode.children,
+      hrAfter && m('hr'),
+    ])
   }
 }
 
 export const TimelineStart = {
   view(vnode) {
-    const { className, children, ...rest } = vnode.attrs
-    return m('div', { className: cx('timeline-start', className), ...rest }, children)
+    const { box, className, ...rest } = vnode.attrs
+    return m('div', { className: cx('timeline-start', box && timelineBoxStyles(), box && 'timeline-box', className), ...rest }, vnode.children)
   }
 }
 
 export const TimelineMiddle = {
   view(vnode) {
-    const { className, children, ...rest } = vnode.attrs
-    return m('div', { className: cx('timeline-middle', className), ...rest }, children)
+    const { className, ...rest } = vnode.attrs
+    return m('div', { className: cx('timeline-middle', className), ...rest }, vnode.children)
   }
 }
 
 export const TimelineEnd = {
   view(vnode) {
-    const { className, children, ...rest } = vnode.attrs
-    return m('div', { className: cx('timeline-end', className), ...rest }, children)
+    const { box, className, ...rest } = vnode.attrs
+    return m('div', { className: cx('timeline-end', box && timelineBoxStyles(), box && 'timeline-box', className), ...rest }, vnode.children)
   }
 }

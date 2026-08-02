@@ -5,11 +5,11 @@ import { cx } from '../../utils/cx'
 
 export const Kbd = {
   view(vnode) {
-    const { size, className, children, ...rest } = vnode.attrs
+    const { size, className, ...rest } = vnode.attrs
 
     return m('kbd', {
       className: cx('kbd', kbdStyles({ size }), className),
       ...rest
-    }, children)
+    }, vnode.children)
   }
 }

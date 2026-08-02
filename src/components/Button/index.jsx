@@ -9,6 +9,7 @@ export const Button = {
     const isLink = !!vnode.attrs.href
 
     const styles = cx(
+      'btn',
       buttonStyles({
         color,
         variant,
@@ -22,14 +23,14 @@ export const Button = {
 
     if (isLink) {
       return (
-        <a className={styles} {...rest}>
+        <a className={styles} data-active={active || undefined} {...rest}>
           {vnode.children}
         </a>
       )
     }
 
     return (
-      <button className={styles} disabled={disabled} {...rest}>
+      <button className={styles} disabled={disabled} data-active={active || undefined} {...rest}>
         {vnode.children}
       </button>
     )

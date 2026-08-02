@@ -2,31 +2,96 @@ import { cva } from '../../styled-system/css'
 
 export const avatarStyles = cva({
   base: {
-    display: 'inline-flex',
     position: 'relative',
-    w: '12',
-    h: '12',
-    overflow: 'hidden',
-    rounded: 'full',
+    display: 'inline-flex',
+    verticalAlign: 'middle',
+    alignSelf: 'center',
+
+    '& > div': {
+      display: 'block',
+      aspectRatio: '1 / 1',
+      overflow: 'hidden',
+    },
+    '& img': {
+      height: '100%',
+      width: '100%',
+      objectFit: 'cover',
+    },
   },
   variants: {
     size: {
-      xs: { w: '8', h: '8' },
-      sm: { w: '10', h: '10' },
-      md: { w: '12', h: '12' },
-      lg: { w: '16', h: '16' },
-      xl: { w: '20', h: '20' },
+      xs: { '& > div': { width: '1.5rem' } },
+      sm: { '& > div': { width: '2rem' } },
+      md: { '& > div': { width: '3rem' } },
+      lg: { '& > div': { width: '4rem' } },
+      xl: { '& > div': { width: '6rem' } },
+    },
+    shape: {
+      circle: { '& > div': { borderRadius: '9999px' } },
+      square: { '& > div': { borderRadius: 'var(--radius-box)' } },
     },
     placeholder: {
       true: {
-        bg: 'neutral',
-        color: 'neutral-content',
-        fontWeight: 'bold',
-        fontSize: 'xl',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
+        '& > div': {
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: 'var(--colors-neutral)',
+          color: 'var(--colors-neutral-content)',
+        },
       },
+    },
+    status: {
+      online: {
+        '&:before': {
+          content: '""',
+          position: 'absolute',
+          zIndex: '1',
+          display: 'block',
+          borderRadius: '9999px',
+          backgroundColor: 'var(--colors-success)',
+          outline: '2px solid var(--colors-base-100)',
+          width: '15%',
+          height: '15%',
+          top: '7%',
+          insetInlineEnd: '7%',
+        },
+      },
+      offline: {
+        '&:before': {
+          content: '""',
+          position: 'absolute',
+          zIndex: '1',
+          display: 'block',
+          borderRadius: '9999px',
+          backgroundColor: 'var(--colors-base-300)',
+          outline: '2px solid var(--colors-base-100)',
+          width: '15%',
+          height: '15%',
+          top: '7%',
+          insetInlineEnd: '7%',
+        },
+      },
+    },
+  },
+  defaultVariants: {
+    size: 'md',
+    shape: 'circle',
+  },
+})
+
+export const avatarGroupStyles = cva({
+  base: {
+    display: 'flex',
+    overflow: 'hidden',
+
+    '& > *:not(:first-child)': {
+      marginInlineStart: '-1rem',
+    },
+    '& .avatar > div': {
+      overflow: 'hidden',
+      borderRadius: '9999px',
+      border: '4px solid var(--colors-base-100)',
     },
   },
 })

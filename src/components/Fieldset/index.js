@@ -1,16 +1,17 @@
 import m from 'mithril'
-import { cx } from '../../../styled-system/css'
+import { fieldsetStyles, fieldsetLegendStyles } from '../../recipes/fieldset'
+import { cx } from '../../utils/cx'
 
 export const Fieldset = {
   view(vnode) {
-    const { legend, className, children, ...rest } = vnode.attrs
+    const { legend, className, ...rest } = vnode.attrs
 
     return m('fieldset', {
-      className: cx('fieldset', className),
+      className: cx('fieldset', fieldsetStyles(), className),
       ...rest
     }, [
-      legend && m('legend', { className: 'fieldset-legend' }, legend),
-      children,
+      legend && m('legend', { className: cx('fieldset-legend', fieldsetLegendStyles()) }, legend),
+      vnode.children,
     ])
   }
 }

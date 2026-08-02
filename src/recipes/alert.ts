@@ -10,9 +10,18 @@ export const alertStyles = cva({
     gridAutoFlow: 'column',
     gridTemplateColumns: 'auto',
     textAlign: 'start',
-    gap: '4',
-    paddingInline: '4',
-    paddingBlock: '3',
+    // Explicit rem values (not spacing tokens): this project's panda.config.ts
+    // has no rem-based spacing scale, so numeric tokens like '4' resolve to 4px.
+    // daisyUI's real gap-4/px-4/py-3 are 1rem/1rem/0.75rem.
+    gap: '1rem',
+    paddingInline: '1rem',
+    paddingBlock: '0.75rem',
+    // daisyUI grows the content column to fill remaining space once there's
+    // a second child (e.g. icon + text), avoiding an unwanted gap when the
+    // alert has only one child.
+    '&:has(:nth-child(2))': {
+      gridTemplateColumns: 'auto minmax(auto, 1fr)',
+    },
     borderRadius: 'var(--radius-box)',
     fontSize: '0.875rem',
     lineHeight: '1.25rem',
@@ -36,8 +45,8 @@ export const alertStyles = cva({
 
     // Icon defaults
     '& svg': {
-      width: '1.25rem',
-      height: '1.25rem',
+      width: '1.5rem',
+      height: '1.5rem',
       flexShrink: '0',
       stroke: 'currentColor',
     },
@@ -104,13 +113,21 @@ export const alertStyles = cva({
         justifyContent: 'start',
         justifyItems: 'start',
         gridAutoFlow: 'column',
+        gridTemplateColumns: 'auto',
         textAlign: 'start',
+        '&:has(:nth-child(2))': {
+          gridTemplateColumns: 'auto minmax(auto, 1fr)',
+        },
       },
       vertical: {
         justifyContent: 'center',
         justifyItems: 'center',
         gridAutoFlow: 'row',
+        gridTemplateColumns: 'auto',
         textAlign: 'center',
+        '&:has(:nth-child(2))': {
+          gridTemplateColumns: 'auto',
+        },
       },
     },
   },

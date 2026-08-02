@@ -1,41 +1,33 @@
 import m from 'mithril'
-import { cx } from '../../../styled-system/css'
+import { stepsStyles, stepStyles } from '../../recipes/steps'
+import { cx } from '../../utils/cx'
 
 export const Steps = {
   view(vnode) {
-    const { horizontal, vertical, className, children, ...rest } = vnode.attrs
+    const { horizontal, vertical, className, ...rest } = vnode.attrs
+    const direction = vertical && !horizontal ? 'vertical' : 'horizontal'
 
     return m('ul', {
-      className: cx(
-        'steps',
-        horizontal !== false && 'steps-horizontal',
-        vertical && 'steps-vertical',
-        className
-      ),
+      className: cx('steps', stepsStyles({ direction }), className),
       ...rest
-    }, children)
+    }, vnode.children)
   }
 }
 
 export const Step = {
   view(vnode) {
-    const { color, primary, className, children, ...rest } = vnode.attrs
+    const { color, className, ...rest } = vnode.attrs
 
     return m('li', {
-      className: cx(
-        'step',
-        color && `step-${color}`,
-        primary && 'step-primary',
-        className
-      ),
+      className: cx('step', color && `step-${color}`, stepStyles({ color }), className),
       ...rest
-    }, children)
+    }, vnode.children)
   }
 }
 
 export const StepIcon = {
   view(vnode) {
-    const { className, children, ...rest } = vnode.attrs
-    return m('span', { className: cx('step-icon', className), ...rest }, children)
+    const { className, ...rest } = vnode.attrs
+    return m('span', { className: cx('step-icon', className), ...rest }, vnode.children)
   }
 }

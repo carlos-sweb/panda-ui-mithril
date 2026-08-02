@@ -2,14 +2,110 @@ import { cva } from '../../styled-system/css'
 
 export const collapseStyles = cva({
   base: {
-    display: 'flex',
-    flexDirection: 'column',
+    position: 'relative',
+    display: 'grid',
+    gridTemplateColumns: 'minmax(0, 1fr)',
+    gridTemplateRows: 'max-content 0fr',
+    width: '100%',
+    borderRadius: 'var(--radius-box, 1rem)',
+    isolation: 'isolate',
     overflow: 'hidden',
+    transition: 'grid-template-rows 0.2s',
+
+    '& > input': {
+      gridColumnStart: '1',
+      gridRowStart: '1',
+      position: 'relative',
+      zIndex: '1',
+      appearance: 'none',
+      opacity: '0',
+      width: '100%',
+      padding: '1rem',
+      paddingInlineEnd: '3rem',
+      minHeight: '1lh',
+      cursor: 'pointer',
+    },
+    '& > .collapse-content': {
+      gridColumnStart: '1',
+      gridRowStart: '2',
+      minHeight: '0',
+      paddingInline: '1rem',
+      paddingBottom: '0',
+      overflow: 'hidden',
+      transition: 'padding-bottom 0.2s ease-out',
+    },
+    '&:has(> input:checked)': {
+      gridTemplateRows: 'max-content 1fr',
+      '& > .collapse-content': { paddingBottom: '1rem' },
+    },
   },
   variants: {
-    arrow: { true: {} },
-    plus: { true: {} },
-    open: { true: { _open: { maxHeight: '9999px' } } },
-    close: { true: {} },
+    // A checked radio can't be unchecked by clicking itself (only by
+    // checking a sibling in the same `name` group), so in that grouped case
+    // an arrow pointing "up" or a "−" would promise a click-to-close that
+    // never happens. Checkbox mode (standalone Collapse) really can be
+    // toggled off by clicking again, so it keeps the normal affordance —
+    // only the radio (grouped/Accordion) case fades the icon out instead.
+    arrow: {
+      true: {
+        '& > .collapse-title:after': {
+          position: 'absolute',
+          display: 'block',
+          height: '0.5rem',
+          width: '0.5rem',
+          top: '50%',
+          insetInlineEnd: '1.4rem',
+          content: '""',
+          transform: 'translateY(-100%) rotate(45deg)',
+          transformOrigin: '75% 75%',
+          boxShadow: '2px 2px',
+          pointerEvents: 'none',
+          transitionProperty: 'transform, opacity',
+          transitionDuration: '0.2s',
+        },
+        '&:has(> input[type="checkbox"]:checked) > .collapse-title:after': {
+          transform: 'translateY(-50%) rotate(225deg)',
+        },
+        '&:has(> input[type="radio"]:checked) > .collapse-title:after': {
+          opacity: '0',
+        },
+      },
+    },
+    plus: {
+      true: {
+        '& > .collapse-title:after': {
+          position: 'absolute',
+          display: 'block',
+          height: '0.5rem',
+          width: '0.5rem',
+          top: '0.9rem',
+          insetInlineEnd: '1.4rem',
+          content: '"+"',
+          pointerEvents: 'none',
+          transitionProperty: 'transform, opacity',
+          transitionDuration: '0.2s',
+        },
+        '&:has(> input[type="checkbox"]:checked) > .collapse-title:after': {
+          content: '"−"',
+        },
+        '&:has(> input[type="radio"]:checked) > .collapse-title:after': {
+          opacity: '0',
+        },
+      },
+    },
+  },
+})
+
+export const collapseTitleStyles = cva({
+  base: {
+    gridColumnStart: '1',
+    gridRowStart: '1',
+    position: 'relative',
+    width: '100%',
+    padding: '1rem',
+    paddingInlineEnd: '3rem',
+    minHeight: '1lh',
+    fontWeight: '600',
+    transition: 'background-color 0.2s ease-out',
   },
 })

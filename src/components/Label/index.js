@@ -1,13 +1,14 @@
 import m from 'mithril'
-import { cx } from '../../../styled-system/css'
+import { labelStyles } from '../../recipes/label'
+import { cx } from '../../utils/cx'
 
 export const Label = {
   view(vnode) {
-    const { floating, className, children, ...rest } = vnode.attrs
+    const { floating, className, ...rest } = vnode.attrs
 
     return m(floating ? 'label' : 'span', {
-      className: cx(floating ? 'floating-label' : 'label', className),
+      className: cx(floating ? 'floating-label' : 'label', labelStyles({ floating: !!floating }), className),
       ...rest
-    }, children)
+    }, vnode.children)
   }
 }

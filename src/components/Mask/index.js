@@ -5,10 +5,10 @@ import { cx } from '../../utils/cx'
 
 export const Mask = {
   view(vnode) {
-    const { shape, className, ...rest } = vnode.attrs
+    const { shape, half, className, ...rest } = vnode.attrs
 
     return m('img', {
-      className: cx('mask', maskStyles({ shape }), className),
+      className: cx('mask', maskStyles({ shape, half }), className),
       ...rest
     })
   }

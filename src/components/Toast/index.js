@@ -1,17 +1,20 @@
 import m from 'mithril'
-import { cx } from '../../../styled-system/css'
+import { toastStyles } from '../../recipes/toast'
+import { cx } from '../../utils/cx'
+
+const VERTICALS = ['top', 'middle', 'bottom']
+const HORIZONTALS = ['start', 'center', 'end']
 
 export const Toast = {
   view(vnode) {
-    const { position, className, children, ...rest } = vnode.attrs
+    const { position, className, ...rest } = vnode.attrs
+    const tokens = (position || '').split(/\s+/)
+    const vertical = tokens.find((t) => VERTICALS.includes(t)) || 'bottom'
+    const horizontal = tokens.find((t) => HORIZONTALS.includes(t)) || 'end'
 
     return m('div', {
-      className: cx(
-        'toast',
-        position && `toast-${position}`,
-        className
-      ),
+      className: cx('toast', toastStyles({ vertical, horizontal }), className),
       ...rest
-    }, children)
+    }, vnode.children)
   }
 }

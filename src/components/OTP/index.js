@@ -11,6 +11,7 @@ export const OTP = {
       className: cx('otp', otpStyles({ size, color, joined }), className),
       ...rest
     }, [
+      ...Array.from({ length }, () => m('span')),
       m('input', {
         type: 'text',
         autocomplete: 'one-time-code',

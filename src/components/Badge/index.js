@@ -5,7 +5,7 @@ import { cx } from '../../utils/cx'
 
 export const Badge = {
   view(vnode) {
-    const { color, variant, size, className, children, ...rest } = vnode.attrs
+    const { color, variant, size, className, ...rest } = vnode.attrs
 
     return m('span', {
       className: cx(
@@ -14,6 +14,6 @@ export const Badge = {
         className
       ),
       ...rest
-    }, children)
+    }, vnode.children)
   }
 }

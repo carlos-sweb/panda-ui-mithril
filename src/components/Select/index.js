@@ -5,11 +5,11 @@ import { cx } from '../../utils/cx'
 
 export const Select = {
   view(vnode) {
-    const { color, size, ghost, className, children, ...rest } = vnode.attrs
+    const { color, size, ghost, className, ...rest } = vnode.attrs
 
     return m('select', {
       className: cx('select', selectStyles({ color, size, ghost }), className),
       ...rest
-    }, children)
+    }, vnode.children)
   }
 }

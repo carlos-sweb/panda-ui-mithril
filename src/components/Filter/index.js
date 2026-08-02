@@ -1,14 +1,27 @@
 import m from 'mithril'
-import { cx } from '../../../styled-system/css'
+import { filterStyles } from '../../recipes/filter'
+import { buttonStyles } from '../../recipes/button'
+import { cx } from '../../utils/cx'
 
 export const Filter = {
   view(vnode) {
-    const { className, children, ...rest } = vnode.attrs
+    const { className, ...rest } = vnode.attrs
 
     return m('div', {
-      className: cx('filter', className),
+      className: cx('filter', filterStyles(), className),
       ...rest
-    }, children)
+    }, vnode.children)
+  }
+}
+
+export const FilterOption = {
+  view(vnode) {
+    const { className, ...rest } = vnode.attrs
+    return m('input', {
+      type: 'radio',
+      className: cx('btn', buttonStyles(), className),
+      ...rest
+    })
   }
 }
 
@@ -17,8 +30,7 @@ export const FilterReset = {
     const { className, ...rest } = vnode.attrs
     return m('input', {
       type: 'radio',
-      className: cx('btn filter-reset', className),
-      name: 'filter',
+      className: cx('btn filter-reset', buttonStyles(), className),
       ...rest
     })
   }

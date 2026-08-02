@@ -1,53 +1,46 @@
 import m from 'mithril'
-import { cx } from '../../../styled-system/css'
+import { chatStyles, chatBubbleStyles } from '../../recipes/chatBubble'
+import { cx } from '../../utils/cx'
 
 export const Chat = {
   view(vnode) {
-    const { placement, className, children, ...rest } = vnode.attrs
+    const { placement, className, ...rest } = vnode.attrs
 
     return m('div', {
-      className: cx(
-        'chat',
-        placement && `chat-${placement}`,
-        className
-      ),
+      className: cx('chat', `chat-${placement || 'start'}`, chatStyles({ placement }), className),
       ...rest
-    }, children)
+    }, vnode.children)
   }
 }
 
 export const ChatImage = {
   view(vnode) {
-    const { className, children, ...rest } = vnode.attrs
-    return m('div', { className: cx('chat-image', className), ...rest }, children)
+    const { className, ...rest } = vnode.attrs
+    return m('div', { className: cx('chat-image', className), ...rest }, vnode.children)
   }
 }
 
 export const ChatHeader = {
   view(vnode) {
-    const { className, children, ...rest } = vnode.attrs
-    return m('div', { className: cx('chat-header', className), ...rest }, children)
+    const { className, ...rest } = vnode.attrs
+    return m('div', { className: cx('chat-header', className), ...rest }, vnode.children)
   }
 }
 
 export const ChatBubble = {
   view(vnode) {
-    const { color, className, children, ...rest } = vnode.attrs
+    const { color, className, ...rest } = vnode.attrs
 
     return m('div', {
-      className: cx(
-        'chat-bubble',
-        color && `chat-bubble-${color}`,
-        className
-      ),
+      className: cx('chat-bubble', chatBubbleStyles({ color }), className),
       ...rest
-    }, children)
+    }, vnode.children)
   }
 }
 
 export const ChatFooter = {
   view(vnode) {
-    const { className, children, ...rest } = vnode.attrs
-    return m('div', { className: cx('chat-footer', className), ...rest }, children)
+    const { className, ...rest } = vnode.attrs
+    return m('div', { className: cx('chat-footer', className), ...rest }, vnode.children)
   }
 }

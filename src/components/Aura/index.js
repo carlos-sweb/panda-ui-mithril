@@ -3,7 +3,7 @@ import { cx } from '../../../styled-system/css'
 
 export const Aura = {
   view(vnode) {
-    const { color = 'primary', size, pulse, className, children, ...rest } = vnode.attrs
+    const { color = 'primary', size, pulse, className, ...rest } = vnode.attrs
 
     return m('div', {
       className: cx('relative inline-flex', className),
@@ -40,7 +40,7 @@ export const Aura = {
         ),
         style: 'opacity: 0.3',
       }),
-      children && m('div', { className: 'absolute inset-0 flex items-center justify-center' }, children),
+      vnode.children.length > 0 && m('div', { className: 'absolute inset-0 flex items-center justify-center' }, vnode.children),
     ])
   }
 }

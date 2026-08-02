@@ -1,57 +1,66 @@
 import m from 'mithril'
-import { tableStyles } from '../../recipes/table'
+import { css } from '../../../styled-system/css'
+import { tableStyles, tableRowStyles } from '../../recipes/table'
 import { cx } from '../../utils/cx'
 
+const overflowAuto = css({ overflowX: 'auto' })
 
 export const TableContainer = {
   view(vnode) {
-    const { className, children, ...rest } = vnode.attrs
-    return m('div', { className: cx('overflow-x-auto', className), ...rest }, children)
+    const { className, ...rest } = vnode.attrs
+    return m('div', { className: cx(overflowAuto, className), ...rest }, vnode.children)
   }
 }
 
 export const Table = {
   view(vnode) {
-    const { size, zebra, pinRows, pinCols, className, children, ...rest } = vnode.attrs
+    const { size, zebra, pinRows, pinCols, className, ...rest } = vnode.attrs
 
     return m('table', {
       className: cx('table', tableStyles({ size, zebra, pinRows, pinCols }), className),
       ...rest
-    }, children)
+    }, vnode.children)
   }
 }
 
 export const TableThead = {
   view(vnode) {
-    const { className, children, ...rest } = vnode.attrs
-    return m('thead', { className, ...rest }, children)
+    const { className, ...rest } = vnode.attrs
+    return m('thead', { className, ...rest }, vnode.children)
   }
 }
 
 export const TableTbody = {
   view(vnode) {
-    const { className, children, ...rest } = vnode.attrs
-    return m('tbody', { className, ...rest }, children)
+    const { className, ...rest } = vnode.attrs
+    return m('tbody', { className, ...rest }, vnode.children)
+  }
+}
+
+export const TableTfoot = {
+  view(vnode) {
+    const { className, ...rest } = vnode.attrs
+    return m('tfoot', { className, ...rest }, vnode.children)
   }
 }
 
 export const TableRow = {
   view(vnode) {
-    const { className, children, ...rest } = vnode.attrs
-    return m('tr', { className, ...rest }, children)
+    const { hover, className, ...rest } = vnode.attrs
+    return m('tr', { className: cx(tableRowStyles({ hover }), className), ...rest }, vnode.children)
   }
 }
 
 export const TableCell = {
   view(vnode) {
-    const { className, children, ...rest } = vnode.attrs
-    return m('td', { className, ...rest }, children)
+    const { className, ...rest } = vnode.attrs
+    return m('td', { className, ...rest }, vnode.children)
   }
 }
 
 export const TableHead = {
   view(vnode) {
-    const { className, children, ...rest } = vnode.attrs
-    return m('th', { className, ...rest }, children)
+    const { className, ...rest } = vnode.attrs
+    return m('th', { className, ...rest }, vnode.children)
   }
 }

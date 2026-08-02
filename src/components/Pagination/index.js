@@ -1,26 +1,28 @@
 import m from 'mithril'
-import { paginationStyles } from '../../recipes/pagination'
+import { joinStyles } from '../../recipes/join'
+import { buttonStyles } from '../../recipes/button'
 import { cx } from '../../utils/cx'
 
 
 export const Pagination = {
   view(vnode) {
-    const { className, children, ...rest } = vnode.attrs
+    const { className, ...rest } = vnode.attrs
 
     return m('div', {
-      className: cx('join', paginationStyles(), className),
+      className: cx('join', joinStyles(), className),
       ...rest
-    }, children)
+    }, vnode.children)
   }
 }
 
 export const PaginationButton = {
   view(vnode) {
-    const { active, className, children, ...rest } = vnode.attrs
+    const { active, disabled, className, ...rest } = vnode.attrs
 
     return m('button', {
-      className: cx('btn join-item', active && 'btn-active', className),
+      className: cx('btn join-item', buttonStyles({ active }), className),
+      disabled,
       ...rest
-    }, children)
+    }, vnode.children)
   }
 }

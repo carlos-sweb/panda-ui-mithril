@@ -1,12 +1,13 @@
 import m from 'mithril'
-import { cx } from '../../../styled-system/css'
+import { skeletonStyles } from '../../recipes/skeleton'
+import { cx } from '../../utils/cx'
 
 export const Skeleton = {
   view(vnode) {
     const { text, className, ...rest } = vnode.attrs
 
     return m('div', {
-      className: cx('skeleton', text && 'skeleton-text', className),
+      className: cx('skeleton', text && 'skeleton-text', skeletonStyles({ text: !!text }), className),
       ...rest
     })
   }

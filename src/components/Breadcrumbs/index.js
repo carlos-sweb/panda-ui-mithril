@@ -1,12 +1,13 @@
 import m from 'mithril'
-import { cx } from '../../../styled-system/css'
+import { breadcrumbsStyles } from '../../recipes/breadcrumbs'
+import { cx } from '../../utils/cx'
 
 export const Breadcrumbs = {
   view(vnode) {
-    const { className, items, children, ...rest } = vnode.attrs
+    const { className, items, ...rest } = vnode.attrs
 
     return m('div', {
-      className: cx('breadcrumbs', className),
+      className: cx('breadcrumbs', breadcrumbsStyles(), className),
       ...rest
     }, m('ul', null, items
       ? items.map((item, i) =>
@@ -15,7 +16,7 @@ export const Breadcrumbs = {
             : m('span', null, item.label)
           )
         )
-      : children
+      : vnode.children
     ))
   }
 }

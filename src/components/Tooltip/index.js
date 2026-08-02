@@ -1,20 +1,20 @@
 import m from 'mithril'
-import { cx } from '../../../styled-system/css'
+import { tooltipStyles } from '../../recipes/tooltip'
+import { cx } from '../../utils/cx'
 
 export const Tooltip = {
   view(vnode) {
-    const { tip, position, color, open, className, children, ...rest } = vnode.attrs
+    const { tip, position, color, open, className, ...rest } = vnode.attrs
 
     return m('div', {
       className: cx(
         'tooltip',
-        position && `tooltip-${position}`,
-        color && `tooltip-${color}`,
+        tooltipStyles({ position, color }),
         open && 'tooltip-open',
         className
       ),
       'data-tip': tip,
       ...rest
-    }, children)
+    }, vnode.children)
   }
 }
