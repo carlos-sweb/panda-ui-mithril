@@ -8,6 +8,8 @@ export const navbarStyles = cva({
     alignItems: 'center',
     padding: '0.5rem',
     minHeight: '4rem',
+    backgroundColor: 'var(--colors-base-100)',
+    color: 'var(--colors-base-content)',
   },
 })
 
