@@ -6,6 +6,7 @@ export interface AccordionAttrs extends ComponentAttrs {
   name?: string
   arrow?: boolean
   plus?: boolean
+  border?: boolean
   checked?: boolean
   defaultChecked?: boolean
   onchange?: (e: Event) => void

@@ -93,6 +93,16 @@ export const collapseStyles = cva({
         },
       },
     },
+    // Real daisyUI has no .collapse-border modifier class — the border in
+    // its docs examples comes from plain `bg-base-100 border border-base-300`
+    // utility classes on the markup. This project has no Tailwind, so this
+    // variant reproduces the same look via the recipe instead.
+    border: {
+      true: {
+        backgroundColor: 'var(--colors-base-100)',
+        border: 'var(--border, 1px) solid var(--colors-base-300)',
+      },
+    },
   },
 })
 

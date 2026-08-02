@@ -8,9 +8,8 @@ const stack = css({ display: 'flex', flexDirection: 'column', gap: '1.5rem' })
 const sectionTitle = css({ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem', marginTop: '2rem' })
 const heading = css({ fontSize: '0.875rem', fontWeight: '600', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em', opacity: 0.5 })
 const section = css({ marginBottom: '2rem' })
-const surface = css({ background: 'base-100', border: '1px solid', borderColor: 'base-300' })
 
-const usageCode = `<Collapse plus>
+const usageCode = `<Collapse plus border>
   <CollapseTitle>How do I create an account?</CollapseTitle>
   <CollapseContent>
     Click the "Sign Up" button in the top right corner and follow the registration process.
@@ -24,6 +23,7 @@ const classRows = [
   { className: 'collapse-arrow', prop: 'arrow', type: 'Modifier', description: 'Adds arrow icon' },
   { className: 'collapse-plus', prop: 'plus', type: 'Modifier', description: 'Adds plus/minus icon' },
   { className: 'collapse-open', prop: 'checked', type: 'Modifier', description: 'Force open (controlled)' },
+  { className: '—', prop: 'border', type: 'Modifier', description: 'base-100 background + base-300 border (real daisyUI applies this via plain utility classes, not a component class)' },
 ]
 
 export default {
@@ -43,7 +43,7 @@ export default {
 
         <section className={section}>
           <h3 className={heading}>Arrow</h3>
-          <Collapse arrow className={surface}>
+          <Collapse arrow border>
             <CollapseTitle>How do I create an account?</CollapseTitle>
             <CollapseContent>
               Click the "Sign Up" button in the top right corner and follow the registration process.
@@ -53,7 +53,7 @@ export default {
 
         <section className={section}>
           <h3 className={heading}>Plus / minus</h3>
-          <Collapse plus className={surface}>
+          <Collapse plus border>
             <CollapseTitle>Can I cancel my subscription?</CollapseTitle>
             <CollapseContent>
               Yes, you can cancel anytime from your account settings — no questions asked.
