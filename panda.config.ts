@@ -140,6 +140,17 @@ export default defineConfig({
           '0%': { scale: '0.9', opacity: '0' },
           '100%': { scale: '1', opacity: '1' },
         },
+        aura: {
+          to: { '--aura-angle': '360deg', transform: 'translateZ(1px)' },
+        },
+        'aura-glow': {
+          '20%, 80%': { opacity: '0.7', filter: 'blur(0.25rem)' },
+          '50%': { opacity: '1', filter: 'blur(0.75rem)' },
+        },
+        'aura-glow-after': {
+          '20%, 80%': { opacity: '0.3', filter: 'blur(1rem)' },
+          '50%': { opacity: '0.6', filter: 'blur(1.5rem)' },
+        },
       },
     },
   },
@@ -157,6 +168,15 @@ export default defineConfig({
       '--depth': '1',
       '--noise': '0',
       '--fx-noise': 'none',
-    }
+    },
+  },
+  // lets the browser smoothly animate the conic-gradient angle instead of
+  // snapping to it every keyframe (plain custom properties can't tween)
+  globalVars: {
+    '--aura-angle': {
+      syntax: '<angle>',
+      inherits: false,
+      initialValue: '0deg',
+    },
   },
 })

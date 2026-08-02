@@ -188,33 +188,21 @@ const Layout = {
             onSearchOpen={() => { vnode.state.isSearchOpen = true }}
             onToggleSidebar={() => { vnode.state.isMobileOpen = !vnode.state.isMobileOpen }}
             isDark={vnode.state.isDark}
-            onToggleTheme={() => {
-              vnode.state.isDark = !vnode.state.isDark
-              const theme = vnode.state.isDark ? 'dark' : 'light'
-              document.documentElement.setAttribute('data-theme', theme)
-              setSavedTheme(theme)
+            onToggleTheme={(theme) => {
+              const next = theme || 'light'
+              vnode.state.isDark = next === 'dark'
+              document.documentElement.setAttribute('data-theme', next)
+              setSavedTheme(next)
             }}
           />
 
           <main id="view-dynamic" />
         </div>
 
-        {vnode.state.isSearchOpen && (
-          <SearchModal onclose={() => { vnode.state.isSearchOpen = false }} />
-        )}
-
-        {vnode.state.isMobileOpen && (
-          <div
-            className={css({
-              position: 'fixed',
-              inset: 0,
-              background: 'oklch(0% 0 0 / 50%)',
-              zIndex: 80,
-              '@media (min-width: 769px)': { display: 'none' },
-            })}
-            onclick={() => { vnode.state.isMobileOpen = false }}
-          />
-        )}
+        <SearchModal
+          open={vnode.state.isSearchOpen}
+          onclose={() => { vnode.state.isSearchOpen = false }}
+        />
       </div>
     )
   }

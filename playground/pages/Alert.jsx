@@ -2,11 +2,41 @@ import m from 'mithril'
 import { css } from '../../styled-system/css'
 import { Alert } from '../../src/index.js'
 import { Info, CheckCircle, AlertTriangle, AlertCircle, X, ChevronRight } from 'lucide-mithril'
+import { CodeExample } from '../components/CodeExample.jsx'
+import { ClassTable } from '../components/ClassTable.jsx'
 
 const stack = css({ display: 'flex', flexDirection: 'column', gap: '1.5rem' })
 const sectionStack = css({ display: 'flex', flexDirection: 'column', gap: '0.75rem' })
 const sectionTitle = css({ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem' })
 const sectionDesc = css({ opacity: 0.6, marginBottom: '1rem', maxWidth: '600px' })
+
+const usageCode = `<Alert color="info">
+  <Info />
+  <span>12 unread messages. Tap to see.</span>
+</Alert>
+
+<Alert variant="soft" color="success">
+  <CheckCircle />
+  <span>Your purchase has been confirmed!</span>
+</Alert>
+
+<Alert direction="vertical" color="warning">
+  <AlertTriangle />
+  <span>Warning: Invalid email address!</span>
+</Alert>`
+
+const classRows = [
+  { className: 'alert', prop: '<Alert>', type: 'Component', description: 'Container for displaying an important message' },
+  { className: 'alert-info', prop: 'color="info"', type: 'Color', description: 'Info alert color' },
+  { className: 'alert-success', prop: 'color="success"', type: 'Color', description: 'Success alert color' },
+  { className: 'alert-warning', prop: 'color="warning"', type: 'Color', description: 'Warning alert color' },
+  { className: 'alert-error', prop: 'color="error"', type: 'Color', description: 'Error alert color' },
+  { className: 'alert-outline', prop: 'variant="outline"', type: 'Style', description: 'Transparent background with a colored border' },
+  { className: 'alert-dash', prop: 'variant="dash"', type: 'Style', description: 'Transparent background with a dashed border' },
+  { className: 'alert-soft', prop: 'variant="soft"', type: 'Style', description: 'Soft background tint with no border' },
+  { className: 'alert-horizontal', prop: 'direction="horizontal" (default)', type: 'Direction', description: 'Lays out content in a row', isDefault: true },
+  { className: 'alert-vertical', prop: 'direction="vertical"', type: 'Direction', description: 'Stacks content in a column — useful on mobile' },
+]
 
 export default {
   name: 'Alert',
@@ -219,6 +249,16 @@ export default {
             <Alert color="warning">Warning alert without icon</Alert>
             <Alert color="error">Error alert without icon</Alert>
           </div>
+        </section>
+
+        <section>
+          <h2 className={sectionTitle}>Usage</h2>
+          <CodeExample code={usageCode} />
+        </section>
+
+        <section>
+          <h2 className={sectionTitle}>Class Reference</h2>
+          <ClassTable rows={classRows} />
         </section>
       </div>
     )

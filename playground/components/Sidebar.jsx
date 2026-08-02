@@ -1,7 +1,8 @@
 import m from 'mithril'
 import { css } from '../../styled-system/css'
 import { MousePointerClick, AppWindow, Link, MessageCircleMore, PenLine, PanelsTopLeft, X } from 'lucide-mithril'
-import { SidebarItem } from './SidebarItem.jsx'
+import { Menu, MenuItem, MenuTitle, Button } from '../../src/index.js'
+import { DrawerSide } from './Drawer.jsx'
 
 const categories = [
   {
@@ -36,19 +37,12 @@ const categories = [
   },
 ]
 
-const categoryHeader = css({
+const menu = css({ width: '100%', padding: '0'})
+
+const categoryTitle = css({
   display: 'flex',
   alignItems: 'center',
-  padding: '0.5rem 0.75rem',
-  fontSize: '0.75rem',
-  fontWeight: '600',
-  textTransform: 'uppercase',
-  letterSpacing: '0.05em',
-  opacity: 0.5,
-  cursor: 'pointer',
-  borderRadius: '0.375rem',
-  transition: 'background 0.15s',
-  _hover: { background: 'base-300' },
+  gap: '0.375rem',
 })
 
 const sidebarBase = css({
@@ -71,38 +65,6 @@ const sidebarDesktop = css({
   },
 })
 
-const sidebarMobile = css({
-  position: 'fixed',
-  top: 0,
-  left: 0,
-  bottom: 0,
-  zIndex: 90,
-  transform: 'translateX(-100%)',
-  transition: 'transform 0.25s ease-in-out',
-  '@media (min-width: 769px)': {
-    display: 'none',
-  },
-})
-
-const sidebarMobileOpen = css({
-  transform: 'translateX(0)',
-})
-
-const closeBtn = css({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  width: '2rem',
-  height: '2rem',
-  borderRadius: '0.375rem',
-  border: 'none',
-  background: 'transparent',
-  cursor: 'pointer',
-  color: 'base-content',
-  transition: 'background 0.15s',
-  _hover: { background: 'base-300' },
-})
-
 // `m.route.get()` only reflects reality once the router (mounted separately,
 // in a different root, inside Layout's oncreate) has resolved — on a hard
 // reload the very first Layout/Sidebar render happens before that, so it
@@ -113,6 +75,14 @@ function getCurrentPath() {
   return location.hash.replace(/^#!/, '') || '/'
 }
 
+function navigate(route, onclose) {
+  return (e) => {
+    e.preventDefault()
+    m.route.set(route)
+    onclose && onclose()
+  }
+}
+
 const SidebarContent = {
   view(vnode) {
     const { onclose } = vnode.attrs
@@ -121,36 +91,36 @@ const SidebarContent = {
     return (
       <div className={css({ flex: '1', overflowY: 'auto', padding: '0.75rem' })}>
         <div className={css({ display: 'flex', justifyContent: 'flex-end', marginBottom: '0.5rem', '@media (min-width: 769px)': { display: 'none' } })}>
-          <button className={closeBtn} onclick={onclose}>
+          <Button variant="ghost" square size="sm" onclick={onclose}>
             <X size={18} />
-          </button>
+          </Button>
         </div>
 
-        <SidebarItem label="Home" route="/" active={current === '/'} onclick={onclose} />
+        <Menu className={menu} style={{ width: '100%' }}>
+          <MenuItem href="#/" active={current === '/'} onclick={navigate('/', onclose)}>Home</MenuItem>
 
-        {categories.map((cat) => (
-          <div key={cat.title} className={css({ marginTop: '0.5rem' })}>
-            <div className={categoryHeader}>
-              <cat.icon size={14} className={css({ marginRight: '0.375rem' })} />
-              <span>{cat.title}</span>
-              <span className={css({ fontSize: '0.625rem', opacity: 0.4 })}>{cat.items.length}</span>
-            </div>
-            <div className={css({ display: 'flex', flexDirection: 'column', gap: '1px' })}>
-              {cat.items.map((key) => {
-                const label = key.charAt(0).toUpperCase() + key.slice(1)
-                return (
-                  <SidebarItem
-                    key={key}
-                    label={label}
-                    route={`/${key}`}
-                    active={current === `/${key}`}
-                    onclick={onclose}
-                  />
-                )
-              })}
-            </div>
-          </div>
-        ))}
+          {categories.map((cat) => [
+            <MenuTitle key={`${cat.title}-title`}>
+              <span className={categoryTitle}>
+                <cat.icon size={14} />
+                {cat.title}
+              </span>
+            </MenuTitle>,
+            ...cat.items.map((key) => {
+              const label = key.charAt(0).toUpperCase() + key.slice(1)
+              return (
+                <MenuItem
+                  key={key}
+                  href={`#/${key}`}
+                  active={current === `/${key}`}
+                  onclick={navigate(`/${key}`, onclose)}                  
+                >
+                  {label}
+                </MenuItem>
+              )
+            }),
+          ])}
+        </Menu>
       </div>
     )
   }
@@ -166,9 +136,9 @@ export const Sidebar = {
           <SidebarContent onclose={() => {}} />
         </aside>
 
-        <aside className={`${sidebarBase} ${sidebarMobile} ${isMobileOpen ? sidebarMobileOpen : ''}`}>
+        <DrawerSide open={isMobileOpen} onclose={onMobileClose} className={sidebarBase}>
           <SidebarContent onclose={onMobileClose} />
-        </aside>
+        </DrawerSide>
       </>
     )
   }

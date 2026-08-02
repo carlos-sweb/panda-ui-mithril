@@ -1,6 +1,7 @@
 import m from 'mithril'
 import { css } from '../../styled-system/css'
 import { Search, ArrowRight, X } from 'lucide-mithril'
+import { Modal, ModalBox, ModalBackdrop, Button } from '../../src/index.js'
 
 const allComponents = [
   { name: 'button', category: 'Actions', route: '/button' },
@@ -62,24 +63,11 @@ const allComponents = [
   { name: 'diff', category: 'Layout', route: '/diff' },
 ]
 
-const overlay = css({
-  position: 'fixed',
-  inset: 0,
-  background: 'oklch(0% 0 0 / 50%)',
-  display: 'flex',
-  alignItems: 'flex-start',
-  justifyContent: 'center',
-  paddingTop: '15vh',
-  zIndex: 100,
-})
-
-const modal = css({
-  background: 'base-100',
-  borderRadius: '1rem',
-  boxShadow: '0 25px 50px -12px oklch(0% 0 0 / 25%)',
+const modalBox = css({
   width: '100%',
   maxWidth: '560px',
   maxHeight: '70vh',
+  padding: '0',
   display: 'flex',
   flexDirection: 'column',
   overflow: 'hidden',
@@ -143,10 +131,22 @@ export const SearchModal = {
   oninit(vnode) {
     vnode.state.query = ''
     vnode.state.selectedIndex = 0
+    vnode.state.wasOpen = vnode.attrs.open
+  },
+
+  onbeforeupdate(vnode) {
+    // Reset search state whenever the modal transitions from closed -> open,
+    // since it now stays mounted permanently (driven by `open`) instead of
+    // being created fresh each time it's shown.
+    if (vnode.attrs.open && !vnode.state.wasOpen) {
+      vnode.state.query = ''
+      vnode.state.selectedIndex = 0
+    }
+    vnode.state.wasOpen = vnode.attrs.open
   },
 
   view(vnode) {
-    const { onclose } = vnode.attrs
+    const { open, onclose } = vnode.attrs
     const query = vnode.state.query.toLowerCase()
     const filtered = query
       ? allComponents.filter(c => c.name.includes(query) || c.category.toLowerCase().includes(query))
@@ -159,8 +159,8 @@ export const SearchModal = {
     })
 
     return (
-      <div className={overlay} onclick={(e) => { if (e.target === e.currentTarget) onclose() }}>
-        <div className={modal}>
+      <Modal open={open} onclose={onclose}>
+        <ModalBox className={modalBox}>
           <div className={searchInput}>
             <Search size={20} className={css({ opacity: 0.5 })} />
             <input
@@ -168,9 +168,9 @@ export const SearchModal = {
               type="text"
               placeholder="Search components..."
               autofocus
+              value={vnode.state.query}
               oninput={(e) => { vnode.state.query = e.target.value; vnode.state.selectedIndex = 0 }}
               onkeydown={(e) => {
-                if (e.key === 'Escape') onclose()
                 if (e.key === 'ArrowDown') {
                   e.preventDefault()
                   vnode.state.selectedIndex = Math.min(vnode.state.selectedIndex + 1, filtered.length - 1)
@@ -185,24 +185,9 @@ export const SearchModal = {
                 }
               }}
             />
-            <button
-              className={css({
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: '1.75rem',
-                height: '1.75rem',
-                borderRadius: '0.375rem',
-                border: 'none',
-                background: 'base-200',
-                cursor: 'pointer',
-                color: 'base-content',
-                _hover: { background: 'base-300' },
-              })}
-              onclick={onclose}
-            >
+            <Button variant="ghost" square size="sm" onclick={onclose}>
               <X size={14} />
-            </button>
+            </Button>
           </div>
 
           <div className={resultsList}>
@@ -242,8 +227,9 @@ export const SearchModal = {
             <span>↵ Open</span>
             <span>esc Close</span>
           </div>
-        </div>
-      </div>
+        </ModalBox>
+        <ModalBackdrop onclick={onclose} />
+      </Modal>
     )
   }
 }

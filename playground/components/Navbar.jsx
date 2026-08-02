@@ -1,22 +1,31 @@
 import m from 'mithril'
 import { css } from '../../styled-system/css'
-import { Search, ExternalLink, Moon, Sun, Menu } from 'lucide-mithril'
+import { Search, ExternalLink, Menu as MenuIcon } from 'lucide-mithril'
+import { Navbar as NavbarBase, NavbarStart, NavbarCenter, NavbarEnd, Button, Kbd, ThemeController } from '../../src/index.js'
 
-const navLink = css({
-  display: 'flex',
-  alignItems: 'center',
-  gap: '0.375rem',
-  padding: '0.5rem 0.75rem',
-  borderRadius: '0.5rem',
-  fontSize: '0.875rem',
+const navbarFixed = css({
+  position: 'fixed',
+  top: 0,
+  left: 0,
+  right: 0,
+  height: '64px',
+  minHeight: '64px',
+  background: 'base-200',
+  borderBottom: '1px solid',
+  borderColor: 'base-300',
+  padding: '0 1rem',
+  zIndex: 50,
+})
+
+const brand = css({
+  fontSize: '1.25rem',
+  fontWeight: '700',
   textDecoration: 'none',
   color: 'base-content',
-  transition: 'background 0.15s',
-  _hover: { background: 'base-300' },
 })
 
 const searchBtn = css({
-  display: 'flex',
+  display: { base: 'none', md: 'flex' },
   alignItems: 'center',
   gap: '0.5rem',
   padding: '0.5rem 1rem',
@@ -29,21 +38,16 @@ const searchBtn = css({
   opacity: 0.7,
   cursor: 'pointer',
   transition: 'all 0.15s',
-  minWidth: '280px',
+  width: '100%',
+  maxWidth: '400px',
   _hover: { opacity: 1, borderColor: 'base-content/20%' },
 })
 
-const kbd = css({
-  display: 'inline-flex',
+const themeLabel = css({
+  display: 'flex',
   alignItems: 'center',
-  padding: '0.125rem 0.375rem',
-  borderRadius: '0.25rem',
-  fontSize: '0.6875rem',
-  fontFamily: 'monospace',
-  background: 'base-200',
-  border: '1px solid',
-  borderColor: 'base-300',
-  marginLeft: 'auto',
+  gap: '0.375rem',
+  padding: '0 0.375rem',
 })
 
 export const Navbar = {
@@ -51,107 +55,58 @@ export const Navbar = {
     const { onSearchOpen, onToggleSidebar, isDark, onToggleTheme } = vnode.attrs
 
     return (
-      <header
-        className={css({
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          height: '64px',
-          background: 'base-200',
-          borderBottom: '1px solid',
-          borderColor: 'base-300',
-          display: 'flex',
-          alignItems: 'center',
-          padding: '0 1.5rem',
-          zIndex: 50,
-        })}
-      >
-        <div className={css({ display: 'flex', alignItems: 'center', gap: '1rem' })}>
-          <button
-            className={css({
-              display: { base: 'flex', md: 'none' },
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: '2rem',
-              height: '2rem',
-              borderRadius: '0.375rem',
-              border: 'none',
-              background: 'transparent',
-              cursor: 'pointer',
-              color: 'base-content',
-              transition: 'background 0.15s',
-              _hover: { background: 'base-300' },
-            })}
+      <NavbarBase className={navbarFixed} style={{ display: 'grid', gridTemplateColumns: 'auto 1fr auto', alignItems: 'center' }}>
+        <NavbarStart className={css({ gap: '0.5rem' })} style={{ width: 'auto' }}>
+          <Button
+            variant="ghost"
+            square
+            className={css({ display: { base: 'inline-flex', md: 'none' } })}
             onclick={onToggleSidebar}
           >
-            <Menu size={20} />
-          </button>
+            <MenuIcon size={20} />
+          </Button>
 
           <a
             href="#/"
             onclick={(e) => { e.preventDefault(); m.route.set('/') }}
-            className={css({
-              fontSize: '1.25rem',
-              fontWeight: '700',
-              textDecoration: 'none',
-              color: 'base-content',
-            })}
+            className={brand}
           >
             <span className={css({ display: { base: 'none', md: 'inline' } })}>panda-ui-mithril</span>
             <span className={css({ display: { base: 'inline', md: 'none' } })}>PUM</span>
           </a>
-        </div>
+        </NavbarStart>
 
-        <div className={css({ flex: 1, display: 'flex', justifyContent: 'center', padding: '0 2rem' })}>
+        <NavbarCenter className={css({ display: 'flex', justifyContent: 'center' })} style={{ width: 'auto' }}>
+          <Button
+            variant="ghost"
+            square
+            className={css({ display: { base: 'inline-flex', md: 'none' } })}
+            onclick={onSearchOpen}
+          >
+            <Search size={18} />
+          </Button>
+
           <button className={searchBtn} onclick={onSearchOpen}>
             <Search size={16} className={css({ opacity: 0.5 })} />
             <span>Search components...</span>
-            <span className={kbd}>⌘K</span>
+            <Kbd size="sm" className={css({ marginLeft: 'auto' })}>⌘K</Kbd>
           </button>
-        </div>
+        </NavbarCenter>
 
-        <div className={css({ display: 'flex', alignItems: 'center', gap: '0.5rem' })}>
-          <a
-            href="https://www.npmjs.com/package/panda-ui-mithril"
-            target="_blank"
-            className={navLink}
-          >
-            <span>npm</span>
-            <ExternalLink size={14} className={css({ opacity: 0.5 })} />
-          </a>
+        <NavbarEnd className={css({ gap: '0.25rem' })} style={{ width: 'auto' }}>
+          <Button variant="ghost" size="sm" href="https://www.npmjs.com/package/panda-ui-mithril" target="_blank" className={css({ display: { base: 'none', md: 'inline-flex' } })}>
+            npm <ExternalLink size={14} className={css({ opacity: 0.5 })} />
+          </Button>
 
-          <a
-            href="https://github.com/carlos-sweb/panda-ui-mithril"
-            target="_blank"
-            className={navLink}
-          >
-            <span>GitHub</span>
-            <ExternalLink size={14} className={css({ opacity: 0.5 })} />
-          </a>
+          <Button variant="ghost" size="sm" href="https://github.com/carlos-sweb/panda-ui-mithril" target="_blank" className={css({ display: { base: 'none', md: 'inline-flex' } })}>
+            GitHub <ExternalLink size={14} className={css({ opacity: 0.5 })} />
+          </Button>
 
-          <button
-            className={css({
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: '2.25rem',
-              height: '2.25rem',
-              borderRadius: '0.5rem',
-              border: 'none',
-              background: 'transparent',
-              cursor: 'pointer',
-              color: 'base-content',
-              transition: 'background 0.15s',
-              _hover: { background: 'base-300' },
-            })}
-            onclick={onToggleTheme}
-            title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
-          >
-            {isDark ? <Sun size={18} /> : <Moon size={18} />}
-          </button>
-        </div>
-      </header>
+          <label className={themeLabel} title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}>
+            <ThemeController theme="dark" checked={isDark} onchange={onToggleTheme} />
+          </label>
+        </NavbarEnd>
+      </NavbarBase>
     )
   }
 }
