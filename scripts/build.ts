@@ -8,7 +8,7 @@
  * 3. Run Bun build (bundles everything)
  */
 
-import { existsSync, rmSync, mkdirSync } from 'fs'
+import { existsSync, rmSync, mkdirSync, copyFileSync } from 'fs'
 import { resolve } from 'path'
 import { execSync } from 'child_process'
 
@@ -55,6 +55,9 @@ if (!result.success) {
   }
   process.exit(1)
 }
+
+// Publish llms.txt (https://llmstxt.org/) at the site root alongside the demo
+copyFileSync(resolve(ROOT, 'llms.txt'), resolve(OUTDIR, 'llms.txt'))
 
 console.log(`Build succeeded. Output in ${OUTDIR}`)
 
