@@ -1,8 +1,23 @@
 import m from 'mithril'
 import { css } from '../../styled-system/css'
 import { Skeleton } from '../../src/index.js'
+import { CodeExample } from '../components/CodeExample.jsx'
+import { ClassTable } from '../components/ClassTable.jsx'
 
 const stack = css({ display: 'flex', flexDirection: 'column', gap: '1.5rem' })
+const sectionTitle = css({ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem' })
+const box = css({ width: '250px' })
+const line1 = css({ height: '8rem', width: '100%' })
+const line2 = css({ height: '1rem', width: '100%', marginTop: '1rem' })
+const line3 = css({ height: '1rem', width: '75%', marginTop: '0.5rem' })
+
+const usageCode = `<Skeleton style="height: 8rem; width: 100%" />
+<Skeleton style="height: 1rem; width: 100%" />`
+
+const classRows = [
+  { className: 'skeleton', prop: '<Skeleton>', type: 'Component', description: 'A placeholder div with loading animation' },
+  { className: 'skeleton-text', prop: 'text', type: 'Modifier', description: 'Animates the text color instead of background color' },
+]
 
 export default {
   name: 'Skeleton',
@@ -17,11 +32,21 @@ export default {
           Skeleton component for loading placeholder content.
         </p>
 
-        <div style="width: 250px;">
-          <Skeleton className="h-32 w-full" />
-          <Skeleton className="h-4 w-full mt-4" />
-          <Skeleton className="h-4 w-3/4 mt-2" />
+        <div className={box}>
+          <Skeleton className={line1} />
+          <Skeleton className={line2} />
+          <Skeleton className={line3} />
         </div>
+
+        <section>
+          <h2 className={sectionTitle}>Usage</h2>
+          <CodeExample code={usageCode} />
+        </section>
+
+        <section>
+          <h2 className={sectionTitle}>Class Reference</h2>
+          <ClassTable rows={classRows} />
+        </section>
       </div>
     )
   }

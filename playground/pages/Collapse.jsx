@@ -1,7 +1,30 @@
 import m from 'mithril'
 import { css } from '../../styled-system/css'
+import { Collapse, CollapseTitle, CollapseContent } from '../../src/index.js'
+import { CodeExample } from '../components/CodeExample.jsx'
+import { ClassTable } from '../components/ClassTable.jsx'
 
 const stack = css({ display: 'flex', flexDirection: 'column', gap: '1.5rem' })
+const sectionTitle = css({ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem', marginTop: '2rem' })
+const heading = css({ fontSize: '0.875rem', fontWeight: '600', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em', opacity: 0.5 })
+const section = css({ marginBottom: '2rem' })
+const surface = css({ background: 'base-100', border: '1px solid', borderColor: 'base-300' })
+
+const usageCode = `<Collapse plus>
+  <CollapseTitle>How do I create an account?</CollapseTitle>
+  <CollapseContent>
+    Click the "Sign Up" button in the top right corner and follow the registration process.
+  </CollapseContent>
+</Collapse>`
+
+const classRows = [
+  { className: 'collapse', prop: '<Collapse>', type: 'Component', description: 'Collapse container — click the title to toggle' },
+  { className: 'collapse-title', prop: '<CollapseTitle>', type: 'Part', description: 'Title part' },
+  { className: 'collapse-content', prop: '<CollapseContent>', type: 'Part', description: 'Content part' },
+  { className: 'collapse-arrow', prop: 'arrow', type: 'Modifier', description: 'Adds arrow icon' },
+  { className: 'collapse-plus', prop: 'plus', type: 'Modifier', description: 'Adds plus/minus icon' },
+  { className: 'collapse-open', prop: 'checked', type: 'Modifier', description: 'Force open (controlled)' },
+]
 
 export default {
   name: 'Collapse',
@@ -13,12 +36,40 @@ export default {
       <div className={stack}>
         <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>Collapse</h1>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
-          Collapse component for toggling visibility of content sections.
+          Collapse component for toggling visibility of content sections. Click the title to
+          toggle — driven by a hidden native checkbox, no JS required for the basic case (see{' '}
+          <a href="#!/accordion">Accordion</a> for grouped, only-one-open behavior).
         </p>
 
-        <div className={css({ padding: '2rem', background: 'base-200', borderRadius: '0.5rem', textAlign: 'center' })}>
-          <p>Collapse component coming soon.</p>
-        </div>
+        <section className={section}>
+          <h3 className={heading}>Arrow</h3>
+          <Collapse arrow className={surface}>
+            <CollapseTitle>How do I create an account?</CollapseTitle>
+            <CollapseContent>
+              Click the "Sign Up" button in the top right corner and follow the registration process.
+            </CollapseContent>
+          </Collapse>
+        </section>
+
+        <section className={section}>
+          <h3 className={heading}>Plus / minus</h3>
+          <Collapse plus className={surface}>
+            <CollapseTitle>Can I cancel my subscription?</CollapseTitle>
+            <CollapseContent>
+              Yes, you can cancel anytime from your account settings — no questions asked.
+            </CollapseContent>
+          </Collapse>
+        </section>
+
+        <section>
+          <h2 className={sectionTitle}>Usage</h2>
+          <CodeExample code={usageCode} />
+        </section>
+
+        <section>
+          <h2 className={sectionTitle}>Class Reference</h2>
+          <ClassTable rows={classRows} />
+        </section>
       </div>
     )
   }

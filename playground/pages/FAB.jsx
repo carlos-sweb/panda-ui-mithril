@@ -1,8 +1,26 @@
 import m from 'mithril'
 import { css } from '../../styled-system/css'
-import { Button, FAB, FABMain, FABAction } from '../../src/index.js'
+import { FAB, FABMain, FABAction } from '../../src/index.js'
+import { Plus, Pencil, Trash2, Share2 } from 'lucide-mithril'
+import { CodeExample } from '../components/CodeExample.jsx'
+import { ClassTable } from '../components/ClassTable.jsx'
 
-const row = css({ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', alignItems: 'center' })
+const stack = css({ display: 'flex', flexDirection: 'column', gap: '1.5rem' })
+const sectionTitle = css({ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem', marginTop: '2rem' })
+
+const usageCode = `<FAB>
+  <FABMain><Plus size={22} /></FABMain>
+  <FABAction label="Edit"><Pencil size={18} /></FABAction>
+  <FABAction label="Share"><Share2 size={18} /></FABAction>
+  <FABAction label="Delete"><Trash2 size={18} /></FABAction>
+</FAB>`
+
+const classRows = [
+  { className: 'fab', prop: '<FAB>', type: 'Component', description: 'Container, fixed to the bottom-right corner of the viewport' },
+  { className: '(trigger)', prop: '<FABMain>', type: 'Part', description: 'Focusable/clickable trigger — clicking or focusing it reveals the actions' },
+  { className: '(action)', prop: '<FABAction label="...">', type: 'Part', description: 'An action button revealed when the FAB is open' },
+  { className: 'fab-flower', type: 'Modifier', description: 'Opens actions in a quarter-circle arrangement instead of vertically — not supported by this component' },
+]
 
 export default {
   name: 'FAB',
@@ -11,19 +29,31 @@ export default {
 
   view() {
     return (
-      <div>
+      <div className={stack}>
         <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>FAB</h1>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
-          Floating Action Button represents the primary action of a screen. It appears in front of all screen content.
+          Floating Action Button represents the primary action of a screen. It's fixed to the
+          bottom-right corner of the viewport — click or focus the trigger (bottom-right corner of
+          this page) to reveal the actions. Uses pure CSS (<code>:focus-within</code>), no
+          JavaScript required.
         </p>
 
-        <div className={`${row} ${css({ height: '300px', position: 'relative' })}`}>
-          <FAB>
-            <FABMain><Button color="primary" circle size="lg">+</Button></FABMain>
-            <FABAction label="Add"><Button circle size="lg">A</Button></FABAction>
-            <FABAction label="Edit"><Button circle size="lg">B</Button></FABAction>
-          </FAB>
-        </div>
+        <FAB>
+          <FABMain><Plus size={22} /></FABMain>
+          <FABAction label="Edit"><Pencil size={18} /></FABAction>
+          <FABAction label="Share"><Share2 size={18} /></FABAction>
+          <FABAction label="Delete"><Trash2 size={18} /></FABAction>
+        </FAB>
+
+        <section>
+          <h2 className={sectionTitle}>Usage</h2>
+          <CodeExample code={usageCode} />
+        </section>
+
+        <section>
+          <h2 className={sectionTitle}>Class Reference</h2>
+          <ClassTable rows={classRows} />
+        </section>
       </div>
     )
   }

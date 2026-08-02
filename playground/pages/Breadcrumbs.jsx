@@ -1,8 +1,23 @@
 import m from 'mithril'
 import { css } from '../../styled-system/css'
 import { Breadcrumbs } from '../../src/index.js'
+import { CodeExample } from '../components/CodeExample.jsx'
+import { ClassTable } from '../components/ClassTable.jsx'
 
 const stack = css({ display: 'flex', flexDirection: 'column', gap: '1.5rem' })
+const sectionTitle = css({ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem' })
+
+const usageCode = `<Breadcrumbs
+  items={[
+    { label: 'Home', href: '#' },
+    { label: 'Docs', href: '#' },
+    { label: 'Components' },
+  ]}
+/>`
+
+const classRows = [
+  { className: 'breadcrumbs', prop: '<Breadcrumbs items={...}>', type: 'Component', description: 'Wrapper around a <ul>' },
+]
 
 export default {
   name: 'Breadcrumbs',
@@ -24,6 +39,22 @@ export default {
             { label: 'Components' },
           ]}
         />
+
+        <Breadcrumbs>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Docs</a></li>
+          <li>Manual (children)</li>
+        </Breadcrumbs>
+
+        <section>
+          <h2 className={sectionTitle}>Usage</h2>
+          <CodeExample code={usageCode} />
+        </section>
+
+        <section>
+          <h2 className={sectionTitle}>Class Reference</h2>
+          <ClassTable rows={classRows} />
+        </section>
       </div>
     )
   }

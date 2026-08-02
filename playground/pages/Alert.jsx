@@ -21,6 +21,18 @@ export default {
           Alert component for displaying important messages and notifications. All variants from daisyUI replicated.
         </p>
 
+        {/* Neutral Alert (no color) */}
+        <section>
+          <h2 className={sectionTitle}>Neutral (No Color)</h2>
+          <p className={sectionDesc}>Without a `color` prop, the alert falls back to a neutral base-200 background.</p>
+          <div className={sectionStack}>
+            <Alert>
+              <ChevronRight />
+              <span>Neutral alert without a color prop.</span>
+            </Alert>
+          </div>
+        </section>
+
         {/* Base Alert */}
         <section>
           <h2 className={sectionTitle}>Base Alert</h2>
@@ -173,6 +185,26 @@ export default {
             <Alert direction="vertical" color="success">
               <CheckCircle />
               <span>Vertical success alert</span>
+            </Alert>
+          </div>
+        </section>
+
+        {/* Style + Direction Combined */}
+        <section>
+          <h2 className={sectionTitle}>Style + Vertical Direction</h2>
+          <p className={sectionDesc}>The `variant` prop (soft, outline, dash) combines with `direction="vertical"`.</p>
+          <div className={sectionStack}>
+            <Alert variant="soft" direction="vertical" color="warning">
+              <AlertTriangle />
+              <span>Soft + vertical warning alert</span>
+            </Alert>
+            <Alert variant="outline" direction="vertical" color="error">
+              <AlertCircle />
+              <span>Outline + vertical error alert</span>
+            </Alert>
+            <Alert variant="dash" direction="vertical" color="success">
+              <CheckCircle />
+              <span>Dash + vertical success alert</span>
             </Alert>
           </div>
         </section>

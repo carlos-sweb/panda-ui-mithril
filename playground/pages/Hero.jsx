@@ -1,8 +1,41 @@
 import m from 'mithril'
 import { css } from '../../styled-system/css'
-import { Hero, HeroContent, Button } from '../../src/index.js'
+import { Hero, HeroContent, HeroOverlay, Button } from '../../src/index.js'
+import { cx } from '../../src/utils/cx.js'
+import { CodeExample } from '../components/CodeExample.jsx'
+import { ClassTable } from '../components/ClassTable.jsx'
 
 const stack = css({ display: 'flex', flexDirection: 'column', gap: '1.5rem' })
+const sectionTitle = css({ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem', marginTop: '2rem' })
+const heading = css({ fontSize: '0.875rem', fontWeight: '600', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em', opacity: 0.5 })
+const section = css({ marginBottom: '2rem' })
+const surface = css({ background: 'base-200', minHeight: '16rem', borderRadius: 'var(--radius-box)' })
+const withImage = css({
+  minHeight: '16rem',
+  borderRadius: 'var(--radius-box)',
+  backgroundImage: 'url(https://picsum.photos/seed/panda-hero/1200/600)',
+})
+const center = css({ textAlign: 'center' })
+const bigTitle = css({ fontSize: '2.5rem', fontWeight: '700' })
+const body = css({ paddingBlock: '1rem', maxWidth: '32rem' })
+const white = css({ color: 'white' })
+
+const usageCode = `<Hero>
+  <HeroOverlay />
+  <HeroContent className="text-white text-center">
+    <div>
+      <h1>Hello there</h1>
+      <p>Provident cupiditate voluptatem esse.</p>
+      <Button color="primary">Get Started</Button>
+    </div>
+  </HeroContent>
+</Hero>`
+
+const classRows = [
+  { className: 'hero', prop: '<Hero>', type: 'Component', description: 'Hero container' },
+  { className: 'hero-content', prop: '<HeroContent>', type: 'Part', description: 'Content wrapper, centered and max-width constrained' },
+  { className: 'hero-overlay', prop: '<HeroOverlay>', type: 'Part', description: 'Semi-transparent overlay, useful over a background image' },
+]
 
 export default {
   name: 'Hero',
@@ -17,14 +50,44 @@ export default {
           Hero section component for prominent page headers.
         </p>
 
-        <Hero className="bg-base-200 min-h-[200px] rounded-box">
-          <HeroContent className="text-center">
-            <h1 className="text-5xl font-bold">Hello there</h1>
-            <p className="py-6">Provident cupiditate voluptatem esse. Quam aut harum voluptatum.</p>
-            <Button color="primary">Get Started</Button>
-          </HeroContent>
-        </Hero>
+        <section className={section}>
+          <h3 className={heading}>Basic</h3>
+          <Hero className={surface}>
+            <HeroContent className={center}>
+              <div>
+                <h1 className={bigTitle}>Hello there</h1>
+                <p className={body}>Provident cupiditate voluptatem esse. Quam aut harum voluptatum.</p>
+                <Button color="primary">Get Started</Button>
+              </div>
+            </HeroContent>
+          </Hero>
+        </section>
+
+        <section className={section}>
+          <h3 className={heading}>With background image + overlay</h3>
+          <Hero className={withImage}>
+            <HeroOverlay />
+            <HeroContent className={cx(center, white)}>
+              <div>
+                <h1 className={bigTitle}>Hello there</h1>
+                <p className={body}>Provident cupiditate voluptatem esse. Quam aut harum voluptatum.</p>
+                <Button color="primary">Get Started</Button>
+              </div>
+            </HeroContent>
+          </Hero>
+        </section>
+
+        <section>
+          <h2 className={sectionTitle}>Usage</h2>
+          <CodeExample code={usageCode} />
+        </section>
+
+        <section>
+          <h2 className={sectionTitle}>Class Reference</h2>
+          <ClassTable rows={classRows} />
+        </section>
       </div>
     )
   }
 }
+

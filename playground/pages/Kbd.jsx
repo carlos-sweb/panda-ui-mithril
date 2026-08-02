@@ -1,9 +1,27 @@
 import m from 'mithril'
 import { css } from '../../styled-system/css'
 import { Kbd } from '../../src/index.js'
+import { CodeExample } from '../components/CodeExample.jsx'
+import { ClassTable } from '../components/ClassTable.jsx'
 
 const row = css({ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', alignItems: 'center' })
 const stack = css({ display: 'flex', flexDirection: 'column', gap: '1.5rem' })
+const sectionTitle = css({ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem' })
+
+const usageCode = `<Kbd size="xs">K</Kbd>
+<Kbd size="sm">Shift</Kbd>
+<Kbd size="md">Enter</Kbd>
+<Kbd size="lg">Ctrl</Kbd>
+<Kbd size="xl">Space</Kbd>`
+
+const classRows = [
+  { className: 'kbd', prop: '<Kbd>', type: 'Component', description: 'Do show a keyboard key or a shortcut key' },
+  { className: 'kbd-xs', prop: 'size="xs"', type: 'Size', description: 'Extra small size' },
+  { className: 'kbd-sm', prop: 'size="sm"', type: 'Size', description: 'Small size' },
+  { className: 'kbd-md', prop: 'size="md"', type: 'Size', description: 'Medium size', isDefault: true },
+  { className: 'kbd-lg', prop: 'size="lg"', type: 'Size', description: 'Large size' },
+  { className: 'kbd-xl', prop: 'size="xl"', type: 'Size', description: 'Extra large size' },
+]
 
 export default {
   name: 'Kbd',
@@ -25,6 +43,16 @@ export default {
           <Kbd size="lg">Ctrl</Kbd>
           <Kbd size="xl">Space</Kbd>
         </div>
+
+        <section>
+          <h2 className={sectionTitle}>Usage</h2>
+          <CodeExample code={usageCode} />
+        </section>
+
+        <section>
+          <h2 className={sectionTitle}>Class Reference</h2>
+          <ClassTable rows={classRows} />
+        </section>
       </div>
     )
   }

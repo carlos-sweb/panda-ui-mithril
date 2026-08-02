@@ -2,11 +2,46 @@ import m from 'mithril'
 import { css } from '../../styled-system/css'
 import { Button, Loading } from '../../src/index.js'
 import { Heart } from 'lucide-mithril'
+import { CodeExample } from '../components/CodeExample.jsx'
+import { ClassTable } from '../components/ClassTable.jsx'
 
 const section = css({ marginBottom: '2rem' })
 const heading = css({ fontSize: '0.875rem', fontWeight: '600', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em', opacity: 0.5 })
 const row = css({ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', alignItems: 'center' })
 const stack = css({ display: 'flex', flexDirection: 'column', gap: '1.5rem' })
+const sectionTitle = css({ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem' })
+
+const usageCode = `<Button color="primary">Primary</Button>
+<Button variant="outline" color="error" size="lg">Error</Button>
+<Button circle><Heart size={20} /></Button>`
+
+const classRows = [
+  { className: 'btn', prop: '<Button>', type: 'Component', description: 'Button' },
+  { className: 'btn-neutral', prop: 'color="neutral"', type: 'Color', description: 'neutral color' },
+  { className: 'btn-primary', prop: 'color="primary"', type: 'Color', description: 'primary color' },
+  { className: 'btn-secondary', prop: 'color="secondary"', type: 'Color', description: 'secondary color' },
+  { className: 'btn-accent', prop: 'color="accent"', type: 'Color', description: 'accent color' },
+  { className: 'btn-info', prop: 'color="info"', type: 'Color', description: 'info color' },
+  { className: 'btn-success', prop: 'color="success"', type: 'Color', description: 'success color' },
+  { className: 'btn-warning', prop: 'color="warning"', type: 'Color', description: 'warning color' },
+  { className: 'btn-error', prop: 'color="error"', type: 'Color', description: 'error color' },
+  { className: 'btn-outline', prop: 'variant="outline"', type: 'Style', description: 'outline style' },
+  { className: 'btn-dash', prop: 'variant="dash"', type: 'Style', description: 'dash style' },
+  { className: 'btn-soft', prop: 'variant="soft"', type: 'Style', description: 'soft style' },
+  { className: 'btn-ghost', prop: 'variant="ghost"', type: 'Style', description: 'ghost style' },
+  { className: 'btn-link', prop: 'variant="link"', type: 'Style', description: 'looks like a link' },
+  { className: 'btn-active', prop: 'active', type: 'Behavior', description: 'looks active' },
+  { className: 'btn-disabled', prop: 'disabled', type: 'Behavior', description: 'looks disabled — pass className="btn-disabled" instead if you need it to still be clickable' },
+  { className: 'btn-xs', prop: 'size="xs"', type: 'Size', description: 'Extra small size' },
+  { className: 'btn-sm', prop: 'size="sm"', type: 'Size', description: 'Small size' },
+  { className: 'btn-md', prop: 'size="md" (default)', type: 'Size', description: 'Medium size', isDefault: true },
+  { className: 'btn-lg', prop: 'size="lg"', type: 'Size', description: 'Large size' },
+  { className: 'btn-xl', prop: 'size="xl"', type: 'Size', description: 'Extra large size' },
+  { className: 'btn-wide', prop: 'wide', type: 'Modifier', description: 'more horizontal padding' },
+  { className: 'btn-block', prop: 'block', type: 'Modifier', description: 'Full width' },
+  { className: 'btn-square', prop: 'square', type: 'Modifier', description: '1:1 ratio' },
+  { className: 'btn-circle', prop: 'circle', type: 'Modifier', description: '1:1 ratio with rounded corners' },
+]
 
 export default {
   name: 'Button',
@@ -21,7 +56,7 @@ export default {
           Buttons allow users to take actions and make choices with a single tap. They communicate what will happen when the user touches them.
         </p>
 
-        <section className={section}>
+        <section>
           <h3 className={heading}>Default</h3>
           <div className={row}>
             <Button>Default</Button>
@@ -181,6 +216,16 @@ export default {
             <Button square><Loading /></Button>
             <Button><Loading /> Loading</Button>
           </div>
+        </section>
+
+        <section>
+          <h2 className={sectionTitle}>Usage</h2>
+          <CodeExample code={usageCode} />
+        </section>
+
+        <section>
+          <h2 className={sectionTitle}>Class Reference</h2>
+          <ClassTable rows={classRows} />
         </section>
       </div>
     )
