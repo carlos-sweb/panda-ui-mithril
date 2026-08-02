@@ -28,8 +28,8 @@ export default defineConfig({
           btn: { value: '4px' },
         },
         fonts: {
-          sans: { value: 'Inter, system-ui, sans-serif' },
-          mono: { value: 'JetBrains Mono, monospace' },
+          sans: { value: '"Geist Sans", system-ui, sans-serif' },
+          mono: { value: '"Geist Mono", monospace' },
         },
       },
       semanticTokens: {
@@ -156,7 +156,7 @@ export default defineConfig({
   },
   globalCss: {
     ':root': {
-      fontFamily: 'Inter, system-ui, sans-serif',
+      fontFamily: '"Geist Sans", system-ui, sans-serif',
       '--size-field': '.25rem',
       '--size': 'calc(var(--size-field,.25rem) * 10)',
       /* daisyUI border-radius tokens (light theme defaults) */

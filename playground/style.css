@@ -1,7 +1,7 @@
 @import '../src/index.css';
 
 body {
-  font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+  font-family: 'Geist Sans', system-ui, -apple-system, sans-serif;
   line-height: 1.6;
   color: var(--colors-base-content);
   background-color: var(--colors-base-100);
