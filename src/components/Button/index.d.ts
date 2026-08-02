@@ -1,4 +1,4 @@
-import { Vnode } from 'mithril'
+import { Component, Vnode } from 'mithril'
 import { ComponentAttrs, DaisyColor, DaisyStyle, DaisySize } from '../../types'
 
 export interface ButtonAttrs extends ComponentAttrs {
@@ -15,3 +15,5 @@ export interface ButtonAttrs extends ComponentAttrs {
   children?: Vnode | Vnode[] | string | null
   [key: string]: unknown
 }
+
+export const Button: Component<ButtonAttrs>

@@ -10,7 +10,8 @@
     ".": {
       "import": "./dist/index.js",
       "types": "./dist/index.d.ts"
-    }
+    },
+    "./styles.css": "./dist/styles.css"
   },
   "files": [
     "dist"
@@ -21,7 +22,8 @@
     "dev": "bun playground/index.html",
     "build": "bun run scripts/build.ts",
     "build:lib": "bun run scripts/build-lib.ts",
-    "typecheck": "tsc --noEmit --project tsconfig.lib.json"
+    "typecheck": "tsc --noEmit --project tsconfig.lib.json",
+    "prepublishOnly": "bun run build:lib"
   },
   "peerDependencies": {
     "mithril": ">=2.3.8"

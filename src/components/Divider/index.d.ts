@@ -1,12 +1,12 @@
 import { Component, Vnode } from 'mithril'
 import { ComponentAttrs, DaisyColor } from '../../types'
 
-export interface AlertAttrs extends ComponentAttrs {
-  variant?: 'outline' | 'dash' | 'soft'
-  color?: Extract<DaisyColor, 'info' | 'success' | 'warning' | 'error'>
+export interface DividerAttrs extends ComponentAttrs {
+  color?: DaisyColor
   direction?: 'horizontal' | 'vertical'
+  placement?: 'start' | 'end'
   children?: Vnode | Vnode[] | string | null
   [key: string]: unknown
 }
 
-export const Alert: Component<AlertAttrs>
+export const Divider: Component<DividerAttrs>
