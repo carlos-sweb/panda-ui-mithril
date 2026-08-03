@@ -22,7 +22,7 @@ const classRows = [
   { className: 'divider-info', prop: 'color="info"', type: 'Color', description: 'info color' },
   { className: 'divider-error', prop: 'color="error"', type: 'Color', description: 'error color' },
   { className: 'divider-vertical', prop: 'direction="horizontal" (default)', type: 'Direction', description: 'Divide vertical elements (on top of each other) — this is the default, no prop needed', isDefault: true },
-  { className: 'divider-horizontal', prop: 'direction="vertical"', type: 'Direction', description: 'Divide horizontal elements (next to each other) — note: this component\'s direction prop names the opposite of daisyUI\'s class name' },
+  { className: 'divider-horizontal', prop: 'direction="vertical"', type: 'Direction', description: 'Divide horizontal elements (next to each other) — note: this component\'s direction prop names the opposite of its class name' },
   { className: 'divider-start', prop: 'placement="start"', type: 'Placement', description: 'Pushes the divider text to the start' },
   { className: 'divider-end', prop: 'placement="end"', type: 'Placement', description: 'Pushes the divider text to the end' },
 ]

@@ -66,7 +66,7 @@ function typeCellContent(type) {
 }
 
 // rows: [{ className, prop?, type, description, isDefault? }]
-// `className` is the raw daisyUI class this variant generates internally —
+// `className` is the raw CSS class this variant generates internally —
 // it's shown for cross-reference, not something you pass to this library.
 // `prop` is what you actually write in Mithril JSX to get it.
 export const ClassTable = {

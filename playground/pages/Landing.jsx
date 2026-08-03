@@ -34,7 +34,7 @@ const installCommand = css({
 const features = [
   { title: 'Mithril.js', desc: 'Built on the ultra-lightweight 7KB virtual DOM framework with no runtime dependencies.' },
   { title: 'Panda CSS', desc: 'Zero-runtime CSS-in-JS with static analysis. Only the styles you use are generated.' },
-  { title: 'daisyUI Naming', desc: 'Familiar class naming convention: btn-primary, card-body, alert-soft.' },
+  { title: 'Class naming', desc: 'Familiar class naming convention: btn-primary, card-body, alert-soft.' },
   { title: 'Tree-Shakable', desc: 'Import only what you need. Each component is a separate module.' },
   { title: 'TypeScript Ready', desc: 'Full type definitions shipped with every component.' },
   { title: 'Icons', desc: 'Integrates with lucide-mithril for a consistent icon system.' },
@@ -78,7 +78,7 @@ export const Landing = {
             <Badge color="primary" variant="soft" className={css({ marginBottom: '1rem' })}>57 components</Badge>
             <h1 className={css({ fontSize: '2.75rem', fontWeight: '800', marginBottom: '1rem', letterSpacing: '-0.02em' })}>panda-ui-mithril</h1>
             <p className={css({ fontSize: '1.125rem', color: 'token(colors.base-content)', opacity: 0.6, maxWidth: '600px', margin: '0 auto 2rem' })}>
-              A Mithril.js component library styled with Panda CSS. Production-ready components with daisyUI-compatible class naming.
+              A Mithril.js component library styled with Panda CSS. Production-ready components with familiar design patterns.
             </p>
             <div className={css({ display: 'flex', gap: '0.75rem', justifyContent: 'center', flexWrap: 'wrap' })}>
               <Button color="primary" size="lg" href="#quick-start">Get Started</Button>
@@ -91,7 +91,7 @@ export const Landing = {
           <Stat>
             <StatTitle>Components</StatTitle>
             <StatValue className={css({ color: 'token(colors.primary)' })}>57</StatValue>
-            <StatDesc>daisyUI-compatible</StatDesc>
+            <StatDesc>57 components</StatDesc>
           </Stat>
           <Stat>
             <StatTitle>Core size</StatTitle>
@@ -136,7 +136,7 @@ export const Landing = {
 
         <h2 className={css({ fontSize: '1.5rem', fontWeight: '700', marginBottom: '1rem', marginTop: '2.5rem' })}>Component Preview</h2>
         <div className={css({ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1.5rem' })}>
-          <Alert color="info">New: 57 components now match daisyUI pixel-for-pixel.</Alert>
+          <Alert color="info">New: 57 components, consistently styled.</Alert>
           <Alert color="success">Your changes have been saved successfully.</Alert>
           <Alert color="warning">This action cannot be undone.</Alert>
           <Alert color="error">Something went wrong. Please try again.</Alert>

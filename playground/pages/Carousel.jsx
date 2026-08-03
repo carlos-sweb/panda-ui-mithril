@@ -43,7 +43,7 @@ const usageCode = `<Carousel>
   <CarouselItem><img src="3.jpg" /></CarouselItem>
 </Carousel>
 
-// real daisyUI navigates with <a href="#slideId">, but that collides with
+// The reference implementation navigates with <a href="#slideId">, but that collides with
 // any app using hash-based routing (like this playground) — scrollIntoView
 // sidesteps it
 document.getElementById('slide-2').scrollIntoView({ behavior: 'smooth', inline: 'start' })`
@@ -86,7 +86,7 @@ export default {
         <section className={section}>
           <h3 className={heading}>Full width with next/prev navigation</h3>
           <p className={css({ opacity: 0.6, marginBottom: '0.5rem', fontSize: '0.875rem' })}>
-            Real daisyUI navigates with <code>&lt;a href="#slideId"&gt;</code>, but that collides
+            The reference implementation navigates with <code>&lt;a href="#slideId"&gt;</code>, but that collides
             with apps using hash-based routing (like this playground's own <code>#!/route</code>{' '}
             router) — using <code>scrollIntoView()</code> on click sidesteps it.
           </p>

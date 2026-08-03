@@ -25,7 +25,7 @@ const usageCode = `<ThemeController
 />`
 
 const classRows = [
-  { className: 'theme-controller', prop: '<ThemeController theme="...">', type: 'Component', description: 'A checkbox/radio that reports its checked state — wire onchange to set data-theme yourself (this project switches themes via JS, not the CSS-only :has() trick daisyUI uses)' },
+  { className: 'theme-controller', prop: '<ThemeController theme="...">', type: 'Component', description: 'A checkbox/radio that reports its checked state — wire onchange to set data-theme yourself (this project switches themes via JS, not the CSS-only :has() trick from the reference implementation)' },
 ]
 
 export default {

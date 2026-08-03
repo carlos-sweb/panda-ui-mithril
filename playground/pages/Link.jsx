@@ -38,10 +38,10 @@ export default {
         </p>
 
         <div className={row}>
-          <Link href="#">Default</Link>
-          <Link href="#" color="primary">Primary</Link>
-          <Link href="#" color="secondary">Secondary</Link>
-          <Link href="#" color="accent">Accent</Link>
+          <Link href="#!/link">Default</Link>
+          <Link href="#!/link" color="primary">Primary</Link>
+          <Link href="#!/link" color="secondary">Secondary</Link>
+          <Link href="#!/link" color="accent">Accent</Link>
         </div>
 
         <section>

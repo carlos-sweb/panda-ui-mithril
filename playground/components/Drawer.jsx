@@ -1,9 +1,9 @@
 import m from 'mithril'
 import { css } from '../../styled-system/css'
 
-// Not part of the component suite — daisyUI's real drawer is a CSS-only
+// Not part of the component suite — the reference implementation's real drawer is a CSS-only
 // hidden-checkbox trick (.drawer-toggle:checked ~ .drawer-side). This project
-// prefers real JS state over that (see memory: js-over-daisyui-purity), and
+// prefers real JS state over that (see memory: js-over-css-purity), and
 // an off-canvas mobile nav panel is app shell chrome, not a library
 // component — so it lives here in the playground, not in src/components.
 

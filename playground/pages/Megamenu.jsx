@@ -29,7 +29,7 @@ const classRows = [
   { className: '(item wrapper)', prop: '<MegamenuItem>', type: 'Part', description: 'Positions a trigger + its dropdown panel together' },
   { className: '[popovertarget]', prop: '<MegamenuTrigger href? chevron?>', type: 'Part', description: 'The clickable/hoverable trigger — renders a link if `href` is given' },
   { className: '[popover]', prop: '<MegamenuPanel>', type: 'Part', description: 'The dropdown panel, shown on hover/focus of its MegamenuItem' },
-  { className: 'megamenu-active', prop: '<MegamenuActive />', type: 'Modifier', description: 'Manual highlight overlay — real daisyUI animates this between triggers via CSS anchor positioning, not supported here' },
+  { className: 'megamenu-active', prop: '<MegamenuActive />', type: 'Modifier', description: 'Manual highlight overlay — the reference implementation animates this between triggers via CSS anchor positioning, not supported here' },
   { className: 'megamenu-xs', prop: 'size="xs"', type: 'Size', description: 'Extra small size' },
   { className: 'megamenu-sm', prop: 'size="sm"', type: 'Size', description: 'Small size' },
   { className: 'megamenu-md', prop: 'size="md" (default)', type: 'Size', description: 'Medium size', isDefault: true },

@@ -23,7 +23,7 @@ const classRows = [
   { className: 'collapse-arrow', prop: 'arrow', type: 'Modifier', description: 'Adds arrow icon' },
   { className: 'collapse-plus', prop: 'plus', type: 'Modifier', description: 'Adds plus/minus icon' },
   { className: 'collapse-open', prop: 'checked', type: 'Modifier', description: 'Force open (controlled)' },
-  { className: '—', prop: 'border', type: 'Modifier', description: 'base-100 background + base-300 border (real daisyUI applies this via plain utility classes, not a component class)' },
+  { className: '—', prop: 'border', type: 'Modifier', description: 'base-100 background + base-300 border (the reference implementation applies this via plain utility classes, not a component class)' },
 ]
 
 export default {

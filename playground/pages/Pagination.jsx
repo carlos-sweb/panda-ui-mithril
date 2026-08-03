@@ -15,7 +15,7 @@ const usageCode = `<Pagination>
 </Pagination>`
 
 const classRows = [
-  { className: 'join', prop: '<Pagination>', type: 'Component', description: 'Container — built on top of Join + Button, matching real daisyUI\'s own recommended pagination pattern' },
+  { className: 'join', prop: '<Pagination>', type: 'Component', description: 'Container — built on top of Join + Button, matching the common pagination pattern' },
   { className: 'btn join-item', prop: '<PaginationButton>', type: 'Component', description: 'A page button' },
   { className: 'btn-active', prop: '<PaginationButton active>', type: 'Modifier', description: 'Marks the current page' },
 ]
@@ -30,7 +30,7 @@ export default {
       <div className={stack}>
         <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>Pagination</h1>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
-          Pagination component for navigating between pages of content. daisyUI doesn't ship a
+          Pagination component for navigating between pages of content. The reference implementation doesn't ship a
           dedicated pagination component — it recommends composing <code>join</code> +{' '}
           <code>btn</code>, which is exactly what this component does under the hood.
         </p>

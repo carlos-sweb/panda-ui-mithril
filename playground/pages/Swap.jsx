@@ -44,7 +44,7 @@ export default {
           </Swap>
         </div>
         <p className={css({ opacity: 0.6, marginTop: '0.5rem', fontSize: '0.875rem' })}>
-          Click to toggle — the swap works with a hidden native checkbox (like real daisyUI), no
+          Click to toggle — the swap works with a hidden native checkbox (like the reference implementation), no
           JS state required. Pass an icon component to <code>on</code>/<code>off</code> the same
           way you'd pass text.
         </p>

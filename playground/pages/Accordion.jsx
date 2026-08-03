@@ -11,7 +11,7 @@ const section = css({ marginBottom: '2rem' })
 const group = css({ display: 'flex', flexDirection: 'column', gap: '0.5rem' })
 
 const usageCode = `<Accordion name="faq" arrow border defaultChecked>
-  <AccordionTitle>What is daisyUI?</AccordionTitle>
+  <AccordionTitle>What is panda-ui-mithril?</AccordionTitle>
   <AccordionContent>A component library for Tailwind CSS.</AccordionContent>
 </Accordion>
 <Accordion name="faq" arrow border>
@@ -25,7 +25,7 @@ const classRows = [
   { className: 'collapse-content', prop: '<AccordionContent>', type: 'Part', description: 'Content part' },
   { className: 'collapse-arrow', prop: 'arrow', type: 'Modifier', description: 'Adds arrow icon' },
   { className: 'collapse-plus', prop: 'plus', type: 'Modifier', description: 'Adds plus/minus icon' },
-  { className: '—', prop: 'border', type: 'Modifier', description: 'base-100 background + base-300 border (real daisyUI applies this via plain utility classes, not a component class)' },
+  { className: '—', prop: 'border', type: 'Modifier', description: 'base-100 background + base-300 border (the reference implementation applies this via plain utility classes, not a component class)' },
 ]
 
 export default {
@@ -47,7 +47,7 @@ export default {
           <h3 className={heading}>Grouped (only one open at a time)</h3>
           <div className={group}>
             <Accordion name="faq" arrow border defaultChecked>
-              <AccordionTitle>What is daisyUI?</AccordionTitle>
+              <AccordionTitle>What is panda-ui-mithril?</AccordionTitle>
               <AccordionContent>A component library for Tailwind CSS with a huge set of pre-styled UI components.</AccordionContent>
             </Accordion>
             <Accordion name="faq" arrow border>

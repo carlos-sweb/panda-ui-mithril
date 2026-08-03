@@ -52,7 +52,7 @@ export default {
       <div className={stack}>
         <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>Card</h1>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
-          Cards are used to group and display content in a contained layout. Like real daisyUI,
+          Cards are used to group and display content in a contained layout. As in the reference implementation,
           <code>Card</code> ships with no background/shadow of its own — apply them via{' '}
           <code>className</code>.
         </p>
