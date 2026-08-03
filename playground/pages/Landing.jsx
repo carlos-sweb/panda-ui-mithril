@@ -41,10 +41,10 @@ const features = [
 ]
 
 const installCommands = {
-  npm: 'npm install panda-ui-mithril-mithril mithril lucide-mithril',
-  pnpm: 'pnpm add panda-ui-mithril-mithril mithril lucide-mithril',
-  yarn: 'yarn add panda-ui-mithril-mithril mithril lucide-mithril',
-  bun: 'bun add panda-ui-mithril-mithril mithril lucide-mithril',
+  npm: 'npm install panda-ui-mithril mithril lucide-mithril',
+  pnpm: 'pnpm add panda-ui-mithril mithril lucide-mithril',
+  yarn: 'yarn add panda-ui-mithril mithril lucide-mithril',
+  bun: 'bun add panda-ui-mithril mithril lucide-mithril',
 }
 
 const quickStartCode = `<Alert color="info">Welcome to panda-ui-mithril!</Alert>
@@ -82,7 +82,7 @@ export const Landing = {
             </p>
             <div className={css({ display: 'flex', gap: '0.75rem', justifyContent: 'center', flexWrap: 'wrap' })}>
               <Button color="primary" size="lg" href="#quick-start">Get Started</Button>
-              <Button variant="outline" size="lg" onclick={() => window.open('https://github.com/carlos-sweb/panda-ui-mithril-mithril', '_blank')}>GitHub</Button>
+              <Button variant="outline" size="lg" onclick={() => window.open('https://github.com/carlos-sweb/panda-ui-mithril', '_blank')}>GitHub</Button>
             </div>
           </HeroContent>
         </Hero>
