@@ -149,6 +149,31 @@ const setSavedTheme = (theme) => localStorage.setItem('panda-ui-theme', theme)
 const savedTheme = getSavedTheme()
 document.documentElement.setAttribute('data-theme', savedTheme)
 
+// Scroll container for the routed page content. Kept in Panda css() so the
+// layout lives with the Layout component; the id is the m.route mount target.
+// All padding (incl. the bottom space) lives on the inner content wrapper, not
+// on this scroller: Firefox excludes a scroll container's own padding from the
+// scrollable overflow, but a plain block's padding is content everywhere.
+const mainStyles = css({
+  flex: '1',
+  overflowY: 'auto',
+  marginLeft: '260px',
+  marginTop: '64px',
+  minHeight: 'calc(100vh - 64px)',
+  '@media (max-width: 768px)': {
+    marginLeft: '0',
+  },
+})
+
+// Inner wrapper that receives the routed page; its padding is scrollable
+// content in every engine (unlike scroll-container padding in Firefox).
+const contentStyles = css({
+  padding: '2rem 3rem 3rem',
+  '@media (max-width: 768px)': {
+    padding: '1.5rem 1.5rem 3rem',
+  },
+})
+
 // Layout component - mounted once on body, persists across route changes
 const Layout = {
   oninit(vnode) {
@@ -159,7 +184,7 @@ const Layout = {
 
   oncreate(vnode) {
     m.route.prefix = '#!'
-    m.route(document.getElementById('view-dynamic'), '/', routes)
+    m.route(document.getElementById('view-dynamic-content'), '/', routes)
 
     vnode.state.onKeydown = (e) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
@@ -196,7 +221,9 @@ const Layout = {
             }}
           />
 
-          <main id="view-dynamic" />
+          <main id="view-dynamic" className={mainStyles}>
+            <div id="view-dynamic-content" className={contentStyles} />
+          </main>
         </div>
 
         <SearchModal
