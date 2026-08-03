@@ -1,5 +1,6 @@
 import m from 'mithril'
 import { css } from '../../styled-system/css'
+import { t } from '../i18n/index.js'
 import { List, ListRow, ListCol, Avatar, Button } from '../../src/index.js'
 import { Play, Heart } from 'lucide-mithril'
 import { CodeExample } from '../components/CodeExample.jsx'
@@ -45,9 +46,7 @@ export default {
       <div className={stack}>
         <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>List</h1>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
-          List is a vertical layout to display information in rows. By default, the second child
-          of a row fills the remaining space — use <code>ListCol grow</code> to make a different
-          child fill it instead.
+          {t('paragraphs.list')}
         </p>
 
         <div className={wrapper}>

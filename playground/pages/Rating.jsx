@@ -1,5 +1,6 @@
 import m from 'mithril'
 import { css } from '../../styled-system/css'
+import { t } from '../i18n/index.js'
 import { Rating } from '../../src/index.js'
 import { CodeExample } from '../components/CodeExample.jsx'
 import { ClassTable } from '../components/ClassTable.jsx'
@@ -61,9 +62,7 @@ export default {
       <div className={stack}>
         <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>Rating</h1>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
-          Rating component for displaying star ratings. Renders lucide Star icons with internal state
-          (uncontrolled) or controlled via <code>value</code>/<code>onchange</code>. Integer scores only,
-          with a configurable max (default 5) and a read-only static mode.
+          {t('paragraphs.rating')}
         </p>
 
         <section className={section}>

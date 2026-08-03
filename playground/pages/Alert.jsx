@@ -1,5 +1,6 @@
 import m from 'mithril'
 import { css } from '../../styled-system/css'
+import { t } from '../i18n/index.js'
 import { Alert } from '../../src/index.js'
 import { Info, CheckCircle, AlertTriangle, AlertCircle, X, ChevronRight } from 'lucide-mithril'
 import { CodeExample } from '../components/CodeExample.jsx'
@@ -48,7 +49,7 @@ export default {
       <div className={stack}>
         <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>Alert</h1>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
-          Alert component for displaying important messages and notifications. All standard variants available.
+          {t('paragraphs.alert')}
         </p>
 
         {/* Neutral Alert (no color) */}

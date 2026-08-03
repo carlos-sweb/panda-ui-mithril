@@ -1,5 +1,6 @@
 import m from 'mithril'
 import { css } from '../../styled-system/css'
+import { t } from '../i18n/index.js'
 import { Stats, Stat, StatTitle, StatValue, StatDesc, StatFigure, StatActions, Button } from '../../src/index.js'
 import { Wallet, Users, ThumbsUp } from 'lucide-mithril'
 import { CodeExample } from '../components/CodeExample.jsx'
@@ -42,7 +43,7 @@ export default {
       <div className={stack}>
         <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>Stats</h1>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
-          Stats are used to show numerical data.
+          {t('paragraphs.stat')}
         </p>
 
         <section className={section}>

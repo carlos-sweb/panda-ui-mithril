@@ -1,5 +1,6 @@
 import m from 'mithril'
 import { css } from '../../styled-system/css'
+import { t } from '../i18n/index.js'
 import { Join, JoinItem, PaginationButton } from '../../src/index.js'
 import { CodeExample } from '../components/CodeExample.jsx'
 import { ClassTable } from '../components/ClassTable.jsx'
@@ -32,10 +33,7 @@ export default {
       <div className={stack}>
         <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>Join</h1>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
-          Join is a container for grouping multiple items — it collapses shared borders and only
-          rounds the outer corners. Use <code>&lt;JoinItem&gt;</code> for generic content, or
-          combine any other component (like <code>Button</code>) with the <code>join-item</code>{' '}
-          class for a themed look — <code>Pagination</code> does exactly that internally.
+          {t('paragraphs.join')}
         </p>
 
         <section className={section}>

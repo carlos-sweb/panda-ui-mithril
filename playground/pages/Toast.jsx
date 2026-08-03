@@ -1,5 +1,6 @@
 import m from 'mithril'
 import { css } from '../../styled-system/css'
+import { t } from '../i18n/index.js'
 import { Toast, Alert } from '../../src/index.js'
 import { CodeExample } from '../components/CodeExample.jsx'
 import { ClassTable } from '../components/ClassTable.jsx'
@@ -55,9 +56,7 @@ export default {
       <div className={stack}>
         <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>Toast</h1>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
-          Toast component for showing temporary notifications. It's positioned fixed relative to
-          the viewport — the live example below is anchored to the bottom-right corner of the
-          window, and stays there even as you scroll.
+          {t('paragraphs.toast')}
         </p>
 
         <Toast position="bottom end">

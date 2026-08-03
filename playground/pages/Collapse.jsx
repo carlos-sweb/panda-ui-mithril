@@ -1,5 +1,6 @@
 import m from 'mithril'
 import { css } from '../../styled-system/css'
+import { t } from '../i18n/index.js'
 import { Collapse, CollapseTitle, CollapseContent } from '../../src/index.js'
 import { CodeExample } from '../components/CodeExample.jsx'
 import { ClassTable } from '../components/ClassTable.jsx'
@@ -36,9 +37,7 @@ export default {
       <div className={stack}>
         <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>Collapse</h1>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
-          Collapse component for toggling visibility of content sections. Click the title to
-          toggle — driven by a hidden native checkbox, no JS required for the basic case (see{' '}
-          <a href="#!/accordion">Accordion</a> for grouped, only-one-open behavior).
+          {t('paragraphs.collapse')}
         </p>
 
         <section className={section}>

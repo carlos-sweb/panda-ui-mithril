@@ -1,5 +1,6 @@
 import m from 'mithril'
 import { css } from '../../styled-system/css'
+import { t } from '../i18n/index.js'
 import { Steps, Step, StepIcon } from '../../src/index.js'
 import { Check } from 'lucide-mithril'
 import { CodeExample } from '../components/CodeExample.jsx'
@@ -43,7 +44,7 @@ export default {
       <div className={stack}>
         <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>Steps</h1>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
-          Steps component for showing progress through a multi-step process.
+          {t('paragraphs.steps')}
         </p>
 
         <section className={section}>

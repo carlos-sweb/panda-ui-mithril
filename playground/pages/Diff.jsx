@@ -1,5 +1,6 @@
 import m from 'mithril'
 import { css } from '../../styled-system/css'
+import { t } from '../i18n/index.js'
 import { Diff, DiffItem1, DiffItem2, DiffResizer } from '../../src/index.js'
 import { CodeExample } from '../components/CodeExample.jsx'
 import { ClassTable } from '../components/ClassTable.jsx'
@@ -31,7 +32,7 @@ export default {
       <div className={stack}>
         <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>Diff</h1>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
-          Diff component for comparing two images side by side. Drag the divider left/right.
+          {t('paragraphs.diff')}
         </p>
 
         <div className={wrapper}>

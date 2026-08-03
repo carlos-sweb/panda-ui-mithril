@@ -1,5 +1,6 @@
 import m from 'mithril'
 import { css } from '../../styled-system/css'
+import { t } from '../i18n/index.js'
 import { ThemeController, Swap } from '../../src/index.js'
 import { Sun, Moon } from 'lucide-mithril'
 import { CodeExample } from '../components/CodeExample.jsx'
@@ -48,8 +49,7 @@ export default {
       <div className={stack}>
         <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>ThemeController</h1>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
-          Theme controller toggle for switching between light and dark themes. Try any of these —
-          they all drive the same theme and change this page live.
+          {t('paragraphs.themecontroller')}
         </p>
 
         <section className={section}>

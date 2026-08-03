@@ -1,5 +1,6 @@
 import m from 'mithril'
 import { css } from '../../styled-system/css'
+import { t } from '../i18n/index.js'
 import { Accordion, AccordionTitle, AccordionContent } from '../../src/index.js'
 import { CodeExample } from '../components/CodeExample.jsx'
 import { ClassTable } from '../components/ClassTable.jsx'
@@ -38,9 +39,7 @@ export default {
       <div className={stack}>
         <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>Accordion</h1>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
-          Accordion component for collapsible content sections. This is the same{' '}
-          <a href="#!/collapse">Collapse</a> primitive — pass the same <code>name</code> to a
-          group of items (radio inputs under the hood) so opening one closes the others.
+          {t('paragraphs.accordion')}
         </p>
 
         <section className={section}>

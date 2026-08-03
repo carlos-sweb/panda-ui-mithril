@@ -1,5 +1,6 @@
 import m from 'mithril'
 import { css } from '../../styled-system/css'
+import { t } from '../i18n/index.js'
 import { Aura, Button, Card, CardBody } from '../../src/index.js'
 import { CodeExample } from '../components/CodeExample.jsx'
 import { ClassTable } from '../components/ClassTable.jsx'
@@ -48,9 +49,7 @@ export default {
       <div className={stack}>
         <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>Aura</h1>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
-          Aura is a border light effect that can wrap around any component — a rotating gradient
-          border by default. Great for highlighting the one button, card, or element you want to
-          draw attention to.
+          {t('paragraphs.aura')}
         </p>
 
         <section className={section}>

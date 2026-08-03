@@ -1,5 +1,6 @@
 import m from 'mithril'
 import { css } from '../../styled-system/css'
+import { t } from '../i18n/index.js'
 import { Countdown } from '../../src/index.js'
 import { CodeExample } from '../components/CodeExample.jsx'
 import { ClassTable } from '../components/ClassTable.jsx'
@@ -46,9 +47,7 @@ export default {
       <div className={stack}>
         <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>Countdown</h1>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
-          Countdown component for displaying remaining time. You control the ticking (via{' '}
-          <code>setInterval</code> or similar) — the component itself just animates{' '}
-          <code>value</code> changes.
+          {t('paragraphs.countdown')}
         </p>
 
         <section className={section}>

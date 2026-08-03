@@ -1,5 +1,6 @@
 import m from 'mithril'
 import { css } from '../../styled-system/css'
+import { t } from '../i18n/index.js'
 import { FAB, FABMain, FABAction } from '../../src/index.js'
 import { Plus, Pencil, Trash2, Share2 } from 'lucide-mithril'
 import { CodeExample } from '../components/CodeExample.jsx'
@@ -32,10 +33,7 @@ export default {
       <div className={stack}>
         <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>FAB</h1>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
-          Floating Action Button represents the primary action of a screen. It's fixed to the
-          bottom-right corner of the viewport — click or focus the trigger (bottom-right corner of
-          this page) to reveal the actions. Uses pure CSS (<code>:focus-within</code>), no
-          JavaScript required.
+          {t('paragraphs.fab')}
         </p>
 
         <FAB>
