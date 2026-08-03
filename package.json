@@ -1,7 +1,7 @@
 {
   "name": "panda-ui-mithril",
   "version": "0.3.0",
-  "description": "Mithril.js component library styled with Panda CSS, daisyUI-compatible class naming",
+  "description": "Mithril.js component library styled with Panda CSS. Class naming inspired by daisyUI (MIT).",
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -42,7 +42,6 @@
   "keywords": [
     "mithril",
     "panda-css",
-    "daisyui",
     "component-library",
     "ui-components",
     "lucide"

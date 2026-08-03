@@ -1,6 +1,6 @@
 # panda-ui-mithril
 
-> Mithril.js UI component library styled with Panda CSS (atomic, type-safe CSS-in-JS). Class names and theming follow daisyUI conventions. 56 components, published as `panda-ui-mithril` on npm with a single pre-built static stylesheet — components render pre-resolved className strings, not runtime CSS-in-JS, so consumers don't need Panda CSS installed to use them.
+> Mithril.js UI component library styled with Panda CSS (atomic, type-safe CSS-in-JS). Class names and theming follow the library's convention (inspired by daisyUI). 56 components, published as `panda-ui-mithril` on npm with a single pre-built static stylesheet — components render pre-resolved className strings, not runtime CSS-in-JS, so consumers don't need Panda CSS installed to use them.
 
 Install: `npm install panda-ui-mithril mithril`. Import the components you need from `panda-ui-mithril`, and import `panda-ui-mithril/styles.css` exactly once, anywhere in the app's entrypoint. That stylesheet is required: without it, components still render with the correct DOM structure and class names, but with no visual styling, because their classNames reference CSS custom properties (design tokens) that only exist once this stylesheet loads.
 
@@ -8,11 +8,12 @@ Facts worth knowing before helping someone integrate this library:
 - Dark mode is controlled by `[data-theme="dark"]` on any ancestor element — not a `.dark` class, and not `prefers-color-scheme`. The consuming app must set this attribute itself for dark-mode styling to apply.
 - Brand colors (`primary`, `secondary`, `accent`, `neutral`, plus their `-content` pairs) are meant to be customized per consuming app: set `--pum-primary`, `--pum-secondary`, `--pum-accent`, `--pum-neutral` (and the matching `-content` variables) as CSS custom properties on `:root` to override them. Semantic status colors (`info`, `success`, `warning`, `error`) are fixed by design and have no override hook — they should look the same in every consuming app.
 - If the consuming app also uses Panda CSS, don't add this package to that app's own `include` config — its styles are pre-compiled ahead of time; scanning `node_modules/panda-ui-mithril` finds nothing useful and only slows down the scan.
+- `Rating` (since v0.3.0) is JS-driven, not a pure CSS port: it's hybrid state — pass `value` + `onchange` for a controlled rating, or `defaultValue` for internal state. Scores are integers only (`0..max`), `max` is configurable (e.g. 3 for a 1-3 scale, default 5), and `readonly` renders a static display. There is no `name` prop and no form submission.
 
 ## Docs
 
 - [README](https://raw.githubusercontent.com/carlos-sweb/panda-ui-mithril/master/README.md): Full usage guide — installation, theming, dark mode, integrating into a project that also uses Panda CSS, component category list.
-- [panda.config.ts](https://raw.githubusercontent.com/carlos-sweb/panda-ui-mithril/master/panda.config.ts): Source of truth for every design token (colors, fonts, radii, keyframes) and the `--pum-*` override hooks.
+- [panda.config.ts](https://raw.githubusercontent.com/carlos-sweb/panda-ui-mithril/master/panda.config.ts): Source of truth for every design token (colors, fonts, radii, spacing, fontSizes, keyframes) and the `--pum-*` override hooks.
 
 ## Examples
 
@@ -23,3 +24,4 @@ Facts worth knowing before helping someone integrate this library:
 - [npm package](https://www.npmjs.com/package/panda-ui-mithril): Published releases and version history.
 - [GitHub repository](https://github.com/carlos-sweb/panda-ui-mithril): Full source, including `src/recipes/*.ts` — the Panda `cva()`/`sva()` variant definitions behind every component.
 - [AGENTS.md](https://raw.githubusercontent.com/carlos-sweb/panda-ui-mithril/master/AGENTS.md): Contribution conventions for agents working on this repo's own source — only relevant when modifying the library itself, not when consuming it.
+- [docs/audit-components.md](https://raw.githubusercontent.com/carlos-sweb/panda-ui-mithril/master/docs/audit-components.md): CSS audit of every recipe (2026-08) — token usage (`token()` string form only), `sva` migration, custom-property naming rules. Contributor-facing, like AGENTS.md.

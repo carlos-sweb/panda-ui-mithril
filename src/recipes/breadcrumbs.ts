@@ -25,7 +25,7 @@ export const breadcrumbsStyles = cva({
       _focus: { outline: 'none' },
       '&:focus-visible': { outline: '2px solid currentColor', outlineOffset: '2px' },
     },
-    // Chevron separator between items, matching daisyUI's rotated-border trick.
+    // Chevron separator between items, matching the original's rotated-border trick.
     '& > ul > li + li:before, & > ol > li + li:before': {
       content: '""',
       display: 'block',

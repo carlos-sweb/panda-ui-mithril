@@ -2,7 +2,7 @@ import { cva } from '../../styled-system/css'
 
 export const alertStyles = cva({
   base: {
-    // daisyUI uses grid layout, not flex
+    // the original implementation uses grid layout, not flex
     display: 'grid',
     alignItems: 'center',
     justifyContent: 'start',
@@ -12,11 +12,11 @@ export const alertStyles = cva({
     textAlign: 'start',
     // Explicit rem values (not spacing tokens): this project's panda.config.ts
     // has no rem-based spacing scale, so numeric tokens like '4' resolve to 4px.
-    // daisyUI's real gap-4/px-4/py-3 are 1rem/1rem/0.75rem.
+    // the original's real gap-4/px-4/py-3 are 1rem/1rem/0.75rem.
     gap: 'token(spacing.4)',
     paddingInline: 'token(spacing.4)',
     paddingBlock: 'token(spacing.3)',
-    // daisyUI grows the content column to fill remaining space once there's
+    // the original implementation grows the content column to fill remaining space once there's
     // a second child (e.g. icon + text), avoiding an unwanted gap when the
     // alert has only one child.
     '&:has(:nth-child(2))': {
@@ -27,14 +27,14 @@ export const alertStyles = cva({
     lineHeight: 'token(spacing.5)',
     fontWeight: '400',
 
-    // Colors via CSS variables (daisyUI pattern)
+    // Colors via CSS variables (the original implementation pattern)
     backgroundColor: 'var(--alert-color, token(colors.base-200))',
     color: 'token(colors.base-content)',
     borderWidth: 'var(--border, 1px)',
     borderStyle: 'solid',
     borderColor: 'var(--alert-border-color, token(colors.base-200))',
 
-    // daisyUI visual effects
+    // the original implementation visual effects
     backgroundImage: 'none, var(--fx-noise)',
     backgroundSize: 'auto, calc(var(--noise, 0) * 33%)',
     boxShadow: [

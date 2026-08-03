@@ -50,7 +50,7 @@ export const timeline = sva({
       },
       // TODO (reported 2026-08-02): no gap/minHeight between <li> rows here,
       // so items with short start/end content end up flush or overlapping
-      // vertically. Real daisyUI doesn't need one because its rows are laid
+      // vertically. The original implementation doesn't need one because its rows are laid
       // out in a browser context with default block spacing this port
       // doesn't replicate — needs an explicit gap (or per-row minHeight) on
       // `& > li` for vertical mode.

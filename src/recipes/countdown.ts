@@ -1,11 +1,11 @@
 import { cva } from '../../styled-system/css'
 
-// NOTE: real daisyUI implements this with a single combined-value CSS trick
+// NOTE: the original implementation implements this with a single combined-value CSS trick
 // (mod()/round() math + a 00-99 content strip clipped via text-align:end +
 // direction:rtl). Ported it byte-for-byte first, but it rendered digits
 // transposed in testing (23 -> "32") — the RTL clip-to-1ch behavior didn't
 // resolve the way the source assumes in this browser. Per the
-// js-over-daisyui-purity memory: this library has real JS via Mithril, so
+// js-over-css-purity memory: this library has real JS via Mithril, so
 // instead of chasing the exact bidi/clip behavior, digit decomposition
 // happens in JS (see Countdown component) and each digit gets its own
 // single-column 0-9 strip — same visual roll effect, no ambiguity about

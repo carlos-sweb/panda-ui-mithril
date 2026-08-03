@@ -2,7 +2,7 @@
 
 > **[Demo en vivo →](https://carlos-sweb.github.io/panda-ui-mithril/)**
 
-Biblioteca de componentes UI para [Mithril.js](https://mithril.js.org/) estilizados con [Panda CSS](https://panda-css.com/). Nombres de clases compatibles con [daisyUI](https://daisyui.com/). Iconos via [lucide-mithril](https://github.com/your-repo/lucide-mithril).
+Biblioteca de componentes UI para [Mithril.js](https://mithril.js.org/) estilizados con [Panda CSS](https://panda-css.com/). Nombres de clases inspirados por [daisyUI](https://daisyui.com/) (MIT). Iconos via [lucide-mithril](https://github.com/your-repo/lucide-mithril).
 
 ## Stack
 
@@ -148,7 +148,7 @@ Si además quieres que **tu propio** `css()`/`cva()` (no solo los componentes de
 | **Feedback** | Alert, Toast, Loading, Progress, RadialProgress, Tooltip, Modal |
 | **Misc** | Accordion/Collapse, Carousel, ChatBubble, Diff, Filter, Footer, Hero, Megamenu, Swap, ThemeController, Fieldset, Label |
 
-Todos los componentes soportan variantes daisyUI: `color`, `size`, `variant`.
+Todos los componentes soportan variantes de color, tamaño y estilo: `color`, `size`, `variant`.
 
 ## Comandos
 
@@ -188,7 +188,7 @@ panda-ui-mithril/
 
 ## Tema
 
-Soporta modo claro/oscuro via `data-theme`. Tokens semanticos compatibles con daisyUI:
+Soporta modo claro/oscuro via `data-theme`. Tokens semánticos inspirados por daisyUI:
 
 - **Colores base**: `base-100`, `base-200`, `base-300`, `base-content`
 - **Colores tematicos**: `primary`, `secondary`, `accent`, `neutral`

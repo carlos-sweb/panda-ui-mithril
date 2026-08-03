@@ -17,7 +17,7 @@ export const badgeStyles = cva({
     backgroundColor: 'var(--badge-bg, var(--badge-color, token(colors.base-100)))',
     backgroundImage: 'none, var(--fx-noise)',
     backgroundSize: 'auto, calc(var(--noise, 0) * 100%)',
-    // daisyUI: --size: calc(var(--size-selector, 0.25rem) * 6) for the default (md) size
+    // the original implementation: --size: calc(var(--size-selector, 0.25rem) * 6) for the default (md) size
     '--badge-size': 'token(spacing.6)',
     height: 'var(--badge-size)',
     paddingInline: 'calc(var(--badge-size) / 2 - var(--border, 1px))',

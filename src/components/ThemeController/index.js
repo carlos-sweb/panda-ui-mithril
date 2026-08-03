@@ -3,14 +3,14 @@ import { toggleStyles } from '../../recipes/toggle'
 import { checkboxStyles } from '../../recipes/checkbox'
 import { cx } from '../../utils/cx'
 
-// Real daisyUI's `theme-controller` class carries NO CSS of its own — theming
+// The original implementation's `theme-controller` class carries NO CSS of its own — theming
 // works via a build-time plugin that generates a `:root:has(input.theme-
 // controller[value="X"]:checked)` rule per theme, and the checkbox is always
 // combined with .toggle/.checkbox/.swap for its actual look. This project
 // doesn't run that plugin (themes are switched by setting `data-theme` on
 // <html> directly, see playground/main.jsx), so the CSS-only mechanism
 // wouldn't do anything here even if replicated. Since this library wraps
-// Mithril specifically to use real JS (see memory: js-over-daisyui-purity),
+// Mithril specifically to use real JS (see memory: js-over-css-purity),
 // ThemeController stays a controlled input like Checkbox/Toggle/Radio — the
 // consumer's onchange sets data-theme, same pattern already used in
 // playground/main.jsx's own navbar theme button.

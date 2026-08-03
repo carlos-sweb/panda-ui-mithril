@@ -12,7 +12,7 @@ export const otpStyles = cva({
     '--input-color': 'color-mix(in oklab, token(colors.base-content) 20%, transparent)',
     '--otp-ch': '1ch',
     // Safari computes `ch` for monospace fonts differently than Chromium/Firefox,
-    // which throws off every stride/margin calc below — same patch daisyUI ships.
+    // which throws off every stride/margin calc below — same patch the original implementation ships.
     '@supports (font: -apple-system-body)': {
       '--otp-ch': '0.618164em',
     },
@@ -70,7 +70,7 @@ export const otpStyles = cva({
     // side specifically. Verified pixel-perfect (::after left edge == target
     // span's left edge, computed from live getBoundingClientRect) across
     // multiple cursor positions in Chromium — could not reproduce here.
-    // Added the daisyUI Safari `ch`-unit patch on --otp-ch as the likely
+    // Added the the original implementation Safari `ch`-unit patch on --otp-ch as the likely
     // cause (WebKit computes `ch` differently for monospace fonts, which
     // this whole ring/stride math is built on) but unconfirmed — revisit if
     // it recurs. Low priority: OTP is a minor component vs. Button etc.

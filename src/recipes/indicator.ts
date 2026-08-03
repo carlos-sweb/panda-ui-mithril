@@ -5,7 +5,7 @@ export const indicatorStyles = cva({
     position: 'relative',
     display: 'inline-flex',
     width: 'max-content',
-    // Matches daisyUI's `:where(.indicator-item)` — positions ANY descendant
+    // Matches the original's `:where(.indicator-item)` — positions ANY descendant
     // carrying this class, not just ones rendered via the `item` prop.
     '& .indicator-item': {
       position: 'absolute',

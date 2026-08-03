@@ -1,12 +1,12 @@
 import { sva } from '../../styled-system/css'
 
-// Real daisyUI has no calendar of its own — it only ships CSS (targeting
+// The original implementation has no calendar of its own — it only ships CSS (targeting
 // shadow-DOM ::part() selectors) to skin one of three external libraries
 // (Cally, react-day-picker, Vanilla Calendar Pro), none of which are
 // Mithril-compatible web components we'd want as a dependency here. Since
 // this project has real JS via Mithril, built an actual working month-grid
 // calendar instead (date math, month navigation, day selection state) —
-// styled to match the look of daisyUI's own Cally skin (rounded day
+// styled to match the look of the original's own Cally skin (rounded day
 // buttons, muted weekday header, primary-colored "today", base-content
 // "selected").
 export const calendar = sva({

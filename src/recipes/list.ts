@@ -44,7 +44,7 @@ export const list = sva({
     // TODO (reported 2026-08-02): borderRadius above applies to every row
     // unconditionally, so on hover the fill color makes middle rows look odd
     // (rounded corners floating between straight-edged neighbors). Real
-    // daisyUI has this same quirk. Requested fix: only round the hover fill
+    // the original implementation has this same quirk. Requested fix: only round the hover fill
     // on `:last-child` — or `:first-child` when the list has no title row —
     // so only the visual edge of the list rounds, not every row.
     hover: {

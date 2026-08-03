@@ -7,7 +7,7 @@ export const loadingStyles = cva({
     pointerEvents: 'none',
     verticalAlign: 'middle',
     aspectRatio: '1 / 1',
-    // daisyUI: width: calc(var(--size-selector, 0.25rem) * 6) — default (md) size
+    // the original implementation: width: calc(var(--size-selector, 0.25rem) * 6) — default (md) size
     width: 'token(spacing.6)',
   },
   variants: {

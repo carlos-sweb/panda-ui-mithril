@@ -15,7 +15,7 @@ export const kbdStyles = cva({
     borderStyle: 'solid',
     borderColor: 'color-mix(in srgb, token(colors.base-content) 20%, transparent)',
     borderBottomWidth: 'calc(var(--border, 1px) + 1px)',
-    // daisyUI: --size: calc(var(--size-selector, 0.25rem) * 6) for the default (md) size
+    // the original implementation: --size: calc(var(--size-selector, 0.25rem) * 6) for the default (md) size
     '--kbd-size': 'token(spacing.6)',
     height: 'var(--kbd-size)',
     minWidth: 'var(--kbd-size)',

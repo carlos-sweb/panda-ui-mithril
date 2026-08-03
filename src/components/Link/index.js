@@ -6,7 +6,6 @@ import { cx } from '../../utils/cx'
 export const Link = {
   view(vnode) {
     const { color, hover = true, className, ...rest } = vnode.attrs
-
     return m('a', {
       className: cx('link', linkStyles({ color, hover }), className),
       ...rest

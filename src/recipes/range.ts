@@ -1,7 +1,7 @@
 import { cva } from '../../styled-system/css'
 
-// Faithful to daisyUI's sizing/color/border-radius formulas, but simplified:
-// real daisyUI paints the "filled" track portion via a container-query-sized
+// Faithful to the original's sizing/color/border-radius formulas, but simplified:
+// the original implementation paints the "filled" track portion via a container-query-sized
 // box-shadow layer on the thumb (`--range-fill-x/y/spread`, `cqw`/`cqh` units).
 // That trick needs `container-type` wired up the DOM tree, so this version
 // uses a plain background-color thumb instead of the fill illusion.

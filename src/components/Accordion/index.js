@@ -3,16 +3,29 @@ import { collapseStyles, collapseTitleStyles } from '../../recipes/accordion'
 import { cx } from '../../utils/cx'
 
 
-export const Accordion = {
+export const Accordion = {  
   view(vnode) {
-    const { arrow, plus, border, name, checked, defaultChecked, className, onchange, ...rest } = vnode.attrs
-
+    const { 
+      arrow, 
+      plus, 
+      border, 
+      name, 
+      checked, 
+      defaultChecked, 
+      className, 
+      onchange, 
+      ...rest } = vnode.attrs
+      
     return m('div', {
-      className: cx('collapse', arrow && 'collapse-arrow', plus && 'collapse-plus', collapseStyles({ arrow, plus, border }), className),
+      className: cx(
+        'collapse', 
+        arrow && 'collapse-arrow',
+        plus && 'collapse-plus', 
+        collapseStyles({ arrow, plus, border }), className),
       ...rest
     }, [
       m('input', {
-        type: name ? 'radio' : 'checkbox',
+        type: name ? 'radio' : 'checkbox',        
         name,
         checked,
         onchange,

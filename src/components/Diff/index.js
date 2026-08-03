@@ -2,7 +2,7 @@ import m from 'mithril'
 import { diff } from '../../recipes/diff'
 import { cx } from '../../utils/cx'
 
-// Real daisyUI drives this with a `<div class="diff-resizer">` that uses the
+// The original implementation drives this with a `<div class="diff-resizer">` that uses the
 // native CSS `resize` property (a tiny corner-drag handle) combined with
 // container-query units — clever, but the resulting UX is a fiddly corner
 // nub rather than a draggable handle you can grab anywhere on the bar. This

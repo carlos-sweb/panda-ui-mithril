@@ -2,7 +2,7 @@ import m from 'mithril'
 import { modal } from '../../recipes/modal'
 import { cx } from '../../utils/cx'
 
-// Real daisyUI supports several ways to open a modal (native <dialog>
+// The original implementation supports several ways to open a modal (native <dialog>
 // .showModal(), the [popover] attribute, a hidden checkbox + :checked, or
 // :target). Since this library wraps Mithril specifically to use real JS,
 // `open` drives the dialog's actual .showModal()/.close() here — that gets

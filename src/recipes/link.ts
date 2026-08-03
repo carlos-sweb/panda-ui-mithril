@@ -18,7 +18,7 @@ export const linkStyles = cva({
       warning: { color: 'token(colors.warning)', '&:hover': { color: 'color-mix(in oklab, token(colors.warning) 80%, #000)' } },
       error: { color: 'token(colors.error)', '&:hover': { color: 'color-mix(in oklab, token(colors.error) 80%, #000)' } },
     },
-    // Matches daisyUI's `.link-hover` modifier: no underline until hovered.
+    // Matches the original's `.link-hover` modifier: no underline until hovered.
     hover: {
       true: { textDecoration: 'none', _hover: { textDecoration: 'underline' } },
       false: {},

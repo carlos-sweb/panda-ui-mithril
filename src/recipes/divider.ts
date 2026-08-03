@@ -27,9 +27,9 @@ export const dividerStyles = cva({
       error: { '--divider-color': 'token(colors.error)' },
     },
     direction: {
-      // Default line-across-a-column divider (matches daisyUI's plain `.divider`)
+      // Default line-across-a-column divider (matches the original's plain `.divider`)
       horizontal: {},
-      // Narrow bar divider for side-by-side content (matches daisyUI's `.divider-horizontal`)
+      // Narrow bar divider for side-by-side content (matches the original's `.divider-horizontal`)
       vertical: {
         flexDirection: 'column',
         height: 'auto',

@@ -1,11 +1,11 @@
 import { sva } from '../../styled-system/css'
 
 // Scoped port: this project drives tabs via a controlled `active` prop
-// (real JS state) rather than daisyUI's hidden input[radio]/label CSS-only
+// (real JS state) rather than the original's hidden input[radio]/label CSS-only
 // trick, so all the `:is(input:checked, label:has(:checked))` selector
 // branches in the real source are dropped in favor of a single
 // .tab-active/[aria-selected] check. The `lift` variant also skips
-// daisyUI's radial-gradient trick that rounds the outer corners where the
+// the original's radial-gradient trick that rounds the outer corners where the
 // active tab meets its content panel — kept the core "file folder tab"
 // border effect, dropped that specific polish detail.
 const activeSelector = '&.tab-active, &[aria-selected="true"], &[aria-current="true"]'
