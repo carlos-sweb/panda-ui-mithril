@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { navbarStyles, navbarStartStyles, navbarCenterStyles, navbarEndStyles } from '../../recipes/navbar'
+import { navbar } from '../../recipes/navbar'
 import { cx } from '../../utils/cx'
 
 export const Navbar = {
@@ -7,7 +7,7 @@ export const Navbar = {
     const { className, ...rest } = vnode.attrs
 
     return m('div', {
-      className: cx('navbar', navbarStyles(), className),
+      className: cx('navbar', navbar({}).navbar, className),
       ...rest
     }, vnode.children)
   }
@@ -16,20 +16,20 @@ export const Navbar = {
 export const NavbarStart = {
   view(vnode) {
     const { className, ...rest } = vnode.attrs
-    return m('div', { className: cx('navbar-start', navbarStartStyles(), className), ...rest }, vnode.children)
+    return m('div', { className: cx('navbar-start', navbar({}).start, className), ...rest }, vnode.children)
   }
 }
 
 export const NavbarCenter = {
   view(vnode) {
     const { className, ...rest } = vnode.attrs
-    return m('div', { className: cx('navbar-center', navbarCenterStyles(), className), ...rest }, vnode.children)
+    return m('div', { className: cx('navbar-center', navbar({}).center, className), ...rest }, vnode.children)
   }
 }
 
 export const NavbarEnd = {
   view(vnode) {
     const { className, ...rest } = vnode.attrs
-    return m('div', { className: cx('navbar-end', navbarEndStyles(), className), ...rest }, vnode.children)
+    return m('div', { className: cx('navbar-end', navbar({}).end, className), ...rest }, vnode.children)
   }
 }

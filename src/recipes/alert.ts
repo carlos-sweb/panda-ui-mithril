@@ -13,9 +13,9 @@ export const alertStyles = cva({
     // Explicit rem values (not spacing tokens): this project's panda.config.ts
     // has no rem-based spacing scale, so numeric tokens like '4' resolve to 4px.
     // daisyUI's real gap-4/px-4/py-3 are 1rem/1rem/0.75rem.
-    gap: '1rem',
-    paddingInline: '1rem',
-    paddingBlock: '0.75rem',
+    gap: 'token(spacing.4)',
+    paddingInline: 'token(spacing.4)',
+    paddingBlock: 'token(spacing.3)',
     // daisyUI grows the content column to fill remaining space once there's
     // a second child (e.g. icon + text), avoiding an unwanted gap when the
     // alert has only one child.
@@ -23,30 +23,30 @@ export const alertStyles = cva({
       gridTemplateColumns: 'auto minmax(auto, 1fr)',
     },
     borderRadius: 'var(--radius-box)',
-    fontSize: '0.875rem',
-    lineHeight: '1.25rem',
+    fontSize: 'token(fontSizes.base)',
+    lineHeight: 'token(spacing.5)',
     fontWeight: '400',
 
     // Colors via CSS variables (daisyUI pattern)
-    backgroundColor: 'var(--alert-color, var(--colors-base-200))',
-    color: 'var(--colors-base-content)',
+    backgroundColor: 'var(--alert-color, token(colors.base-200))',
+    color: 'token(colors.base-content)',
     borderWidth: 'var(--border, 1px)',
     borderStyle: 'solid',
-    borderColor: 'var(--alert-border-color, var(--colors-base-200))',
+    borderColor: 'var(--alert-border-color, token(colors.base-200))',
 
     // daisyUI visual effects
     backgroundImage: 'none, var(--fx-noise)',
     backgroundSize: 'auto, calc(var(--noise, 0) * 33%)',
     boxShadow: [
       '0 3px 0 -2px oklch(100% 0 0 / calc(var(--depth, 1) * 0.08)) inset',
-      '0 1px color-mix(in oklab, color-mix(in oklab, #000 20%, var(--alert-color, var(--colors-base-200))) calc(var(--depth, 1) * 20%), #0000)',
+      '0 1px color-mix(in oklab, color-mix(in oklab, #000 20%, var(--alert-color, token(colors.base-200))) calc(var(--depth, 1) * 20%), #0000)',
       '0 4px 3px -2px oklch(0% 0 0 / calc(var(--depth, 1) * 0.08))',
     ].join(', '),
 
     // Icon defaults
     '& svg': {
-      width: '1.5rem',
-      height: '1.5rem',
+      width: 'token(spacing.6)',
+      height: 'token(spacing.6)',
       flexShrink: '0',
       stroke: 'currentColor',
     },
@@ -59,31 +59,31 @@ export const alertStyles = cva({
       margin: '0',
     },
     '& .alert-description': {
-      fontSize: '0.75rem',
+      fontSize: 'token(fontSizes.sm)',
       opacity: '0.8',
     },
   },
   variants: {
     color: {
       info: {
-        '--alert-color': 'var(--colors-info)',
-        '--alert-border-color': 'var(--colors-info)',
-        color: 'var(--colors-info-content)',
+        '--alert-color': 'token(colors.info)',
+        '--alert-border-color': 'token(colors.info)',
+        color: 'token(colors.info-content)',
       },
       success: {
-        '--alert-color': 'var(--colors-success)',
-        '--alert-border-color': 'var(--colors-success)',
-        color: 'var(--colors-success-content)',
+        '--alert-color': 'token(colors.success)',
+        '--alert-border-color': 'token(colors.success)',
+        color: 'token(colors.success-content)',
       },
       warning: {
-        '--alert-color': 'var(--colors-warning)',
-        '--alert-border-color': 'var(--colors-warning)',
-        color: 'var(--colors-warning-content)',
+        '--alert-color': 'token(colors.warning)',
+        '--alert-border-color': 'token(colors.warning)',
+        color: 'token(colors.warning-content)',
       },
       error: {
-        '--alert-color': 'var(--colors-error)',
-        '--alert-border-color': 'var(--colors-error)',
-        color: 'var(--colors-error-content)',
+        '--alert-color': 'token(colors.error)',
+        '--alert-border-color': 'token(colors.error)',
+        color: 'token(colors.error-content)',
       },
     },
     variant: {
@@ -101,9 +101,9 @@ export const alertStyles = cva({
         backgroundImage: 'none',
       },
       soft: {
-        color: 'var(--alert-color, var(--colors-base-content))',
-        backgroundColor: 'color-mix(in oklab, var(--alert-color, var(--colors-base-content)) 8%, var(--colors-base-100))',
-        '--alert-border-color': 'color-mix(in oklab, var(--alert-color, var(--colors-base-content)) 10%, var(--colors-base-100))',
+        color: 'var(--alert-color, token(colors.base-content))',
+        backgroundColor: 'color-mix(in oklab, var(--alert-color, token(colors.base-content)) 8%, token(colors.base-100))',
+        '--alert-border-color': 'color-mix(in oklab, var(--alert-color, token(colors.base-content)) 10%, token(colors.base-100))',
         boxShadow: 'none',
         backgroundImage: 'none',
       },

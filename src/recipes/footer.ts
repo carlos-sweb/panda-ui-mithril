@@ -1,47 +1,49 @@
-import { cva } from '../../styled-system/css'
+import { sva } from '../../styled-system/css'
 
-export const footerStyles = cva({
+export const footer = sva({
+  slots: ['footer', 'title'],
   base: {
-    display: 'grid',
-    width: '100%',
-    gridAutoFlow: 'row',
-    placeItems: 'start',
-    columnGap: '1rem',
-    rowGap: '2.5rem',
-    fontSize: '0.875rem',
-    lineHeight: '1.25rem',
-
-    '& > *': {
+    footer: {
       display: 'grid',
+      width: '100%',
+      gridAutoFlow: 'row',
       placeItems: 'start',
-      gap: '0.5rem',
+      columnGap: 'token(spacing.4)',
+      rowGap: 'token(spacing.10)',
+      fontSize: 'token(fontSizes.base)',
+      lineHeight: 'token(spacing.5)',
+
+      '& > *': {
+        display: 'grid',
+        placeItems: 'start',
+        gap: 'token(spacing.2)',
+      },
+    },
+    title: {
+      marginBottom: 'token(spacing.2)',
+      textTransform: 'uppercase',
+      opacity: '0.6',
+      fontWeight: '600',
     },
   },
   variants: {
     center: {
       true: {
-        gridAutoFlow: 'column dense',
-        placeItems: 'center',
-        textAlign: 'center',
-        '& > *': { placeItems: 'center' },
+        footer: {
+          gridAutoFlow: 'column dense',
+          placeItems: 'center',
+          textAlign: 'center',
+          '& > *': { placeItems: 'center' },
+        },
       },
     },
     direction: {
-      horizontal: { gridAutoFlow: 'column' },
-      vertical: { gridAutoFlow: 'row' },
+      horizontal: { footer: { gridAutoFlow: 'column' } },
+      vertical: { footer: { gridAutoFlow: 'row' } },
     },
   },
   compoundVariants: [
-    { center: true, direction: 'horizontal', css: { gridAutoFlow: 'row dense' } },
-    { center: true, direction: 'vertical', css: { gridAutoFlow: 'column dense' } },
+    { center: true, direction: 'horizontal', css: { footer: { gridAutoFlow: 'row dense' } } },
+    { center: true, direction: 'vertical', css: { footer: { gridAutoFlow: 'column dense' } } },
   ],
-})
-
-export const footerTitleStyles = cva({
-  base: {
-    marginBottom: '0.5rem',
-    textTransform: 'uppercase',
-    opacity: '0.6',
-    fontWeight: '600',
-  },
 })

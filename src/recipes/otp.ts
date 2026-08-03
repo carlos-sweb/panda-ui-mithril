@@ -8,8 +8,8 @@ export const otpStyles = cva({
     direction: 'ltr',
     clipPath: 'inset(-3.5px 3.5px -3.5px -3.5px)',
     borderRadius: 'var(--radius-field)',
-    fontSize: '1.75rem',
-    '--input-color': 'color-mix(in oklab, var(--colors-base-content) 20%, transparent)',
+    fontSize: 'token(fontSizes.5xl)',
+    '--input-color': 'color-mix(in oklab, token(colors.base-content) 20%, transparent)',
     '--otp-ch': '1ch',
     // Safari computes `ch` for monospace fonts differently than Chromium/Firefox,
     // which throws off every stride/margin calc below — same patch daisyUI ships.
@@ -18,7 +18,7 @@ export const otpStyles = cva({
     },
     '--otp-gap': 'calc(var(--otp-ch) * 0.5)',
     '--otp-w': 'calc(var(--otp-ch) * 2)',
-    '--otp-size': '2.5rem',
+    '--otp-size': 'token(spacing.10)',
     '--stride': 'calc(var(--otp-w) + var(--otp-gap))',
     gap: 'var(--otp-gap)',
 
@@ -49,7 +49,7 @@ export const otpStyles = cva({
       transition: 'border-color 0.2s',
       inlineSize: 'var(--otp-w)',
       blockSize: 'var(--otp-size)',
-      backgroundColor: 'var(--colors-base-100)',
+      backgroundColor: 'token(colors.base-100)',
       border: 'var(--border, 1px) solid var(--input-color)',
       borderRadius: 'inherit',
       outline: '2px solid transparent',
@@ -88,7 +88,7 @@ export const otpStyles = cva({
 
     '&:focus-within': {
       isolation: 'isolate',
-      '--input-color': 'var(--colors-base-content)',
+      '--input-color': 'token(colors.base-content)',
       '& > span': { boxShadow: '0 1px color-mix(in oklab, var(--input-color) 10%, transparent)' },
       '&:after': { outlineColor: 'var(--input-color)' },
     },
@@ -108,21 +108,21 @@ export const otpStyles = cva({
     // forces --input-color to base-content) wins and the color flips to a
     // generic dark ring while the field has focus.
     color: {
-      neutral: { '--input-color': 'var(--colors-neutral)', '&:focus-within': { '--input-color': 'var(--colors-neutral)' } },
-      primary: { '--input-color': 'var(--colors-primary)', '&:focus-within': { '--input-color': 'var(--colors-primary)' } },
-      secondary: { '--input-color': 'var(--colors-secondary)', '&:focus-within': { '--input-color': 'var(--colors-secondary)' } },
-      accent: { '--input-color': 'var(--colors-accent)', '&:focus-within': { '--input-color': 'var(--colors-accent)' } },
-      info: { '--input-color': 'var(--colors-info)', '&:focus-within': { '--input-color': 'var(--colors-info)' } },
-      success: { '--input-color': 'var(--colors-success)', '&:focus-within': { '--input-color': 'var(--colors-success)' } },
-      warning: { '--input-color': 'var(--colors-warning)', '&:focus-within': { '--input-color': 'var(--colors-warning)' } },
-      error: { '--input-color': 'var(--colors-error)', '&:focus-within': { '--input-color': 'var(--colors-error)' } },
+      neutral: { '--input-color': 'token(colors.neutral)', '&:focus-within': { '--input-color': 'token(colors.neutral)' } },
+      primary: { '--input-color': 'token(colors.primary)', '&:focus-within': { '--input-color': 'token(colors.primary)' } },
+      secondary: { '--input-color': 'token(colors.secondary)', '&:focus-within': { '--input-color': 'token(colors.secondary)' } },
+      accent: { '--input-color': 'token(colors.accent)', '&:focus-within': { '--input-color': 'token(colors.accent)' } },
+      info: { '--input-color': 'token(colors.info)', '&:focus-within': { '--input-color': 'token(colors.info)' } },
+      success: { '--input-color': 'token(colors.success)', '&:focus-within': { '--input-color': 'token(colors.success)' } },
+      warning: { '--input-color': 'token(colors.warning)', '&:focus-within': { '--input-color': 'token(colors.warning)' } },
+      error: { '--input-color': 'token(colors.error)', '&:focus-within': { '--input-color': 'token(colors.error)' } },
     },
     size: {
-      xs: { fontSize: '1.25rem', '--otp-size': '1.5rem' },
-      sm: { fontSize: '1.5rem', '--otp-size': '2rem' },
-      md: { fontSize: '1.75rem', '--otp-size': '2.5rem' },
-      lg: { fontSize: '2rem', '--otp-size': '3rem' },
-      xl: { fontSize: '2.5rem', '--otp-size': '3.5rem' },
+      xs: { fontSize: 'token(fontSizes.2xl)', '--otp-size': 'token(spacing.6)' },
+      sm: { fontSize: 'token(fontSizes.4xl)', '--otp-size': 'token(spacing.8)' },
+      md: { fontSize: 'token(fontSizes.5xl)', '--otp-size': 'token(spacing.10)' },
+      lg: { fontSize: 'token(fontSizes.6xl)', '--otp-size': 'token(spacing.12)' },
+      xl: { fontSize: 'token(fontSizes.7xl)', '--otp-size': 'token(spacing.14)' },
     },
     joined: {
       true: {
@@ -134,5 +134,8 @@ export const otpStyles = cva({
         '& > span:last-of-type': { borderStartStartRadius: '0', borderEndStartRadius: '0' },
       },
     },
+  },
+  defaultVariants: {
+    size: 'md',
   },
 })

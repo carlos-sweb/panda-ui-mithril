@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { stepsStyles, stepStyles } from '../../recipes/steps'
+import { steps } from '../../recipes/steps'
 import { cx } from '../../utils/cx'
 
 export const Steps = {
@@ -8,7 +8,7 @@ export const Steps = {
     const direction = vertical && !horizontal ? 'vertical' : 'horizontal'
 
     return m('ul', {
-      className: cx('steps', stepsStyles({ direction }), className),
+      className: cx('steps', steps({ direction }).steps, className),
       ...rest
     }, vnode.children)
   }
@@ -19,7 +19,7 @@ export const Step = {
     const { color, className, ...rest } = vnode.attrs
 
     return m('li', {
-      className: cx('step', color && `step-${color}`, stepStyles({ color }), className),
+      className: cx('step', color && `step-${color}`, steps({ color }).step, className),
       ...rest
     }, vnode.children)
   }

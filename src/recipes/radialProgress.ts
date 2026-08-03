@@ -11,11 +11,11 @@ export const radialProgressStyles = cva({
     backgroundColor: 'transparent',
     boxSizing: 'content-box',
     '--value': '0',
-    '--size': '5rem',
-    '--thickness': 'calc(var(--size) / 10)',
+    '--rprogress-size': 'token(spacing.20)',
+    '--thickness': 'calc(var(--rprogress-size) / 10)',
     '--radialprogress': 'calc(var(--value) * 1%)',
-    width: 'var(--size)',
-    height: 'var(--size)',
+    width: 'var(--rprogress-size)',
+    height: 'var(--rprogress-size)',
     transition: '--radialprogress 0.3s linear',
 
     '&:before': {
@@ -33,7 +33,7 @@ export const radialProgressStyles = cva({
       backgroundColor: 'currentColor',
       transition: 'transform 0.3s linear',
       inset: 'calc(50% - var(--thickness) / 2)',
-      transform: 'rotate(calc(var(--value) * 3.6deg - 90deg)) translate(calc(var(--size) / 2 - 50%))',
+      transform: 'rotate(calc(var(--value) * 3.6deg - 90deg)) translate(calc(var(--rprogress-size) / 2 - 50%))',
     },
   },
 })

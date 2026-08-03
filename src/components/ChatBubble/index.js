@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { chatStyles, chatBubbleStyles } from '../../recipes/chatBubble'
+import { chat } from '../../recipes/chatBubble'
 import { cx } from '../../utils/cx'
 
 export const Chat = {
@@ -7,7 +7,7 @@ export const Chat = {
     const { placement, className, ...rest } = vnode.attrs
 
     return m('div', {
-      className: cx('chat', `chat-${placement || 'start'}`, chatStyles({ placement }), className),
+      className: cx('chat', `chat-${placement || 'start'}`, chat({ placement }).chat, className),
       ...rest
     }, vnode.children)
   }
@@ -32,7 +32,7 @@ export const ChatBubble = {
     const { color, className, ...rest } = vnode.attrs
 
     return m('div', {
-      className: cx('chat-bubble', chatBubbleStyles({ color }), className),
+      className: cx('chat-bubble', chat({ color }).bubble, className),
       ...rest
     }, vnode.children)
   }

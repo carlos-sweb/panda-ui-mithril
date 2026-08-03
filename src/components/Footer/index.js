@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { footerStyles, footerTitleStyles } from '../../recipes/footer'
+import { footer } from '../../recipes/footer'
 import { cx } from '../../utils/cx'
 
 export const Footer = {
@@ -12,7 +12,7 @@ export const Footer = {
         'footer',
         center && 'footer-center',
         direction && `footer-${direction}`,
-        footerStyles({ center, direction }),
+        footer({ center, direction }).footer,
         className
       ),
       ...rest
@@ -23,6 +23,6 @@ export const Footer = {
 export const FooterTitle = {
   view(vnode) {
     const { className, ...rest } = vnode.attrs
-    return m('span', { className: cx('footer-title', footerTitleStyles(), className), ...rest }, vnode.children)
+    return m('span', { className: cx('footer-title', footer({}).title, className), ...rest }, vnode.children)
   }
 }

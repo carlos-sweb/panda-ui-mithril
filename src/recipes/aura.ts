@@ -4,7 +4,7 @@ export const auraStyles = cva({
   base: {
     position: 'relative',
     display: 'inline-block',
-    '--aura-padding': '0.125rem',
+    '--aura-padding': 'token(spacing.0.5)',
     padding: 'var(--aura-padding)',
     borderRadius: 'calc(var(--aura-padding) + var(--aura-radius, var(--radius-box)))',
     animation: 'aura 6s linear infinite',
@@ -70,9 +70,9 @@ export const auraStyles = cva({
     size: {
       xs: { '--aura-padding': '0rem' },
       sm: { '--aura-padding': '0.0625rem' },
-      md: { '--aura-padding': '0.125rem' },
+      md: { '--aura-padding': 'token(spacing.0.5)' },
       lg: { '--aura-padding': '0.15625rem' },
-      xl: { '--aura-padding': '0.25rem' },
+      xl: { '--aura-padding': 'token(spacing.1)' },
     },
   },
   defaultVariants: {

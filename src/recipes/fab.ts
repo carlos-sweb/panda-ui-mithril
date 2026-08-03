@@ -4,14 +4,14 @@ export const fabStyles = cva({
   base: {
     pointerEvents: 'none',
     position: 'fixed',
-    insetInlineEnd: '1rem',
-    bottom: '1rem',
+    insetInlineEnd: 'token(spacing.4)',
+    bottom: 'token(spacing.4)',
     zIndex: '999',
     display: 'flex',
     flexDirection: 'column-reverse',
     alignItems: 'flex-end',
-    gap: '0.5rem',
-    fontSize: '0.875rem',
+    gap: 'token(spacing.2)',
+    fontSize: 'token(fontSizes.base)',
     whiteSpace: 'nowrap',
     userSelect: 'none',
 
@@ -19,7 +19,7 @@ export const fabStyles = cva({
       pointerEvents: 'auto',
       display: 'flex',
       alignItems: 'center',
-      gap: '0.5rem',
+      gap: 'token(spacing.2)',
     },
     '& > *:hover, & > *:has(:focus-visible)': {
       zIndex: '1',
@@ -58,10 +58,10 @@ export const fabStyles = cva({
 
 export const fabLabelStyles = cva({
   base: {
-    backgroundColor: 'var(--colors-neutral)',
-    color: 'var(--colors-neutral-content)',
-    paddingInline: '0.625rem',
-    paddingBlock: '0.25rem',
+    backgroundColor: 'token(colors.neutral)',
+    color: 'token(colors.neutral-content)',
+    paddingInline: 'token(spacing.2.5)',
+    paddingBlock: 'token(spacing.1)',
     borderRadius: 'var(--radius-field)',
   },
 })

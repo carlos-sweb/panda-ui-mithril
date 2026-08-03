@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { diffStyles, diffItemStyles, diffResizerStyles } from '../../recipes/diff'
+import { diff } from '../../recipes/diff'
 import { cx } from '../../utils/cx'
 
 // Real daisyUI drives this with a `<div class="diff-resizer">` that uses the
@@ -27,7 +27,7 @@ export const Diff = {
     }
 
     return m('figure', {
-      className: cx('diff', diffStyles(), className),
+      className: cx('diff', diff({}).diff, className),
       style: `--diff-pos: ${state.position}%`,
       oncreate: (vn) => { state.el = vn.dom },
       onpointerdown: (e) => {
@@ -46,20 +46,20 @@ export const Diff = {
 export const DiffItem1 = {
   view(vnode) {
     const { className, ...rest } = vnode.attrs
-    return m('div', { className: cx('diff-item-1', diffItemStyles({ item: 1 }), className), ...rest }, vnode.children)
+    return m('div', { className: cx('diff-item-1', diff({ item: 1 }).item, className), ...rest }, vnode.children)
   }
 }
 
 export const DiffItem2 = {
   view(vnode) {
     const { className, ...rest } = vnode.attrs
-    return m('div', { className: cx('diff-item-2', diffItemStyles({ item: 2 }), className), ...rest }, vnode.children)
+    return m('div', { className: cx('diff-item-2', diff({ item: 2 }).item, className), ...rest }, vnode.children)
   }
 }
 
 export const DiffResizer = {
   view(vnode) {
     const { className, ...rest } = vnode.attrs
-    return m('div', { className: cx('diff-resizer', diffResizerStyles(), className), ...rest })
+    return m('div', { className: cx('diff-resizer', diff({}).resizer, className), ...rest })
   }
 }

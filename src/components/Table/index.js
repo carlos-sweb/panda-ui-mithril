@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
-import { tableStyles, tableRowStyles } from '../../recipes/table'
+import { table } from '../../recipes/table'
 import { cx } from '../../utils/cx'
 
 const overflowAuto = css({ overflowX: 'auto' })
@@ -17,7 +17,7 @@ export const Table = {
     const { size, zebra, pinRows, pinCols, className, ...rest } = vnode.attrs
 
     return m('table', {
-      className: cx('table', tableStyles({ size, zebra, pinRows, pinCols }), className),
+      className: cx('table', table({ size, zebra, pinRows, pinCols }).table, className),
       ...rest
     }, vnode.children)
   }
@@ -47,7 +47,7 @@ export const TableTfoot = {
 export const TableRow = {
   view(vnode) {
     const { hover, className, ...rest } = vnode.attrs
-    return m('tr', { className: cx(tableRowStyles({ hover }), className), ...rest }, vnode.children)
+    return m('tr', { className: cx(table({ hover }).row, className), ...rest }, vnode.children)
   }
 }
 

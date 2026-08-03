@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { modalStyles, modalBoxStyles, modalActionStyles, modalBackdropStyles } from '../../recipes/modal'
+import { modal } from '../../recipes/modal'
 import { cx } from '../../utils/cx'
 
 // Real daisyUI supports several ways to open a modal (native <dialog>
@@ -26,7 +26,7 @@ export const Modal = {
     const { open, position, className, onclose, ...rest } = vnode.attrs
 
     return m('dialog', {
-      className: cx('modal', position && `modal-${position}`, modalStyles({ position }), className),
+      className: cx('modal', position && `modal-${position}`, modal({ position }).modal, className),
       onclose,
       ...rest
     }, vnode.children)
@@ -36,14 +36,14 @@ export const Modal = {
 export const ModalBox = {
   view(vnode) {
     const { className, ...rest } = vnode.attrs
-    return m('div', { className: cx('modal-box', modalBoxStyles(), className), ...rest }, vnode.children)
+    return m('div', { className: cx('modal-box', modal({}).box, className), ...rest }, vnode.children)
   }
 }
 
 export const ModalAction = {
   view(vnode) {
     const { className, ...rest } = vnode.attrs
-    return m('div', { className: cx('modal-action', modalActionStyles(), className), ...rest }, vnode.children)
+    return m('div', { className: cx('modal-action', modal({}).action, className), ...rest }, vnode.children)
   }
 }
 
@@ -52,7 +52,7 @@ export const ModalBackdrop = {
     const { className, onclick, ...rest } = vnode.attrs
     return m('button', {
       type: 'button',
-      className: cx('modal-backdrop', modalBackdropStyles(), className),
+      className: cx('modal-backdrop', modal({}).backdrop, className),
       'aria-label': 'Close',
       onclick,
       ...rest

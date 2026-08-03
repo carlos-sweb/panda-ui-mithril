@@ -160,11 +160,24 @@ values pass a visual glance while still being wrong. Pull the real source:
    trusting a `var(--x)` reference, grep `panda.config.ts`'s `globalCss` for
    the declaration.
 
-5. **Numeric spacing values aren't automatically rem-scaled.** This project's
-   `panda.config.ts` has no spacing token preset, so `paddingInline: '4'`
-   resolves to a literal `4px`, not the `1rem` it would be under Tailwind's
-   default scale. When matching daisyUI's `px-4`/`gap-4`/etc., use explicit
-   rem literals (`'1rem'`) in the recipe instead of bare numeric tokens.
+5. **Use the spacing/fontSizes token scale instead of rem literals.** Since the
+   2026-08 audit, `panda.config.ts` defines `theme.extend.tokens.spacing`
+   (numeric keys `0.5`–`320`, in rem) and `fontSizes` (`2xs`–`7xl`). Recipes
+   reference them with the string macro form `'token(spacing.4)'` /
+   `'token(fontSizes.base)'` — never bare numeric tokens (`paddingInline: '4'`
+   still resolves to literal `4px`) and **never direct token paths as values**
+   (`gap: 'spacing.4'`): in this Panda version a direct path in a `css()`/
+   recipe value is emitted as a literal and silently ignored by the browser.
+   The only working reference form is the `token(...)` string macro, including
+   inside `var()` fallbacks and `color-mix()`.
+
+6. **Custom properties must be component-scoped.** Name component custom
+   properties with a `--{component}-` prefix (`--btn-*`, `--rating-*`,
+   `--rprogress-size`) and never reuse the globals declared in
+   `panda.config.ts`'s `globalCss` (`--size`, `--size-field`, `--radius-*`,
+   `--border`, `--fontsize`, `--depth`, `--noise`, `--fx-noise`) — shadowing a
+   global inside a component subtree is a latent bug (see the `--size` → 
+   `--btn-size`/`--rprogress-size` fix).
 
 6. **Verify with computed styles, not just a screenshot.** A screenshot can
    look plausible even when a value is off by 4x (a 4px padding still renders

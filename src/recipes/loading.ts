@@ -8,7 +8,7 @@ export const loadingStyles = cva({
     verticalAlign: 'middle',
     aspectRatio: '1 / 1',
     // daisyUI: width: calc(var(--size-selector, 0.25rem) * 6) — default (md) size
-    width: '1.5rem',
+    width: 'token(spacing.6)',
   },
   variants: {
     variant: {
@@ -58,11 +58,14 @@ export const loadingStyles = cva({
       },
     },
     size: {
-      xs: { width: '1rem' },
-      sm: { width: '1.25rem' },
-      md: { width: '1.5rem' },
-      lg: { width: '1.75rem' },
-      xl: { width: '2rem' },
+      xs: { width: 'token(spacing.4)' },
+      sm: { width: 'token(spacing.5)' },
+      md: { width: 'token(spacing.6)' },
+      lg: { width: 'token(spacing.7)' },
+      xl: { width: 'token(spacing.8)' },
     },
+  },
+  defaultVariants: {
+    size: 'md',
   },
 })

@@ -6,7 +6,7 @@ export const rating = sva({
     root: {
       display: 'inline-flex',
       alignItems: 'center',
-      gap: '0.125rem',
+      gap: 'token(spacing.0.5)',
     },
     star: {
       display: 'inline-flex',
@@ -28,11 +28,11 @@ export const rating = sva({
   },
   variants: {
     size: {
-      xs: { root: { '--rating-size': '1rem' } },
-      sm: { root: { '--rating-size': '1.25rem' } },
-      md: { root: { '--rating-size': '1.5rem' } },
-      lg: { root: { '--rating-size': '1.75rem' } },
-      xl: { root: { '--rating-size': '2rem' } },
+      xs: { root: { '--rating-size': 'token(spacing.4)' } },
+      sm: { root: { '--rating-size': 'token(spacing.5)' } },
+      md: { root: { '--rating-size': 'token(spacing.6)' } },
+      lg: { root: { '--rating-size': 'token(spacing.7)' } },
+      xl: { root: { '--rating-size': 'token(spacing.8)' } },
     },
     color: {
       neutral: { root: { '--rating-color': 'token(colors.neutral)' } },

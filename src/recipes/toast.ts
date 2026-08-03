@@ -5,7 +5,7 @@ export const toastStyles = cva({
     position: 'fixed',
     display: 'flex',
     flexDirection: 'column',
-    gap: '0.5rem',
+    gap: 'token(spacing.2)',
     background: 'transparent',
     width: 'max-content',
     maxWidth: 'calc(100vw - 2rem)',
@@ -17,14 +17,14 @@ export const toastStyles = cva({
   },
   variants: {
     horizontal: {
-      start: { insetInlineStart: '1rem', insetInlineEnd: 'auto', '--toast-x': '0' },
+      start: { insetInlineStart: 'token(spacing.4)', insetInlineEnd: 'auto', '--toast-x': '0' },
       center: { insetInlineStart: '50%', insetInlineEnd: '50%', '--toast-x': '-50%' },
-      end: { insetInlineStart: 'auto', insetInlineEnd: '1rem', '--toast-x': '0' },
+      end: { insetInlineStart: 'auto', insetInlineEnd: 'token(spacing.4)', '--toast-x': '0' },
     },
     vertical: {
-      top: { insetBlockStart: '1rem', insetBlockEnd: 'auto', '--toast-y': '0' },
+      top: { insetBlockStart: 'token(spacing.4)', insetBlockEnd: 'auto', '--toast-y': '0' },
       middle: { insetBlockStart: '50%', insetBlockEnd: 'auto', '--toast-y': '-50%' },
-      bottom: { insetBlockStart: 'auto', insetBlockEnd: '1rem', '--toast-y': '0' },
+      bottom: { insetBlockStart: 'auto', insetBlockEnd: 'token(spacing.4)', '--toast-y': '0' },
     },
   },
   defaultVariants: {

@@ -30,7 +30,7 @@ export const swapStyles = cva({
       },
       flip: {
         transformStyle: 'preserve-3d',
-        perspective: '20rem',
+        perspective: 'token(spacing.80)',
         '& .swap-on': { transform: 'rotateY(180deg)', backfaceVisibility: 'hidden' },
         '&.swap-active .swap-on, & input:checked ~ .swap-on': { transform: 'rotateY(0deg)' },
         '&.swap-active .swap-off, & input:checked ~ .swap-off': {

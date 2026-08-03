@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { heroStyles, heroOverlayStyles, heroContentStyles } from '../../recipes/hero'
+import { hero } from '../../recipes/hero'
 import { cx } from '../../utils/cx'
 
 export const Hero = {
@@ -7,7 +7,7 @@ export const Hero = {
     const { className, ...rest } = vnode.attrs
 
     return m('div', {
-      className: cx('hero', heroStyles(), className),
+      className: cx('hero', hero({}).hero, className),
       ...rest
     }, vnode.children)
   }
@@ -16,13 +16,13 @@ export const Hero = {
 export const HeroContent = {
   view(vnode) {
     const { className, ...rest } = vnode.attrs
-    return m('div', { className: cx('hero-content', heroContentStyles(), className), ...rest }, vnode.children)
+    return m('div', { className: cx('hero-content', hero({}).content, className), ...rest }, vnode.children)
   }
 }
 
 export const HeroOverlay = {
   view(vnode) {
     const { className, ...rest } = vnode.attrs
-    return m('div', { className: cx('hero-overlay', heroOverlayStyles(), className), ...rest }, vnode.children)
+    return m('div', { className: cx('hero-overlay', hero({}).overlay, className), ...rest }, vnode.children)
   }
 }

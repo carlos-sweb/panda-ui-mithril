@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { tabsStyles, tabStyles, tabContentStyles } from '../../recipes/tabs'
+import { tabs } from '../../recipes/tabs'
 import { cx } from '../../utils/cx'
 
 function resolveVariant(vnode) {
@@ -17,7 +17,7 @@ export const Tabs = {
       className: cx(
         'tabs',
         resolved && `tabs-${resolved}`,
-        tabsStyles({ variant: resolved, size }),
+        tabs({ variant: resolved, size }).tabs,
         className
       ),
       ...rest
@@ -37,7 +37,7 @@ export const Tab = {
         'tab',
         active && 'tab-active',
         disabled && 'tab-disabled',
-        tabStyles({ variant }),
+        tabs({ variant }).tab,
         className
       ),
       disabled,
@@ -51,7 +51,7 @@ export const TabContent = {
     const { active, variant, className, ...rest } = vnode.attrs
     return m('div', {
       role: 'tabpanel',
-      className: cx('tab-content', tabContentStyles({ variant, active }), className),
+      className: cx('tab-content', tabs({ variant, active }).content, className),
       ...rest
     }, vnode.children)
   }

@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { avatarStyles, avatarGroupStyles } from '../../recipes/avatar'
+import { avatar } from '../../recipes/avatar'
 import { cx } from '../../utils/cx'
 
 
@@ -8,7 +8,7 @@ export const Avatar = {
     const { size, shape, placeholder, src, alt, status, className, ...rest } = vnode.attrs
 
     return m('div', {
-      className: cx('avatar', avatarStyles({ size, shape, placeholder, status }), className),
+      className: cx('avatar', avatar({ size, shape, placeholder, status }).avatar, className),
       ...rest
     }, [
       m('div', src ? m('img', { src, alt: alt || '' }) : vnode.children),
@@ -21,7 +21,7 @@ export const AvatarGroup = {
     const { className, ...rest } = vnode.attrs
 
     return m('div', {
-      className: cx('avatar-group', avatarGroupStyles(), className),
+      className: cx('avatar-group', avatar({}).group, className),
       ...rest
     }, vnode.children)
   }

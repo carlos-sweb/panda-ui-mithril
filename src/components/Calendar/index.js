@@ -1,12 +1,7 @@
 import m from 'mithril'
 import { ChevronLeft, ChevronRight } from 'lucide-mithril'
 import {
-  calendarStyles,
-  calendarHeaderStyles,
-  calendarNavStyles,
-  calendarGridStyles,
-  calendarWeekdayStyles,
-  calendarDayStyles,
+  calendar,
 } from '../../recipes/calendar'
 import { cx } from '../../utils/cx'
 
@@ -45,15 +40,15 @@ export const Calendar = {
     }
 
     return m('div', {
-      className: cx('calendar', 'cally', calendarStyles(), className),
+      className: cx('calendar', 'cally', calendar({}).calendar, className),
       ...rest
     }, [
-      m('div', { className: cx('calendar-header', calendarHeaderStyles()) }, [
+      m('div', { className: cx('calendar-header', calendar({}).header) }, [
         m('button', {
           type: 'button',
           slot: 'previous',
           'aria-label': 'Previous',
-          className: calendarNavStyles(),
+          className: calendar({}).nav,
           onclick: () => goToMonth(-1),
         }, m(ChevronLeft, { size: 16 })),
         m('span', {}, `${MONTH_NAMES[viewMonth]} ${viewYear}`),
@@ -61,24 +56,24 @@ export const Calendar = {
           type: 'button',
           slot: 'next',
           'aria-label': 'Next',
-          className: calendarNavStyles(),
+          className: calendar({}).nav,
           onclick: () => goToMonth(1),
         }, m(ChevronRight, { size: 16 })),
       ]),
-      m('div', { className: cx('calendar-month', calendarGridStyles()) }, [
-        ...WEEKDAYS.map((w) => m('span', { key: `wd-${w}`, className: calendarWeekdayStyles() }, w)),
+      m('div', { className: cx('calendar-month', calendar({}).grid) }, [
+        ...WEEKDAYS.map((w) => m('span', { key: `wd-${w}`, className: calendar({}).weekday }, w)),
         ...cells.map((date) => {
           const outside = date.getMonth() !== viewMonth
           const disabled = isDateDisabled ? isDateDisabled(date) : false
           return m('button', {
             key: date.toISOString(),
             type: 'button',
-            className: cx('calendar-date', calendarDayStyles({
+            className: cx('calendar-date', calendar({
               today: sameDay(date, today),
               selected: sameDay(date, value),
               outside,
               disabled,
-            })),
+            }).day),
             disabled,
             onclick: () => onchange && onchange(date),
           }, String(date.getDate()))

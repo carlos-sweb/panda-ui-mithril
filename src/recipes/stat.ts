@@ -1,94 +1,83 @@
-import { cva } from '../../styled-system/css'
+import { sva } from '../../styled-system/css'
 
-export const statsStyles = cva({
+export const stat = sva({
+  slots: ['stats', 'stat', 'title', 'value', 'desc', 'figure', 'actions'],
   base: {
-    position: 'relative',
-    display: 'inline-grid',
-    gridAutoFlow: 'column',
-    overflowX: 'auto',
-    borderRadius: 'var(--radius-box)',
+    stats: {
+      position: 'relative',
+      display: 'inline-grid',
+      gridAutoFlow: 'column',
+      overflowX: 'auto',
+      borderRadius: 'var(--radius-box)',
+    },
+    stat: {
+      display: 'inline-grid',
+      width: '100%',
+      columnGap: 'token(spacing.4)',
+      paddingInline: 'token(spacing.6)',
+      paddingBlock: 'token(spacing.4)',
+      gridTemplateColumns: 'repeat(1, 1fr)',
+    },
+    title: {
+      color: 'color-mix(in oklab, token(colors.base-content) 60%, transparent)',
+      gridColumnStart: '1',
+      whiteSpace: 'nowrap',
+      fontSize: 'token(fontSizes.sm)',
+    },
+    value: {
+      gridColumnStart: '1',
+      whiteSpace: 'nowrap',
+      fontSize: 'token(fontSizes.6xl)',
+      fontWeight: '800',
+    },
+    desc: {
+      color: 'color-mix(in oklab, token(colors.base-content) 60%, transparent)',
+      gridColumnStart: '1',
+      whiteSpace: 'nowrap',
+      fontSize: 'token(fontSizes.sm)',
+    },
+    figure: {
+      gridColumnStart: '2',
+      gridRowStart: '1',
+      gridRow: 'span 3',
+      placeSelf: 'center',
+      justifySelf: 'end',
+    },
+    actions: {
+      gridColumnStart: '1',
+      whiteSpace: 'nowrap',
+      marginTop: 'token(spacing.2)',
+      display: 'flex',
+      gap: 'token(spacing.2)',
+    },
   },
   variants: {
     direction: {
       horizontal: {
-        gridAutoFlow: 'column',
-        overflowX: 'auto',
-        overflowY: 'hidden',
-        '& > .stat:not(:last-child)': {
-          borderInlineEnd: 'var(--border, 1px) dashed color-mix(in oklab, currentColor 10%, transparent)',
-          borderBlockEnd: 'none',
+        stats: {
+          gridAutoFlow: 'column',
+          overflowX: 'auto',
+          overflowY: 'hidden',
+          '& > .stat:not(:last-child)': {
+            borderInlineEnd: 'var(--border, 1px) dashed color-mix(in oklab, currentColor 10%, transparent)',
+            borderBlockEnd: 'none',
+          },
         },
       },
       vertical: {
-        gridAutoFlow: 'row',
-        overflowY: 'auto',
-        overflowX: 'hidden',
-        '& > .stat:not(:last-child)': {
-          borderInlineEnd: 'none',
-          borderBlockEnd: 'var(--border, 1px) dashed color-mix(in oklab, currentColor 10%, transparent)',
+        stats: {
+          gridAutoFlow: 'row',
+          overflowY: 'auto',
+          overflowX: 'hidden',
+          '& > .stat:not(:last-child)': {
+            borderInlineEnd: 'none',
+            borderBlockEnd: 'var(--border, 1px) dashed color-mix(in oklab, currentColor 10%, transparent)',
+          },
         },
       },
     },
   },
   defaultVariants: {
     direction: 'horizontal',
-  },
-})
-
-export const statStyles = cva({
-  base: {
-    display: 'inline-grid',
-    width: '100%',
-    columnGap: '1rem',
-    paddingInline: '1.5rem',
-    paddingBlock: '1rem',
-    gridTemplateColumns: 'repeat(1, 1fr)',
-  },
-})
-
-export const statTitleStyles = cva({
-  base: {
-    color: 'color-mix(in oklab, var(--colors-base-content) 60%, transparent)',
-    gridColumnStart: '1',
-    whiteSpace: 'nowrap',
-    fontSize: '0.75rem',
-  },
-})
-
-export const statValueStyles = cva({
-  base: {
-    gridColumnStart: '1',
-    whiteSpace: 'nowrap',
-    fontSize: '2rem',
-    fontWeight: '800',
-  },
-})
-
-export const statDescStyles = cva({
-  base: {
-    color: 'color-mix(in oklab, var(--colors-base-content) 60%, transparent)',
-    gridColumnStart: '1',
-    whiteSpace: 'nowrap',
-    fontSize: '0.75rem',
-  },
-})
-
-export const statFigureStyles = cva({
-  base: {
-    gridColumnStart: '2',
-    gridRowStart: '1',
-    gridRow: 'span 3',
-    placeSelf: 'center',
-    justifySelf: 'end',
-  },
-})
-
-export const statActionsStyles = cva({
-  base: {
-    gridColumnStart: '1',
-    whiteSpace: 'nowrap',
-    marginTop: '0.5rem',
-    display: 'flex',
-    gap: '0.5rem',
   },
 })

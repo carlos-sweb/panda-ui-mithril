@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { timelineStyles, timelineBoxStyles } from '../../recipes/timeline'
+import { timeline } from '../../recipes/timeline'
 import { cx } from '../../utils/cx'
 
 export const Timeline = {
@@ -8,7 +8,7 @@ export const Timeline = {
     const direction = vertical && !horizontal ? 'vertical' : 'horizontal'
 
     return m('ul', {
-      className: cx('timeline', timelineStyles({ direction, snapIcon }), className),
+      className: cx('timeline', timeline({ direction, snapIcon }).timeline, className),
       ...rest
     }, vnode.children)
   }
@@ -28,7 +28,7 @@ export const TimelineItem = {
 export const TimelineStart = {
   view(vnode) {
     const { box, className, ...rest } = vnode.attrs
-    return m('div', { className: cx('timeline-start', box && timelineBoxStyles(), box && 'timeline-box', className), ...rest }, vnode.children)
+    return m('div', { className: cx('timeline-start', box && timeline({}).box, box && 'timeline-box', className), ...rest }, vnode.children)
   }
 }
 
@@ -42,6 +42,6 @@ export const TimelineMiddle = {
 export const TimelineEnd = {
   view(vnode) {
     const { box, className, ...rest } = vnode.attrs
-    return m('div', { className: cx('timeline-end', box && timelineBoxStyles(), box && 'timeline-box', className), ...rest }, vnode.children)
+    return m('div', { className: cx('timeline-end', box && timeline({}).box, box && 'timeline-box', className), ...rest }, vnode.children)
   }
 }

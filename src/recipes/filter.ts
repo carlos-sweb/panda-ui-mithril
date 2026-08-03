@@ -22,7 +22,7 @@ export const filterStyles = cva({
       content: '"×"',
     },
     '& > input:not(:last-child)': {
-      marginInlineEnd: '0.25rem',
+      marginInlineEnd: 'token(spacing.1)',
     },
     '&:not(:has(input:checked:not(.filter-reset))) .filter-reset:not(:focus-visible)': {
       visibility: 'hidden',
