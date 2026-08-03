@@ -6,6 +6,7 @@ import {
   Tabs, Tab, TabContent,
 } from '../../src/index.js'
 import { CodeExample } from '../components/CodeExample.jsx'
+import { t } from '../i18n/index.js'
 
 const heroSection = css({
   background: 'token(colors.base-200)',
@@ -75,10 +76,10 @@ export const Landing = {
       <div className={css({ maxWidth: '960px' })}>
         <Hero className={heroSection}>
           <HeroContent className={css({ flexDirection: 'column', textAlign: 'center', padding: '4rem 2rem' })}>
-            <Badge color="primary" variant="soft" className={css({ marginBottom: '1rem' })}>57 components</Badge>
+            <Badge color="primary" variant="soft" className={css({ marginBottom: '1rem' })}>{t('landing.componentsCount')}</Badge>
             <h1 className={css({ fontSize: '2.75rem', fontWeight: '800', marginBottom: '1rem', letterSpacing: '-0.02em' })}>panda-ui-mithril</h1>
             <p className={css({ fontSize: '1.125rem', color: 'token(colors.base-content)', opacity: 0.6, maxWidth: '600px', margin: '0 auto 2rem' })}>
-              A Mithril.js component library styled with Panda CSS. Production-ready components with familiar design patterns.
+              {t('landing.hero')}
             </p>
             <div className={css({ display: 'flex', gap: '0.75rem', justifyContent: 'center', flexWrap: 'wrap' })}>
               <Button color="primary" size="lg" href="#quick-start">Get Started</Button>
@@ -136,7 +137,7 @@ export const Landing = {
 
         <h2 className={css({ fontSize: '1.5rem', fontWeight: '700', marginBottom: '1rem', marginTop: '2.5rem' })}>Component Preview</h2>
         <div className={css({ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1.5rem' })}>
-          <Alert color="info">New: 57 components, consistently styled.</Alert>
+          <Alert color="info">{t('landing.alert')}</Alert>
           <Alert color="success">Your changes have been saved successfully.</Alert>
           <Alert color="warning">This action cannot be undone.</Alert>
           <Alert color="error">Something went wrong. Please try again.</Alert>
@@ -176,7 +177,7 @@ export const Landing = {
         </div>
 
         <h2 className={css({ fontSize: '1.5rem', fontWeight: '700', marginBottom: '0.75rem', marginTop: '2.5rem' })}>Browse All Components</h2>
-        <p className={css({ marginBottom: '1.5rem', color: 'token(colors.base-content)', opacity: 0.6 })}>57 components organized by category. Click any to see the full demo.</p>
+        <p className={css({ marginBottom: '1.5rem', color: 'token(colors.base-content)', opacity: 0.6 })}>{t('landing.orgDesc')}</p>
 
         {categories.map((cat) => (
           <Card key={cat.title} className={css({ background: 'token(colors.base-100)', border: '1px solid', borderColor: 'token(colors.base-300)', marginBottom: '1.5rem' })}>

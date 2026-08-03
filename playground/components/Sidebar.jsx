@@ -3,38 +3,15 @@ import { css } from '../../styled-system/css'
 import { MousePointerClick, AppWindow, Link, MessageCircleMore, PenLine, PanelsTopLeft, X } from 'lucide-mithril'
 import { Menu, MenuItem, MenuTitle, Button } from '../../src/index.js'
 import { DrawerSide } from './Drawer.jsx'
+import { t } from '../i18n/index.js'
 
 const categories = [
-  {
-    title: 'Actions',
-    icon: MousePointerClick,
-    items: ['button', 'fab', 'link', 'swap', 'filter', 'themectrl'],
-  },
-  {
-    title: 'Data Display',
-    icon: AppWindow,
-    items: ['badge', 'avatar', 'card', 'list', 'table', 'stat', 'timeline', 'countdown', 'chat', 'mask', 'kbd'],
-  },
-  {
-    title: 'Navigation',
-    icon: Link,
-    items: ['navbar', 'breadcrumbs', 'menu', 'tabs', 'pagination', 'steps', 'megamenu', 'footer'],
-  },
-  {
-    title: 'Feedback',
-    icon: MessageCircleMore,
-    items: ['alert', 'toast', 'modal', 'tooltip', 'loading', 'skeleton', 'progress', 'radialprogress', 'status', 'indicator', 'aura'],
-  },
-  {
-    title: 'Data Input',
-    icon: PenLine,
-    items: ['input', 'textarea', 'select', 'checkbox', 'radio', 'toggle', 'range', 'fileinput', 'otp', 'rating', 'calendar', 'fieldset', 'label'],
-  },
-  {
-    title: 'Layout',
-    icon: PanelsTopLeft,
-    items: ['hero', 'divider', 'stack', 'join', 'accordion', 'collapse', 'carousel', 'diff'],
-  },
+  { i18n: 'sidebar.categories.actions', icon: MousePointerClick, items: ['button', 'fab', 'link', 'swap', 'filter', 'themectrl'] },
+  { i18n: 'sidebar.categories.dataDisplay', icon: AppWindow, items: ['badge', 'avatar', 'card', 'list', 'table', 'stat', 'timeline', 'countdown', 'chat', 'mask', 'kbd'] },
+  { i18n: 'sidebar.categories.navigation', icon: Link, items: ['navbar', 'breadcrumbs', 'menu', 'tabs', 'pagination', 'steps', 'megamenu', 'footer'] },
+  { i18n: 'sidebar.categories.feedback', icon: MessageCircleMore, items: ['alert', 'toast', 'modal', 'tooltip', 'loading', 'skeleton', 'progress', 'radialprogress', 'status', 'indicator', 'aura'] },
+  { i18n: 'sidebar.categories.dataInput', icon: PenLine, items: ['input', 'textarea', 'select', 'checkbox', 'radio', 'toggle', 'range', 'fileinput', 'otp', 'rating', 'calendar', 'fieldset', 'label'] },
+  { i18n: 'sidebar.categories.layout', icon: PanelsTopLeft, items: ['hero', 'divider', 'stack', 'join', 'accordion', 'collapse', 'carousel', 'diff'] },
 ]
 
 const menu = css({ width: '100%', padding: '0'})
@@ -100,10 +77,10 @@ const SidebarContent = {
           <MenuItem href="#/" active={current === '/'} onclick={navigate('/', onclose)}>Home</MenuItem>
 
           {categories.map((cat) => [
-            <MenuTitle key={`${cat.title}-title`}>
+            <MenuTitle key={`${t(cat.i18n)}-title`}>
               <span className={categoryTitle}>
                 <cat.icon size={14} />
-                {cat.title}
+                {t(cat.i18n)}
               </span>
             </MenuTitle>,
             ...cat.items.map((key) => {

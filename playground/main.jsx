@@ -11,6 +11,7 @@ import './style.css'
 import { Navbar } from './components/Navbar.jsx'
 import { Sidebar } from './components/Sidebar.jsx'
 import { SearchModal } from './components/SearchModal.jsx'
+import { t, currentLang, setLang } from './i18n/index.js'
 // Named exports (these pages use export const, not export default)
 import { Landing } from './pages/Landing.jsx'
 import { ComponentPage } from './pages/ComponentPage.jsx'
@@ -185,6 +186,12 @@ const Layout = {
   oncreate(vnode) {
     m.route.prefix = '#!'
     m.route(document.getElementById('view-dynamic-content'), '/', routes)
+
+    // Ensure language param exists in the URL
+    const lang = currentLang()
+    if (!m.route.param('lang')) {
+      m.route.set(m.route.get(), {}, { ...m.route.param(), lang })
+    }
 
     vnode.state.onKeydown = (e) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {

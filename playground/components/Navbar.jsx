@@ -2,6 +2,7 @@ import m from 'mithril'
 import { css } from '../../styled-system/css'
 import { Search, ExternalLink, Menu as MenuIcon } from 'lucide-mithril'
 import { Navbar as NavbarBase, NavbarStart, NavbarCenter, NavbarEnd, Button, Kbd, ThemeController } from '../../src/index.js'
+import { currentLang, setLang } from '../i18n/index.js'
 
 const navbarFixed = css({
   position: 'fixed',
@@ -105,6 +106,14 @@ export const Navbar = {
           <label className={themeLabel} title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}>
             <ThemeController theme="dark" checked={isDark} onchange={onToggleTheme} />
           </label>
+          <Button
+            variant="ghost"
+            size="sm"
+            onclick={() => setLang(currentLang() === 'es' ? 'en' : 'es')}
+            className={css({ fontFamily: 'monospace', fontWeight: '700', fontSize: '0.7rem' })}
+          >
+            {currentLang() === 'es' ? 'EN' : 'ES'}
+          </Button>
         </NavbarEnd>
       </NavbarBase>
     )

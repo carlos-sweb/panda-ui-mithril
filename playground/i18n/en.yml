@@ -1,0 +1,283 @@
+common:
+  usage: Usage
+  classReference: Class Reference
+  prop: Prop
+  type: Type
+  description: Description
+  isDefault: (default)
+  copy: Copy
+  copied: Copied!
+  noResults: No results found.
+  searchPlaceholder: Search components...
+  demoComingSoon: Demo coming soon.
+  home: Home
+
+sidebar:
+  categories:
+    actions: Actions
+    dataDisplay: Data Display
+    navigation: Navigation
+    feedback: Feedback
+    dataInput: Data Input
+    layout: Layout
+    mockup: Mockup
+
+landing:
+  hero: A Mithril.js component library styled with Panda CSS. Production-ready components with familiar design patterns.
+  componentsCount: 57 components
+  componentsDesc: 57 components ready for production
+  kbSize: 7KB
+  kbSizeDesc: Tree-shakeable JS bundle with single stylesheet
+  dependencies: 0
+  dependenciesDesc: No runtime dependencies beyond Mithril
+  orgByCategory: Organized by category
+  orgDesc: 57 components organized by category. Click any to see the full demo.
+  alert: 'New: 57 components, consistently styled.'
+  featureNaming:
+    title: Class naming
+    desc: 'Familiar class naming convention: btn-primary, card-body, alert-soft.'
+  featurePanda:
+    title: Panda CSS
+    desc: Atomic CSS-in-JS with zero runtime. Optimized, type-safe styling.
+  featureMithril:
+    title: Mithril.js
+    desc: Fast, lightweight framework. Components use object literal pattern with view functions.
+  featureIcons:
+    title: Lucide Icons
+    desc: Beautiful, consistent icon set via lucide-mithril. SVG-based, tree-shakeable.
+
+navbar:
+  themeLabels:
+    light: 🌞 Light
+    dark: 🌚 Dark
+    cupcake: 🧁 Cupcake
+
+pages:
+  accordion:
+    name: 'Accordion'
+    category: 'Layout'
+    description: 'An accordion item — same underlying component as Collapse, but items sharing a `name` become a radio group where only one stays open'
+  alert:
+    name: 'Alert'
+    category: 'Feedback'
+    description: 'Container for displaying an important message'
+  aura:
+    name: 'Aura'
+    category: 'Feedback'
+    description: 'Uses two light effects'
+  avatar:
+    name: 'Avatar'
+    category: 'Data Display'
+    description: 'Avatar'
+  badge:
+    name: 'Badge'
+    category: 'Data Display'
+    description: 'Container element'
+  breadcrumbs:
+    name: 'Breadcrumbs'
+    category: 'Navigation'
+    description: 'Wrapper around a <ul>'
+  button:
+    name: 'Button'
+    category: 'Actions'
+    description: 'Button'
+  calendar:
+    name: 'Calendar'
+    category: 'Data Input'
+    description: 'Month-grid calendar with real date logic (navigable, no external library)'
+  card:
+    name: 'Card'
+    category: 'Data Display'
+    description: 'Card'
+  carousel:
+    name: 'Carousel'
+    category: 'Layout'
+    description: 'Carousel container'
+  chat:
+    name: 'Chat'
+    category: 'Data Display'
+    description: 'Chat container'
+  checkbox:
+    name: 'Checkbox'
+    category: 'Data Input'
+    description: 'Checkbox'
+  collapse:
+    name: 'Collapse'
+    category: 'Layout'
+    description: 'Collapse container — click the title to toggle'
+  countdown:
+    name: 'Countdown'
+    category: 'Data Display'
+    description: 'Countdown wrapper — value must be a number between 0 and 999'
+  diff:
+    name: 'Diff'
+    category: 'Layout'
+    description: 'Diff container — drag anywhere on the divider to compare'
+  divider:
+    name: 'Divider'
+    category: 'Layout'
+    description: 'A divider line between two elements'
+  fab:
+    name: 'FAB'
+    category: 'Actions'
+    description: 'Container, fixed to the bottom-right corner of the viewport'
+  fieldset:
+    name: 'Fieldset'
+    category: 'Data Input'
+    description: 'for the fieldset container'
+  fileinput:
+    name: 'FileInput'
+    category: 'Data Input'
+    description: 'For <input type="file"> element'
+  filter:
+    name: 'Filter'
+    category: 'Actions'
+    description: 'Filter container'
+  footer:
+    name: 'Footer'
+    category: 'Navigation'
+    description: 'Footer container'
+  hero:
+    name: 'Hero'
+    category: 'Layout'
+    description: 'Hero container'
+  indicator:
+    name: 'Indicator'
+    category: 'Feedback'
+    description: 'Container element'
+  input:
+    name: 'TextInput'
+    category: 'Data Input'
+    description: 'For <input type="text"> tag or a wrapper of <input type="text"> tag'
+  join:
+    name: 'Join'
+    category: 'Layout'
+    description: 'For grouping multiple items'
+  kbd:
+    name: 'Kbd'
+    category: 'Data Display'
+    description: 'Do show a keyboard key or a shortcut key'
+  label:
+    name: 'Label'
+    category: 'Data Input'
+    description: 'For styling the text next to an input field (or select)'
+  link:
+    name: 'Link'
+    category: 'Actions'
+    description: 'Adds underline — note: this component defaults to hover=true, so pass hover={false} to always show the underline'
+  list:
+    name: 'List'
+    category: 'Data Display'
+    description: 'A vertical flex layout to include list rows'
+  loading:
+    name: 'Loading'
+    category: 'Feedback'
+    description: 'Loading element'
+  mask:
+    name: 'Mask'
+    category: 'Data Display'
+    description: 'Masks the content with shape'
+  megamenu:
+    name: 'Megamenu'
+    category: 'Navigation'
+    description: 'Nav container'
+  menu:
+    name: 'Menu'
+    category: 'Navigation'
+    description: 'Menu container'
+  modal:
+    name: 'Modal'
+    category: 'Feedback'
+    description: 'Native <dialog>-backed modal — `open` drives real .showModal()/.close()'
+  navbar:
+    name: 'Navbar'
+    category: 'Navigation'
+    description: 'Navbar container'
+  otp:
+    name: 'OTP'
+    category: 'Data Input'
+    description: 'For the container label'
+  pagination:
+    name: 'Pagination'
+    category: 'Navigation'
+    description: 'Container — built on top of Join + Button, matching the common pagination pattern'
+  progress:
+    name: 'Progress'
+    category: 'Feedback'
+    description: 'For <progress> tag'
+  radialprogress:
+    name: 'RadialProgress'
+    category: 'Feedback'
+    description: 'Shows a radial progress'
+  radio:
+    name: 'Radio'
+    category: 'Data Input'
+    description: 'For radio input'
+  range:
+    name: 'Range'
+    category: 'Data Input'
+    description: 'For <input type="range"> tag'
+  rating:
+    name: 'Rating'
+    category: 'Data Input'
+    description: 'Rating container (flex row of stars)'
+  select:
+    name: 'Select'
+    category: 'Data Input'
+    description: 'For <select> element'
+  skeleton:
+    name: 'Skeleton'
+    category: 'Feedback'
+    description: 'A placeholder div with loading animation'
+  stack:
+    name: 'Stack'
+    category: 'Layout'
+    description: 'Puts the children elements on top of each other'
+  stat:
+    name: 'Stats'
+    category: 'Data Display'
+    description: 'Container for stat boxes'
+  status:
+    name: 'Status'
+    category: 'Feedback'
+    description: 'Status icon'
+  steps:
+    name: 'Steps'
+    category: 'Navigation'
+    description: 'Steps container'
+  swap:
+    name: 'Swap'
+    category: 'Actions'
+    description: 'Swap container'
+  table:
+    name: 'Table'
+    category: 'Data Display'
+    description: 'Table element'
+  tabs:
+    name: 'Tabs'
+    category: 'Navigation'
+    description: 'Tabs container'
+  textarea:
+    name: 'Textarea'
+    category: 'Data Input'
+    description: 'For <textarea> element'
+  themecontroller:
+    name: 'ThemeController'
+    category: 'Actions'
+    description: 'A checkbox/radio that reports its checked state — wire onchange to set data-theme yourself (this project switches themes via JS, not the CSS-only :has() trick from the reference implementation)'
+  timeline:
+    name: 'Timeline'
+    category: 'Data Display'
+    description: 'Timeline container'
+  toast:
+    name: 'Toast'
+    category: 'Feedback'
+    description: 'Container element, fixed to the viewport'
+  toggle:
+    name: 'Toggle'
+    category: 'Data Input'
+    description: 'For <input type="checkbox">'
+  tooltip:
+    name: 'Tooltip'
+    category: 'Feedback'
+    description: 'Container element'
