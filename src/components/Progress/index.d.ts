@@ -1,8 +1,8 @@
 import { Component } from 'mithril'
-import { ComponentAttrs, DaisyColor } from '../../types'
+import { ComponentAttrs, PumColor } from '../../types'
 
 export interface ProgressAttrs extends ComponentAttrs {
-  color?: DaisyColor
+  color?: PumColor
   value?: number
   /** Defaults to 100 */
   max?: number

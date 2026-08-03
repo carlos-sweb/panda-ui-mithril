@@ -1,11 +1,11 @@
 import { Component, Vnode } from 'mithril'
-import { ComponentAttrs, DaisySize } from '../../types'
+import { ComponentAttrs, PumSize } from '../../types'
 
 export type TabsVariant = 'box' | 'border' | 'lift'
 
 export interface TabsAttrs extends ComponentAttrs {
   variant?: TabsVariant
-  size?: DaisySize
+  size?: PumSize
   boxed?: boolean
   bordered?: boolean
   lifted?: boolean

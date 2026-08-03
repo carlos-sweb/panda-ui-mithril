@@ -1,8 +1,8 @@
 import { Component, Vnode } from 'mithril'
-import { ComponentAttrs, DaisySize } from '../../types'
+import { ComponentAttrs, PumSize } from '../../types'
 
 export interface CardAttrs extends ComponentAttrs {
-  size?: DaisySize
+  size?: PumSize
   border?: boolean
   dash?: boolean
   side?: boolean

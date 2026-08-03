@@ -1,8 +1,8 @@
 import { Component, Vnode } from 'mithril'
-import { ComponentAttrs, DaisyColor } from '../../types'
+import { ComponentAttrs, PumColor } from '../../types'
 
 export interface LinkAttrs extends ComponentAttrs {
-  color?: DaisyColor
+  color?: PumColor
   /** Underline only on hover; defaults to true (always underlined) */
   hover?: boolean
   href?: string

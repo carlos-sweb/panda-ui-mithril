@@ -1,9 +1,9 @@
 import { Component } from 'mithril'
-import { ComponentAttrs, DaisySize } from '../../types'
+import { ComponentAttrs, PumSize } from '../../types'
 
 export interface LoadingAttrs extends ComponentAttrs {
   variant?: 'spinner' | 'dots' | 'ring' | 'ball' | 'bars' | 'infinity'
-  size?: DaisySize
+  size?: PumSize
   [key: string]: unknown
 }
 

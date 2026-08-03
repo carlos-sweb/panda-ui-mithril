@@ -1,9 +1,9 @@
 import { Component, Vnode } from 'mithril'
-import { ComponentAttrs, DaisyColor, DaisySize } from '../../types'
+import { ComponentAttrs, PumColor, PumSize } from '../../types'
 
 export interface SelectAttrs extends ComponentAttrs {
-  color?: DaisyColor
-  size?: DaisySize
+  color?: PumColor
+  size?: PumSize
   ghost?: boolean
   value?: string | number
   disabled?: boolean

@@ -1,10 +1,10 @@
 import { Component, Vnode } from 'mithril'
-import { ComponentAttrs, DaisyColor, DaisyStyle, DaisySize } from '../../types'
+import { ComponentAttrs, PumColor, PumStyle, PumSize } from '../../types'
 
 export interface ButtonAttrs extends ComponentAttrs {
-  color?: DaisyColor
-  variant?: DaisyStyle
-  size?: DaisySize
+  color?: PumColor
+  variant?: PumStyle
+  size?: PumSize
   active?: boolean
   disabled?: boolean
   block?: boolean

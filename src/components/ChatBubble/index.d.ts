@@ -1,5 +1,5 @@
 import { Component, Vnode } from 'mithril'
-import { ComponentAttrs, DaisyColor } from '../../types'
+import { ComponentAttrs, PumColor } from '../../types'
 
 export interface ChatAttrs extends ComponentAttrs {
   placement?: 'start' | 'end'
@@ -18,7 +18,7 @@ export interface ChatHeaderAttrs extends ComponentAttrs {
 }
 
 export interface ChatBubbleAttrs extends ComponentAttrs {
-  color?: DaisyColor
+  color?: PumColor
   children?: Vnode | Vnode[] | string | null
   [key: string]: unknown
 }

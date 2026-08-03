@@ -1,5 +1,5 @@
 import { Component, Vnode } from 'mithril'
-import { ComponentAttrs, DaisyColor } from '../../types'
+import { ComponentAttrs, PumColor } from '../../types'
 
 export interface StepsAttrs extends ComponentAttrs {
   horizontal?: boolean
@@ -9,7 +9,7 @@ export interface StepsAttrs extends ComponentAttrs {
 }
 
 export interface StepAttrs extends ComponentAttrs {
-  color?: DaisyColor
+  color?: PumColor
   children?: Vnode | Vnode[] | string | null
   [key: string]: unknown
 }

@@ -1,9 +1,9 @@
 import { Component, Vnode } from 'mithril'
-import { ComponentAttrs, DaisyColor } from '../../types'
+import { ComponentAttrs, PumColor } from '../../types'
 
 export interface AlertAttrs extends ComponentAttrs {
   variant?: 'outline' | 'dash' | 'soft'
-  color?: Extract<DaisyColor, 'info' | 'success' | 'warning' | 'error'>
+  color?: Extract<PumColor, 'info' | 'success' | 'warning' | 'error'>
   direction?: 'horizontal' | 'vertical'
   children?: Vnode | Vnode[] | string | null
   [key: string]: unknown

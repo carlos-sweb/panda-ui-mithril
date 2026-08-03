@@ -1,10 +1,10 @@
 import { Component, Vnode } from 'mithril'
-import { ComponentAttrs, DaisySize } from '../../types'
+import { ComponentAttrs, PumSize } from '../../types'
 
 export interface AuraAttrs extends ComponentAttrs {
   variant?: 'default' | 'rainbow' | 'holo' | 'dual' | 'silver' | 'gold'
   shape?: 'box' | 'field' | 'selector'
-  size?: DaisySize
+  size?: PumSize
   children?: Vnode | Vnode[] | string | null
   [key: string]: unknown
 }

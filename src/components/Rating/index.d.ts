@@ -1,9 +1,9 @@
 import { Component } from 'mithril'
-import { ComponentAttrs, DaisyColor, DaisySize } from '../../types'
+import { ComponentAttrs, PumColor, PumSize } from '../../types'
 
 export interface RatingAttrs extends ComponentAttrs {
-  size?: DaisySize
-  color?: DaisyColor
+  size?: PumSize
+  color?: PumColor
   /**
    * Controlled value (integer 0..max, e.g. 3).
    * When provided the component is controlled and `onchange` must update it;

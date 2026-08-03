@@ -1,10 +1,10 @@
 import { Component, Vnode } from 'mithril'
-import { ComponentAttrs, DaisyColor, DaisySize } from '../../types'
+import { ComponentAttrs, PumColor, PumSize } from '../../types'
 
 export interface BadgeAttrs extends ComponentAttrs {
-  color?: DaisyColor
+  color?: PumColor
   variant?: 'outline' | 'dash' | 'soft' | 'ghost'
-  size?: DaisySize
+  size?: PumSize
   children?: Vnode | Vnode[] | string | null
   [key: string]: unknown
 }

@@ -1,5 +1,5 @@
 import { Component, Vnode } from 'mithril'
-import { ComponentAttrs, DaisySize } from '../../types'
+import { ComponentAttrs, PumSize } from '../../types'
 
 export interface TableContainerAttrs extends ComponentAttrs {
   children?: Vnode | Vnode[] | string | null
@@ -7,7 +7,7 @@ export interface TableContainerAttrs extends ComponentAttrs {
 }
 
 export interface TableAttrs extends ComponentAttrs {
-  size?: DaisySize
+  size?: PumSize
   zebra?: boolean
   pinRows?: boolean
   pinCols?: boolean

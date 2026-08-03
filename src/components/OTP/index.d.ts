@@ -1,9 +1,9 @@
 import { Component } from 'mithril'
-import { ComponentAttrs, DaisyColor, DaisySize } from '../../types'
+import { ComponentAttrs, PumColor, PumSize } from '../../types'
 
 export interface OTPAttrs extends ComponentAttrs {
-  size?: DaisySize
-  color?: DaisyColor
+  size?: PumSize
+  color?: PumColor
   joined?: boolean
   value?: string
   /** Number of digit cells; defaults to 4 */

@@ -1,11 +1,11 @@
 import { Component } from 'mithril'
-import { ComponentAttrs, DaisyColor, DaisySize } from '../../types'
+import { ComponentAttrs, PumColor, PumSize } from '../../types'
 
 export interface ThemeControllerAttrs extends ComponentAttrs {
   /** Visual style of the underlying input; defaults to 'toggle' */
   variant?: 'toggle' | 'checkbox'
-  size?: DaisySize
-  color?: DaisyColor
+  size?: PumSize
+  color?: PumColor
   /** The theme name this input activates, e.g. "dark" */
   theme?: string
   checked?: boolean

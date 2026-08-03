@@ -1,8 +1,8 @@
 import { Component, Vnode } from 'mithril'
-import { ComponentAttrs, DaisyColor } from '../../types'
+import { ComponentAttrs, PumColor } from '../../types'
 
 export interface DividerAttrs extends ComponentAttrs {
-  color?: DaisyColor
+  color?: PumColor
   direction?: 'horizontal' | 'vertical'
   placement?: 'start' | 'end'
   children?: Vnode | Vnode[] | string | null

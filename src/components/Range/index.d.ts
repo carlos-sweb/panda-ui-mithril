@@ -1,9 +1,9 @@
 import { Component } from 'mithril'
-import { ComponentAttrs, DaisyColor, DaisySize } from '../../types'
+import { ComponentAttrs, PumColor, PumSize } from '../../types'
 
 export interface RangeAttrs extends ComponentAttrs {
-  color?: DaisyColor
-  size?: DaisySize
+  color?: PumColor
+  size?: PumSize
   vertical?: boolean
   value?: number | string
   min?: number | string

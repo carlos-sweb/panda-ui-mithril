@@ -1,9 +1,9 @@
 import { Component } from 'mithril'
-import { ComponentAttrs, DaisyColor, DaisySize } from '../../types'
+import { ComponentAttrs, PumColor, PumSize } from '../../types'
 
 export interface ToggleAttrs extends ComponentAttrs {
-  color?: DaisyColor
-  size?: DaisySize
+  color?: PumColor
+  size?: PumSize
   checked?: boolean
   disabled?: boolean
   onchange?: (e: Event) => void

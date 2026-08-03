@@ -1,8 +1,8 @@
 import { Component, Vnode } from 'mithril'
-import { ComponentAttrs, DaisySize } from '../../types'
+import { ComponentAttrs, PumSize } from '../../types'
 
 export interface MenuAttrs extends ComponentAttrs {
-  size?: DaisySize
+  size?: PumSize
   horizontal?: boolean
   children?: Vnode | Vnode[] | string | null
   [key: string]: unknown

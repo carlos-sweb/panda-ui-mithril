@@ -1,8 +1,8 @@
 import { Component, Vnode } from 'mithril'
-import { ComponentAttrs, DaisySize } from '../../types'
+import { ComponentAttrs, PumSize } from '../../types'
 
 export interface AvatarAttrs extends ComponentAttrs {
-  size?: DaisySize
+  size?: PumSize
   shape?: 'circle' | 'square'
   placeholder?: boolean
   src?: string

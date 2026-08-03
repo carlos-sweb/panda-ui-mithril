@@ -1,4 +1,4 @@
-export { ComponentAttrs, DaisySize, DaisyColor, DaisyStyle } from './types'
+export { ComponentAttrs, PumSize, PumColor, PumStyle } from './types'
 export { Accordion, AccordionTitle, AccordionContent, Collapse, CollapseTitle, CollapseContent } from './components/Accordion'
 export { Alert } from './components/Alert'
 export { Aura } from './components/Aura'
