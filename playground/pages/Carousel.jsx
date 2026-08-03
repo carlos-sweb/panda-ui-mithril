@@ -32,7 +32,7 @@ const navBtn = css({
   border: 'none',
   cursor: 'pointer',
   background: 'color-mix(in oklab, black 40%, transparent)',
-  color: 'white',
+  color: 'token(colors.white)',
   textDecoration: 'none',
   fontSize: '1.25rem',
 })

@@ -8,7 +8,7 @@ import {
 import { CodeExample } from '../components/CodeExample.jsx'
 
 const heroSection = css({
-  background: 'base-200',
+  background: 'token(colors.base-200)',
   borderRadius: '1.5rem',
   marginBottom: '2.5rem',
 })
@@ -21,8 +21,8 @@ const featureGrid = css({
 })
 
 const installCommand = css({
-  background: 'neutral',
-  color: 'neutral-content',
+  background: 'token(colors.neutral)',
+  color: 'token(colors.neutral-content)',
   borderRadius: '0.75rem',
   padding: '1rem 1.25rem',
   fontFamily: 'var(--fonts-mono, monospace)',
@@ -77,7 +77,7 @@ export const Landing = {
           <HeroContent className={css({ flexDirection: 'column', textAlign: 'center', padding: '4rem 2rem' })}>
             <Badge color="primary" variant="soft" className={css({ marginBottom: '1rem' })}>57 components</Badge>
             <h1 className={css({ fontSize: '2.75rem', fontWeight: '800', marginBottom: '1rem', letterSpacing: '-0.02em' })}>panda-ui-mithril</h1>
-            <p className={css({ fontSize: '1.125rem', color: 'base-content', opacity: 0.6, maxWidth: '600px', margin: '0 auto 2rem' })}>
+            <p className={css({ fontSize: '1.125rem', color: 'token(colors.base-content)', opacity: 0.6, maxWidth: '600px', margin: '0 auto 2rem' })}>
               A Mithril.js component library styled with Panda CSS. Production-ready components with daisyUI-compatible class naming.
             </p>
             <div className={css({ display: 'flex', gap: '0.75rem', justifyContent: 'center', flexWrap: 'wrap' })}>
@@ -87,30 +87,30 @@ export const Landing = {
           </HeroContent>
         </Hero>
 
-        <Stats className={css({ width: '100%', marginBottom: '3rem', border: '1px solid', borderColor: 'base-300' })}>
+        <Stats className={css({ width: '100%', marginBottom: '3rem', border: '1px solid', borderColor: 'token(colors.base-300)' })}>
           <Stat>
             <StatTitle>Components</StatTitle>
-            <StatValue className={css({ color: 'primary' })}>57</StatValue>
+            <StatValue className={css({ color: 'token(colors.primary)' })}>57</StatValue>
             <StatDesc>daisyUI-compatible</StatDesc>
           </Stat>
           <Stat>
             <StatTitle>Core size</StatTitle>
-            <StatValue className={css({ color: 'secondary' })}>7KB</StatValue>
+            <StatValue className={css({ color: 'token(colors.secondary)' })}>7KB</StatValue>
             <StatDesc>Mithril.js runtime</StatDesc>
           </Stat>
           <Stat>
             <StatTitle>Runtime deps</StatTitle>
-            <StatValue className={css({ color: 'accent' })}>0</StatValue>
+            <StatValue className={css({ color: 'token(colors.accent)' })}>0</StatValue>
             <StatDesc>zero-runtime CSS</StatDesc>
           </Stat>
         </Stats>
 
         <div className={featureGrid}>
           {features.map((f) => (
-            <Card key={f.title} border className={css({ background: 'base-100' })}>
+            <Card key={f.title} border className={css({ background: 'token(colors.base-100)' })}>
               <CardBody>
                 <CardTitle className={css({ fontSize: '1rem' })}>{f.title}</CardTitle>
-                <p className={css({ fontSize: '0.8125rem', color: 'base-content', opacity: 0.6 })}>{f.desc}</p>
+                <p className={css({ fontSize: '0.8125rem', color: 'token(colors.base-content)', opacity: 0.6 })}>{f.desc}</p>
               </CardBody>
             </Card>
           ))}
@@ -176,16 +176,16 @@ export const Landing = {
         </div>
 
         <h2 className={css({ fontSize: '1.5rem', fontWeight: '700', marginBottom: '0.75rem', marginTop: '2.5rem' })}>Browse All Components</h2>
-        <p className={css({ marginBottom: '1.5rem', color: 'base-content', opacity: 0.6 })}>57 components organized by category. Click any to see the full demo.</p>
+        <p className={css({ marginBottom: '1.5rem', color: 'token(colors.base-content)', opacity: 0.6 })}>57 components organized by category. Click any to see the full demo.</p>
 
         {categories.map((cat) => (
-          <Card key={cat.title} className={css({ background: 'base-100', border: '1px solid', borderColor: 'base-300', marginBottom: '1.5rem' })}>
+          <Card key={cat.title} className={css({ background: 'token(colors.base-100)', border: '1px solid', borderColor: 'token(colors.base-300)', marginBottom: '1.5rem' })}>
             <CardBody>
               <div className={css({ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' })}>
                 <CardTitle className={css({ fontSize: '1rem' })}>{cat.title}</CardTitle>
                 <Badge size="sm" variant="soft">{cat.items.length}</Badge>
               </div>
-              <p className={css({ fontSize: '0.8125rem', color: 'base-content', opacity: 0.5, marginBottom: '0.75rem' })}>{cat.desc}</p>
+              <p className={css({ fontSize: '0.8125rem', color: 'token(colors.base-content)', opacity: 0.5, marginBottom: '0.75rem' })}>{cat.desc}</p>
               <div className={css({ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' })}>
                 {cat.items.map((name) => (
                   <Button

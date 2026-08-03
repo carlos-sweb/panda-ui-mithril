@@ -47,9 +47,9 @@ const categoryTitle = css({
 
 const sidebarBase = css({
   width: '260px',
-  background: 'base-200',
+  background: 'token(colors.base-200)',
   borderRight: '1px solid',
-  borderColor: 'base-300',
+  borderColor: 'token(colors.base-300)',
   overflowY: 'auto',
   display: 'flex',
   flexDirection: 'column',

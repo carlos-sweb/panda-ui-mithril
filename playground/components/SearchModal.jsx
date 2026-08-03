@@ -79,7 +79,7 @@ const searchInput = css({
   gap: '0.75rem',
   padding: '1rem 1.25rem',
   borderBottom: '1px solid',
-  borderColor: 'base-300',
+  borderColor: 'token(colors.base-300)',
 })
 
 const input = css({
@@ -88,7 +88,7 @@ const input = css({
   background: 'transparent',
   outline: 'none',
   fontSize: '1rem',
-  color: 'base-content',
+  color: 'token(colors.base-content)',
   fontFamily: 'inherit',
 })
 
@@ -106,24 +106,24 @@ const resultItem = css({
   borderRadius: '0.5rem',
   cursor: 'pointer',
   textDecoration: 'none',
-  color: 'base-content',
+  color: 'token(colors.base-content)',
   transition: 'background 0.1s',
-  _hover: { background: 'base-200' },
+  _hover: { background: 'token(colors.base-200)' },
 })
 
 const categoryBadge = css({
   fontSize: '0.6875rem',
   padding: '0.125rem 0.5rem',
   borderRadius: '9999px',
-  background: 'base-200',
-  color: 'base-content',
+  background: 'token(colors.base-200)',
+  color: 'token(colors.base-content)',
   opacity: 0.6,
 })
 
 const emptyState = css({
   padding: '3rem 1.5rem',
   textAlign: 'center',
-  color: 'base-content',
+  color: 'token(colors.base-content)',
   opacity: 0.5,
 })
 
@@ -205,7 +205,7 @@ export const SearchModal = {
                       <a
                         key={comp.name}
                         href={`#${comp.route}`}
-                        className={globalIndex === vnode.state.selectedIndex ? `${resultItem} ${css({ background: 'base-200' })}` : resultItem}
+                        className={globalIndex === vnode.state.selectedIndex ? `${resultItem} ${css({ background: 'token(colors.base-200)' })}` : resultItem}
                         onclick={(e) => {
                           e.preventDefault()
                           m.route.set(comp.route)
@@ -222,7 +222,7 @@ export const SearchModal = {
             )}
           </div>
 
-          <div className={css({ padding: '0.75rem 1.25rem', borderTop: '1px solid', borderColor: 'base-300', display: 'flex', gap: '1rem', fontSize: '0.75rem', opacity: 0.5 })}>
+          <div className={css({ padding: '0.75rem 1.25rem', borderTop: '1px solid', borderColor: 'token(colors.base-300)', display: 'flex', gap: '1rem', fontSize: '0.75rem', opacity: 0.5 })}>
             <span>↑↓ Navigate</span>
             <span>↵ Open</span>
             <span>esc Close</span>

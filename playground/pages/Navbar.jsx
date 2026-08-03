@@ -6,7 +6,7 @@ import { ClassTable } from '../components/ClassTable.jsx'
 
 const stack = css({ display: 'flex', flexDirection: 'column', gap: '1.5rem' })
 const sectionTitle = css({ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem', marginTop: '2rem' })
-const surface = css({ background: 'base-200', borderRadius: 'var(--radius-box)' })
+const surface = css({ background: 'token(colors.base-200)', borderRadius: 'var(--radius-box)' })
 
 const usageCode = `<Navbar>
   <NavbarStart><Button variant="ghost" size="sm">panda-ui</Button></NavbarStart>

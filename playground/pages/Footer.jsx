@@ -8,7 +8,7 @@ const stack = css({ display: 'flex', flexDirection: 'column', gap: '1.5rem' })
 const sectionTitle = css({ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem', marginTop: '2rem' })
 const heading = css({ fontSize: '0.875rem', fontWeight: '600', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em', opacity: 0.5 })
 const section = css({ marginBottom: '2rem' })
-const surface = css({ background: 'base-200', padding: '2.5rem', borderRadius: 'var(--radius-box)' })
+const surface = css({ background: 'token(colors.base-200)', padding: '2.5rem', borderRadius: 'var(--radius-box)' })
 
 const usageCode = `<Footer className="...">
   <div>

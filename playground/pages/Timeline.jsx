@@ -9,7 +9,7 @@ const stack = css({ display: 'flex', flexDirection: 'column', gap: '1.5rem' })
 const sectionTitle = css({ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem', marginTop: '2rem' })
 const heading = css({ fontSize: '0.875rem', fontWeight: '600', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em', opacity: 0.5 })
 const section = css({ marginBottom: '2rem' })
-const icon = css({ color: 'primary' })
+const icon = css({ color: 'token(colors.primary)' })
 
 const events = ['1984', '1998', '2001', '2007', '2015']
 const labels = ['First Macintosh', 'iMac', 'iPod', 'iPhone', 'Apple Watch']

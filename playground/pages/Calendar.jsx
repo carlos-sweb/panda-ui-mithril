@@ -8,9 +8,9 @@ const stack = css({ display: 'flex', flexDirection: 'column', gap: '1.5rem' })
 const sectionTitle = css({ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem', marginTop: '2rem' })
 const surface = css({
   display: 'inline-block',
-  background: 'base-100',
+  background: 'token(colors.base-100)',
   border: '1px solid',
-  borderColor: 'base-300',
+  borderColor: 'token(colors.base-300)',
   boxShadow: '0 4px 12px color-mix(in oklab, black 15%, transparent)',
 })
 const picked = css({ marginTop: '0.75rem', fontSize: '0.875rem', opacity: 0.7 })

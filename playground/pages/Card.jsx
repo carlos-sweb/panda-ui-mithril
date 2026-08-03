@@ -9,8 +9,8 @@ const heading = css({ fontSize: '0.875rem', fontWeight: '600', marginBottom: '0.
 const stack = css({ display: 'flex', flexDirection: 'column', gap: '1.5rem' })
 const sectionTitle = css({ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem', marginTop: '2rem' })
 const row = css({ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'flex-start' })
-const surface = css({ background: 'base-100', boxShadow: '0 1px 3px color-mix(in oklab, black 15%, transparent)', width: '20rem' })
-const surfaceSide = css({ background: 'base-100', boxShadow: '0 1px 3px color-mix(in oklab, black 15%, transparent)' })
+const surface = css({ background: 'token(colors.base-100)', boxShadow: '0 1px 3px color-mix(in oklab, black 15%, transparent)', width: '20rem' })
+const surfaceSide = css({ background: 'token(colors.base-100)', boxShadow: '0 1px 3px color-mix(in oklab, black 15%, transparent)' })
 const img200 = css({ width: '100%', height: '10rem', objectFit: 'cover' })
 const imgSide = css({ width: '12rem', height: '100%', objectFit: 'cover' })
 
@@ -71,7 +71,7 @@ export default {
               </CardBody>
             </Card>
 
-            <Card border className={css({ width: '20rem', background: 'base-100' })}>
+            <Card border className={css({ width: '20rem', background: 'token(colors.base-100)' })}>
               <CardBody>
                 <CardTitle>Bordered</CardTitle>
                 <p>This card has a border and no shadow.</p>
@@ -81,7 +81,7 @@ export default {
               </CardBody>
             </Card>
 
-            <Card dash className={css({ width: '20rem', background: 'base-100' })}>
+            <Card dash className={css({ width: '20rem', background: 'token(colors.base-100)' })}>
               <CardBody>
                 <CardTitle>Dashed</CardTitle>
                 <p>This card uses a dashed border style.</p>
@@ -121,10 +121,10 @@ export default {
         <section className={section}>
           <h3 className={heading}>Sizes</h3>
           <div className={row}>
-            <Card size="xs" border className={css({ width: '12rem', background: 'base-100' })}>
+            <Card size="xs" border className={css({ width: '12rem', background: 'token(colors.base-100)' })}>
               <CardBody><CardTitle>XS</CardTitle><p>Extra small</p></CardBody>
             </Card>
-            <Card size="lg" border className={css({ width: '16rem', background: 'base-100' })}>
+            <Card size="lg" border className={css({ width: '16rem', background: 'token(colors.base-100)' })}>
               <CardBody><CardTitle>LG</CardTitle><p>Large size</p></CardBody>
             </Card>
           </div>

@@ -10,9 +10,9 @@ const navbarFixed = css({
   right: 0,
   height: '64px',
   minHeight: '64px',
-  background: 'base-200',
+  background: 'token(colors.base-200)',
   borderBottom: '1px solid',
-  borderColor: 'base-300',
+  borderColor: 'token(colors.base-300)',
   padding: '0 1rem',
   zIndex: 50,
 })
@@ -21,7 +21,7 @@ const brand = css({
   fontSize: '1.25rem',
   fontWeight: '700',
   textDecoration: 'none',
-  color: 'base-content',
+  color: 'token(colors.base-content)',
 })
 
 const searchBtn = css({
@@ -31,16 +31,16 @@ const searchBtn = css({
   padding: '0.5rem 1rem',
   borderRadius: '0.5rem',
   fontSize: '0.875rem',
-  background: 'base-100',
+  background: 'token(colors.base-100)',
   border: '1px solid',
-  borderColor: 'base-300',
-  color: 'base-content',
+  borderColor: 'token(colors.base-300)',
+  color: 'token(colors.base-content)',
   opacity: 0.7,
   cursor: 'pointer',
   transition: 'all 0.15s',
   width: '100%',
   maxWidth: '400px',
-  _hover: { opacity: 1, borderColor: 'base-content/20%' },
+  _hover: { opacity: 1, borderColor: 'token(colors.base-content/20)' },
 })
 
 const themeLabel = css({

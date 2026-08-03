@@ -7,7 +7,7 @@ import { ClassTable } from '../components/ClassTable.jsx'
 
 const stack = css({ display: 'flex', flexDirection: 'column', gap: '1.5rem' })
 const sectionTitle = css({ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem', marginTop: '2rem' })
-const wrapper = css({ maxWidth: '32rem', background: 'base-100', borderRadius: 'var(--radius-box)', boxShadow: '0 1px 3px color-mix(in oklab, black 15%, transparent)' })
+const wrapper = css({ maxWidth: '32rem', background: 'token(colors.base-100)', borderRadius: 'var(--radius-box)', boxShadow: '0 1px 3px color-mix(in oklab, black 15%, transparent)' })
 const kicker = css({ padding: '1rem 1rem 0.5rem', fontSize: '0.75rem', opacity: 0.6, letterSpacing: '0.02em' })
 const subtitle = css({ fontSize: '0.75rem', textTransform: 'uppercase', fontWeight: '600', opacity: 0.6 })
 

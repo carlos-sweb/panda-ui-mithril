@@ -9,7 +9,7 @@ const stack = css({ display: 'flex', flexDirection: 'column', gap: '1.5rem' })
 const sectionTitle = css({ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem', marginTop: '2rem' })
 const heading = css({ fontSize: '0.875rem', fontWeight: '600', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em', opacity: 0.5 })
 const section = css({ marginBottom: '2rem' })
-const surface = css({ background: 'base-200', minHeight: '16rem', borderRadius: 'var(--radius-box)' })
+const surface = css({ background: 'token(colors.base-200)', minHeight: '16rem', borderRadius: 'var(--radius-box)' })
 const withImage = css({
   minHeight: '16rem',
   borderRadius: 'var(--radius-box)',
@@ -18,7 +18,7 @@ const withImage = css({
 const center = css({ textAlign: 'center' })
 const bigTitle = css({ fontSize: '2.5rem', fontWeight: '700' })
 const body = css({ paddingBlock: '1rem', maxWidth: '32rem' })
-const white = css({ color: 'white' })
+const white = css({ color: 'token(colors.white)' })
 
 const usageCode = `<Hero>
   <HeroOverlay />

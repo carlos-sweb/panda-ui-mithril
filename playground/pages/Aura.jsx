@@ -9,8 +9,8 @@ const stack = css({ display: 'flex', flexDirection: 'column', gap: '1.5rem' })
 const section = css({ marginBottom: '2rem' })
 const heading = css({ fontSize: '0.875rem', fontWeight: '600', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em', opacity: 0.5 })
 const sectionTitle = css({ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem', marginTop: '2rem' })
-const cardSurface = css({ background: 'base-100', width: '14rem' })
-const primaryColor = css({ color: 'primary' })
+const cardSurface = css({ background: 'token(colors.base-100)', width: '14rem' })
+const primaryColor = css({ color: 'token(colors.primary)' })
 
 const usageCode = `<Aura>
   <Button>Button with aura</Button>

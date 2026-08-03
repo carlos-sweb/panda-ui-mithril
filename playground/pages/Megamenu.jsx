@@ -6,7 +6,7 @@ import { ClassTable } from '../components/ClassTable.jsx'
 
 const stack = css({ display: 'flex', flexDirection: 'column', gap: '1.5rem' })
 const sectionTitle = css({ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem', marginTop: '2rem' })
-const surface = css({ background: 'base-100', border: '1px solid', borderColor: 'base-300', padding: '0.5rem', borderRadius: 'var(--radius-box)' })
+const surface = css({ background: 'token(colors.base-100)', border: '1px solid', borderColor: 'token(colors.base-300)', padding: '0.5rem', borderRadius: 'var(--radius-box)' })
 const grid = css({ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1.5rem' })
 const colTitle = css({ fontSize: '0.75rem', fontWeight: '600', textTransform: 'uppercase', opacity: 0.5, marginBottom: '0.5rem' })
 const link = css({ display: 'block', padding: '0.375rem 0', fontSize: '0.875rem', textDecoration: 'none', color: 'inherit', opacity: 0.8, _hover: { opacity: 1 } })
