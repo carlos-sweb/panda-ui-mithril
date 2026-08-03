@@ -1,44 +1,63 @@
-import { cva } from '../../styled-system/css'
+import { sva } from '../../styled-system/css'
 
-export const ratingStyles = cva({
+export const rating = sva({
+  slots: ['root', 'star'],
   base: {
-    position: 'relative',
-    display: 'inline-flex',
-    alignItems: 'center',
-    '--size': '1.5rem',
-
-    '& > input': {
-      cursor: 'pointer',
-      appearance: 'none',
-      border: 'none',
-      padding: '0',
-      borderRadius: '0',
-      width: 'var(--size)',
-      height: 'var(--size)',
-      backgroundColor: 'var(--rating-color, var(--colors-base-content))',
-      opacity: '0.2',
+    root: {
+      display: 'inline-flex',
+      alignItems: 'center',
+      gap: '0.125rem',
     },
-    '& > input:checked, & > input:has(~ input:checked), & > input[aria-checked="true"]': {
-      opacity: '1',
+    star: {
+      display: 'inline-flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      width: 'var(--rating-size)',
+      height: 'var(--rating-size)',
+      padding: '0',
+      border: '0',
+      background: 'transparent',
+      // fallback keeps the star colored even if the root custom property is absent
+      color: 'var(--rating-color, token(colors.warning))',
+      cursor: 'pointer',
+      '& svg': {
+        width: '100%',
+        height: '100%',
+      },
     },
   },
   variants: {
     size: {
-      xs: { '--size': '1rem' },
-      sm: { '--size': '1.25rem' },
-      md: { '--size': '1.5rem' },
-      lg: { '--size': '1.75rem' },
-      xl: { '--size': '2rem' },
+      xs: { root: { '--rating-size': '1rem' } },
+      sm: { root: { '--rating-size': '1.25rem' } },
+      md: { root: { '--rating-size': '1.5rem' } },
+      lg: { root: { '--rating-size': '1.75rem' } },
+      xl: { root: { '--rating-size': '2rem' } },
     },
     color: {
-      neutral: { '--rating-color': 'var(--colors-neutral)' },
-      primary: { '--rating-color': 'var(--colors-primary)' },
-      secondary: { '--rating-color': 'var(--colors-secondary)' },
-      accent: { '--rating-color': 'var(--colors-accent)' },
-      info: { '--rating-color': 'var(--colors-info)' },
-      success: { '--rating-color': 'var(--colors-success)' },
-      warning: { '--rating-color': 'var(--colors-warning)' },
-      error: { '--rating-color': 'var(--colors-error)' },
+      neutral: { root: { '--rating-color': 'token(colors.neutral)' } },
+      primary: { root: { '--rating-color': 'token(colors.primary)' } },
+      secondary: { root: { '--rating-color': 'token(colors.secondary)' } },
+      accent: { root: { '--rating-color': 'token(colors.accent)' } },
+      info: { root: { '--rating-color': 'token(colors.info)' } },
+      success: { root: { '--rating-color': 'token(colors.success)' } },
+      warning: { root: { '--rating-color': 'token(colors.warning)' } },
+      error: { root: { '--rating-color': 'token(colors.error)' } },
     },
+    state: {
+      empty: {
+        star: { '& svg': { opacity: '0.25' } },
+      },
+      full: {},
+    },
+    readonly: {
+      true: { star: { cursor: 'default' } },
+      false: { star: { cursor: 'pointer' } },
+    },
+  },
+  defaultVariants: {
+    size: 'md',
+    color: 'warning',
+    readonly: false,
   },
 })
