@@ -62,12 +62,12 @@ export default {
         </Chat>
 
         <section>
-          <h2 className={sectionTitle}>Usage</h2>
+          <h2 className={sectionTitle}>{t('common.usage')}</h2>
           <CodeExample code={usageCode} />
         </section>
 
         <section>
-          <h2 className={sectionTitle}>Class Reference</h2>
+          <h2 className={sectionTitle}>{t('common.classReference')}</h2>
           <ClassTable rows={classRows} />
         </section>
       </div>

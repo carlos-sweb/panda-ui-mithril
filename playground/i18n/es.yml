@@ -1,4 +1,11 @@
 common:
+  classReference: Referencia de clases
+  usage: Uso
+  classTableTooltip: La columna Class name es la clase CSS que esta variante genera internamente — nunca la uses como className. Usa la columna Prop para aplicarla en la API Mithril de esta librería.
+  thClassName: Nombre de clase
+  thProp: Prop
+  thType: Tipo
+  thDescription: Descripción
   usage: Uso
   classReference: Referencia de clases
   prop: Prop

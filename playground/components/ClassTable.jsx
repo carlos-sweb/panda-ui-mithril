@@ -2,6 +2,7 @@ import m from 'mithril'
 import { css, cx } from '../../styled-system/css'
 import { Badge } from '../../src/index.js'
 import { PaintBucket, Shapes, RulerDimensionLine, Settings, Wrench, Puzzle } from 'lucide-mithril'
+import { t } from '../i18n/index.js'
 
 const note = css({
   display: 'flex',
@@ -75,24 +76,16 @@ export const ClassTable = {
 
     return m('div', [
       m('p', { className: note }, [
-        m('span', {}, '💡'),
-        m('span', {}, [
-          'The ',
-          m('strong', {}, 'Class name'),
-          ' column is the CSS class this variant generates internally — you never pass it as ',
-          m('code', { className: propChip }, 'className'),
-          '. Use the ',
-          m('strong', {}, 'Prop'),
-          ' column to apply it in this library\'s Mithril API.',
-        ]),
+        m('span', {}, '💡 '),
+        m('span', {}, t('common.classTableTooltip')),
       ]),
       m('div', { className: wrapper },
         m('table', { className: table }, [
           m('thead', m('tr', [
-            m('th', { className: th }, 'Class name'),
-            m('th', { className: th }, 'Prop'),
-            m('th', { className: th }, 'Type'),
-            m('th', { className: th }, 'Description'),
+            m('th', { className: th }, t('common.thClassName')),
+            m('th', { className: th }, t('common.thProp')),
+            m('th', { className: th }, t('common.thType')),
+            m('th', { className: th }, t('common.thDescription')),
           ])),
           m('tbody', rows.map((row, i) =>
             m('tr', { key: i }, [
