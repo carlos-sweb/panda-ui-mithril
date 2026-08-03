@@ -79,7 +79,7 @@ export const ClassTable = {
         m('span', {}, [
           'The ',
           m('strong', {}, 'Class name'),
-          ' column is the daisyUI CSS class this variant generates internally — you never pass it as ',
+          ' column is the CSS class this variant generates internally — you never pass it as ',
           m('code', { className: propChip }, 'className'),
           '. Use the ',
           m('strong', {}, 'Prop'),
