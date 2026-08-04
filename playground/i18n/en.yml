@@ -14,6 +14,9 @@ common:
   copied: Copied!
   noResults: No results found.
   searchPlaceholder: Search components...
+  searchNavigate: ↑↓ Navigate
+  searchOpen: ↵ Open
+  searchClose: esc Close
   demoComingSoon: Demo coming soon.
   home: Home
 sidebar:

@@ -2,6 +2,7 @@ import m from 'mithril'
 import { css } from '../../styled-system/css'
 import { Search, ArrowRight, X } from 'lucide-mithril'
 import { Modal, ModalBox, ModalBackdrop, Button } from '../../src/index.js'
+import { t } from '../i18n/index.js'
 
 const allComponents = [
   { name: 'button', category: 'Actions', route: '/button' },
@@ -62,6 +63,11 @@ const allComponents = [
   { name: 'carousel', category: 'Layout', route: '/carousel' },
   { name: 'diff', category: 'Layout', route: '/diff' },
 ]
+
+const categoryKey = (cat) => {
+  const map = { 'Actions': 'sidebar.categories.actions', 'Data Display': 'sidebar.categories.dataDisplay', 'Navigation': 'sidebar.categories.navigation', 'Feedback': 'sidebar.categories.feedback', 'Data Input': 'sidebar.categories.dataInput', 'Layout': 'sidebar.categories.layout', 'Mockup': 'sidebar.categories.mockup' }
+  return map[cat] || cat
+}
 
 const modalBox = css({
   width: '100%',
@@ -166,7 +172,7 @@ export const SearchModal = {
             <input
               className={input}
               type="text"
-              placeholder="Search components..."
+              placeholder={t('common.searchPlaceholder')}
               autofocus
               value={vnode.state.query}
               oninput={(e) => { vnode.state.query = e.target.value; vnode.state.selectedIndex = 0 }}
@@ -192,12 +198,12 @@ export const SearchModal = {
 
           <div className={resultsList}>
             {filtered.length === 0 ? (
-              <div className={emptyState}>No components found</div>
+              <div className={emptyState}>{t('common.noResults')}</div>
             ) : (
               Object.entries(grouped).map(([category, items]) => (
                 <div key={category}>
                   <div className={css({ padding: '0.5rem 1rem 0.25rem', fontSize: '0.6875rem', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.05em', opacity: 0.4 })}>
-                    {category}
+                    {t(categoryKey(category))}
                   </div>
                   {items.map((comp) => {
                     const globalIndex = filtered.indexOf(comp)
@@ -223,9 +229,9 @@ export const SearchModal = {
           </div>
 
           <div className={css({ padding: '0.75rem 1.25rem', borderTop: '1px solid', borderColor: 'token(colors.base-300)', display: 'flex', gap: '1rem', fontSize: '0.75rem', opacity: 0.5 })}>
-            <span>↑↓ Navigate</span>
-            <span>↵ Open</span>
-            <span>esc Close</span>
+            <span>{t('common.searchNavigate')}</span>
+            <span>{t('common.searchOpen')}</span>
+            <span>{t('common.searchClose')}</span>
           </div>
         </ModalBox>
         <ModalBackdrop onclick={onclose} />

@@ -2,7 +2,7 @@ import m from 'mithril'
 import { css } from '../../styled-system/css'
 import { Search, ExternalLink, Menu as MenuIcon } from 'lucide-mithril'
 import { Navbar as NavbarBase, NavbarStart, NavbarCenter, NavbarEnd, Button, Kbd, ThemeController } from '../../src/index.js'
-import { currentLang, setLang } from '../i18n/index.js'
+import { t, currentLang, setLang } from '../i18n/index.js'
 
 const navbarFixed = css({
   position: 'fixed',
@@ -89,7 +89,7 @@ export const Navbar = {
 
           <button className={searchBtn} onclick={onSearchOpen}>
             <Search size={16} className={css({ opacity: 0.5 })} />
-            <span>Search components...</span>
+            <span>{t('common.searchPlaceholder')}</span>
             <Kbd size="sm" className={css({ marginLeft: 'auto' })}>⌘K</Kbd>
           </button>
         </NavbarCenter>
