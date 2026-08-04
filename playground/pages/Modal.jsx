@@ -58,6 +58,7 @@ export default {
   oninit(vnode) {
     vnode.state.openFor = null
     vnode.state.sizeFor = null
+    vnode.state.sizeOpen = false
     vnode.state.persistentOpen = false
   },
 
@@ -67,7 +68,7 @@ export default {
 
   view(vnode) {
     const close = () => { vnode.state.openFor = null }
-    const closeSize = () => { vnode.state.sizeFor = null }
+    const closeSize = () => { vnode.state.sizeOpen = false }
     const closePersistent = () => { vnode.state.persistentOpen = false }
     const positions = ['middle', 'top', 'bottom', 'start', 'end']
     const sizes = ['xs', 'sm', 'md', 'lg']
@@ -82,7 +83,7 @@ export default {
         <h2 className={sectionTitle}>Sizes</h2>
         <div className={row}>
           {sizes.map((s) => (
-            <Button key={s} onclick={() => { vnode.state.sizeFor = s }}>
+            <Button key={s} onclick={() => { vnode.state.sizeFor = s; vnode.state.sizeOpen = true }}>
               Open ({s.toUpperCase()})
             </Button>
           ))}
@@ -90,9 +91,10 @@ export default {
 
         <Modal
           size={vnode.state.sizeFor || undefined}
-          open={!!vnode.state.sizeFor}
+          open={vnode.state.sizeOpen}
           labelledby="size-modal-title"
           onclose={closeSize}
+          onclosed={() => { vnode.state.sizeFor = null }}
         >
           <ModalBox>
             <h3 id="size-modal-title" className={modal({}).header}>
