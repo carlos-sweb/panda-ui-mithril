@@ -2,6 +2,7 @@ import m from 'mithril'
 import { css } from '../../styled-system/css'
 import { t } from '../i18n/index.js'
 import { Button, Modal, ModalBox, ModalAction, ModalBackdrop } from '../../src/index.js'
+import { modal } from '../../src/recipes/modal'
 import { CodeExample } from '../components/CodeExample.jsx'
 import { ClassTable } from '../components/ClassTable.jsx'
 
@@ -10,25 +11,42 @@ const sectionTitle = css({ fontSize: '1.25rem', fontWeight: '600', marginBottom:
 const row = css({ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' })
 const title = css({ fontSize: '1.125rem', fontWeight: '700' })
 const body = css({ paddingBlock: '1rem' })
+const hint = css({ opacity: 0.6, maxWidth: '600px' })
 
 const usageCode = `<Button onclick={() => { open = true }}>Open Modal</Button>
 
-<Modal open={open} onclose={() => { open = false }}>
+<!-- size prop: xs / sm / md (default) / lg ; labelledby wires aria-labelledby to the h3 id -->
+<Modal open={open} size="sm" labelledby="modal-title" onclose={() => { open = false }}>
   <ModalBox>
-    <h3>Hello!</h3>
-    <p>This is a modal — press ESC, click outside, or the button to close.</p>
-    <ModalAction>
+    <h3 id="modal-title" className={modal({}).header}>Hello!</h3>
+    <p className={modal({}).body}>This is a sized modal — press ESC, click outside, or the button to close.</p>
+    <ModalAction className={modal({}).footer}>
       <Button onclick={() => { open = false }}>Close</Button>
     </ModalAction>
   </ModalBox>
   <ModalBackdrop onclick={() => { open = false }} />
+</Modal>
+
+<!-- persistent: ESC and backdrop click do NOT close it; only the button below dismisses -->
+<Modal open={open} persistent>
+  <ModalBox>
+    <h3>Persistent</h3>
+    <p>You must use the button below to close this modal.</p>
+    <ModalAction>
+      <Button onclick={() => { open = false }}>Close</Button>
+    </ModalAction>
+  </ModalBox>
 </Modal>`
 
 const classRows = [
   { className: 'modal', prop: '<Modal open onclose={...}>', type: 'Component', description: 'Native <dialog>-backed modal — `open` drives real .showModal()/.close()' },
   { className: 'modal-box', prop: '<ModalBox>', type: 'Part', description: 'The modal content box' },
-  { className: 'modal-action', prop: '<ModalAction>', type: 'Part', description: 'Container for action buttons, right-aligned' },
+  { className: 'modal-action', prop: '<ModalAction>', type: 'Part', description: 'Container for actions, right-aligned' },
   { className: 'modal-backdrop', prop: '<ModalBackdrop onclick={...}>', type: 'Part', description: 'Invisible button behind modal-box — click to close' },
+  { className: 'modal-xs', prop: 'size="xs"', type: 'Size', description: 'Panel max-width: 20rem (320px)' },
+  { className: 'modal-sm', prop: 'size="sm"', type: 'Size', description: 'Panel max-width: 24rem (384px)' },
+  { className: 'modal-md', prop: 'size="md" (default)', type: 'Size', description: 'Panel max-width: 32rem (512px)', isDefault: true },
+  { className: 'modal-lg', prop: 'size="lg"', type: 'Size', description: 'Panel max-width: 48rem (768px)' },
   { className: 'modal-top', prop: 'position="top"', type: 'Placement', description: 'Modal box slides in from the top' },
   { className: 'modal-middle', prop: 'position="middle" (default)', type: 'Placement', description: 'Modal box centered', isDefault: true },
   { className: 'modal-bottom', prop: 'position="bottom"', type: 'Placement', description: 'Modal box slides in from the bottom' },
@@ -39,6 +57,8 @@ const classRows = [
 export default {
   oninit(vnode) {
     vnode.state.openFor = null
+    vnode.state.sizeFor = null
+    vnode.state.persistentOpen = false
   },
 
   name: 'Modal',
@@ -47,7 +67,10 @@ export default {
 
   view(vnode) {
     const close = () => { vnode.state.openFor = null }
+    const closeSize = () => { vnode.state.sizeFor = null }
+    const closePersistent = () => { vnode.state.persistentOpen = false }
     const positions = ['middle', 'top', 'bottom', 'start', 'end']
+    const sizes = ['xs', 'sm', 'md', 'lg']
 
     return (
       <div className={stack}>
@@ -55,6 +78,59 @@ export default {
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
           {t('paragraphs.modal')}
         </p>
+
+        <h2 className={sectionTitle}>Sizes</h2>
+        <div className={row}>
+          {sizes.map((s) => (
+            <Button key={s} onclick={() => { vnode.state.sizeFor = s }}>
+              Open ({s.toUpperCase()})
+            </Button>
+          ))}
+        </div>
+
+        <Modal
+          size={vnode.state.sizeFor || undefined}
+          open={!!vnode.state.sizeFor}
+          labelledby="size-modal-title"
+          onclose={closeSize}
+        >
+          <ModalBox>
+            <h3 id="size-modal-title" className={modal({}).header}>
+              Size: {vnode.state.sizeFor ? vnode.state.sizeFor.toUpperCase() : ''}
+            </h3>
+            <p className={modal({}).body}>
+              This modal is rendered with <code>size="{vnode.state.sizeFor}"</code>. The same
+              Modal instance is reused — only the size prop changes.
+            </p>
+            <ModalAction className={modal({}).footer}>
+              <Button onclick={closeSize}>Close</Button>
+            </ModalAction>
+          </ModalBox>
+          <ModalBackdrop onclick={closeSize} />
+        </Modal>
+
+        <h2 className={sectionTitle}>Persistent</h2>
+        <p className={hint}>
+          This modal is persistent — ESC and clicking outside won't close it; use the Close button.
+        </p>
+        <div className={row}>
+          <Button onclick={() => { vnode.state.persistentOpen = true }}>
+            Open persistent modal
+          </Button>
+        </div>
+
+        <Modal persistent open={vnode.state.persistentOpen}>
+          <ModalBox>
+            <h3 className={modal({}).header}>Persistent modal</h3>
+            <p className={modal({}).body}>
+              You cannot close this modal with ESC or by clicking outside. The only way to
+              dismiss it is the button below.
+            </p>
+            <ModalAction className={modal({}).footer}>
+              <Button onclick={closePersistent}>Close</Button>
+            </ModalAction>
+          </ModalBox>
+        </Modal>
 
         <div className={row}>
           {positions.map((p) => (

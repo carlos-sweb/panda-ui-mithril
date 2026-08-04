@@ -55,7 +55,9 @@ export default defineConfig({
           '64': { value: '16rem' },
           '72': { value: '18rem' },
           '80': { value: '20rem' },
+          '96': { value: '24rem' },
           '128': { value: '32rem' },
+          '192': { value: '48rem' },
           '320': { value: '80rem' },
         },
         fontSizes: {
@@ -195,6 +197,14 @@ export default defineConfig({
         'aura-glow-after': {
           '20%, 80%': { opacity: '0.3', filter: 'blur(1rem)' },
           '50%': { opacity: '0.6', filter: 'blur(1.5rem)' },
+        },
+        'modal-exit': {
+          '0%': { opacity: '1', transform: 'scale(1)' },
+          '100%': { opacity: '0', transform: 'scale(0.95)' },
+        },
+        'modal-backdrop-exit': {
+          '0%': { opacity: '1' },
+          '100%': { opacity: '0' },
         },
       },
     },

@@ -1,7 +1,7 @@
 import { sva } from '../../styled-system/css'
 
 export const modal = sva({
-  slots: ['modal', 'box', 'action', 'backdrop'],
+  slots: ['modal', 'box', 'action', 'backdrop', 'header', 'body', 'footer'],
   base: {
     modal: {
       position: 'fixed',
@@ -25,10 +25,27 @@ export const modal = sva({
         display: 'grid',
         placeItems: 'center',
       },
-      '& > .modal-box': {
-        transitionProperty: 'translate, scale, opacity',
-        transitionDuration: '0.2s',
-        transitionTimingFunction: 'ease-out',
+      '@media (prefers-reduced-motion: no-preference)': {
+        '& > .modal-box': {
+          transitionProperty: 'translate, scale, opacity',
+          transitionDuration: '0.2s',
+          transitionTimingFunction: 'ease-out',
+        },
+      },
+      // Exit animation. Driven by the imperative `modal-closing` class the
+      // component adds in its close sequence (onupdate) — a recipe variant
+      // can't work here because Mithril runs view() before onupdate, so a
+      // variant class would appear one render too late and the animation
+      // would never start.
+      '&.modal-closing > .modal-box': {
+        '@media (prefers-reduced-motion: no-preference)': {
+          animation: 'modal-exit 0.2s ease-in forwards',
+        },
+      },
+      '&.modal-closing::backdrop': {
+        '@media (prefers-reduced-motion: no-preference)': {
+          animation: 'modal-backdrop-exit 0.2s ease-in forwards',
+        },
       },
     },
     box: {
@@ -60,6 +77,24 @@ export const modal = sva({
       cursor: 'pointer',
       border: 'none',
       background: 'none',
+    },
+    header: {
+      paddingBottom: 'token(spacing.4)',
+      borderBottom: '1px solid token(colors.base-300)',
+      fontSize: 'token(fontSizes.lg)',
+      fontWeight: '600',
+    },
+    body: {
+      paddingBlock: 'token(spacing.4)',
+      flex: '1',
+      overflowY: 'auto',
+    },
+    footer: {
+      paddingTop: 'token(spacing.4)',
+      borderTop: '1px solid token(colors.base-300)',
+      display: 'flex',
+      justifyContent: 'flex-end',
+      gap: 'token(spacing.2)',
     },
   },
   variants: {
@@ -106,6 +141,40 @@ export const modal = sva({
             maxHeight: 'none',
             width: 'auto',
             borderRadius: 'var(--radius-box) 0 0 var(--radius-box)',
+          },
+        },
+      },
+    },
+    // Size variant lives on the `modal` slot (not `box`) because ModalBox renders
+    // `modal({}).box` with no variant args — box-slot variant styles are dead code.
+    // The `<dialog>` carries the size variant class via `modal({ position, size }).modal`,
+    // so descendant selectors on the modal slot are the only way to reach `.modal-box`.
+    size: {
+      xs: {
+        modal: {
+          '& > .modal-box': {
+            maxWidth: 'token(spacing.80)',
+          },
+        },
+      },
+      sm: {
+        modal: {
+          '& > .modal-box': {
+            maxWidth: 'token(spacing.96)',
+          },
+        },
+      },
+      md: {
+        modal: {
+          '& > .modal-box': {
+            maxWidth: 'token(spacing.128)',
+          },
+        },
+      },
+      lg: {
+        modal: {
+          '& > .modal-box': {
+            maxWidth: 'token(spacing.192)',
           },
         },
       },

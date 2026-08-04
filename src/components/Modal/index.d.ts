@@ -6,6 +6,18 @@ export interface ModalAttrs extends ComponentAttrs {
   open?: boolean
   position?: 'top' | 'middle' | 'bottom' | 'start' | 'end'
   onclose?: (e: Event) => void
+  /** NUEVO — ancho máximo del panel (xs=320px, sm=384px, md=512px, lg=768px) */
+  size?: 'xs' | 'sm' | 'md' | 'lg'
+  /** NUEVO — si true, Escape y click en backdrop no cierran el modal */
+  persistent?: boolean
+  /** NUEVO — si false, no se muestra botón de cierre (default true) */
+  closable?: boolean
+  /** NUEVO — id del elemento que etiqueta el modal */
+  labelledby?: string
+  /** NUEVO — id del elemento que describe el modal */
+  describedby?: string
+  /** NUEVO — se dispara DESPUÉS de completar la animación de salida */
+  onclosed?: () => void
   children?: Vnode | Vnode[] | string | null
   [key: string]: unknown
 }
