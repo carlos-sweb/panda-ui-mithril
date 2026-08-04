@@ -2,7 +2,12 @@ import m from 'mithril'
 import { menuStyles } from '../../recipes/menu'
 import { cx } from '../../utils/cx'
 
-
+/**
+ * Componente Menu. Menú de navegación (`<ul>`) con tamaño y orientación
+ * horizontal opcional.
+ *
+ * @type {import('mithril').Component<import('./index').MenuAttrs>}
+ */
 export const Menu = {
   view(vnode) {
     const { size, horizontal, className, ...rest } = vnode.attrs
@@ -14,6 +19,12 @@ export const Menu = {
   }
 }
 
+/**
+ * Componente MenuItem. Ítem del menú (`<li>` que envuelve un `<a>`); `active`
+ * lo resalta y `disabled` lo atenúa.
+ *
+ * @type {import('mithril').Component<import('./index').MenuItemAttrs>}
+ */
 export const MenuItem = {
   view(vnode) {
     const { active, disabled, className, ...rest } = vnode.attrs
@@ -24,6 +35,11 @@ export const MenuItem = {
   }
 }
 
+/**
+ * Componente MenuTitle. Título de sección dentro del menú.
+ *
+ * @type {import('mithril').Component<import('./index').MenuTitleAttrs>}
+ */
 export const MenuTitle = {
   view(vnode) {
     const { className, ...rest } = vnode.attrs
@@ -31,6 +47,11 @@ export const MenuTitle = {
   }
 }
 
+/**
+ * Componente MenuDropdown. Submenú desplegable anidado.
+ *
+ * @type {import('mithril').Component<import('./index').MenuDropdownAttrs>}
+ */
 export const MenuDropdown = {
   view(vnode) {
     const { className, ...rest } = vnode.attrs
@@ -38,6 +59,11 @@ export const MenuDropdown = {
   }
 }
 
+/**
+ * Componente MenuDropdownToggle. Enlace que abre/cierra un submenú desplegable.
+ *
+ * @type {import('mithril').Component<import('./index').MenuDropdownToggleAttrs>}
+ */
 export const MenuDropdownToggle = {
   view(vnode) {
     const { className, ...rest } = vnode.attrs

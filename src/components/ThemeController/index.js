@@ -14,6 +14,15 @@ import { cx } from '../../utils/cx'
 // ThemeController stays a controlled input like Checkbox/Toggle/Radio — the
 // consumer's onchange sets data-theme, same pattern already used in
 // playground/main.jsx's own navbar theme button.
+
+/**
+ * Componente ThemeController. Checkbox controlado para alternar el tema de
+ * la aplicación. `theme` es el nombre del tema que activa (p. ej. "dark"),
+ * `checked` su estado y `onchange` recibe el tema seleccionado (o undefined
+ * al deseleccionarlo). `variant` elige si se ve como toggle o checkbox.
+ *
+ * @type {import('mithril').Component<import('./index').ThemeControllerAttrs>}
+ */
 export const ThemeController = {
   view(vnode) {
     const { variant = 'toggle', size, color, theme, checked, className, onchange, ...rest } = vnode.attrs

@@ -3,7 +3,12 @@ import { joinStyles } from '../../recipes/join'
 import { buttonStyles } from '../../recipes/button'
 import { cx } from '../../utils/cx'
 
-
+/**
+ * Componente Pagination. Contenedor `join` que agrupa botones de paginación
+ * contiguos con esquinas redondeadas en los extremos.
+ *
+ * @type {import('mithril').Component<import('./index').PaginationAttrs>}
+ */
 export const Pagination = {
   view(vnode) {
     const { className, ...rest } = vnode.attrs
@@ -15,6 +20,12 @@ export const Pagination = {
   }
 }
 
+/**
+ * Componente PaginationButton. Botón de paginación; `active` marca la página
+ * actual y `disabled` deshabilita la interacción.
+ *
+ * @type {import('mithril').Component<import('./index').PaginationButtonAttrs>}
+ */
 export const PaginationButton = {
   view(vnode) {
     const { active, disabled, className, ...rest } = vnode.attrs

@@ -2,7 +2,13 @@ import m from 'mithril'
 import { card } from '../../recipes/card'
 import { cx } from '../../utils/cx'
 
-
+/**
+ * Componente Card. Contenedor de contenido con variantes de tamaño, borde
+ * (`border`/`dash`), disposición lateral (`side`) e imagen a pantalla
+ * completa (`imageFull`).
+ *
+ * @type {import('mithril').Component<import('./index').CardAttrs>}
+ */
 export const Card = {
   view(vnode) {
     const { size, border, dash, side, imageFull, className, ...rest } = vnode.attrs
@@ -22,20 +28,44 @@ export const Card = {
   }
 }
 
+/**
+ * Resultado cacheado de `card({})` — los subcomponentes no pasan variantes
+ * (excepto CardActions con `justify`), así que sus clases son determinísticas.
+ * Evita llamar al sva en cada render.
+ * @type {ReturnType<typeof card>}
+ */
+const defaultStyles = card({})
+
+/**
+ * Cuerpo de la card: apila el contenido con padding y gap.
+ *
+ * @type {import('mithril').Component<import('./index').CardBodyAttrs>}
+ */
 export const CardBody = {
   view(vnode) {
     const { className, ...rest } = vnode.attrs
-    return m('div', { className: cx('card-body', card({}).body, className), ...rest }, vnode.children)
+    return m('div', { className: cx('card-body', defaultStyles.body, className), ...rest }, vnode.children)
   }
 }
 
+/**
+ * Título de la card.
+ *
+ * @type {import('mithril').Component<import('./index').CardTitleAttrs>}
+ */
 export const CardTitle = {
   view(vnode) {
     const { className, ...rest } = vnode.attrs
-    return m('h2', { className: cx('card-title', card({}).title, className), ...rest }, vnode.children)
+    return m('h2', { className: cx('card-title', defaultStyles.title, className), ...rest }, vnode.children)
   }
 }
 
+/**
+ * Zona de acciones de la card; `justify` controla su alineación
+ * (start, center, end, between).
+ *
+ * @type {import('mithril').Component<import('./index').CardActionsAttrs>}
+ */
 export const CardActions = {
   view(vnode) {
     const { justify, className, ...rest } = vnode.attrs
@@ -46,6 +76,11 @@ export const CardActions = {
   }
 }
 
+/**
+ * Imagen destacada de la card (usa `<figure>`).
+ *
+ * @type {import('mithril').Component<import('./index').CardFigureAttrs>}
+ */
 export const CardFigure = {
   view(vnode) {
     const { className, ...rest } = vnode.attrs

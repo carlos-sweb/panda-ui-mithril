@@ -5,6 +5,13 @@ import { cx } from '../../utils/cx'
 const HORIZONTAL = ['start', 'center', 'end']
 const VERTICAL = ['top', 'middle', 'bottom']
 
+/**
+ * Componente Indicator. Superpone un badge de notificación sobre su contenido.
+ * `position` es un par de tokens separados por espacio (ej. "end top"),
+ * y `item` es el contenido del badge.
+ *
+ * @type {import('mithril').Component<import('./index').IndicatorAttrs>}
+ */
 export const Indicator = {
   view(vnode) {
     const { position, className, item, ...rest } = vnode.attrs

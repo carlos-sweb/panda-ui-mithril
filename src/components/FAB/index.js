@@ -9,6 +9,12 @@ import { cx } from '../../utils/cx'
 // explicitly close it beyond whatever blur naturally does). Worth reviewing:
 // closing on outside click, Escape key, and firing a callback when an
 // FABAction is chosen (so the menu can close itself after a selection).
+/**
+ * Componente FAB (Floating Action Button). Contenedor de acciones flotantes;
+ * con `flower` despliega las acciones en semicírculo en vez de una pila vertical.
+ *
+ * @type {import('mithril').Component<import('./index').FABAttrs>}
+ */
 export const FAB = {
   view(vnode) {
     const { flower, className, ...rest } = vnode.attrs
@@ -20,6 +26,11 @@ export const FAB = {
   }
 }
 
+/**
+ * Botón principal del FAB: círculo grande de color que abre/cierra las acciones.
+ *
+ * @type {import('mithril').Component<import('./index').FABMainAttrs>}
+ */
 export const FABMain = {
   view(vnode) {
     const { color, className, ...rest } = vnode.attrs
@@ -33,6 +44,12 @@ export const FABMain = {
   }
 }
 
+/**
+ * Acción individual del FAB, con etiqueta de texto opcional (`label`)
+ * y color propio.
+ *
+ * @type {import('mithril').Component<import('./index').FABActionAttrs>}
+ */
 export const FABAction = {
   view(vnode) {
     const { label, color, className, ...rest } = vnode.attrs

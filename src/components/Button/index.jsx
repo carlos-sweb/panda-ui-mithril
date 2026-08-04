@@ -2,7 +2,13 @@ import m from 'mithril'
 import { buttonStyles } from '../../recipes/button'
 import { cx } from '../../utils/cx'
 
-
+/**
+ * Componente Button. Botón con variantes de color, estilo y tamaño.
+ * Si recibe `href` renderiza un `<a>`, en caso contrario un `<button>`;
+ * `block`/`wide` controlan el ancho y `square`/`circle` la forma.
+ *
+ * @type {import('mithril').Component<import('./index').ButtonAttrs>}
+ */
 export const Button = {
   view(vnode) {
     const { color, variant, size, active, disabled, block, wide, square, circle, className, ...rest } = vnode.attrs

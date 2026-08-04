@@ -20,6 +20,21 @@ function getMonthGrid(year, month) {
   return Array.from({ length: 42 }, (_, i) => new Date(year, month, 1 - startDay + i))
 }
 
+/**
+ * Resultado cacheado de `calendar({})` — los slots sin variantes (cabecera,
+ * navegación, rejilla, ...) reusan las mismas clases en cada render.
+ * @type {ReturnType<typeof calendar>}
+ */
+const defaultStyles = calendar({})
+
+/**
+ * Componente Calendar. Calendario de mes completo con navegación entre
+ * meses y selección de día. `value` es la fecha seleccionada (controlada),
+ * `onchange` se dispara al elegir un día e `isDateDisabled` permite
+ * deshabilitar fechas concretas.
+ *
+ * @type {import('mithril').Component<import('./index').CalendarAttrs>}
+ */
 export const Calendar = {
   oninit(vnode) {
     const initial = vnode.attrs.value instanceof Date ? vnode.attrs.value : new Date()
@@ -40,15 +55,15 @@ export const Calendar = {
     }
 
     return m('div', {
-      className: cx('calendar', 'cally', calendar({}).calendar, className),
+      className: cx('calendar', 'cally', defaultStyles.calendar, className),
       ...rest
     }, [
-      m('div', { className: cx('calendar-header', calendar({}).header) }, [
+      m('div', { className: cx('calendar-header', defaultStyles.header) }, [
         m('button', {
           type: 'button',
           slot: 'previous',
           'aria-label': 'Previous',
-          className: calendar({}).nav,
+          className: defaultStyles.nav,
           onclick: () => goToMonth(-1),
         }, m(ChevronLeft, { size: 16 })),
         m('span', {}, `${MONTH_NAMES[viewMonth]} ${viewYear}`),
@@ -56,12 +71,12 @@ export const Calendar = {
           type: 'button',
           slot: 'next',
           'aria-label': 'Next',
-          className: calendar({}).nav,
+          className: defaultStyles.nav,
           onclick: () => goToMonth(1),
         }, m(ChevronRight, { size: 16 })),
       ]),
-      m('div', { className: cx('calendar-month', calendar({}).grid) }, [
-        ...WEEKDAYS.map((w) => m('span', { key: `wd-${w}`, className: calendar({}).weekday }, w)),
+      m('div', { className: cx('calendar-month', defaultStyles.grid) }, [
+        ...WEEKDAYS.map((w) => m('span', { key: `wd-${w}`, className: defaultStyles.weekday }, w)),
         ...cells.map((date) => {
           const outside = date.getMonth() !== viewMonth
           const disabled = isDateDisabled ? isDateDisabled(date) : false
@@ -83,6 +98,11 @@ export const Calendar = {
   }
 }
 
+/**
+ * Componente CalendarDate. Día individual de la rejilla del calendario.
+ *
+ * @type {import('mithril').Component<import('./index').CalendarDateAttrs>}
+ */
 export const CalendarDate = {
   view(vnode) {
     const { className, ...rest } = vnode.attrs
@@ -90,6 +110,11 @@ export const CalendarDate = {
   }
 }
 
+/**
+ * Componente CalendarMonth. Rejilla mensual de días del calendario.
+ *
+ * @type {import('mithril').Component<import('./index').CalendarMonthAttrs>}
+ */
 export const CalendarMonth = {
   view(vnode) {
     const { className, ...rest } = vnode.attrs
@@ -97,6 +122,11 @@ export const CalendarMonth = {
   }
 }
 
+/**
+ * Componente CalendarHeader. Cabecera con la navegación entre meses.
+ *
+ * @type {import('mithril').Component<import('./index').CalendarHeaderAttrs>}
+ */
 export const CalendarHeader = {
   view(vnode) {
     const { className, ...rest } = vnode.attrs

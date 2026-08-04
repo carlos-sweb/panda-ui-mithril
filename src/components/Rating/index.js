@@ -7,6 +7,14 @@ const clamp = (v, min, max) => Math.min(max, Math.max(min, v))
 // Integer-only scores: 0..max
 const toInt = (v, max) => clamp(Math.round(v), 0, max)
 
+/**
+ * Componente Rating. Selector de valoración por estrellas (1..max). En modo
+ * controlado, `value` + `onchange` gestionan el estado; en modo no
+ * controlado se usa `defaultValue` y el estado es interno. `readonly` lo
+ * convierte en una visualización estática sin interacción.
+ *
+ * @type {import('mithril').Component<import('./index').RatingAttrs>}
+ */
 export const Rating = {
   oninit(vnode) {
     const { defaultValue = 0, value, onchange, readonly } = vnode.attrs

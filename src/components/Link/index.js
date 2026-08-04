@@ -2,7 +2,12 @@ import m from 'mithril'
 import { linkStyles } from '../../recipes/link'
 import { cx } from '../../utils/cx'
 
-
+/**
+ * Componente Link. Enlace de texto con variante de color; `hover: false`
+ * muestra el subrayado solo al pasar el cursor.
+ *
+ * @type {import('mithril').Component<import('./index').LinkAttrs>}
+ */
 export const Link = {
   view(vnode) {
     const { color, hover = true, className, ...rest } = vnode.attrs

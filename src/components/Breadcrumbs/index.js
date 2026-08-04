@@ -2,6 +2,12 @@ import m from 'mithril'
 import { breadcrumbsStyles } from '../../recipes/breadcrumbs'
 import { cx } from '../../utils/cx'
 
+/**
+ * Componente Breadcrumbs. Miga de pan con separador en chevron entre items.
+ * Acepta un array `items` ({label, href}) o contenido como children.
+ *
+ * @type {import('mithril').Component<import('./index').BreadcrumbsAttrs>}
+ */
 export const Breadcrumbs = {
   view(vnode) {
     const { className, items, ...rest } = vnode.attrs

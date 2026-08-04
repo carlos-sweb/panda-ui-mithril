@@ -2,6 +2,13 @@ import m from 'mithril'
 import { countdownStyles, countdownDigitStyles } from '../../recipes/countdown'
 import { cx } from '../../utils/cx'
 
+/**
+ * Componente Countdown. Muestra un número como dígitos individuales con
+ * transición flip. `value` es el número a mostrar (0-999) y `digits` fija
+ * cuántos dígitos rellenar con ceros a la izquierda.
+ *
+ * @type {import('mithril').Component<import('./index').CountdownAttrs>}
+ */
 export const Countdown = {
   view(vnode) {
     const { value, digits, className, ...rest } = vnode.attrs

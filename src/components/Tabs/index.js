@@ -7,6 +7,13 @@ function resolveVariant(vnode) {
   return boxed ? 'box' : bordered ? 'border' : lifted ? 'lift' : variant
 }
 
+/**
+ * Componente Tabs. Contenedor `tablist` de pestañas; acepta la variante
+ * directa (`box`/`border`/`lift`) o los atajos booleanos `boxed`/`bordered`/
+ * `lifted`, más el tamaño.
+ *
+ * @type {import('mithril').Component<import('./index').TabsAttrs>}
+ */
 export const Tabs = {
   view(vnode) {
     const { variant, size, boxed, bordered, lifted, className, ...rest } = vnode.attrs
@@ -25,6 +32,12 @@ export const Tabs = {
   }
 }
 
+/**
+ * Componente Tab. Pestaña individual (`<button role="tab">`); `active` marca
+ * la selección y `disabled` deshabilita la interacción.
+ *
+ * @type {import('mithril').Component<import('./index').TabAttrs>}
+ */
 export const Tab = {
   view(vnode) {
     const { active, disabled, variant, className, ...rest } = vnode.attrs
@@ -46,6 +59,12 @@ export const Tab = {
   }
 }
 
+/**
+ * Componente TabContent. Panel de contenido asociado a una pestaña
+ * (`role="tabpanel"`); con `active` se muestra (slot `content` de la recipe).
+ *
+ * @type {import('mithril').Component<import('./index').TabContentAttrs>}
+ */
 export const TabContent = {
   view(vnode) {
     const { active, variant, className, ...rest } = vnode.attrs
