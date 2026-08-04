@@ -206,6 +206,14 @@ export default defineConfig({
           '0%': { opacity: '1' },
           '100%': { opacity: '0' },
         },
+        'modal-enter': {
+          '0%': { opacity: '0', transform: 'scale(0.95)' },
+          '100%': { opacity: '1', transform: 'scale(1)' },
+        },
+        'modal-backdrop-enter': {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
       },
     },
   },
