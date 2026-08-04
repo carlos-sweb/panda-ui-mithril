@@ -198,22 +198,6 @@ export default defineConfig({
           '20%, 80%': { opacity: '0.3', filter: 'blur(1rem)' },
           '50%': { opacity: '0.6', filter: 'blur(1.5rem)' },
         },
-        'modal-exit': {
-          '0%': { opacity: '1', transform: 'scale(1)' },
-          '100%': { opacity: '0', transform: 'scale(0.95)' },
-        },
-        'modal-backdrop-exit': {
-          '0%': { opacity: '1' },
-          '100%': { opacity: '0' },
-        },
-        'modal-enter': {
-          '0%': { opacity: '0', transform: 'scale(0.95)' },
-          '100%': { opacity: '1', transform: 'scale(1)' },
-        },
-        'modal-backdrop-enter': {
-          '0%': { opacity: '0' },
-          '100%': { opacity: '1' },
-        },
       },
     },
   },
@@ -231,6 +215,12 @@ export default defineConfig({
       '--depth': '1',
       '--noise': '0',
       '--fx-noise': 'none',
+    },
+    body: {
+      scrollbarGutter: 'stable',
+    },
+    'body:has(dialog[open])': {
+      overflow: 'hidden',
     },
   },
   // lets the browser smoothly animate the conic-gradient angle instead of

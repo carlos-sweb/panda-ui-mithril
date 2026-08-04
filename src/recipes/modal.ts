@@ -21,34 +21,47 @@ export const modal = sva({
       '&::backdrop': {
         backgroundColor: 'color-mix(in oklab, black 40%, transparent)',
       },
+      // Entrance/exit are pure CSS transitions now (no keyframes, no
+      // imperative closing class):
+      //  - Entrance: `@starting-style` supplies the pre-render state so the
+      //    transition into `[open]` values runs on the first open render.
+      //  - Exit: `[open]` → `:not([open])` transition; `overlay ... allow-discrete`
+      //    lets the top-layer backdrop transition smoothly on close.
+      transition: 'overlay 0.2s ease-in allow-discrete',
       '&[open]': {
         display: 'grid',
         placeItems: 'center',
-        '&:not(.modal-closing) > .modal-box': {
-          '@media (prefers-reduced-motion: no-preference)': {
-            animation: 'modal-enter 0.2s ease-out forwards',
-          },
+        '& > .modal-box': {
+          opacity: '1',
+          transform: 'scale(1)',
         },
-        '&:not(.modal-closing)::backdrop': {
-          '@media (prefers-reduced-motion: no-preference)': {
-            animation: 'modal-backdrop-enter 0.2s ease-out forwards',
-          },
+        '&::backdrop': {
+          opacity: '1',
+          transition: 'opacity 0.2s ease-out',
         },
       },
-      // Exit animation. Driven by the imperative `modal-closing` class the
-      // component adds in its close sequence (onupdate) — a recipe variant
-      // can't work here because Mithril runs view() before onupdate, so a
-      // variant class would appear one render too late and the animation
-      // would never start.
-      '&.modal-closing > .modal-box': {
-        '@media (prefers-reduced-motion: no-preference)': {
-          animation: 'modal-exit 0.2s ease-in forwards',
+      '@starting-style': {
+        '&[open] > .modal-box': {
+          opacity: '0',
+          transform: 'scale(0.95)',
+        },
+        '&[open]::backdrop': {
+          opacity: '0',
         },
       },
-      '&.modal-closing::backdrop': {
-        '@media (prefers-reduced-motion: no-preference)': {
-          animation: 'modal-backdrop-exit 0.2s ease-in forwards',
+      '&:not([open])': {
+        '& > .modal-box': {
+          opacity: '0',
+          transform: 'scale(0.95)',
         },
+        '&::backdrop': {
+          opacity: '0',
+        },
+      },
+      '@media (prefers-reduced-motion: reduce)': {
+        '& > .modal-box': { transition: 'none' },
+        '&::backdrop': { transition: 'none' },
+        transition: 'none',
       },
     },
     box: {
@@ -63,6 +76,7 @@ export const modal = sva({
       borderRadius: 'var(--radius-box)',
       boxShadow: '0 25px 50px -12px color-mix(in oklab, black 25%, transparent)',
       overflowY: 'auto',
+      transition: 'opacity 0.2s ease-out, transform 0.2s ease-out',
     },
     action: {
       marginTop: 'token(spacing.6)',

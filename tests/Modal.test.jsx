@@ -20,11 +20,6 @@ if (!window.matchMedia) {
   })
 }
 
-// Helper: wait for the 240ms close fallback timeout + margin
-function waitForClose() {
-  return new Promise(r => setTimeout(r, 300))
-}
-
 // Helper: get the dialog element from a container
 function getDialog(container) {
   return container.querySelector('dialog')
@@ -46,8 +41,7 @@ beforeEach(() => {
 })
 
 afterEach(() => {
-  // Properly unmount via m.render (not m.mount) to trigger onremove → unlockScroll
-  // This decrements the module-level openModalCount so the next test starts clean.
+  // Properly unmount via m.render (not m.mount) to trigger onremove cleanup.
   try { m.render(container, []) } catch (_) {}
   container.remove()
 })
@@ -67,13 +61,12 @@ describe('Modal', () => {
   })
 
   // Case 2: Cierre
-  test('2. Cierre — open={true} then open={false} closes dialog after fallback', async () => {
+  test('2. Cierre — open={true} then open={false} closes dialog', () => {
     m.render(container, m(Modal, { open: true }, m(ModalBox, 'Hello')))
     expect(getDialog(container).open).toBe(true)
 
     // Re-render with open=false (same container → same instance → onupdate fires)
     m.render(container, m(Modal, { open: false }, m(ModalBox, 'Hello')))
-    await waitForClose()
 
     expect(getDialog(container).open).toBe(false)
   })
@@ -119,7 +112,7 @@ describe('Modal', () => {
   })
 
   // Case 5: Cierre con click en backdrop
-  test('5. Cierre con click en backdrop — backdrop onclick called, then close via re-render', async () => {
+  test('5. Cierre con click en backdrop — backdrop onclick called, then close via re-render', () => {
     const backdropClick = mock(() => {})
     const onclose = mock(() => {})
 
@@ -144,7 +137,6 @@ describe('Modal', () => {
         m(ModalBackdrop, { onclick: backdropClick })
       )
     )
-    await waitForClose()
 
     expect(getDialog(container).open).toBe(false)
   })
@@ -168,21 +160,16 @@ describe('Modal', () => {
     expect(dialog.open).toBe(true)
   })
 
-  // Case 7: Scroll lock
-  test('7. Scroll lock — open={true} sets body.style.overflow to hidden', () => {
+  // Case 7: Scroll lock — moved to CSS, body:has(dialog[open]) rule exists in generated styles
+  test('7. Scroll lock — CSS rule body:has(dialog[open]) exists in generated styles', async () => {
     m.render(container, m(Modal, { open: true }, m(ModalBox, 'Hello')))
-    expect(document.body.style.overflow).toBe('hidden')
-  })
+    expect(getDialog(container).open).toBe(true)
 
-  // Case 8: Scroll unlock
-  test('8. Scroll unlock — open={false} restores body.style.overflow', async () => {
-    m.render(container, m(Modal, { open: true }, m(ModalBox, 'Hello')))
-    expect(document.body.style.overflow).toBe('hidden')
-
-    m.render(container, m(Modal, { open: false }, m(ModalBox, 'Hello')))
-    await waitForClose()
-
-    expect(document.body.style.overflow).toBe('')
+    // Scroll lock no longer lives in JS. Verify the generated CSS contains the
+    // body:has(dialog[open]) { overflow: hidden } rule instead.
+    const fs = await import('node:fs')
+    const css = fs.readFileSync(new URL('../styled-system/styles.css', import.meta.url), 'utf8')
+    expect(css).toContain('body:has(dialog[open])')
   })
 
   // Case 9: aria-modal
@@ -199,8 +186,8 @@ describe('Modal', () => {
     expect(dialog.getAttribute('aria-labelledby')).toBe('title-id')
   })
 
-  // Case 11: Animación de salida (onclosed callback timing)
-  test('11. Animación de salida — onclosed NOT called immediately, called after fallback', async () => {
+  // Case 11: onclosed — called immediately after open=false (no animation fallback anymore)
+  test('11. onclosed — open={false} closes dialog and calls onclosed immediately', () => {
     const onclosed = mock(() => {})
 
     m.render(container, m(Modal, { open: true, onclosed }, m(ModalBox, 'Hello')))
@@ -209,13 +196,7 @@ describe('Modal', () => {
     // Trigger close
     m.render(container, m(Modal, { open: false, onclosed }, m(ModalBox, 'Hello')))
 
-    // onclosed should NOT be called immediately (animation/timeout pending)
-    expect(onclosed).not.toHaveBeenCalled()
-
-    // Wait for the 240ms fallback
-    await waitForClose()
-
-    // Now onclosed should have been called
+    // onclosed fires synchronously right after dialog.close()
     expect(onclosed).toHaveBeenCalledTimes(1)
     expect(getDialog(container).open).toBe(false)
   })
