@@ -39,4 +39,15 @@ export function t(path) {
   return enVal !== undefined ? enVal : path
 }
 
-export default { t, currentLang, setLang }
+/** Direct lookup for classRow descriptions (keys may contain dots/colons that break dotted paths). */
+export function tClassRow(description) {
+  const lang = currentLang()
+  const section = translations[lang].classRowDescs || {}
+  const val = section[description]
+  if (val !== undefined) return val
+  const enSection = translations.en.classRowDescs || {}
+  const enVal = enSection[description]
+  return enVal !== undefined ? enVal : description
+}
+
+export default { t, currentLang, setLang, tClassRow }

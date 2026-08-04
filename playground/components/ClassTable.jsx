@@ -2,7 +2,7 @@ import m from 'mithril'
 import { css, cx } from '../../styled-system/css'
 import { Badge } from '../../src/index.js'
 import { PaintBucket, Shapes, RulerDimensionLine, Settings, Wrench, Puzzle } from 'lucide-mithril'
-import { t } from '../i18n/index.js'
+import { t, tClassRow } from '../i18n/index.js'
 
 const note = css({
   display: 'flex',
@@ -97,7 +97,7 @@ export const ClassTable = {
               ),
               m('td', { className: cx(td, typeCell) }, typeCellContent(row.type)),
               m('td', { className: td }, [
-                t('classRowDescs.' + row.description.replace(/[:.'\`\s]/g, '')),
+                tClassRow(row.description),
                 row.isDefault && m('span', { className: defaultBadge }, '[Default]'),
               ]),
             ])
