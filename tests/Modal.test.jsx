@@ -30,6 +30,13 @@ function getBackdrop(container) {
   return container.querySelector('button.modal-backdrop')
 }
 
+// Helper: simulate the exit animation completing (happy-dom has no CSS engine,
+// so animationend never fires naturally — the component's close bridge waits
+// for this event before closing the dialog).
+function endAnimation(dialog) {
+  dialog.dispatchEvent(new Event('animationend'))
+}
+
 let container
 
 beforeEach(() => {
@@ -67,6 +74,9 @@ describe('Modal', () => {
 
     // Re-render with open=false (same container → same instance → onupdate fires)
     m.render(container, m(Modal, { open: false }, m(ModalBox, 'Hello')))
+
+    // Exit animation completes → bridge closes the dialog
+    endAnimation(getDialog(container))
 
     expect(getDialog(container).open).toBe(false)
   })
@@ -138,6 +148,9 @@ describe('Modal', () => {
       )
     )
 
+    // Exit animation completes → bridge closes the dialog
+    endAnimation(getDialog(container))
+
     expect(getDialog(container).open).toBe(false)
   })
 
@@ -186,8 +199,8 @@ describe('Modal', () => {
     expect(dialog.getAttribute('aria-labelledby')).toBe('title-id')
   })
 
-  // Case 11: onclosed — called immediately after open=false (no animation fallback anymore)
-  test('11. onclosed — open={false} closes dialog and calls onclosed immediately', () => {
+  // Case 11: onclosed — fires after the exit animation ends, not synchronously
+  test('11. onclosed — open={false} closes dialog and calls onclosed after animationend', () => {
     const onclosed = mock(() => {})
 
     m.render(container, m(Modal, { open: true, onclosed }, m(ModalBox, 'Hello')))
@@ -196,7 +209,15 @@ describe('Modal', () => {
     // Trigger close
     m.render(container, m(Modal, { open: false, onclosed }, m(ModalBox, 'Hello')))
 
-    // onclosed fires synchronously right after dialog.close()
+    // The bridge starts the exit animation synchronously…
+    expect(getDialog(container).classList.contains('modal-closing')).toBe(true)
+    // …but the dialog stays open until animationend fires
+    expect(getDialog(container).open).toBe(true)
+    expect(onclosed).not.toHaveBeenCalled()
+
+    // Simulate the exit animation completing → bridge closes and fires onclosed
+    endAnimation(getDialog(container))
+
     expect(onclosed).toHaveBeenCalledTimes(1)
     expect(getDialog(container).open).toBe(false)
   })

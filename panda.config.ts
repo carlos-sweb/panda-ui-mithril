@@ -198,6 +198,14 @@ export default defineConfig({
           '20%, 80%': { opacity: '0.3', filter: 'blur(1rem)' },
           '50%': { opacity: '0.6', filter: 'blur(1.5rem)' },
         },
+        'modal-exit': {
+          '0%': { opacity: '1', transform: 'scale(1)' },
+          '100%': { opacity: '0', transform: 'scale(0.95)' },
+        },
+        'modal-backdrop-exit': {
+          '0%': { opacity: '1' },
+          '100%': { opacity: '0' },
+        },
       },
     },
   },

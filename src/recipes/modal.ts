@@ -21,13 +21,11 @@ export const modal = sva({
       '&::backdrop': {
         backgroundColor: 'color-mix(in oklab, black 40%, transparent)',
       },
-      // Entrance/exit are pure CSS transitions now (no keyframes, no
-      // imperative closing class):
-      //  - Entrance: `@starting-style` supplies the pre-render state so the
-      //    transition into `[open]` values runs on the first open render.
-      //  - Exit: `[open]` → `:not([open])` transition; `overlay ... allow-discrete`
-      //    lets the top-layer backdrop transition smoothly on close.
-      transition: 'overlay 0.2s ease-in allow-discrete',
+      // Entrance: `@starting-style` supplies the pre-render state so the
+      // transition into `[open]` values runs on the first open render.
+      // Exit: `.modal-closing` class is added by a tiny JS bridge (animationend
+      // listener) — the <dialog> top-layer exit is synchronous and cannot be
+      // delayed by CSS alone, so a keyframe animation bridges the gap.
       '&[open]': {
         display: 'grid',
         placeItems: 'center',
@@ -49,6 +47,8 @@ export const modal = sva({
           opacity: '0',
         },
       },
+      // Fallback closed state — when no JS bridge runs (e.g. dialog closed
+      // natively by Escape before the re-render), the dialog closes instantly.
       '&:not([open])': {
         '& > .modal-box': {
           opacity: '0',
@@ -58,10 +58,21 @@ export const modal = sva({
           opacity: '0',
         },
       },
+      // Exit animation — triggered by the imperative `modal-closing` class
+      // that the JS bridge adds before calling dialog.close().
+      '&.modal-closing > .modal-box': {
+        '@media (prefers-reduced-motion: no-preference)': {
+          animation: 'modal-exit 0.2s ease-in forwards',
+        },
+      },
+      '&.modal-closing::backdrop': {
+        '@media (prefers-reduced-motion: no-preference)': {
+          animation: 'modal-backdrop-exit 0.2s ease-in forwards',
+        },
+      },
       '@media (prefers-reduced-motion: reduce)': {
         '& > .modal-box': { transition: 'none' },
         '&::backdrop': { transition: 'none' },
-        transition: 'none',
       },
     },
     box: {

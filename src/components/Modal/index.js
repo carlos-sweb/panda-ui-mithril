@@ -2,6 +2,10 @@ import m from 'mithril'
 import { modal } from '../../recipes/modal'
 import { cx } from '../../utils/cx'
 
+// Slightly above the 0.2s exit animation — safety net so the dialog never
+// stays open if `animationend` never fires (no CSS engine, missing keyframes).
+const CLOSE_FALLBACK_MS = 240
+
 /**
  * Componente Modal. Usa `<dialog>` nativo con `.showModal()`/`.close()`.
  * Las animaciones de entrada/salida y el bloqueo de scroll del body los maneja
@@ -13,6 +17,7 @@ export const Modal = {
   /** @param {Object} vnode */
   oninit(vnode) {
     vnode.state._cancelHandler = null
+    vnode.state._closing = false
   },
 
   /**
@@ -34,7 +39,7 @@ export const Modal = {
   /**
    * Sincroniza el <dialog> nativo con la prop `open`.
    * - open → true: showModal() si no está abierto.
-   * - open → false: dialog.close() — el CSS maneja la animación de salida.
+   * - open → false: añade la clase modal-closing, espera animationend, luego cierra el dialog.
    * @param {Object} vnode */
   onupdate(vnode) {
     const dialog = vnode.dom
@@ -42,9 +47,29 @@ export const Modal = {
       if (!dialog.open) dialog.showModal()
       return
     }
-    if (dialog.open) {
-      dialog.close()
-      if (vnode.attrs.onclosed) vnode.attrs.onclosed()
+    if (dialog.open && !vnode.state._closing) {
+      // prefers-reduced-motion: the CSS media query disables the animation,
+      // so animationend never fires — close immediately instead.
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        dialog.close()
+        if (vnode.attrs.onclosed) vnode.attrs.onclosed()
+        return
+      }
+      vnode.state._closing = true
+      dialog.classList.add('modal-closing')
+      const finish = () => {
+        dialog.classList.remove('modal-closing')
+        vnode.state._closing = false
+        dialog.close()
+        if (vnode.attrs.onclosed) vnode.attrs.onclosed()
+      }
+      // Safety net: if animationend never fires (no CSS engine in tests,
+      // missing keyframes, display issues), still close the dialog.
+      const timeoutId = setTimeout(finish, CLOSE_FALLBACK_MS)
+      dialog.addEventListener('animationend', () => {
+        clearTimeout(timeoutId)
+        finish()
+      }, { once: true })
     }
   },
 
