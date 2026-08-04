@@ -24,12 +24,12 @@ export const modal = sva({
       '&[open]': {
         display: 'grid',
         placeItems: 'center',
-        '& > .modal-box': {
+        '&:not(.modal-closing) > .modal-box': {
           '@media (prefers-reduced-motion: no-preference)': {
             animation: 'modal-enter 0.2s ease-out forwards',
           },
         },
-        '&::backdrop': {
+        '&:not(.modal-closing)::backdrop': {
           '@media (prefers-reduced-motion: no-preference)': {
             animation: 'modal-backdrop-enter 0.2s ease-out forwards',
           },
