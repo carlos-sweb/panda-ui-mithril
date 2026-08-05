@@ -1,8 +1,10 @@
 import m from 'mithril'
 import { css } from '../../styled-system/css'
 import { Search, ExternalLink, Menu as MenuIcon } from 'lucide-mithril'
-import { Navbar as NavbarBase, NavbarStart, NavbarCenter, NavbarEnd, Button, Kbd, ThemeController } from '../../src/index.js'
+import { Swap,Navbar as NavbarBase, NavbarStart, NavbarCenter, NavbarEnd, Button, Kbd, ThemeController } from '../../src/index.js'
 import { t, currentLang, setLang } from '../i18n/index.js'
+import { Sun, Moon } from 'lucide-mithril'
+
 
 const navbarFixed = css({
   position: 'fixed',
@@ -104,8 +106,15 @@ export const Navbar = {
           </Button>
 
           <label className={themeLabel} title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}>
-            <ThemeController theme="dark" checked={isDark} onchange={onToggleTheme} />
+            <Swap
+              style="rotate"
+              checked={isDark}
+              onchange={(e) => onToggleTheme(e.target.checked ? 'dark' : undefined)}
+              on={<Moon size={24} />}
+              off={<Sun size={24} />}
+            />
           </label>
+          
           <Button
             variant="ghost"
             size="sm"
@@ -119,3 +128,4 @@ export const Navbar = {
     )
   }
 }
+
