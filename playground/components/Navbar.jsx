@@ -74,8 +74,7 @@ export const Navbar = {
             onclick={(e) => { e.preventDefault(); m.route.set('/') }}
             className={brand}
           >
-            <span className={css({ display: { base: 'none', md: 'inline' } })}>panda-ui-mithril</span>
-            <span className={css({ display: { base: 'inline', md: 'none' } })}>PUM</span>
+            <span>PUM</span>            
           </a>
         </NavbarStart>
 
