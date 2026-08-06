@@ -16,6 +16,7 @@ const allComponents = [
   { name: 'card', category: 'Data Display', route: '/card' },
   { name: 'list', category: 'Data Display', route: '/list' },
   { name: 'table', category: 'Data Display', route: '/table' },
+  { name: 'tag', category: 'Data Display', route: '/tag' },
   { name: 'stat', category: 'Data Display', route: '/stat' },
   { name: 'timeline', category: 'Data Display', route: '/timeline' },
   { name: 'countdown', category: 'Data Display', route: '/countdown' },
