@@ -7,7 +7,7 @@ import { t } from '../i18n/index.js'
 
 const categories = [
   { i18n: 'sidebar.categories.actions', icon: MousePointerClick, items: ['button', 'fab', 'link', 'swap', 'filter', 'themectrl'] },
-  { i18n: 'sidebar.categories.dataDisplay', icon: AppWindow, items: ['badge', 'avatar', 'card', 'list', 'table', 'stat', 'timeline', 'countdown', 'chat', 'mask', 'kbd'] },
+  { i18n: 'sidebar.categories.dataDisplay', icon: AppWindow, items: ['badge', 'avatar', 'card', 'list', 'table', 'tag', 'stat', 'timeline', 'countdown', 'chat', 'mask', 'kbd'] },
   { i18n: 'sidebar.categories.navigation', icon: Link, items: ['navbar', 'breadcrumbs', 'menu', 'tabs', 'pagination', 'steps', 'megamenu', 'footer'] },
   { i18n: 'sidebar.categories.feedback', icon: MessageCircleMore, items: ['alert', 'toast', 'modal', 'tooltip', 'loading', 'skeleton', 'progress', 'radialprogress', 'status', 'indicator', 'aura'] },
   { i18n: 'sidebar.categories.dataInput', icon: PenLine, items: ['input', 'textarea', 'select', 'checkbox', 'radio', 'toggle', 'range', 'fileinput', 'otp', 'rating', 'calendar', 'fieldset', 'label'] },

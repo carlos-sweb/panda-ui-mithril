@@ -1,10 +1,9 @@
 import m from 'mithril'
 import { css } from '../../styled-system/css'
 import { t } from '../i18n/index.js'
-import { Badge, Indicator, Button } from '../../src/index.js'
+import { Badge } from '../../src/index.js'
 import { CodeExample } from '../components/CodeExample.jsx'
 import { ClassTable } from '../components/ClassTable.jsx'
-import { Bell, Mail } from 'lucide-mithril'
 
 const section = css({ marginBottom: '2rem' })
 const heading = css({ fontSize: '0.875rem', fontWeight: '600', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em', opacity: 0.5 })
@@ -14,18 +13,7 @@ const sectionTitle = css({ fontSize: '1.25rem', fontWeight: '600', marginBottom:
 
 const usageCode = `<Badge color="primary">Primary</Badge>
 <Badge variant="outline" color="success">Outline</Badge>
-<Badge size="lg" color="error">Error</Badge>
-
-// Badge on icon
-<Indicator position="end top" item={<Badge color="primary">3</Badge>}>
-  <Bell size={24} />
-</Indicator>
-
-// Badge inside button
-<Button>
-  Inbox
-  <Badge color="success">+99</Badge>
-</Button>`
+<Badge size="lg" color="error">Error</Badge>`
 
 const classRows = [
   { className: 'badge', prop: '<Badge>', type: 'Component', description: 'Container element' },
@@ -92,39 +80,6 @@ export default {
             <Badge size="md">MD</Badge>
             <Badge size="lg">LG</Badge>
             <Badge size="xl">XL</Badge>
-          </div>
-        </section>
-
-        <section className={section}>
-          <h3 className={heading}>Badge on icon</h3>
-          <div className={row}>
-            <Indicator position="end top" item={<Badge color="primary">3</Badge>}>
-              <Bell size={32} />
-            </Indicator>
-            <Indicator position="end top" item={<Badge color="success">+99</Badge>}>
-              <Mail size={32} />
-            </Indicator>
-            <Indicator position="start top" item={<Badge color="error" size="xs">1</Badge>}>
-              <Bell size={32} />
-            </Indicator>
-          </div>
-        </section>
-
-        <section className={section}>
-          <h3 className={heading}>Badge inside button</h3>
-          <div className={row}>
-            <Button>
-              Inbox
-              <Badge color="success">+99</Badge>
-            </Button>
-            <Button variant="outline">
-              Messages
-              <Badge color="primary">7</Badge>
-            </Button>
-            <Button color="error">
-              Alerts
-              <Badge>5</Badge>
-            </Button>
           </div>
         </section>
 

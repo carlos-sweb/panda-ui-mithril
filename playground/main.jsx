@@ -66,6 +66,7 @@ import Stat from './pages/Stat.jsx'
 import Status from './pages/Status.jsx'
 import Steps from './pages/Steps.jsx'
 import Swap from './pages/Swap.jsx'
+import TagPage from './pages/Tag.jsx'
 import Table from './pages/Table.jsx'
 import Tabs from './pages/Tabs.jsx'
 import Textarea from './pages/Textarea.jsx'
@@ -128,6 +129,7 @@ const routes = {
   '/status': Status,
   '/steps': Steps,
   '/swap': Swap,
+  '/tag': TagPage,
   '/table': Table,
   '/tabs': Tabs,
   '/textarea': Textarea,
