@@ -28,8 +28,8 @@ export default defineConfig({
           btn: { value: '4px' },
         },
         fonts: {
-          sans: { value: '"Geist Sans", system-ui, sans-serif' },
-          mono: { value: '"Geist Mono", monospace' },
+          sans: { value: '"Ubuntu", system-ui, sans-serif' },
+          mono: { value: '"Ubuntu Mono", monospace' },
         },
         // Numeric spacing scale (Tailwind-compatible keys). Values in rem;
         // used via `'spacing.x'` inside recipes/css() instead of rem literals.
@@ -211,7 +211,7 @@ export default defineConfig({
   },
   globalCss: {
     ':root': {
-      fontFamily: '"Geist Sans", system-ui, sans-serif',
+      fontFamily: '"Ubuntu", system-ui, sans-serif',
       '--size-field': '.25rem',
       '--size': 'calc(var(--size-field,.25rem) * 10)',
       /* daisyUI border-radius tokens (light theme defaults) */
