@@ -106,7 +106,6 @@ export const Navbar = {
 
           <label className={themeLabel} title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}>
             <Swap
-              style="rotate"
               checked={isDark}
               onchange={(e) => onToggleTheme(e.target.checked ? 'dark' : undefined)}
               on={<Sun size={24} />}

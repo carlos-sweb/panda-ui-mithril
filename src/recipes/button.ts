@@ -13,6 +13,7 @@ export const buttonStyles = cva({
     cursor: 'pointer',
     userSelect: 'none',
     textDecoration: 'none',
+    '& svg': { display: 'block' },
     appearance: 'none',
     '&:is([type="checkbox"], [type="radio"])[aria-label]:after': {
       content: 'attr(aria-label)',

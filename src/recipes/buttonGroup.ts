@@ -23,4 +23,23 @@ export const buttonGroupStyles = cva({
       position: 'relative',
     },
   },
+  variants: {
+    vertical: {
+      true: {
+        flexDirection: 'column',
+        '& > .btn:not(:first-child)': {
+          marginTop: 'calc(var(--border, 1px) * -1)',
+          marginInlineStart: '0',
+        },
+        '& > .btn:first-child': {
+          borderEndStartRadius: '0',
+          borderEndEndRadius: '0',
+        },
+        '& > .btn:last-child': {
+          borderStartStartRadius: '0',
+          borderStartEndRadius: '0',
+        },
+      },
+    },
+  },
 })
