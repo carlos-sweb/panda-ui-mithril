@@ -109,8 +109,8 @@ export const Navbar = {
               style="rotate"
               checked={isDark}
               onchange={(e) => onToggleTheme(e.target.checked ? 'dark' : undefined)}
-              on={<Moon size={24} />}
-              off={<Sun size={24} />}
+              on={<Sun size={24} />}
+              off={<Moon size={24} />}
             />
           </label>
           
