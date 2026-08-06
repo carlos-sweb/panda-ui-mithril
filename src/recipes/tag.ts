@@ -19,6 +19,25 @@ export const tagStyles = cva({
   variants: {
     variant: {
       default: {},
+      outline: {
+        backgroundColor: 'transparent',
+        color: 'var(--tag-fg, token(colors.base-content))',
+        borderColor: 'currentColor',
+      },
+      dash: {
+        backgroundColor: 'transparent',
+        color: 'var(--tag-fg, token(colors.base-content))',
+        borderColor: 'currentColor',
+        borderStyle: 'dashed',
+      },
+      soft: {
+        backgroundColor: 'color-mix(in oklab, var(--tag-bg, token(colors.base-200)) 8%, token(colors.base-100))',
+        borderColor: 'transparent',
+      },
+      ghost: {
+        backgroundColor: 'token(colors.base-200)',
+        borderColor: 'transparent',
+      },
       info: {
         '--tag-bg': 'color-mix(in oklab, token(colors.info) 15%, transparent)',
         '--tag-fg': 'token(colors.info)',

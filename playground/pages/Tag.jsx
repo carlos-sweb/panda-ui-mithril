@@ -20,10 +20,14 @@ const usageCode = `<Tag>Default</Tag>
 
 const classRows = [
   { className: 'tag', prop: '<Tag>', type: 'Component', description: 'Container element' },
-  { className: 'tag-info', prop: 'variant="info"', type: 'Variant', description: 'Info variant' },
-  { className: 'tag-success', prop: 'variant="success"', type: 'Variant', description: 'Success variant' },
-  { className: 'tag-warning', prop: 'variant="warning"', type: 'Variant', description: 'Warning variant' },
-  { className: 'tag-error', prop: 'variant="error"', type: 'Variant', description: 'Error variant' },
+  { className: 'tag-info', prop: 'variant="info"', type: 'Color', description: 'Info variant' },
+  { className: 'tag-success', prop: 'variant="success"', type: 'Color', description: 'Success variant' },
+  { className: 'tag-warning', prop: 'variant="warning"', type: 'Color', description: 'Warning variant' },
+  { className: 'tag-error', prop: 'variant="error"', type: 'Color', description: 'Error variant' },
+  { className: 'tag-outline', prop: 'variant="outline"', type: 'Style', description: 'Outline variant' },
+  { className: 'tag-dash', prop: 'variant="dash"', type: 'Style', description: 'Dash variant' },
+  { className: 'tag-soft', prop: 'variant="soft"', type: 'Style', description: 'Soft variant' },
+  { className: 'tag-ghost', prop: 'variant="ghost"', type: 'Style', description: 'Ghost variant' },
   { className: 'tag-md', prop: 'size="md" (default)', type: 'Size', description: 'Medium size', isDefault: true },
   { className: 'tag-lg', prop: 'size="lg"', type: 'Size', description: 'Large size' },
   { className: 'tag-icon', prop: 'icon={...}', type: 'Element', description: 'Lucide icon alongside text' },
@@ -53,6 +57,16 @@ export default {
             <Tag variant="success">Success</Tag>
             <Tag variant="warning">Warning</Tag>
             <Tag variant="error">Error</Tag>
+          </div>
+        </section>
+
+        <section className={section}>
+          <h3 className={heading}>Styles</h3>
+          <div className={row}>
+            <Tag variant="outline">Outline</Tag>
+            <Tag variant="dash">Dash</Tag>
+            <Tag variant="soft">Soft</Tag>
+            <Tag variant="ghost">Ghost</Tag>
           </div>
         </section>
 
