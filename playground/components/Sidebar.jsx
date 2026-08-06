@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { css } from '../../styled-system/css'
-import { MousePointerClick, AppWindow, Link, MessageCircleMore, PenLine, PanelsTopLeft, X } from 'lucide-mithril'
+import { MousePointerClick, AppWindow, Link, MessageCircleMore, PenLine, PanelsTopLeft, X, Type } from 'lucide-mithril'
 import { Menu, MenuItem, MenuTitle, Button } from '../../src/index.js'
 import { DrawerSide } from './Drawer.jsx'
 import { t } from '../i18n/index.js'
@@ -12,7 +12,7 @@ const categories = [
   { i18n: 'sidebar.categories.feedback', icon: MessageCircleMore, items: ['alert', 'aura', 'indicator', 'loading', 'modal', 'progress', 'radialprogress', 'skeleton', 'status', 'toast', 'tooltip'] },
   { i18n: 'sidebar.categories.dataInput', icon: PenLine, items: ['calendar', 'checkbox', 'fieldset', 'fileinput', 'input', 'label', 'otp', 'radio', 'range', 'rating', 'ratinggroup', 'select', 'textarea', 'toggle'] },
   { i18n: 'sidebar.categories.layout', icon: PanelsTopLeft, items: ['accordion', 'carousel', 'collapse', 'diff', 'divider', 'hero', 'join', 'stack'] },
-  { i18n: 'sidebar.categories.typography', icon: X, items: ['title'] },
+  { i18n: 'sidebar.categories.typography', icon: Type, items: ['title'] },
 ]
 
 const menu = css({ width: '100%', padding: '0'})
