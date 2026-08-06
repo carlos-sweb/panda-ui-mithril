@@ -6,12 +6,12 @@ import { DrawerSide } from './Drawer.jsx'
 import { t } from '../i18n/index.js'
 
 const categories = [
-  { i18n: 'sidebar.categories.actions', icon: MousePointerClick, items: ['button', 'fab', 'link', 'swap', 'filter', 'themectrl'] },
-  { i18n: 'sidebar.categories.dataDisplay', icon: AppWindow, items: ['badge', 'avatar', 'card', 'list', 'table', 'tag', 'stat', 'timeline', 'countdown', 'chat', 'mask', 'kbd'] },
-  { i18n: 'sidebar.categories.navigation', icon: Link, items: ['navbar', 'breadcrumbs', 'menu', 'tabs', 'pagination', 'steps', 'megamenu', 'footer'] },
-  { i18n: 'sidebar.categories.feedback', icon: MessageCircleMore, items: ['alert', 'toast', 'modal', 'tooltip', 'loading', 'skeleton', 'progress', 'radialprogress', 'status', 'indicator', 'aura'] },
-  { i18n: 'sidebar.categories.dataInput', icon: PenLine, items: ['input', 'textarea', 'select', 'checkbox', 'radio', 'toggle', 'range', 'fileinput', 'otp', 'rating', 'calendar', 'fieldset', 'label'] },
-  { i18n: 'sidebar.categories.layout', icon: PanelsTopLeft, items: ['hero', 'divider', 'stack', 'join', 'accordion', 'collapse', 'carousel', 'diff'] },
+  { i18n: 'sidebar.categories.actions', icon: MousePointerClick, items: ['button', 'fab', 'filter', 'link', 'swap', 'themectrl'] },
+  { i18n: 'sidebar.categories.dataDisplay', icon: AppWindow, items: ['avatar', 'badge', 'card', 'chat', 'countdown', 'kbd', 'list', 'mask', 'stat', 'table', 'tag', 'timeline'] },
+  { i18n: 'sidebar.categories.navigation', icon: Link, items: ['breadcrumbs', 'footer', 'megamenu', 'menu', 'navbar', 'pagination', 'steps', 'tabs'] },
+  { i18n: 'sidebar.categories.feedback', icon: MessageCircleMore, items: ['alert', 'aura', 'indicator', 'loading', 'modal', 'progress', 'radialprogress', 'skeleton', 'status', 'toast', 'tooltip'] },
+  { i18n: 'sidebar.categories.dataInput', icon: PenLine, items: ['calendar', 'checkbox', 'fieldset', 'fileinput', 'input', 'label', 'otp', 'radio', 'range', 'rating', 'select', 'textarea', 'toggle'] },
+  { i18n: 'sidebar.categories.layout', icon: PanelsTopLeft, items: ['accordion', 'carousel', 'collapse', 'diff', 'divider', 'hero', 'join', 'stack'] },
 ]
 
 const menu = css({ width: '100%', padding: '0'})
