@@ -1,0 +1,1 @@
+paragraph: Componente de calificación para mostrar valoraciones con estrellas. Solo puntuaciones enteras, con un máximo configurable (por defecto 5) y modo estático de solo lectura.

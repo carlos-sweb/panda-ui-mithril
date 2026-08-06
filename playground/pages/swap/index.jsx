@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
-import { t } from '../../i18n/index.js'
+import { t, loadPageI18n } from '../../i18n/index.js'
 import { Swap } from '../../../src/index.js'
 import { Sun, Moon } from 'lucide-mithril'
 import { CodeExample } from '../../components/CodeExample.jsx'
@@ -34,12 +34,13 @@ export default {
   category: 'Actions',
   description: 'Swap elements with a transition animation.',
 
+  oninit() { loadPageI18n('swap') },
   view() {
     return (
       <div>
         <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>Swap</h1>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
-          {t('paragraphs.swap')}
+          {t('paragraph')}
         </p>
 
         <div className={row}>

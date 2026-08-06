@@ -1,0 +1,1 @@
+paragraph: Rating component for displaying star ratings. Integer scores only, with a configurable max (default 5) and a read-only static mode.

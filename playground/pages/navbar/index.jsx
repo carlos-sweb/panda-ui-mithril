@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
-import { t } from '../../i18n/index.js'
+import { t, loadPageI18n } from '../../i18n/index.js'
 import { Navbar, NavbarStart, NavbarCenter, NavbarEnd, Button } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
@@ -27,12 +27,13 @@ export default {
   category: 'Navigation',
   description: 'Navbar component for site navigation headers.',
 
+  oninit() { loadPageI18n('navbar') },
   view() {
     return (
       <div className={stack}>
         <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>Navbar</h1>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
-          {t('paragraphs.navbar')}
+          {t('paragraph')}
         </p>
 
         <Navbar className={surface}>

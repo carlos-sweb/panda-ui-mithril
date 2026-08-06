@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
-import { t } from '../../i18n/index.js'
+import { t, loadPageI18n } from '../../i18n/index.js'
 import { ThemeController, Swap } from '../../../src/index.js'
 import { Sun, Moon } from 'lucide-mithril'
 import { CodeExample } from '../../components/CodeExample.jsx'
@@ -31,6 +31,7 @@ const classRows = [
 
 export default {
   oninit(vnode) {
+    loadPageI18n('themecontroller')
     vnode.state.theme = getTheme()
   },
 
@@ -49,7 +50,7 @@ export default {
       <div className={stack}>
         <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>ThemeController</h1>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
-          {t('paragraphs.themecontroller')}
+          {t('paragraph')}
         </p>
 
         <section className={section}>

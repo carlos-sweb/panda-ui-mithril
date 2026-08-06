@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
-import { t } from '../../i18n/index.js'
+import { t, loadPageI18n } from '../../i18n/index.js'
 import { Button, Tooltip } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
@@ -42,12 +42,13 @@ export default {
   category: 'Feedback',
   description: 'Tooltip component for showing additional information on hover.',
 
+  oninit() { loadPageI18n('tooltip') },
   view() {
     return (
       <div className={stack}>
         <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>Tooltip</h1>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
-          {t('paragraphs.tooltip')}
+          {t('paragraph')}
         </p>
 
         <div className={row}>

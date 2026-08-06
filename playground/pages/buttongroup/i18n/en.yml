@@ -1,0 +1,1 @@
+paragraph: Groups buttons horizontally, collapsing borders and rounding only outer corners. Color, variant, and size props propagate from the group to child buttons.

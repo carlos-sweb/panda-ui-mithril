@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
-import { t } from '../../i18n/index.js'
+import { t, loadPageI18n } from '../../i18n/index.js'
 import { Range } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
@@ -33,12 +33,13 @@ export default {
   category: 'Data Input',
   description: 'Range slider component for selecting values within a range.',
 
+  oninit() { loadPageI18n('range') },
   view() {
     return (
       <div className={stack}>
         <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>Range</h1>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
-          {t('paragraphs.range')}
+          {t('paragraph')}
         </p>
 
         <Range value={40} max={100} />

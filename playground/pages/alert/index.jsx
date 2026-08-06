@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
-import { t } from '../../i18n/index.js'
+import { t, loadPageI18n } from '../../i18n/index.js'
 import { Alert } from '../../../src/index.js'
 import { Info, CheckCircle, AlertTriangle, AlertCircle, X, ChevronRight } from 'lucide-mithril'
 import { CodeExample } from '../../components/CodeExample.jsx'
@@ -44,12 +44,13 @@ export default {
   category: 'Feedback',
   description: 'Alert component for displaying important messages and notifications.',
 
+  oninit() { loadPageI18n('alert') },
   view() {
     return (
       <div className={stack}>
         <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>Alert</h1>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
-          {t('paragraphs.alert')}
+          {t('paragraph')}
         </p>
 
         {/* Neutral Alert (no color) */}

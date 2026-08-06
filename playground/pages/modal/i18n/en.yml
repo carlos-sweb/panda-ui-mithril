@@ -1,0 +1,1 @@
+paragraph: Modal component for displaying dialog windows and overlays. Backed by a real <dialog> element.

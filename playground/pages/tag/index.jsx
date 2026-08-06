@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
-import { t } from '../../i18n/index.js'
+import { t, loadPageI18n } from '../../i18n/index.js'
 import { Tag } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
@@ -41,6 +41,7 @@ export default {
   category: 'Data Display',
   description: 'Tag — small interactive UI element to label, categorize, or filter content.',
 
+  oninit() { loadPageI18n('tag') },
   view() {
     return (
       <div>

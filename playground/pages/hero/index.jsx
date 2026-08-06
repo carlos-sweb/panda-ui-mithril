@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
-import { t } from '../../i18n/index.js'
+import { t, loadPageI18n } from '../../i18n/index.js'
 import { Hero, HeroContent, HeroOverlay, Button } from '../../../src/index.js'
 import { cx } from '../../../src/utils/cx.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
@@ -43,12 +43,13 @@ export default {
   category: 'Layout',
   description: 'Hero section component for prominent page headers.',
 
+  oninit() { loadPageI18n('hero') },
   view() {
     return (
       <div className={stack}>
         <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>Hero</h1>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
-          {t('paragraphs.hero')}
+          {t('paragraph')}
         </p>
 
         <section className={section}>

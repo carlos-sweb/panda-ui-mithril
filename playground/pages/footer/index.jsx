@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
-import { t } from '../../i18n/index.js'
+import { t, loadPageI18n } from '../../i18n/index.js'
 import { Footer, FooterTitle, Link } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
@@ -37,12 +37,13 @@ export default {
   category: 'Navigation',
   description: 'Footer component for site footers with links and information.',
 
+  oninit() { loadPageI18n('footer') },
   view() {
     return (
       <div className={stack}>
         <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>Footer</h1>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
-          {t('paragraphs.footer')}
+          {t('paragraph')}
         </p>
 
         <section className={section}>

@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
-import { t } from '../../i18n/index.js'
+import { t, loadPageI18n } from '../../i18n/index.js'
 import { Breadcrumbs } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
@@ -25,12 +25,13 @@ export default {
   category: 'Navigation',
   description: 'Breadcrumbs help users understand their location in the site hierarchy.',
 
+  oninit() { loadPageI18n('breadcrumbs') },
   view() {
     return (
       <div className={stack}>
         <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>Breadcrumbs</h1>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
-          {t('paragraphs.breadcrumbs')}
+          {t('paragraph')}
         </p>
 
         <Breadcrumbs

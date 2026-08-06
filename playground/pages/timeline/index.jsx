@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
-import { t } from '../../i18n/index.js'
+import { t, loadPageI18n } from '../../i18n/index.js'
 import { Timeline, TimelineItem, TimelineStart, TimelineMiddle, TimelineEnd } from '../../../src/index.js'
 import { CircleCheck } from 'lucide-mithril'
 import { CodeExample } from '../../components/CodeExample.jsx'
@@ -46,12 +46,13 @@ export default {
   category: 'Data Display',
   description: 'Timeline component for displaying chronological events.',
 
+  oninit() { loadPageI18n('timeline') },
   view() {
     return (
       <div className={stack}>
         <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>Timeline</h1>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
-          {t('paragraphs.timeline')}
+          {t('paragraph')}
         </p>
 
         <section className={section}>

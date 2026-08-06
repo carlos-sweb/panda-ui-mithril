@@ -1,0 +1,1 @@
+paragraph: Calendar component for selecting dates. Since this project has real JS via Mithril, this is a fully working month-grid calendar (navigation, today, selection), no external dependency.

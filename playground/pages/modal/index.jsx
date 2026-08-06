@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
-import { t } from '../../i18n/index.js'
+import { t, loadPageI18n } from '../../i18n/index.js'
 import { Button, Modal, ModalBox, ModalAction, ModalBackdrop } from '../../../src/index.js'
 import { modal } from '../../../src/recipes/modal'
 import { CodeExample } from '../../components/CodeExample.jsx'
@@ -56,6 +56,7 @@ const classRows = [
 
 export default {
   oninit(vnode) {
+    loadPageI18n('modal')
     vnode.state.openFor = null
     vnode.state.sizeFor = null
     vnode.state.sizeOpen = false
@@ -77,7 +78,7 @@ export default {
       <div className={stack}>
         <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>Modal</h1>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
-          {t('paragraphs.modal')}
+          {t('paragraph')}
         </p>
 
         <h2 className={sectionTitle}>Sizes</h2>

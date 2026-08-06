@@ -1,10 +1,13 @@
 import m from 'mithril'
-import enModule from './en.yml'
-import esModule from './es.yml'
+import sharedEn from './shared.en.yml'
+import sharedEs from './shared.es.yml'
+import { pageI18n } from './pages.generated.js'
 
-const translations = { en: enModule, es: esModule }
+const shared = { en: sharedEn, es: sharedEs }
+const pages = { en: {}, es: {} }
+let _currentPage = null
 
-/** Resolve a dotted path ('sidebar.categories.layout') from an object. Returns the value or the key itself on miss. */
+/** Resolve a dotted path ('sidebar.categories.layout') from an object. Returns the value or undefined on miss. */
 function resolve(obj, path) {
   return path.split('.').reduce((o, k) => (o != null ? o[k] : undefined), obj)
 }
@@ -28,26 +31,48 @@ export function setLang(lang) {
   m.redraw()
 }
 
-/** Look up a dotted key in the active language bundle. Falls back to English on miss. */
+/**
+ * Load per-page i18n translations. Called from a page's oninit.
+ * Example: loadPageI18n('button') loads playground/pages/button/i18n/{en,es}.yml
+ * Returns a promise that resolves when both languages are loaded.
+ */
+export function loadPageI18n(pageName) {
+  if (_currentPage === pageName) return
+  _currentPage = pageName
+  if (pageI18n.en[pageName]) {
+    pages.en = pageI18n.en[pageName]
+    pages.es = pageI18n.es[pageName]
+    m.redraw()
+  } else {
+    pages.en = {}
+    pages.es = {}
+    // Pages without i18n — no warning needed, many are structural (componentpage, etc.)
+  }
+}
+
+/** Look up a dotted key: checks page translations first, then shared, then English fallback. */
 export function t(path) {
   const lang = currentLang()
-  const bundle = translations[lang]
-  const val = resolve(bundle, path)
+  // Page translations first
+  let val = resolve(pages[lang], path)
   if (val !== undefined) return val
-  // explicit fallback to English
-  const enVal = resolve(translations.en, path)
+  // Shared translations
+  val = resolve(shared[lang], path)
+  if (val !== undefined) return val
+  // English fallback
+  const enVal = resolve(pages.en, path) ?? resolve(shared.en, path)
   return enVal !== undefined ? enVal : path
 }
 
 /** Direct lookup for classRow descriptions (keys may contain dots/colons that break dotted paths). */
 export function tClassRow(description) {
   const lang = currentLang()
-  const section = translations[lang].classRowDescs || {}
+  const section = shared[lang].classRowDescs || {}
   const val = section[description]
   if (val !== undefined) return val
-  const enSection = translations.en.classRowDescs || {}
+  const enSection = shared.en.classRowDescs || {}
   const enVal = enSection[description]
   return enVal !== undefined ? enVal : description
 }
 
-export default { t, currentLang, setLang, tClassRow }
+export default { t, currentLang, setLang, tClassRow, loadPageI18n }

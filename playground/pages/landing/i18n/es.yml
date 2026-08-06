@@ -1,0 +1,22 @@
+  hero: Una librería de componentes Mithril.js estilizada con Panda CSS. Componentes listos para producción con patrones de diseño familiares.
+  componentsCount: 57 componentes
+  componentsDesc: 57 componentes listos para producción
+  kbSize: 7KB
+  kbSizeDesc: Bundle JS con tree-shaking y una sola hoja de estilos
+  dependencies: 0
+  dependenciesDesc: Sin dependencias de runtime más allá de Mithril
+  orgByCategory: Organizado por categoría
+  orgDesc: 57 componentes organizados por categoría. Haz clic en cualquiera para ver la demo completa.
+  alert: 'Nuevo: 57 componentes, estilizados consistentemente.'
+  featureNaming:
+    title: Nomenclatura de clases
+    desc: 'Convención de clases familiar: btn-primary, card-body, alert-soft.'
+  featurePanda:
+    title: Panda CSS
+    desc: CSS-in-JS atómico con cero runtime. Estilos optimizados y tipados.
+  featureMithril:
+    title: Mithril.js
+    desc: Framework rápido y ligero. Componentes con patrón de objeto literal y funciones view.
+  featureIcons:
+    title: Iconos Lucide
+    desc: Set de iconos hermoso y consistente vía lucide-mithril. Basados en SVG, con tree-shaking.

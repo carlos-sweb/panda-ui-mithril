@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
-import { t } from '../../i18n/index.js'
+import { t, loadPageI18n } from '../../i18n/index.js'
 import { Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
@@ -34,6 +34,7 @@ const classRows = [
 
 export default {
   oninit(vnode) {
+    loadPageI18n('tabs')
     vnode.state.boxed = 1
     vnode.state.border = 1
     vnode.state.lifted = 1
@@ -48,7 +49,7 @@ export default {
       <div className={stack}>
         <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>Tabs</h1>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
-          {t('paragraphs.tabs')}
+          {t('paragraph')}
         </p>
 
         <section className={section}>

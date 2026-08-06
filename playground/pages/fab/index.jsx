@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
-import { t } from '../../i18n/index.js'
+import { t, loadPageI18n } from '../../i18n/index.js'
 import { FAB, FABMain, FABAction } from '../../../src/index.js'
 import { Plus, Pencil, Trash2, Share2 } from 'lucide-mithril'
 import { CodeExample } from '../../components/CodeExample.jsx'
@@ -28,12 +28,13 @@ export default {
   category: 'Actions',
   description: 'Floating Action Button represents the primary action of a screen.',
 
+  oninit() { loadPageI18n('fab') },
   view() {
     return (
       <div className={stack}>
         <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>FAB</h1>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
-          {t('paragraphs.fab')}
+          {t('paragraph')}
         </p>
 
         <FAB>

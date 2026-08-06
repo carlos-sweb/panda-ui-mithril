@@ -1,0 +1,1 @@
+paragraph: Componente de calendario para seleccionar fechas. Al tener JS real vía Mithril, es un calendario de cuadrícula mensual completamente funcional (navegación, hoy, selección), sin dependencias externas.
