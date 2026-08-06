@@ -18,6 +18,9 @@ export const swapStyles = cva({
       transitionDuration: '0.2s',
       transitionTimingFunction: 'cubic-bezier(0, 0, 0.2, 1)',
     },
+    '& svg': {
+      strokeWidth: '2',
+    },
     // hidden but still natively toggled by clicking the wrapping <label> — no JS required
     '& input': { display: 'none' },
     '& .swap-on': { opacity: '0' },

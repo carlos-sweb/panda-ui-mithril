@@ -25,6 +25,7 @@ const classRows = [
   { className: 'btn-xl', prop: 'size="xl"', type: 'Size', description: 'Extra large size' },
   { className: 'btn-circle', prop: 'shape="circle" (default)', type: 'Shape', description: 'Circle shape', isDefault: true },
   { className: 'btn-square', prop: 'shape="square"', type: 'Shape', description: 'Square shape' },
+  { className: 'close-button', prop: 'strokeWidth={3} (default)', type: 'number', description: 'X icon stroke width (lucide prop). Default 3.' },
 ]
 
 export default {
@@ -117,6 +118,16 @@ export default {
           <div className={row}>
             <ButtonClose disabled />
             <ButtonClose disabled color="primary" />
+          </div>
+        </section>
+
+        <section className={section}>
+          <h3 className={heading}>Stroke Width</h3>
+          <div className={row}>
+            <ButtonClose strokeWidth={1} />
+            <ButtonClose strokeWidth={2} />
+            <ButtonClose strokeWidth={3} />
+            <ButtonClose strokeWidth={4} color="primary" />
           </div>
         </section>
 

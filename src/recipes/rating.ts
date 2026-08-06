@@ -23,6 +23,7 @@ export const rating = sva({
       '& svg': {
         width: '100%',
         height: '100%',
+        strokeWidth: '2',
       },
     },
   },

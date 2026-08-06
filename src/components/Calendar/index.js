@@ -65,7 +65,7 @@ export const Calendar = {
           'aria-label': 'Previous',
           className: defaultStyles.nav,
           onclick: () => goToMonth(-1),
-        }, m(ChevronLeft, { size: 16 })),
+        }, m(ChevronLeft, { size: 16, 'stroke-width': 2 })),
         m('span', {}, `${MONTH_NAMES[viewMonth]} ${viewYear}`),
         m('button', {
           type: 'button',
@@ -73,7 +73,7 @@ export const Calendar = {
           'aria-label': 'Next',
           className: defaultStyles.nav,
           onclick: () => goToMonth(1),
-        }, m(ChevronRight, { size: 16 })),
+        }, m(ChevronRight, { size: 16, 'stroke-width': 2 })),
       ]),
       m('div', { className: cx('calendar-month', defaultStyles.grid) }, [
         ...WEEKDAYS.map((w) => m('span', { key: `wd-${w}`, className: defaultStyles.weekday }, w)),

@@ -33,7 +33,7 @@ export const Tag = {
         type: 'button',
         className: 'tag-remove',
         onclick: (e) => { e.stopPropagation(); onRemove(e) },
-      }, m(X, { size: 12 })),
+      }, m(X, { size: 12, 'stroke-width': 2 })),
     ])
   }
 }
