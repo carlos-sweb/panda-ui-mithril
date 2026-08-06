@@ -49,6 +49,7 @@ const allComponents = [
   { name: 'radio', category: 'Data Input', route: '/radio' },
   { name: 'range', category: 'Data Input', route: '/range' },
   { name: 'rating', category: 'Data Input', route: '/rating' },
+  { name: 'ratinggroup', category: 'Data Input', route: '/ratinggroup' },
   { name: 'select', category: 'Data Input', route: '/select' },
   { name: 'skeleton', category: 'Feedback', route: '/skeleton' },
   { name: 'stack', category: 'Layout', route: '/stack' },

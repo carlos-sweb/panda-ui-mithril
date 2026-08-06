@@ -89,6 +89,8 @@ import pageradioEn from '../pages/radio/i18n/en.yml'
 import pageradioEs from '../pages/radio/i18n/es.yml'
 import pagerangeEn from '../pages/range/i18n/en.yml'
 import pagerangeEs from '../pages/range/i18n/es.yml'
+import pageratinggroupEn from '../pages/ratinggroup/i18n/en.yml'
+import pageratinggroupEs from '../pages/ratinggroup/i18n/es.yml'
 import pageratingEn from '../pages/rating/i18n/en.yml'
 import pageratingEs from '../pages/rating/i18n/es.yml'
 import pageselectEn from '../pages/select/i18n/en.yml'
@@ -215,6 +217,8 @@ pageI18n.en['radio'] = pageradioEn
 pageI18n.es['radio'] = pageradioEs
 pageI18n.en['range'] = pagerangeEn
 pageI18n.es['range'] = pagerangeEs
+pageI18n.en['ratinggroup'] = pageratinggroupEn
+pageI18n.es['ratinggroup'] = pageratinggroupEs
 pageI18n.en['rating'] = pageratingEn
 pageI18n.es['rating'] = pageratingEs
 pageI18n.en['select'] = pageselectEn

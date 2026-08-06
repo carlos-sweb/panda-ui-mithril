@@ -61,6 +61,7 @@ import RadialProgress from './pages/radialprogress/index.jsx'
 import Radio from './pages/radio/index.jsx'
 import Range from './pages/range/index.jsx'
 import Rating from './pages/rating/index.jsx'
+import RatingGroupPage from './pages/ratinggroup/index.jsx'
 import Select from './pages/select/index.jsx'
 import Skeleton from './pages/skeleton/index.jsx'
 import Stack from './pages/stack/index.jsx'
@@ -128,6 +129,7 @@ const routes = {
   '/radio':Radio,
   '/range': Range,
   '/rating': Rating,
+  '/ratinggroup': RatingGroupPage,
   '/select': Select,
   '/skeleton': Skeleton,
   '/stack': Stack,

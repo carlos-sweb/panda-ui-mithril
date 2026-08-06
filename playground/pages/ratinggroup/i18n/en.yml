@@ -1,0 +1,1 @@
+paragraph: RatingGroup wraps a Rating component with a descriptive label. Delegates all value, color, size, and interactive props to the internal Rating.

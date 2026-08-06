@@ -2,6 +2,7 @@ import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
 import { Rating } from '../../../src/index.js'
+import { RatingGroup } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
@@ -136,6 +137,22 @@ export default {
         <section>
           <h2 className={sectionTitle}>{t('common.usage')}</h2>
           <CodeExample code={usageCode} />
+        </section>
+
+        <section>
+          <h2 className={sectionTitle}>With RatingGroup</h2>
+          <h4 className={heading}>Adds a label above the Rating — ideal for forms and surveys</h4>
+          <div className={row}>
+            <RatingGroup label="Quality" defaultValue={4} />
+            <RatingGroup label="Difficulty" defaultValue={2} color="info" size="lg" />
+          </div>
+          <p className={css({ fontSize: '0.875rem', opacity: 0.6, marginTop: '0.5rem' })}>
+            Use <code>&lt;Rating /&gt;</code> for standalone stars. Use{' '}
+            <code>&lt;RatingGroup /&gt;</code> when you need a label. See the{' '}
+            <a href="#!/ratinggroup" className={css({ color: 'token(colors.primary)', textDecoration: 'underline' })}>
+              RatingGroup page
+            </a>{' '}for full API.
+          </p>
         </section>
 
         <section>
