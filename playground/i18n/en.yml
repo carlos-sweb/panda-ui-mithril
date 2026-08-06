@@ -63,6 +63,7 @@ paragraphs:
     avatar: 'Avatar component represents a user or entity with an image or initials.'
     badge: 'Badges are used to highlight an item''s status for quick recognition.'
     breadcrumbs: 'Breadcrumbs help users understand their location in the site hierarchy.'
+    buttongroup: 'Groups buttons horizontally, collapsing borders and rounding only outer corners. Color, variant, and size props propagate from the group to child buttons.'
     button: 'Buttons allow users to take actions and make choices with a single tap. They communicate what will happen when the user touches them.'
     calendar: 'Calendar component for selecting dates. Since this project has real JS via Mithril, this is a fully working month-grid calendar (navigation, today, selection), no external dependency.'
     card: 'Cards are used to group and display content in a contained layout.'
@@ -447,3 +448,6 @@ classRowDescs:
   'vertical layout': 'vertical layout'
   'warning color': 'warning color'
   'will be placed on the corner of sibling': 'will be placed on the corner of sibling'
+
+
+  'Button group container (unifies borders)': 'Button group container (unifies borders)'

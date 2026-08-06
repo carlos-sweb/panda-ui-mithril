@@ -63,6 +63,7 @@ paragraphs:
     avatar: 'El componente Avatar representa un usuario o entidad con una imagen o iniciales.'
     badge: 'Los badges se usan para destacar el estado de un elemento para un reconocimiento rápido.'
     breadcrumbs: 'Las migas de pan ayudan a los usuarios a entender su ubicación en la jerarquía del sitio.'
+    buttongroup: 'Agrupa botones horizontalmente, colapsando bordes y redondeando solo las esquinas exteriores. Color, variante y tamaño se propagan del grupo a los botones hijos.'
     button: 'Los botones permiten a los usuarios realizar acciones y tomar decisiones con un solo toque. Indican lo que sucederá cuando el usuario los toque.'
     calendar: 'Componente de calendario para seleccionar fechas. Al tener JS real vía Mithril, es un calendario de cuadrícula mensual completamente funcional (navegación, hoy, selección), sin dependencias externas.'
     card: 'Las tarjetas se usan para agrupar y mostrar contenido en un diseño contenido.'
@@ -447,3 +448,6 @@ classRowDescs:
   'vertical layout': 'layout vertical'
   'warning color': 'color de advertencia'
   'will be placed on the corner of sibling': 'se colocará en la esquina del hermano'
+
+
+  'Button group container (unifies borders)': 'Contenedor de grupo de botones (unifica bordes)'
