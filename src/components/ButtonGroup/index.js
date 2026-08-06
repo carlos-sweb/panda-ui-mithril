@@ -22,7 +22,7 @@ export const ButtonGroup = {
         color: child.attrs?.color || color,
         variant: child.attrs?.variant || variant,
         size: child.attrs?.size || size,
-      })
+      }, child.children)
     }))
   }
 }
