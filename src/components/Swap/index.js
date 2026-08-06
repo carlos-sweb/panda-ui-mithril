@@ -38,11 +38,18 @@ import { cx } from '../../utils/cx'
  * @type {import('mithril').Component<import('./index').SwapAttrs>}
  */
 export const Swap = {
+  oninit(vnode){
+    console.log(vnode)
+  },
+  oncreate(vnode){
+    console.log(vnode.attrs.active)
+    console.log(this.active)
+  },
   view(vnode) {
-    const { active, style, className, on, off, checked, onchange, ...rest } = vnode.attrs
+    const { active, style, size, className, on, off, checked, onchange, ...rest } = vnode.attrs
 
     return m('label', {
-      className: cx('swap', swapStyles({ style }), active && 'swap-active', className),
+      className: cx('swap', swapStyles({ style, size }), active && 'swap-active', className),
       ...rest
     }, [
       m('input', { type: 'checkbox', checked, onchange }),

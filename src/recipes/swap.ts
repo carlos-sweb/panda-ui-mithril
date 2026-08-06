@@ -8,6 +8,9 @@ export const swapStyles = cva({
     verticalAlign: 'middle',
     cursor: 'pointer',
     userSelect: 'none',
+    '--swap-size': 'token(spacing.10)',
+    minHeight: 'var(--swap-size)',
+    fontSize: 'calc(var(--swap-size) * 0.4)',
     '& > *': {
       gridColumnStart: '1',
       gridRowStart: '1',
@@ -40,5 +43,15 @@ export const swapStyles = cva({
         },
       },
     },
+    size: {
+      xs: { '--swap-size': 'token(spacing.6)' },
+      sm: { '--swap-size': 'token(spacing.8)' },
+      md: { '--swap-size': 'token(spacing.10)' },
+      lg: { '--swap-size': 'token(spacing.12)' },
+      xl: { '--swap-size': 'token(spacing.14)' },
+    },
+  },
+  defaultVariants: {
+    size: 'md',
   },
 })
