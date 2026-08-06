@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { X } from 'lucide-mithril'
-import { Button } from '../Button/index.js'
+import { Button } from '../Button/index.jsx'
 import { cx } from '../../utils/cx'
 
 const iconSizes = { xs: 12, sm: 14, md: 16, lg: 18, xl: 20 }
@@ -11,7 +11,7 @@ const iconSizes = { xs: 12, sm: 14, md: 16, lg: 18, xl: 20 }
  *
  * @type {import('mithril').Component<import('./index').CloseButtonAttrs>}
  */
-export const CloseButton = {
+export const ButtonClose = {
   view(vnode) {
     const { size, className, ...rest } = vnode.attrs
     return m(Button, {

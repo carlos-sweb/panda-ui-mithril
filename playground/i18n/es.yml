@@ -63,6 +63,7 @@ paragraphs:
     avatar: 'El componente Avatar representa un usuario o entidad con una imagen o iniciales.'
     badge: 'Los badges se usan para destacar el estado de un elemento para un reconocimiento rápido.'
     breadcrumbs: 'Las migas de pan ayudan a los usuarios a entender su ubicación en la jerarquía del sitio.'
+    buttonclose: 'Botón de cierre circular con un ícono X que escala con el tamaño del botón.'
     buttongroup: 'Agrupa botones horizontalmente, colapsando bordes y redondeando solo las esquinas exteriores. Color, variante y tamaño se propagan del grupo a los botones hijos.'
     button: 'Los botones permiten a los usuarios realizar acciones y tomar decisiones con un solo toque. Indican lo que sucederá cuando el usuario los toque.'
     calendar: 'Componente de calendario para seleccionar fechas. Al tener JS real vía Mithril, es un calendario de cuadrícula mensual completamente funcional (navegación, hoy, selección), sin dependencias externas.'
