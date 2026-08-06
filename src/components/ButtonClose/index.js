@@ -13,9 +13,10 @@ const iconSizes = { xs: 12, sm: 14, md: 16, lg: 18, xl: 20 }
  */
 export const ButtonClose = {
   view(vnode) {
-    const { size, className, ...rest } = vnode.attrs
+    const { size, shape, className, ...rest } = vnode.attrs
     return m(Button, {
-      shape: 'circle',
+      circle: shape !== 'square',
+      square: shape === 'square',
       size,
       className: cx('close-button', className),
       ...rest,

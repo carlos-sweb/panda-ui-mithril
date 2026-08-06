@@ -5,6 +5,7 @@ export interface ButtonCloseAttrs extends ComponentAttrs {
   color?: PumColor
   variant?: 'outline' | 'dash' | 'soft' | 'ghost'
   size?: PumSize
+  shape?: 'circle' | 'square'
   disabled?: boolean
   [key: string]: unknown
 }
