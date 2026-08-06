@@ -13,7 +13,7 @@ const tagSizes = { h1: '1', h2: '2', h3: '3', h4: '4', h5: '5', h6: '6', p: '7',
 export const Title = {
   view(vnode) {
     const {
-      tag = 'h1',
+      as = 'h1',
       size,
       color,
       align,
@@ -25,9 +25,9 @@ export const Title = {
       ...rest
     } = vnode.attrs
 
-    const resolvedSize = size ?? tagSizes[tag] ?? '1'
+    const resolvedSize = size ?? tagSizes[as] ?? '1'
 
-    return m(tag, {
+    return m(as, {
       className: cx('title', titleStyles({
         size: resolvedSize,
         color,

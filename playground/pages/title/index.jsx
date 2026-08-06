@@ -10,13 +10,13 @@ const sectionTitle = css({ fontSize: '1.25rem', fontWeight: '600', marginBottom:
 const row = css({ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'baseline' })
 const heading = css({ fontSize: '0.875rem', fontWeight: '600', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em', opacity: 0.5 })
 
-const usageCode = `<Title tag="h1" size="1" color="primary">Hero Title</Title>
-<Title tag="h2" size="3" align="center">Section Heading</Title>
-<Title tag="p" size="6" transform="capitalize">paragraph text styled as h6</Title>`
+const usageCode = `<Title as="h1" size="1" color="primary">Hero Title</Title>
+<Title as="h2" size="3" align="center">Section Heading</Title>
+<Title as="p" size="6" transform="capitalize">paragraph text styled as h6</Title>`
 
 const classRows = [
   { className: 'title', prop: '<Title>', type: 'Component', description: 'Typography helper — renders a semantic heading or text element with style props' },
-  { className: '—', prop: 'tag', type: '"h1"|"h2"|"h3"|"h4"|"h5"|"h6"|"p"|"span"|"div"', description: 'HTML tag to render. Map from h1→size 1 to h6→6, p→7. Default: h1.' },
+  { className: '—', prop: 'as', type: '"h1"|"h2"|"h3"|"h4"|"h5"|"h6"|"p"|"span"|"div"', description: 'HTML tag to render. Map from h1→size 1 to h6→6, p→7. Default: h1.' },
   { className: '—', prop: 'size', type: '"1"…"7"', description: 'Font size tier. Overrides the tag implicit size (e.g., h2 with size="1" is the largest). Default 1.' },
   { className: '—', prop: 'color', type: 'PumColor', description: 'Theme color' },
   { className: '—', prop: 'align', type: '"left"|"center"|"right"|"justify"', description: 'Text alignment. Default: left.' },
@@ -63,13 +63,13 @@ export default {
           <h4 className={heading}>Auto-size from tag (h1→1, h2→2, …)</h4>
           <div className={row}>
             <div className={css({ display: 'flex', flexDirection: 'column', gap: '0.25rem' })}>
-              <Title tag="h1">h1 heading</Title>
-              <Title tag="h2">h2 heading</Title>
-              <Title tag="h3">h3 heading</Title>
-              <Title tag="h4">h4 heading</Title>
-              <Title tag="h5">h5 heading</Title>
-              <Title tag="h6">h6 heading</Title>
-              <Title tag="p">p paragraph</Title>
+              <Title as="h1">h1 heading</Title>
+              <Title as="h2">h2 heading</Title>
+              <Title as="h3">h3 heading</Title>
+              <Title as="h4">h4 heading</Title>
+              <Title as="h5">h5 heading</Title>
+              <Title as="h6">h6 heading</Title>
+              <Title as="p">p paragraph</Title>
             </div>
           </div>
         </section>
@@ -77,32 +77,32 @@ export default {
         <section>
           <h2 className={sectionTitle}>Colors</h2>
           <div className={row}>
-            <Title tag="h3" color="primary">Primary</Title>
-            <Title tag="h3" color="secondary">Secondary</Title>
-            <Title tag="h3" color="accent">Accent</Title>
-            <Title tag="h3" color="info">Info</Title>
-            <Title tag="h3" color="success">Success</Title>
-            <Title tag="h3" color="warning">Warning</Title>
-            <Title tag="h3" color="error">Error</Title>
+            <Title as="h3" color="primary">Primary</Title>
+            <Title as="h3" color="secondary">Secondary</Title>
+            <Title as="h3" color="accent">Accent</Title>
+            <Title as="h3" color="info">Info</Title>
+            <Title as="h3" color="success">Success</Title>
+            <Title as="h3" color="warning">Warning</Title>
+            <Title as="h3" color="error">Error</Title>
           </div>
         </section>
 
         <section>
           <h2 className={sectionTitle}>Alignment</h2>
           <div className={css({ display: 'flex', flexDirection: 'column', gap: '0.5rem', maxWidth: '400px', padding: '1rem', border: '1px solid token(colors.base-300)', borderRadius: 'token(radii.md)' })}>
-            <Title tag="h4" align="left">Left aligned</Title>
-            <Title tag="h4" align="center">Center aligned</Title>
-            <Title tag="h4" align="right">Right aligned</Title>
-            <Title tag="h4" align="justify">Justify — this text fills the line width evenly</Title>
+            <Title as="h4" align="left">Left aligned</Title>
+            <Title as="h4" align="center">Center aligned</Title>
+            <Title as="h4" align="right">Right aligned</Title>
+            <Title as="h4" align="justify">Justify — this text fills the line width evenly</Title>
           </div>
         </section>
 
         <section>
           <h2 className={sectionTitle}>Transform</h2>
           <div className={row}>
-            <Title tag="h4" transform="capitalize">capitalize me</Title>
-            <Title tag="h4" transform="uppercase">uppercase me</Title>
-            <Title tag="h4" transform="lowercase">LOWERCASE ME</Title>
+            <Title as="h4" transform="capitalize">capitalize me</Title>
+            <Title as="h4" transform="uppercase">uppercase me</Title>
+            <Title as="h4" transform="lowercase">LOWERCASE ME</Title>
           </div>
         </section>
 
