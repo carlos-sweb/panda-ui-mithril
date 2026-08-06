@@ -13,6 +13,7 @@ export { Card, CardBody, CardTitle, CardActions, CardFigure } from './components
 export { Carousel, CarouselItem } from './components/Carousel'
 export { Chat, ChatImage, ChatHeader, ChatBubble, ChatFooter } from './components/ChatBubble'
 export { Checkbox } from './components/Checkbox'
+export { CloseButton } from './components/CloseButton'
 export { Countdown } from './components/Countdown'
 export { Diff, DiffItem1, DiffItem2, DiffResizer } from './components/Diff'
 export { Divider } from './components/Divider'
