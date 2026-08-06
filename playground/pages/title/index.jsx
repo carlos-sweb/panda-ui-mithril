@@ -46,7 +46,15 @@ const classRows = [
   { className: 'title-extrabold', prop: 'weight="extrabold"', type: 'Weight', description: 'Extrabold — 800' },
   { className: 'title-truncate', prop: 'truncate', type: 'Modifier', description: 'Truncate with ellipsis' },
   { className: 'title-italic', prop: 'italic', type: 'Modifier', description: 'Italic style' },
-  { className: 'title-as', prop: 'as="h1"|"h2"|"h3"|"h4"|"h5"|"h6"|"p"|"span"|"div"', type: 'Element', description: 'HTML tag (h1→size1, …, h6→size6, p→size7). Default: h1.' },
+  { className: 'title-as-h1', prop: 'as="h1" (default)', type: 'Element', description: 'Render as <h1>. Maps to size 1.', isDefault: true },
+  { className: 'title-as-h2', prop: 'as="h2"', type: 'Element', description: 'Render as <h2>. Maps to size 2.' },
+  { className: 'title-as-h3', prop: 'as="h3"', type: 'Element', description: 'Render as <h3>. Maps to size 3.' },
+  { className: 'title-as-h4', prop: 'as="h4"', type: 'Element', description: 'Render as <h4>. Maps to size 4.' },
+  { className: 'title-as-h5', prop: 'as="h5"', type: 'Element', description: 'Render as <h5>. Maps to size 5.' },
+  { className: 'title-as-h6', prop: 'as="h6"', type: 'Element', description: 'Render as <h6>. Maps to size 6.' },
+  { className: 'title-as-p', prop: 'as="p"', type: 'Element', description: 'Render as <p>. Maps to size 7.' },
+  { className: 'title-as-span', prop: 'as="span"', type: 'Element', description: 'Render as <span>. Maps to size 7.' },
+  { className: 'title-as-div', prop: 'as="div"', type: 'Element', description: 'Render as <div>. Maps to size 7.' },
 ]
 
 export default {
