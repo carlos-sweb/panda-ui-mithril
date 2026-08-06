@@ -27,6 +27,7 @@ sidebar:
     feedback: Feedback
     dataInput: Data Input
     layout: Layout
+    typography: Typography
     mockup: Mockup
 navbar:
   themeLabels:

@@ -63,6 +63,7 @@ const allComponents = [
   { name: 'textarea', category: 'Data Input', route: '/textarea' },
   { name: 'themectrl', category: 'Actions', route: '/themectrl' },
   { name: 'timeline', category: 'Data Display', route: '/timeline' },
+  { name: 'title', category: 'Typography', route: '/title' },
   { name: 'toast', category: 'Feedback', route: '/toast' },
   { name: 'toggle', category: 'Data Input', route: '/toggle' },
   { name: 'tooltip', category: 'Feedback', route: '/tooltip' },

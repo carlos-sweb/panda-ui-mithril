@@ -74,6 +74,7 @@ import Table from './pages/table/index.jsx'
 import Tabs from './pages/tabs/index.jsx'
 import Textarea from './pages/textarea/index.jsx'
 import ThemeController from './pages/themecontroller/index.jsx'
+import TitlePage from "./pages/title/index.jsx"
 import Timeline from './pages/timeline/index.jsx'
 import Toast from './pages/toast/index.jsx'
 import Toggle from './pages/toggle/index.jsx'
@@ -142,6 +143,7 @@ const routes = {
   '/tabs': Tabs,
   '/textarea': Textarea,
   '/themectrl': ThemeController,
+  '/title': TitlePage,
   '/timeline': Timeline,
   '/toast': Toast,
   '/toggle': Toggle,

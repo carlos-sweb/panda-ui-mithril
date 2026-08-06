@@ -57,6 +57,7 @@ export { ThemeController } from './components/ThemeController'
 export { Timeline, TimelineItem, TimelineStart, TimelineMiddle, TimelineEnd } from './components/Timeline'
 export { Toast } from './components/Toast'
 export { Toggle } from './components/Toggle'
+export { Title } from './components/Title'
 export { Tag } from './components/Tag'
 export { Tooltip } from './components/Tooltip'
 

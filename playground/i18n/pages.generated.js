@@ -117,6 +117,8 @@ import pagetextareaEn from '../pages/textarea/i18n/en.yml'
 import pagetextareaEs from '../pages/textarea/i18n/es.yml'
 import pagethemecontrollerEn from '../pages/themecontroller/i18n/en.yml'
 import pagethemecontrollerEs from '../pages/themecontroller/i18n/es.yml'
+import pagetitleEn from '../pages/title/i18n/en.yml'
+import pagetitleEs from '../pages/title/i18n/es.yml'
 import pagetimelineEn from '../pages/timeline/i18n/en.yml'
 import pagetimelineEs from '../pages/timeline/i18n/es.yml'
 import pagetoastEn from '../pages/toast/i18n/en.yml'
@@ -245,6 +247,8 @@ pageI18n.en['textarea'] = pagetextareaEn
 pageI18n.es['textarea'] = pagetextareaEs
 pageI18n.en['themecontroller'] = pagethemecontrollerEn
 pageI18n.es['themecontroller'] = pagethemecontrollerEs
+pageI18n.en['title'] = pagetitleEn
+pageI18n.es['title'] = pagetitleEs
 pageI18n.en['timeline'] = pagetimelineEn
 pageI18n.es['timeline'] = pagetimelineEs
 pageI18n.en['toast'] = pagetoastEn
