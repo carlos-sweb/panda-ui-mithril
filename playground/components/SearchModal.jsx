@@ -12,6 +12,7 @@ const allComponents = [
   { name: 'badge', category: 'Data Display', route: '/badge' },
   { name: 'breadcrumbs', category: 'Navigation', route: '/breadcrumbs' },
   { name: 'button', category: 'Actions', route: '/button' },
+  { name: 'buttonclose', category: 'Actions', route: '/buttonclose' },
   { name: 'buttongroup', category: 'Actions', route: '/buttongroup' },
   { name: 'calendar', category: 'Data Input', route: '/calendar' },
   { name: 'card', category: 'Data Display', route: '/card' },

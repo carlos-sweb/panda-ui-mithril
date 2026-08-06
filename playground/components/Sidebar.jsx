@@ -6,7 +6,7 @@ import { DrawerSide } from './Drawer.jsx'
 import { t } from '../i18n/index.js'
 
 const categories = [
-  { i18n: 'sidebar.categories.actions', icon: MousePointerClick, items: ['button', 'buttongroup', 'fab', 'filter', 'link', 'swap', 'themectrl'] },
+  { i18n: 'sidebar.categories.actions', icon: MousePointerClick, items: ['button', 'buttonclose', 'buttongroup', 'fab', 'filter', 'link', 'swap', 'themectrl'] },
   { i18n: 'sidebar.categories.dataDisplay', icon: AppWindow, items: ['avatar', 'badge', 'card', 'chat', 'countdown', 'kbd', 'list', 'mask', 'stat', 'table', 'tag', 'timeline'] },
   { i18n: 'sidebar.categories.navigation', icon: Link, items: ['breadcrumbs', 'footer', 'megamenu', 'menu', 'navbar', 'pagination', 'steps', 'tabs'] },
   { i18n: 'sidebar.categories.feedback', icon: MessageCircleMore, items: ['alert', 'aura', 'indicator', 'loading', 'modal', 'progress', 'radialprogress', 'skeleton', 'status', 'toast', 'tooltip'] },
