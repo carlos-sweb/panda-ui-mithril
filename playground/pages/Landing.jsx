@@ -77,7 +77,7 @@ export const Landing = {
         <Hero className={heroSection}>
           <HeroContent className={css({ flexDirection: 'column', textAlign: 'center', padding: '4rem 2rem' })}>
             <Badge color="primary" variant="soft" className={css({ marginBottom: '1rem' })}>{t('landing.componentsCount')}</Badge>
-            <h1 className={css({ fontSize: '2.75rem', fontWeight: '800', marginBottom: '1rem', letterSpacing: '-0.02em' })}>panda-ui-mithril</h1>
+            <h1 className={css({ fontSize: '2.75rem', fontWeight: '800', marginBottom: '1rem', letterSpacing: '-0.02em' })}>PUM</h1>
             <p className={css({ fontSize: '1.125rem', color: 'token(colors.base-content)', opacity: 0.6, maxWidth: '600px', margin: '0 auto 2rem' })}>
               {t('landing.hero')}
             </p>

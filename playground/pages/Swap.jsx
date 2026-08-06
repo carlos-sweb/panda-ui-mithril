@@ -59,11 +59,11 @@ export default {
         <h3 className={sectionTitle}>Sizes</h3>
         <h4 className={heading}>XS · SM · MD · LG · XL</h4>
         <div className={row}>
-          <Swap size="xs" on="XS" off="XS" />
-          <Swap size="sm" on="SM" off="SM" />
-          <Swap size="md" on="MD" off="MD" />
-          <Swap size="lg" on="LG" off="LG" />
-          <Swap size="xl" on="XL" off="XL" />
+          <Swap size="xs" on="XS" off="XS" style="flip" />
+          <Swap size="sm" on="SM" off="SM" style="flip" />
+          <Swap size="md" on="MD" off="MD" style="flip" />
+          <Swap size="lg" on="LG" off="LG" style="flip" />
+          <Swap size="xl" on="XL" off="XL" style="flip" />
         </div>
 
         <section>
