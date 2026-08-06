@@ -23,6 +23,7 @@ import Aura from './pages/Aura.jsx'
 import Avatar from './pages/Avatar.jsx'
 import Badge from './pages/Badge.jsx'
 import Breadcrumbs from './pages/Breadcrumbs.jsx'
+import ButtonGroup from './pages/ButtonGroup.jsx'
 import Button from './pages/Button.jsx'
 import Calendar from './pages/Calendar.jsx'
 import Card from './pages/Card.jsx'
@@ -86,6 +87,7 @@ const routes = {
   '/badge': Badge,
   '/breadcrumbs':Breadcrumbs,
   '/button':Button,
+  '/buttongroup':ButtonGroup,
   '/calendar':Calendar,
   '/card':Card,
   '/carousel':Carousel,
