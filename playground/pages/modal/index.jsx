@@ -162,11 +162,6 @@ export default {
         ))}
 
         <section>
-          <h2 className={sectionTitle}>{t('common.usage')}</h2>
-          <CodeExample code={usageCode} />
-        </section>
-
-        <section>
           <h2 className={sectionTitle}>Auto Close Button</h2>
           <Button
             className={css({ marginBottom: '1rem' })}
@@ -181,6 +176,12 @@ export default {
             </ModalBox>
             <ModalBackdrop onclick={() => { vnode.state.autoCloseOpen = false }} />
           </Modal>
+        </section>
+
+
+        <section>
+          <h2 className={sectionTitle}>{t('common.usage')}</h2>
+          <CodeExample code={usageCode} />
         </section>
 
         <section>
