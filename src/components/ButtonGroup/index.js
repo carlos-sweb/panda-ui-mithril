@@ -10,7 +10,7 @@ import { cx } from '../../utils/cx'
  */
 export const ButtonGroup = {
   view(vnode) {
-    const { color, variant, size, vertical, className, ...rest } = vnode.attrs
+    const { color, variant, size, vertical, borderWidth, className, ...rest } = vnode.attrs
 
     return m('div', {
       className: cx('btn-group', buttonGroupStyles({ vertical }), className),
@@ -22,6 +22,7 @@ export const ButtonGroup = {
         color: child.attrs?.color || color,
         variant: child.attrs?.variant || variant,
         size: child.attrs?.size || size,
+        borderWidth: child.attrs?.borderWidth || borderWidth,
       }, child.children)
     }))
   }

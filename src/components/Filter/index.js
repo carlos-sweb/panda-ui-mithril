@@ -11,7 +11,7 @@ import { cx } from '../../utils/cx'
  */
 export const Filter = {
   view(vnode) {
-    const { className, ...rest } = vnode.attrs
+    const { className, borderWidth, ...rest } = vnode.attrs
 
     return m('div', {
       className: cx('filter', filterStyles(), className),
@@ -28,10 +28,10 @@ export const Filter = {
  */
 export const FilterOption = {
   view(vnode) {
-    const { className, ...rest } = vnode.attrs
+    const { className, borderWidth, ...rest } = vnode.attrs
     return m('input', {
       type: 'radio',
-      className: cx('btn', buttonStyles(), className),
+      className: cx('btn', buttonStyles({ borderWidth }), className),
       ...rest
     })
   }
@@ -45,10 +45,10 @@ export const FilterOption = {
  */
 export const FilterReset = {
   view(vnode) {
-    const { className, ...rest } = vnode.attrs
+    const { className, borderWidth, ...rest } = vnode.attrs
     return m('input', {
       type: 'radio',
-      className: cx('btn filter-reset', buttonStyles(), className),
+      className: cx('btn filter-reset', buttonStyles({ borderWidth }), className),
       ...rest
     })
   }

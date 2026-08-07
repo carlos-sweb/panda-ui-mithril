@@ -11,7 +11,7 @@ import { cx } from '../../utils/cx'
  */
 export const Button = {
   view(vnode) {
-    const { color, variant, size, active, disabled, block, wide, square, circle, className, ...rest } = vnode.attrs
+    const { color, variant, size, active, disabled, block, wide, square, circle, borderWidth, className, ...rest } = vnode.attrs
     const isLink = !!vnode.attrs.href
 
     const styles = cx(
@@ -23,6 +23,7 @@ export const Button = {
         active,
         shape: circle ? 'circle' : square ? 'square' : undefined,
         fluid: wide ? 'wide' : block ? 'block' : undefined,
+        borderWidth,
       }),
       className
     )

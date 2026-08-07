@@ -11,6 +11,8 @@ export interface ButtonAttrs extends ComponentAttrs {
   wide?: boolean
   square?: boolean
   circle?: boolean
+  /** Border thickness. 1 (1px, default), 2 (2px), 3 (3px). */
+  borderWidth?: 1 | 2 | 3
   href?: string
   children?: Vnode | Vnode[] | string | null
   [key: string]: unknown

@@ -17,7 +17,7 @@ import { cx } from '../../utils/cx'
  */
 export const FAB = {
   view(vnode) {
-    const { flower, className, ...rest } = vnode.attrs
+    const { flower, borderWidth, className, ...rest } = vnode.attrs
 
     return m('div', {
       className: cx('fab', flower && 'fab-flower', fabStyles(), className),
@@ -36,7 +36,7 @@ export const FABMain = {
     const { color, className, ...rest } = vnode.attrs
 
     return m('div', {
-      className: cx('btn btn-lg btn-circle', buttonStyles({ shape: 'circle', size: 'lg', color: color || 'primary' }), className),
+      className: cx('btn btn-lg btn-circle', buttonStyles({ shape: "circle", size: "lg", color: color || "primary", borderWidth }), className),
       tabindex: '0',
       role: 'button',
       ...rest
@@ -57,7 +57,7 @@ export const FABAction = {
     return m('div', { className: cx(className) }, [
       label && m('span', { className: cx('fab-action-label', fabLabelStyles()) }, label),
       m('button', {
-        className: cx('btn btn-lg btn-circle', buttonStyles({ shape: 'circle', size: 'lg', color })),
+        className: cx('btn btn-lg btn-circle', buttonStyles({ shape: 'circle', size: 'lg', color, borderWidth })),
         ...rest
       }, vnode.children),
     ])

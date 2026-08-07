@@ -11,7 +11,7 @@ import { cx } from '../../utils/cx'
  */
 export const Pagination = {
   view(vnode) {
-    const { className, ...rest } = vnode.attrs
+    const { className, borderWidth, ...rest } = vnode.attrs
 
     return m('div', {
       className: cx('join', joinStyles(), className),
@@ -31,7 +31,7 @@ export const PaginationButton = {
     const { active, disabled, className, ...rest } = vnode.attrs
 
     return m('button', {
-      className: cx('btn join-item', buttonStyles({ active }), className),
+      className: cx('btn join-item', buttonStyles({ active, borderWidth }), className),
       disabled,
       ...rest
     }, vnode.children)

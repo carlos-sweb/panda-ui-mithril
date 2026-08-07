@@ -42,6 +42,9 @@ const classRows = [
   { className: 'btn-block', prop: 'block', type: 'Modifier', description: 'Full width' },
   { className: 'btn-square', prop: 'square', type: 'Modifier', description: '1:1 ratio' },
   { className: 'btn-circle', prop: 'circle', type: 'Modifier', description: '1:1 ratio with rounded corners' },
+  { className: 'btn-border-1', prop: 'borderWidth={1} (default)', type: 'Modifier', description: '1px border', isDefault: true },
+  { className: 'btn-border-2', prop: 'borderWidth={2}', type: 'Modifier', description: '2px border' },
+  { className: 'btn-border-3', prop: 'borderWidth={3}', type: 'Modifier', description: '3px border' },
 ]
 
 export default {

@@ -131,6 +131,15 @@ export default {
           </div>
         </section>
 
+        <section className={section}>
+          <h3 className={heading}>Border Width</h3>
+          <div className={row}>
+            <ButtonClose variant="outline" borderWidth={1} />
+            <ButtonClose variant="outline" borderWidth={2} />
+            <ButtonClose variant="outline" borderWidth={3} color="primary" />
+          </div>
+        </section>
+
         <section>
           <h2 className={sectionTitle}>{t('common.usage')}</h2>
           <CodeExample code={usageCode} />
