@@ -1,6 +1,7 @@
 import m from 'mithril'
 import { modal } from '../../recipes/modal'
 import { cx } from '../../utils/cx'
+import { ButtonClose } from '../ButtonClose/index.js'
 
 // Slightly above the 0.2s exit animation — safety net so the dialog never
 // stays open if `animationend` never fires (no CSS engine, missing keyframes).
@@ -98,7 +99,7 @@ export const Modal = {
    * @returns {import('mithril').Vnode} */
   view(vnode) {
     const {
-      open, position, size, persistent, closable,
+      open, position, size, persistent, closable, buttonClose,
       labelledby, describedby, className, onclose, onclosed,
       ...rest
     } = vnode.attrs
@@ -108,6 +109,16 @@ export const Modal = {
     if (open) ariaProps['aria-modal'] = 'true'
     if (labelledby) ariaProps['aria-labelledby'] = labelledby
     if (describedby) ariaProps['aria-describedby'] = describedby
+
+    const children = buttonClose
+      ? [...(Array.isArray(vnode.children) ? vnode.children : [vnode.children]),
+         m('div', { className: cx('modal-action', defaultStyles.action) },
+           m('form', { method: 'dialog' },
+             m(ButtonClose)
+           )
+         )
+        ]
+      : vnode.children
 
     return m('dialog', {
       className: cx(
@@ -120,7 +131,7 @@ export const Modal = {
       onclose,
       ...ariaProps,
       ...rest
-    }, vnode.children)
+    }, children)
   }
 }
 

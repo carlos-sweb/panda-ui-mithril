@@ -52,6 +52,7 @@ const classRows = [
   { className: 'modal-bottom', prop: 'position="bottom"', type: 'Placement', description: 'Modal box slides in from the bottom' },
   { className: 'modal-start', prop: 'position="start"', type: 'Placement', description: 'Modal box slides in from the start (left)' },
   { className: 'modal-end', prop: 'position="end"', type: 'Placement', description: 'Modal box slides in from the end (right)' },
+  { className: '—', prop: 'buttonClose', type: 'Modifier', description: 'Auto-append ButtonClose in ModalAction (form method="dialog")' },
 ]
 
 export default {
@@ -61,6 +62,7 @@ export default {
     vnode.state.sizeFor = null
     vnode.state.sizeOpen = false
     vnode.state.persistentOpen = false
+    vnode.state.autoCloseOpen = false
   },
 
   name: 'Modal',
@@ -162,6 +164,23 @@ export default {
         <section>
           <h2 className={sectionTitle}>{t('common.usage')}</h2>
           <CodeExample code={usageCode} />
+        </section>
+
+        <section>
+          <h2 className={sectionTitle}>Auto Close Button</h2>
+          <Button
+            className={css({ marginBottom: '1rem' })}
+            onclick={() => { vnode.state.autoCloseOpen = true }}
+          >
+            Open with buttonClose
+          </Button>
+          <Modal open={vnode.state.autoCloseOpen} buttonClose onclose={() => { vnode.state.autoCloseOpen = false }}>
+            <ModalBox>
+              <h3 className={css({ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem' })}>Auto Close</h3>
+              <p className={css({ opacity: 0.7, marginBottom: '1rem' })}>This modal has <code>buttonClose</code>. The X button is added automatically.</p>
+            </ModalBox>
+            <ModalBackdrop onclick={() => { vnode.state.autoCloseOpen = false }} />
+          </Modal>
         </section>
 
         <section>

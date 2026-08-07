@@ -8,7 +8,7 @@ import {
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { t, loadPageI18n } from '../../i18n/index.js'
 
-import logo from './../../favicon-64.png'
+import logo from '../../favicon-64.png'
 
 const heroSection = css({
   background: 'token(colors.base-200)',
@@ -80,7 +80,7 @@ export const Landing = {
         <Hero className={heroSection}>
           <HeroContent className={css({ flexDirection: 'column', textAlign: 'center', padding: '4rem 2rem' })}>
             <Badge color="primary" variant="soft" className={css({ marginBottom: '1rem' })}>{t('componentsCount')}</Badge>
-            <img src="favicon-64.png" />
+            <img src={logo} />
             <Title >PUM</Title> 
             <p className={css({ fontSize: '1.125rem', color: 'token(colors.base-content)', opacity: 0.6, maxWidth: '600px', margin: '0 auto 2rem' })}>
               {t('hero')}

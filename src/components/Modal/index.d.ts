@@ -12,6 +12,8 @@ export interface ModalAttrs extends ComponentAttrs {
   persistent?: boolean
   /** NUEVO — si false, no se muestra botón de cierre (default true) */
   closable?: boolean
+  /** When true, automatically appends a ButtonClose inside ModalAction (form method="dialog"). */
+  buttonClose?: boolean
   /** NUEVO — id del elemento que etiqueta el modal */
   labelledby?: string
   /** NUEVO — id del elemento que describe el modal */
