@@ -193,6 +193,7 @@ const Layout = {
     vnode.state.isMobileOpen = false
     vnode.state.isSearchOpen = false
     vnode.state.isDark = getSavedTheme() === 'dark'
+    vnode.state._prevRoute = null
   },
 
   oncreate(vnode) {
@@ -203,6 +204,16 @@ const Layout = {
     const lang = currentLang()
     if (!m.route.param('lang')) {
       m.route.set(m.route.get(), {}, { ...m.route.param(), lang })
+    }
+
+    // Detect route changes; scroll to top when navigating
+    vnode.state._scrollOnRoute = () => {
+      const current = m.route.get()
+      if (vnode.state._prevRoute && vnode.state._prevRoute !== current) {
+        const el = document.getElementById('view-dynamic')
+        if (el) el.scrollTop = 0
+      }
+      vnode.state._prevRoute = current
     }
 
     vnode.state.onKeydown = (e) => {
@@ -220,6 +231,7 @@ const Layout = {
   },
 
   view(vnode) {
+    vnode.state._scrollOnRoute?.()
     return (
       <div className={css({ display: 'flex', height: '100vh', overflow: 'hidden' })}>
         <Sidebar
