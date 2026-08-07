@@ -1,0 +1,10 @@
+import m from 'mithril'
+import { columns } from '../../recipes/columns'
+import { cx } from '../../utils/cx'
+
+export const Column = {
+  view(vnode) {
+    const { width, narrow, className, ...rest } = vnode.attrs
+    return m('div', { className: cx('column', columns({ width, narrow }).column, className), ...rest }, vnode.children)
+  }
+}

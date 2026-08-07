@@ -88,7 +88,7 @@ export const Navbar = {
             <Search size={18} />
           </Button>
 
-          <button className={searchBtn} onclick={onSearchOpen}>
+          <button className={`${searchBtn} width-150px`} onclick={onSearchOpen}>
             <Search size={16} className={css({ opacity: 0.5 })} />
             <span>{t('common.searchPlaceholder')}</span>
             <Kbd size="sm" className={css({ marginLeft: 'auto' })}>⌘K</Kbd>

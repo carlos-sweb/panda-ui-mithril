@@ -7,6 +7,16 @@ import pageauraEn from '../pages/aura/i18n/en.yml'
 import pageauraEs from '../pages/aura/i18n/es.yml'
 import pageavatarEn from '../pages/avatar/i18n/en.yml'
 import pageavatarEs from '../pages/avatar/i18n/es.yml'
+import pagecolumnsEn from '../pages/columns/i18n/en.yml'
+import pagecolumnsEs from '../pages/columns/i18n/es.yml'
+import pagecontainerEn from '../pages/container/i18n/en.yml'
+import pagecontainerEs from '../pages/container/i18n/es.yml'
+import pagegridEn from '../pages/grid/i18n/en.yml'
+import pagegridEs from '../pages/grid/i18n/es.yml'
+import pageboxEn from '../pages/box/i18n/en.yml'
+import pageboxEs from '../pages/box/i18n/es.yml'
+import pageblockEn from '../pages/block/i18n/en.yml'
+import pageblockEs from '../pages/block/i18n/es.yml'
 import pagebadgeEn from '../pages/badge/i18n/en.yml'
 import pagebadgeEs from '../pages/badge/i18n/es.yml'
 import pagebreadcrumbsEn from '../pages/breadcrumbs/i18n/en.yml'
@@ -137,6 +147,16 @@ pageI18n.en['aura'] = pageauraEn
 pageI18n.es['aura'] = pageauraEs
 pageI18n.en['avatar'] = pageavatarEn
 pageI18n.es['avatar'] = pageavatarEs
+pageI18n.en['block'] = pageblockEn
+pageI18n.es['block'] = pageblockEs
+pageI18n.en['box'] = pageboxEn
+pageI18n.es['box'] = pageboxEs
+pageI18n.en['columns'] = pagecolumnsEn
+pageI18n.es['columns'] = pagecolumnsEs
+pageI18n.en['container'] = pagecontainerEn
+pageI18n.es['container'] = pagecontainerEs
+pageI18n.en['grid'] = pagegridEn
+pageI18n.es['grid'] = pagegridEs
 pageI18n.en['badge'] = pagebadgeEn
 pageI18n.es['badge'] = pagebadgeEs
 pageI18n.en['breadcrumbs'] = pagebreadcrumbsEn

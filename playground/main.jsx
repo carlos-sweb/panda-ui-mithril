@@ -22,6 +22,8 @@ import Alert from './pages/alert/index.jsx'
 import Aura from './pages/aura/index.jsx'
 import Avatar from './pages/avatar/index.jsx'
 import Badge from './pages/badge/index.jsx'
+import BlockPage from './pages/block/index.jsx'
+import BoxPage from './pages/box/index.jsx'
 import Breadcrumbs from './pages/breadcrumbs/index.jsx'
 import ButtonGroup from './pages/buttongroup/index.jsx'
 import ButtonClose from './pages/buttonclose/index.jsx'
@@ -32,6 +34,8 @@ import Carousel from './pages/carousel/index.jsx'
 import Chat from './pages/chat/index.jsx'
 import Checkbox from './pages/checkbox/index.jsx'
 import Collapse from './pages/collapse/index.jsx'
+import ColumnPage from './pages/columns/index.jsx'
+import ContainerPage from './pages/container/index.jsx'
 import Countdown from './pages/countdown/index.jsx'
 import Diff from './pages/diff/index.jsx'
 import Divider from './pages/divider/index.jsx'
@@ -40,6 +44,7 @@ import Fieldset from './pages/fieldset/index.jsx'
 import FileInput from './pages/fileinput/index.jsx'
 import Filter from './pages/filter/index.jsx'
 import Footer from './pages/footer/index.jsx'
+import GridPage from './pages/grid/index.jsx'
 import Hero from './pages/hero/index.jsx'
 import Indicator from './pages/indicator/index.jsx'
 import Input from './pages/input/index.jsx'
@@ -90,6 +95,8 @@ const routes = {
   '/aura': Aura,
   '/avatar': Avatar,
   '/badge': Badge,
+  '/block': BlockPage,
+  '/box': BoxPage,
   '/breadcrumbs':Breadcrumbs,
   '/button':Button,
   '/buttonclose':ButtonClose,
@@ -100,6 +107,8 @@ const routes = {
   '/chat':Chat,
   '/checkbox':Checkbox,
   '/collapse':Collapse,
+  '/columns':ColumnPage,
+  '/container':ContainerPage,
   '/componentpage':ComponentPage,
   '/countdown':Countdown,
   '/diff':Diff,
@@ -109,6 +118,7 @@ const routes = {
   '/fileinput':FileInput,
   '/filter':Filter,
   '/footer':Footer,
+  '/grid': GridPage,
   '/hero':Hero,
   '/indicator':Indicator,
   '/input':Input,
