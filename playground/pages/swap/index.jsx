@@ -38,7 +38,7 @@ export default {
   view() {
     return (
       <div>
-        <Title as="h1" size="2">Swap</h1>
+        <Title as="h1" size="2">Swap</Title>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
           {t('paragraph')}
         </p>
