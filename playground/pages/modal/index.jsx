@@ -1,7 +1,7 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Button, Modal, ModalBox, ModalAction, ModalBackdrop } from '../../../src/index.js'
+import { Title, Button, Modal, ModalBox, ModalAction, ModalBackdrop } from '../../../src/index.js'
 import { modal } from '../../../src/recipes/modal'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'

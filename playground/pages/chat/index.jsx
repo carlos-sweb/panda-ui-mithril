@@ -1,7 +1,7 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Chat, ChatBubble, ChatHeader, ChatFooter, ChatImage, Avatar } from '../../../src/index.js'
+import { Title, Chat, ChatBubble, ChatHeader, ChatFooter, ChatImage, Avatar } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 

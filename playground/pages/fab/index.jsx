@@ -1,7 +1,7 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { FAB, FABMain, FABAction } from '../../../src/index.js'
+import { Title, FAB, FABMain, FABAction } from '../../../src/index.js'
 import { Plus, Pencil, Trash2, Share2 } from 'lucide-mithril'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'

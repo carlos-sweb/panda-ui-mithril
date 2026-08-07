@@ -1,8 +1,8 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Rating } from '../../../src/index.js'
-import { RatingGroup } from '../../../src/index.js'
+import { Title, Rating } from '../../../src/index.js'
+import { Title, RatingGroup } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
