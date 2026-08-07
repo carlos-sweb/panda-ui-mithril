@@ -13,7 +13,7 @@ common:
   copy: Copy
   copied: Copied!
   noResults: No results found.
-  searchPlaceholder: Search components...
+  searchPlaceholder: Search ...
   searchNavigate: ↑↓ Navigate
   searchOpen: ↵ Open
   searchClose: esc Close
