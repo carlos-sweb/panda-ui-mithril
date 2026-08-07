@@ -44,7 +44,7 @@ export default {
           <Title as="h2" size="3">{t('common.classReference')}</Title>
           <ClassTable rows={classRows} />
         </section>
-      </div>
+      </Stack>
     )
   }
 }

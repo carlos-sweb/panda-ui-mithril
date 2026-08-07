@@ -44,6 +44,6 @@ export default {
         </Grid>
       </section>
       <section><h2 className={st}>{t('common.classReference')}</h2><ClassTable rows={classRows} /></section>
-    </div>)
+    </Stack>)
   }
 }
