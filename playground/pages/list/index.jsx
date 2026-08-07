@@ -1,7 +1,7 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Title, List, ListRow, ListCol, Avatar, Button } from '../../../src/index.js'
+import { List, ListRow, ListCol, Avatar, Button } from '../../../src/index.js'
 import { Play, Heart } from 'lucide-mithril'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
@@ -45,7 +45,7 @@ export default {
   view() {
     return (
       <div className={stack}>
-        <Title as="h1" size="2">List</Title>
+        <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>List</h1>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
           {t('paragraph')}
         </p>

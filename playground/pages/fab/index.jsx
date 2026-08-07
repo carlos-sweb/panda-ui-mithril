@@ -1,7 +1,7 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Title, FAB, FABMain, FABAction } from '../../../src/index.js'
+import { FAB, FABMain, FABAction } from '../../../src/index.js'
 import { Plus, Pencil, Trash2, Share2 } from 'lucide-mithril'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
@@ -32,7 +32,7 @@ export default {
   view() {
     return (
       <div className={stack}>
-        <Title as="h1" size="2">FAB</Title>
+        <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>FAB</h1>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
           {t('paragraph')}
         </p>

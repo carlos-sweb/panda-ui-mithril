@@ -1,7 +1,7 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Title, Block } from '../../../src/index.js'
+import { Block } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
@@ -25,7 +25,7 @@ export default {
   oninit() { loadPageI18n('block') },
   view() {
     return (<div className={stack}>
-      <Title as="h1" size="2">Block</Title>
+      <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>Block</h1>
       <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>{t('paragraph')}</p>
       <section>
         <h2 className={sectionTitle}>{t('common.usage')}</h2>

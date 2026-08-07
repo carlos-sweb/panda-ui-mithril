@@ -1,11 +1,12 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Title, ButtonClose } from '../../../src/index.js'
+import { ButtonClose } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
 const section = css({ marginBottom: '2rem' })
+const heading = css({ fontSize: '0.875rem', fontWeight: '600', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em', opacity: 0.5 })
 const row = css({ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', alignItems: 'center' })
 const sectionTitle = css({ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem', marginTop: '2rem' })
 
@@ -36,13 +37,13 @@ export default {
   view() {
     return (
       <div>
-        <Title as="h1" size="2">ButtonClose</Title>
+        <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>ButtonClose</h1>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
           {t('paragraph')}
         </p>
 
         <section className={section}>
-          <Title as="h3" size="5">Default</Title>
+          <h3 className={heading}>Default</h3>
           <div className={row}>
             <ButtonClose />
             <ButtonClose>this text is ignored</ButtonClose>
@@ -50,7 +51,7 @@ export default {
         </section>
 
         <section className={section}>
-          <Title as="h3" size="5">Sizes</Title>
+          <h3 className={heading}>Sizes</h3>
           <div className={row}>
             <ButtonClose size="xs" />
             <ButtonClose size="sm" />
@@ -61,7 +62,7 @@ export default {
         </section>
 
         <section className={section}>
-          <Title as="h3" size="5">Colors</Title>
+          <h3 className={heading}>Colors</h3>
           <div className={row}>
             <ButtonClose />
             <ButtonClose color="neutral" />
@@ -72,7 +73,7 @@ export default {
         </section>
 
         <section className={section}>
-          <Title as="h3" size="5">Soft colors</Title>
+          <h3 className={heading}>Soft colors</h3>
           <div className={row}>
             <ButtonClose variant="soft" />
             <ButtonClose variant="soft" color="primary" />
@@ -83,7 +84,7 @@ export default {
         </section>
 
         <section className={section}>
-          <Title as="h3" size="5">Outline colors</Title>
+          <h3 className={heading}>Outline colors</h3>
           <div className={row}>
             <ButtonClose variant="outline" />
             <ButtonClose variant="outline" color="primary" />
@@ -94,7 +95,7 @@ export default {
         </section>
 
         <section className={section}>
-          <Title as="h3" size="5">Ghost + Link</Title>
+          <h3 className={heading}>Ghost + Link</h3>
           <div className={row}>
             <ButtonClose variant="ghost" />
             <ButtonClose variant="ghost" color="primary" />
@@ -104,7 +105,7 @@ export default {
         </section>
 
         <section className={section}>
-          <Title as="h3" size="5">Square + Circle</Title>
+          <h3 className={heading}>Square + Circle</h3>
           <div className={row}>
             <ButtonClose shape="square" />
             <ButtonClose shape="square" color="primary" />
@@ -113,7 +114,7 @@ export default {
         </section>
 
         <section className={section}>
-          <Title as="h3" size="5">Disabled</Title>
+          <h3 className={heading}>Disabled</h3>
           <div className={row}>
             <ButtonClose disabled />
             <ButtonClose disabled color="primary" />
@@ -121,7 +122,7 @@ export default {
         </section>
 
         <section className={section}>
-          <Title as="h3" size="5">Stroke Width</Title>
+          <h3 className={heading}>Stroke Width</h3>
           <div className={row}>
             <ButtonClose strokeWidth={1} />
             <ButtonClose strokeWidth={2} />
@@ -131,7 +132,7 @@ export default {
         </section>
 
         <section className={section}>
-          <Title as="h3" size="5">Border Width</Title>
+          <h3 className={heading}>Border Width</h3>
           <div className={row}>
             <ButtonClose variant="outline" borderWidth={1} />
             <ButtonClose variant="outline" borderWidth={2} />

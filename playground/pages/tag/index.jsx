@@ -1,12 +1,13 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Title, Tag } from '../../../src/index.js'
+import { Tag } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 import { Sparkles, Hash } from 'lucide-mithril'
 
 const section = css({ marginBottom: '2rem' })
+const heading = css({ fontSize: '0.875rem', fontWeight: '600', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em', opacity: 0.5 })
 const row = css({ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', alignItems: 'center' })
 const sectionTitle = css({ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem', marginTop: '2rem' })
 
@@ -44,13 +45,13 @@ export default {
   view() {
     return (
       <div>
-        <Title as="h1" size="2">Tag</Title>
+        <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>Tag</h1>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
           Small interactive UI element to label, categorize, or filter content. Supports icons, remove actions, and clickable states.
         </p>
 
         <section className={section}>
-          <Title as="h3" size="5">Variants</Title>
+          <h3 className={heading}>Variants</h3>
           <div className={row}>
             <Tag>Default</Tag>
             <Tag variant="info">Info</Tag>
@@ -61,7 +62,7 @@ export default {
         </section>
 
         <section className={section}>
-          <Title as="h3" size="5">Styles</Title>
+          <h3 className={heading}>Styles</h3>
           <div className={row}>
             <Tag variant="outline">Outline</Tag>
             <Tag variant="dash">Dash</Tag>
@@ -71,7 +72,7 @@ export default {
         </section>
 
         <section className={section}>
-          <Title as="h3" size="5">Sizes</Title>
+          <h3 className={heading}>Sizes</h3>
           <div className={row}>
             <Tag size="md">Medium (md)</Tag>
             <Tag size="lg">Large (lg)</Tag>
@@ -79,7 +80,7 @@ export default {
         </section>
 
         <section className={section}>
-          <Title as="h3" size="5">With icon</Title>
+          <h3 className={heading}>With icon</h3>
           <div className={row}>
             <Tag icon={Sparkles}>AI Generated</Tag>
             <Tag variant="info" icon={Hash}>Channel</Tag>
@@ -87,7 +88,7 @@ export default {
         </section>
 
         <section className={section}>
-          <Title as="h3" size="5">One character (square)</Title>
+          <h3 className={heading}>One character (square)</h3>
           <div className={row}>
             <Tag>A</Tag>
             <Tag variant="success">S</Tag>
@@ -96,7 +97,7 @@ export default {
         </section>
 
         <section className={section}>
-          <Title as="h3" size="5">Clickable</Title>
+          <h3 className={heading}>Clickable</h3>
           <div className={row}>
             <Tag clickable>Click me</Tag>
             <Tag clickable variant="info">Info</Tag>
@@ -106,7 +107,7 @@ export default {
         </section>
 
         <section className={section}>
-          <Title as="h3" size="5">On remove</Title>
+          <h3 className={heading}>On remove</h3>
           <div className={row}>
             <Tag onRemove={(e) => console.log('removed', e)}>Removable</Tag>
             <Tag variant="info" onRemove={(e) => console.log('removed', e)}>Info</Tag>

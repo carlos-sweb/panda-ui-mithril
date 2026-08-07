@@ -1,11 +1,12 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Title, Tabs, Tab, TabContent } from '../../../src/index.js'
+import { Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
 const section = css({ marginBottom: '2rem' })
+const heading = css({ fontSize: '0.875rem', fontWeight: '600', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em', opacity: 0.5 })
 const stack = css({ display: 'flex', flexDirection: 'column', gap: '1.5rem' })
 const sectionTitle = css({ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem', marginTop: '2rem' })
 
@@ -46,13 +47,13 @@ export default {
   view(vnode) {
     return (
       <div className={stack}>
-        <Title as="h1" size="2">Tabs</Title>
+        <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>Tabs</h1>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
           {t('paragraph')}
         </p>
 
         <section className={section}>
-          <Title as="h3" size="5">Boxed</Title>
+          <h3 className={heading}>Boxed</h3>
           <Tabs boxed>
             {[1, 2, 3].map((n) => (
               <Tab key={n} active={vnode.state.boxed === n} onclick={() => { vnode.state.boxed = n }}>Tab {n}</Tab>
@@ -61,7 +62,7 @@ export default {
         </section>
 
         <section className={section}>
-          <Title as="h3" size="5">Border</Title>
+          <h3 className={heading}>Border</h3>
           <Tabs bordered>
             {[1, 2, 3].map((n) => (
               <Tab key={n} variant="border" active={vnode.state.border === n} onclick={() => { vnode.state.border = n }}>Tab {n}</Tab>
@@ -70,7 +71,7 @@ export default {
         </section>
 
         <section className={section}>
-          <Title as="h3" size="5">Lifted (with content)</Title>
+          <h3 className={heading}>Lifted (with content)</h3>
           <Tabs lifted>
             {[1, 2, 3].map((n) => (
               <Tab key={n} variant="lift" active={vnode.state.lifted === n} onclick={() => { vnode.state.lifted = n }}>Tab {n}</Tab>

@@ -1,12 +1,13 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Title, Button, Loading } from '../../../src/index.js'
+import { Button, Loading } from '../../../src/index.js'
 import { Heart } from 'lucide-mithril'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
 const section = css({ marginBottom: '2rem' })
+const heading = css({ fontSize: '0.875rem', fontWeight: '600', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em', opacity: 0.5 })
 const row = css({ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', alignItems: 'center' })
 const stack = css({ display: 'flex', flexDirection: 'column', gap: '1.5rem' })
 const sectionTitle = css({ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem' })
@@ -55,20 +56,20 @@ export default {
   view() {
     return (
       <div className={stack}>
-        <Title as="h1" size="2">Button</Title>        
+        <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>Button</h1>        
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
           {t('paragraph')}
         </p>
 
         <section>
-          <Title as="h3" size="5">Default</Title>
+          <h3 className={heading}>Default</h3>
           <div className={row}>
             <Button>Default</Button>
           </div>
         </section>
 
         <section className={section}>
-          <Title as="h3" size="5">Sizes</Title>
+          <h3 className={heading}>Sizes</h3>
           <div className={row}>
             <Button size="xs">XS</Button>
             <Button size="sm">SM</Button>
@@ -79,7 +80,7 @@ export default {
         </section>
 
         <section className={section}>
-          <Title as="h3" size="5">Responsive</Title>
+          <h3 className={heading}>Responsive</h3>
           <p className={css({ opacity: 0.6, marginBottom: '0.5rem', fontSize: '0.875rem' })}>
             Responsive button sizes require Panda CSS responsive variants (not yet implemented in cva)
           </p>
@@ -89,7 +90,7 @@ export default {
         </section>
 
         <section className={section}>
-          <Title as="h3" size="5">Colors</Title>
+          <h3 className={heading}>Colors</h3>
           <div className={row}>
             <Button color="neutral">Neutral</Button>
             <Button color="primary">Primary</Button>
@@ -103,7 +104,7 @@ export default {
         </section>
 
         <section className={section}>
-          <Title as="h3" size="5">Soft colors</Title>
+          <h3 className={heading}>Soft colors</h3>
           <div className={row}>
             <Button variant="soft" color="neutral">Neutral</Button>
             <Button variant="soft" color="primary">Primary</Button>
@@ -117,7 +118,7 @@ export default {
         </section>
 
         <section className={section}>
-          <Title as="h3" size="5">Outline colors</Title>
+          <h3 className={heading}>Outline colors</h3>
           <div className={row}>
             <Button variant="outline" color="neutral">Neutral</Button>
             <Button variant="outline" color="primary">Primary</Button>
@@ -131,7 +132,7 @@ export default {
         </section>
 
         <section className={section}>
-          <Title as="h3" size="5">Dash colors</Title>
+          <h3 className={heading}>Dash colors</h3>
           <div className={row}>
             <Button variant="dash" color="neutral">Neutral</Button>
             <Button variant="dash" color="primary">Primary</Button>
@@ -145,7 +146,7 @@ export default {
         </section>
 
         <section className={section}>
-          <Title as="h3" size="5">Neutral on light background</Title>
+          <h3 className={heading}>Neutral on light background</h3>
           <div style={{ background: 'white', padding: '1rem' }}>
             <div className={row}>
               <Button variant="outline">Outline</Button>
@@ -155,7 +156,7 @@ export default {
         </section>
 
         <section className={section}>
-          <Title as="h3" size="5">Active colors</Title>
+          <h3 className={heading}>Active colors</h3>
           <div className={row}>
             <Button active color="neutral">Neutral</Button>
             <Button active color="primary">Primary</Button>
@@ -169,7 +170,7 @@ export default {
         </section>
 
         <section className={section}>
-          <Title as="h3" size="5">Ghost + Link</Title>
+          <h3 className={heading}>Ghost + Link</h3>
           <div className={row}>
             <Button variant="ghost">Ghost</Button>
             <Button variant="link">Link</Button>
@@ -177,14 +178,14 @@ export default {
         </section>
 
         <section className={section}>
-          <Title as="h3" size="5">Wide</Title>
+          <h3 className={heading}>Wide</h3>
           <div className={row}>
             <Button wide>Wide</Button>
           </div>
         </section>
 
         <section className={section}>
-          <Title as="h3" size="5">Disabled</Title>
+          <h3 className={heading}>Disabled</h3>
           <div className={row}>
             <Button disabled>Disabled (attribute)</Button>
             <Button className="btn-disabled">Disabled (class)</Button>
@@ -192,7 +193,7 @@ export default {
         </section>
 
         <section className={section}>
-          <Title as="h3" size="5">Square + Circle</Title>
+          <h3 className={heading}>Square + Circle</h3>
           <div className={row}>
             <Button square><Heart size={20} /></Button>
             <Button circle><Heart size={20} /></Button>
@@ -200,7 +201,7 @@ export default {
         </section>
 
         <section className={section}>
-          <Title as="h3" size="5">Border Width</Title>
+          <h3 className={heading}>Border Width</h3>
           <div className={css({ display: 'flex', flexDirection: 'column', gap: '1rem' })}>
             <div className={row}>
               <Button variant="outline" borderWidth={1}>border 1</Button>
@@ -216,7 +217,7 @@ export default {
         </section>
 
         <section className={section}>
-          <Title as="h3" size="5">Button with icon</Title>
+          <h3 className={heading}>Button with icon</h3>
           <div className={row}>
             <Button><Heart size={20} /> Like</Button>
             <Button>Like <Heart size={20} /></Button>
@@ -224,14 +225,14 @@ export default {
         </section>
 
         <section className={section}>
-          <Title as="h3" size="5">Block</Title>
+          <h3 className={heading}>Block</h3>
           <div className={row}>
             <Button block>Block</Button>
           </div>
         </section>
 
         <section className={section}>
-          <Title as="h3" size="5">Loading spinner</Title>
+          <h3 className={heading}>Loading spinner</h3>
           <div className={row}>
             <Button square><Loading /></Button>
             <Button><Loading /> Loading</Button>

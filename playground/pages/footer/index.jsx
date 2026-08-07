@@ -7,6 +7,7 @@ import { ClassTable } from '../../components/ClassTable.jsx'
 
 const stack = css({ display: 'flex', flexDirection: 'column', gap: '1.5rem' })
 const sectionTitle = css({ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem', marginTop: '2rem' })
+const heading = css({ fontSize: '0.875rem', fontWeight: '600', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em', opacity: 0.5 })
 const section = css({ marginBottom: '2rem' })
 const surface = css({ background: 'token(colors.base-200)', padding: '2.5rem', borderRadius: 'var(--radius-box)' })
 
@@ -40,13 +41,13 @@ export default {
   view() {
     return (
       <div className={stack}>
-        <Title as="h1" size="2">Footer</Title>
+        <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>Footer</h1>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
           {t('paragraph')}
         </p>
 
         <section className={section}>
-          <Title as="h3" size="5">Columns</Title>
+          <h3 className={heading}>Columns</h3>
           <Footer horizontal className={surface}>
             <div>
               <FooterTitle>Services</FooterTitle>
@@ -69,7 +70,7 @@ export default {
         </section>
 
         <section className={section}>
-          <Title as="h3" size="5">Centered</Title>
+          <h3 className={heading}>Centered</h3>
           <Footer center className={surface}>
             <div>
               <FooterTitle>panda-ui-mithril</FooterTitle>

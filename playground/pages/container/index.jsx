@@ -1,13 +1,14 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Title, Container } from '../../../src/index.js'
+import { Container } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
 const stack = css({ display: 'flex', flexDirection: 'column', gap: '2rem' })
+const st = css({ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem', marginTop: '2rem' })
 
-const usageCode = `<Container maxWidth="desktop"><h2>Centered content</Title></Container>
+const usageCode = `<Container maxWidth="desktop"><h2>Centered content</h2></Container>
 <Container fluid><p>Full width with side padding</p></Container>`
 
 const classRows = [
@@ -25,17 +26,17 @@ export default {
   oninit() { loadPageI18n('container') },
   view() {
     return (<div className={stack}>
-      <Title as="h1" size="2">Container</Title>
+      <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>Container</h1>
       <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>{t('paragraph')}</p>
-      <section><Title as="h2" size="3">{t('common.usage')}</Title><CodeExample code={usageCode} language="jsx" /></section>
-      <section><Title as="h2" size="3">Max Widths</Title>
+      <section><h2 className={st}>{t('common.usage')}</h2><CodeExample code={usageCode} language="jsx" /></section>
+      <section><h2 className={st}>Max Widths</h2>
         <Container maxWidth="tablet"><div className={demo}>tablet — 768px</div></Container>
         <br />
         <Container maxWidth="desktop"><div className={demo}>desktop — 960px</div></Container>
         <br />
         <Container><div className={demo}>fullhd — 1344px (default)</div></Container>
       </section>
-      <section><Title as="h2" size="3">{t('common.classReference')}</Title><ClassTable rows={classRows} /></section>
+      <section><h2 className={st}>{t('common.classReference')}</h2><ClassTable rows={classRows} /></section>
     </div>)
   }
 }

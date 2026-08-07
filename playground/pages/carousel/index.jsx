@@ -1,12 +1,13 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Title, Carousel, CarouselItem } from '../../../src/index.js'
+import { Carousel, CarouselItem } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
 const stack = css({ display: 'flex', flexDirection: 'column', gap: '1.5rem' })
 const sectionTitle = css({ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem', marginTop: '2rem' })
+const heading = css({ fontSize: '0.875rem', fontWeight: '600', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em', opacity: 0.5 })
 const section = css({ marginBottom: '2rem' })
 const gap = css({ gap: '1rem' })
 const img = css({ borderRadius: 'var(--radius-box)', height: '12rem', objectFit: 'cover' })
@@ -67,13 +68,13 @@ export default {
   view() {
     return (
       <div className={stack}>
-        <Title as="h1" size="2">Carousel</Title>
+        <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>Carousel</h1>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
           {t('paragraph')}
         </p>
 
         <section className={section}>
-          <Title as="h3" size="5">Basic (drag/scroll to snap)</Title>
+          <h3 className={heading}>Basic (drag/scroll to snap)</h3>
           <Carousel className={gap}>
             {[1, 2, 3, 4].map((n) => (
               <CarouselItem key={n}>
@@ -84,7 +85,7 @@ export default {
         </section>
 
         <section className={section}>
-          <Title as="h3" size="5">Full width with next/prev navigation</Title>
+          <h3 className={heading}>Full width with next/prev navigation</h3>
           <p className={css({ opacity: 0.6, marginBottom: '0.5rem', fontSize: '0.875rem' })}>
             The reference implementation navigates with <code>&lt;a href="#slideId"&gt;</code>, but that collides
             with apps using hash-based routing (like this playground's own <code>#!/route</code>{' '}

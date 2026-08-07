@@ -1,12 +1,13 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Join, JoinItem, PaginationButton, Title } from '../../../src/index.js'
+import { Join, JoinItem, PaginationButton } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
 const stack = css({ display: 'flex', flexDirection: 'column', gap: '1.5rem' })
 const sectionTitle = css({ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem', marginTop: '2rem' })
+const heading = css({ fontSize: '0.875rem', fontWeight: '600', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em', opacity: 0.5 })
 const section = css({ marginBottom: '2rem' })
 
 const usageCode = `<Join>
@@ -30,14 +31,14 @@ export default {
   oninit() { loadPageI18n('join') },
   view() {
     return (
-      <div className={stack}>        
-        <Title as="h1" size="2">Join</Title>
+      <div className={stack}>
+        <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>Join</h1>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
           {t('paragraph')}
         </p>
 
         <section className={section}>
-          <Title as="h3" size="5">Generic items</Title>
+          <h3 className={heading}>Generic items</h3>
           <Join>
             <JoinItem>Button 1</JoinItem>
             <JoinItem>Button 2</JoinItem>
@@ -46,7 +47,7 @@ export default {
         </section>
 
         <section className={section}>
-          <Title as="h3" size="5">Combined with Button (via PaginationButton)</Title>
+          <h3 className={heading}>Combined with Button (via PaginationButton)</h3>
           <Join>
             <PaginationButton>Button 1</PaginationButton>
             <PaginationButton active>Button 2</PaginationButton>
@@ -55,7 +56,7 @@ export default {
         </section>
 
         <section className={section}>
-          <Title as="h3" size="5">Vertical</Title>
+          <h3 className={heading}>Vertical</h3>
           <Join vertical>
             <JoinItem>Item 1</JoinItem>
             <JoinItem>Item 2</JoinItem>

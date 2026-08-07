@@ -1,12 +1,39 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Title, Rating, RatingGroup } from '../../../src/index.js'
+import { Rating } from '../../../src/index.js'
+import { RatingGroup } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
 const stack = css({ display: 'flex', flexDirection: 'column', gap: '1.5rem' })
+const sectionTitle = css({ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem', marginTop: '2rem' })
+const heading = css({ fontSize: '0.875rem', fontWeight: '600', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em', opacity: 0.5 })
+const section = css({ marginBottom: '2rem' })
+const row = css({ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'center' })
+const column = css({ display: 'flex', flexDirection: 'column', gap: '0.5rem', alignItems: 'flex-start' })
+const scaleRow = css({ display: 'flex', alignItems: 'center', gap: '0.75rem' })
+const scaleLabel = css({ fontSize: '0.875rem', opacity: 0.6, minWidth: '3.5rem' })
+const note = css({ fontSize: '0.875rem', opacity: 0.6, marginTop: '0.5rem' })
+const valueText = css({ fontSize: '0.875rem', opacity: 0.6 })
+
+const usageCode = `// Uncontrolled: internal state, defaultValue initializes
+<Rating defaultValue={3} max={5} onchange={(v) => console.log(v)} />
+
+// Controlled: value + onchange
+<Rating value={state.rating} max={5} onchange={(v) => (state.rating = v)} />
+
+// Static (someone else's rating) — no interaction
+<Rating value={3} max={5} readonly />
+
+// Configurable max score: 1-3 scale, 1-5 scale, etc. (defaults to 5)
+<Rating defaultValue={2} max={3} />
+<Rating defaultValue={4} max={10} />
+
+// Re-click the selected star to clear (value 0)`
+
 const classRows = [
+  { className: 'rating', prop: '<Rating value={...} max={...}>', type: 'Component', description: 'Rating container (flex row of stars)' },
   { className: 'rating-star', prop: '(internal)', type: 'Part', description: 'Each star is a lucide Star icon; filled/empty states via recipe' },
   { className: 'rating-xs', prop: 'size="xs"', type: 'Size', description: 'Extra small size' },
   { className: 'rating-sm', prop: 'size="sm"', type: 'Size', description: 'Small size' },
@@ -35,25 +62,25 @@ export default {
   view(vnode) {
     return (
       <div className={stack}>
-        <Title as="h1" size="2">Rating</Title>
+        <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>Rating</h1>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
           {t('paragraph')}
         </p>
 
         <section className={section}>
-          <Title as="h3" size="5">Editable (uncontrolled)</Title>
+          <h3 className={heading}>Editable (uncontrolled)</h3>
           <Rating defaultValue={vnode.state.uncontrolled} max={5} onchange={(v) => { vnode.state.uncontrolled = v }} />
           <p className={note}>Hover to preview, click to set, re-click the selected star to clear. Value: {vnode.state.uncontrolled}</p>
         </section>
 
         <section className={section}>
-          <Title as="h3" size="5">Editable (controlled)</Title>
+          <h3 className={heading}>Editable (controlled)</h3>
           <Rating value={vnode.state.controlled} max={5} onchange={(v) => { vnode.state.controlled = v }} />
           <p className={note}>Integer scores only. Value: {vnode.state.controlled}</p>
         </section>
 
         <section className={section}>
-          <Title as="h3" size="5">Configurable max score</Title>
+          <h3 className={heading}>Configurable max score</h3>
           <div className={column}>
             <div className={scaleRow}>
               <span className={scaleLabel}>1-3</span>
@@ -75,7 +102,7 @@ export default {
         </section>
 
         <section className={section}>
-          <Title as="h3" size="5">Readonly (static rating)</Title>
+          <h3 className={heading}>Readonly (static rating)</h3>
           <div className={row}>
             <Rating value={4} max={5} readonly />
             <Rating value={3} max={5} readonly />
@@ -85,7 +112,7 @@ export default {
         </section>
 
         <section className={section}>
-          <Title as="h3" size="5">Sizes</Title>
+          <h3 className={heading}>Sizes</h3>
           <div className={row}>
             <Rating value={3} size="xs" readonly />
             <Rating value={3} size="sm" readonly />
@@ -96,7 +123,7 @@ export default {
         </section>
 
         <section className={section}>
-          <Title as="h3" size="5">Colors</Title>
+          <h3 className={heading}>Colors</h3>
           <div className={row}>
             <Rating value={4} readonly />
             <Rating value={4} color="warning" readonly />
@@ -108,13 +135,13 @@ export default {
         </section>
 
         <section>
-          <Title as="h2" size="3">{t('common.usage')}</Title>
+          <h2 className={sectionTitle}>{t('common.usage')}</h2>
           <CodeExample code={usageCode} />
         </section>
 
         <section>
-          <Title as="h2" size="3">With RatingGroup</Title>
-          <Title as="h4" size="6">Adds a label above the Rating — ideal for forms and surveys</Title>
+          <h2 className={sectionTitle}>With RatingGroup</h2>
+          <h4 className={heading}>Adds a label above the Rating — ideal for forms and surveys</h4>
           <div className={row}>
             <RatingGroup label="Quality" defaultValue={4} />
             <RatingGroup label="Difficulty" defaultValue={2} color="info" size="lg" />
@@ -129,7 +156,7 @@ export default {
         </section>
 
         <section>
-          <Title as="h2" size="3">{t('common.classReference')}</Title>
+          <h2 className={sectionTitle}>{t('common.classReference')}</h2>
           <ClassTable rows={classRows} />
         </section>
       </div>
