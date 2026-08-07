@@ -1,6 +1,6 @@
 # panda-ui-mithril
 
-> Mithril.js UI component library styled with Panda CSS (atomic, type-safe CSS-in-JS). Class names and theming follow the library's convention (inspired by daisyUI). 56 components, published as `panda-ui-mithril` on npm with a single pre-built static stylesheet — components render pre-resolved className strings, not runtime CSS-in-JS, so consumers don't need Panda CSS installed to use them.
+> Mithril.js UI component library styled with Panda CSS (atomic, type-safe CSS-in-JS). Design patterns and class naming inspired by daisyUI, Bulma, MUI, Chakra UI, and Primer. 68 components, published as `panda-ui-mithril` on npm with a single pre-built static stylesheet — components render pre-resolved className strings, not runtime CSS-in-JS, so consumers don't need Panda CSS installed to use them.
 
 Install: `npm install panda-ui-mithril mithril`. Import the components you need from `panda-ui-mithril`, and import `panda-ui-mithril/styles.css` exactly once, anywhere in the app's entrypoint. That stylesheet is required: without it, components still render with the correct DOM structure and class names, but with no visual styling, because their classNames reference CSS custom properties (design tokens) that only exist once this stylesheet loads.
 
@@ -8,7 +8,51 @@ Facts worth knowing before helping someone integrate this library:
 - Dark mode is controlled by `[data-theme="dark"]` on any ancestor element — not a `.dark` class, and not `prefers-color-scheme`. The consuming app must set this attribute itself for dark-mode styling to apply.
 - Brand colors (`primary`, `secondary`, `accent`, `neutral`, plus their `-content` pairs) are meant to be customized per consuming app: set `--pum-primary`, `--pum-secondary`, `--pum-accent`, `--pum-neutral` (and the matching `-content` variables) as CSS custom properties on `:root` to override them. Semantic status colors (`info`, `success`, `warning`, `error`) are fixed by design and have no override hook — they should look the same in every consuming app.
 - If the consuming app also uses Panda CSS, don't add this package to that app's own `include` config — its styles are pre-compiled ahead of time; scanning `node_modules/panda-ui-mithril` finds nothing useful and only slows down the scan.
-- `Rating` (since v0.3.0) is JS-driven, not a pure CSS port: it's hybrid state — pass `value` + `onchange` for a controlled rating, or `defaultValue` for internal state. Scores are integers only (`0..max`), `max` is configurable (e.g. 3 for a 1-3 scale, default 5), and `readonly` renders a static display. There is no `name` prop and no form submission.
+- Components use prop-based APIs, not CSS class composition. Variants like `color`, `size`, `variant`, `align`, `transform`, `weight`, `borderWidth` are passed as props — the component maps them to Panda-generated CSS classes internally.
+- All CSS lives in `src/recipes/*.ts` as Panda `cva`/`sva` recipes. Components never contain inline `css()` calls. Recipe files are the single source of truth for every visual variant.
+- TypeScript types use `PumSize`, `PumColor`, `PumStyle` (aliases for the library's own size/color/style scales).
+
+## Component categories
+
+### Actions (11)
+Button, ButtonClose, ButtonGroup, FAB, Filter, Link, Swap, ThemeController, CloseButton, Rating, RatingGroup
+
+### Data Display (16)
+Avatar, Badge, Card, Carousel, Chat, Countdown, Kbd, List, Loading, Mask, Progress, RadialProgress, Skeleton, Stat, Status, Table, Tag, Timeline
+
+### Navigation (8)
+Breadcrumbs, Footer, Megamenu, Menu, Modal, Navbar, Pagination, Steps, Tabs
+
+### Feedback (11)
+Alert, Aura, Indicator, Modal, Progress, RadialProgress, Skeleton, Status, Toast, Tooltip
+
+### Data Input (14)
+Calendar, Checkbox, Fieldset, FileInput, Input, Label, OTP, Radio, Range, Rating, RatingGroup, Select, Textarea, Toggle
+
+### Layout (10)
+Block, Box, Container, Columns+Column, Grid+Cell, Stack, Accordion, Collapse, Diff, Divider, Hero, Join
+
+### Typography (1)
+Title — semantic heading with size, color, align, transform, weight, truncate, italic. Renders any HTML tag via `as` prop (h1–h6, p, span, div).
+
+## Key patterns
+
+### Recipe system
+- `cva()` for single-element components (Button, Badge, Box, Block, Container, Stack, Title)
+- `sva()` for multi-slot components (Grid+Cell, Columns+Column, Rating, Modal, Alert, Card, Calendar)
+- Variants: `size`, `color`, `variant` (outline/dash/soft/ghost), `align`, `transform`, `weight`, `borderWidth`, `gap`, `spacing`, `padding`, `shadow`, `direction`, `maxWidth`
+- Custom properties scoped per component: `--btn-color`, `--rating-size`, `--swap-size`, `--title-color`
+- Token references use `'token(spacing.X)'` string form (NOT bare paths)
+- `defaultVariants` on every recipe
+
+### Responsive breakpoints
+Defined in `panda.config.ts` conditions: `sm` (640px), `md` (768px), `lg` (1024px), `xl` (1280px). Layout components (Box, Block, Container, Grid, Columns, Stack) use `@media (min-width: ...)` in recipe variants to scale padding/gap/columns with viewport width.
+
+### i18n
+Playground has full EN/ES internationalization. Shared translations (`common`, `sidebar`, `classRowDescs`) in `playground/i18n/shared.yml`. Per-page translations (paragraph descriptions) in `playground/pages/{name}/i18n/{en,es}.yml`. Static import map in `playground/i18n/pages.generated.js`. The `t()` function searches page translations first, then shared, then English fallback.
+
+### Playground
+69 demo pages at `playground/pages/{name}/index.jsx`. Each page imports from `../../../src/index.js`, uses `ClassTable` for variant reference, `CodeExample` for usage snippets. Sidebar categories sorted A-Z. Search modal via Ctrl+K. Font: Ubuntu via `@fontsource/ubuntu` (400/500/700 weights).
 
 ## Docs
 
@@ -17,7 +61,7 @@ Facts worth knowing before helping someone integrate this library:
 
 ## Examples
 
-- [Live demo / playground](https://carlos-sweb.github.io/panda-ui-mithril/): All 56 components rendered with every variant, plus copy-pasteable usage code for each.
+- [Live demo / playground](https://carlos-sweb.github.io/panda-ui-mithril/): All 68 components rendered with every variant, plus copy-pasteable usage code for each.
 
 ## Optional
 
