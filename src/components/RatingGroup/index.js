@@ -1,21 +1,7 @@
 import m from 'mithril'
 import { Rating } from '../Rating/index.js'
 import { cx } from '../../utils/cx'
-import { css } from '../../../styled-system/css'
-
-const groupClass = css({
-  display: 'inline-flex',
-  flexDirection: 'column',
-  alignItems: 'flex-start',
-  gap: 'token(spacing.1)',
-})
-
-const labelClass = css({
-  fontSize: 'token(fontSizes.sm)',
-  fontWeight: '500',
-  color: 'token(colors.base-content)',
-  opacity: 0.7,
-})
+import { ratingGroupStyles, ratingGroupLabel } from '../../recipes/ratingGroup'
 
 /**
  * RatingGroup — envuelve un Rating con label y display de valor.
@@ -42,10 +28,10 @@ export const RatingGroup = {
     const current = typeof value === 'number' ? value : defaultValue
 
     return m('div', {
-      className: cx('rating-group', groupClass, className),
+      className: cx('rating-group', ratingGroupStyles(), className),
       ...rest,
     }, [
-      label != null && m('span', { className: cx('rating-group-label', labelClass) }, [
+      label != null && m('span', { className: cx('rating-group-label', ratingGroupLabel()) }, [
         label,
         showValue && typeof current === 'number' ? `: ${current}` : ''
       ]),

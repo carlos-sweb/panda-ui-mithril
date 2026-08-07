@@ -1,9 +1,6 @@
 import m from 'mithril'
-import { css } from '../../../styled-system/css'
-import { table } from '../../recipes/table'
+import { table, tableOverflow } from '../../recipes/table'
 import { cx } from '../../utils/cx'
-
-const overflowAuto = css({ overflowX: 'auto' })
 
 /**
  * Componente TableContainer. Wrapper con scroll horizontal para que la tabla
@@ -14,7 +11,7 @@ const overflowAuto = css({ overflowX: 'auto' })
 export const TableContainer = {
   view(vnode) {
     const { className, ...rest } = vnode.attrs
-    return m('div', { className: cx(overflowAuto, className), ...rest }, vnode.children)
+    return m('div', { className: cx(tableOverflow(), className), ...rest }, vnode.children)
   }
 }
 

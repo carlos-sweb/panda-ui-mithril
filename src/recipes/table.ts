@@ -99,3 +99,9 @@ export const table = sva({
     size: 'md',
   },
 })
+
+import { cva } from '../../styled-system/css'
+
+export const tableOverflow = cva({
+  base: { overflowX: 'auto' },
+})
