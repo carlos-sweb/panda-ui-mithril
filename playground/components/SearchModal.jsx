@@ -175,8 +175,8 @@ export const SearchModal = {
     })
 
     return (
-      <Modal open={open} onclose={onclose}>
-        <ModalBox className={modalBox}>
+      <Modal  position="top" 	size="md" open={open} onclose={onclose}>
+        <ModalBox className={modalBox} style="margin:1rem 1rem 1rem 1rem;">
           <div className={searchInput}>
             <Search size={20} className={css({ opacity: 0.5 })} />
             <input
