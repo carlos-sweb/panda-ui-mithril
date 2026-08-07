@@ -198,6 +198,22 @@ export default {
         </section>
 
         <section className={section}>
+          <h3 className={heading}>Border Width</h3>
+          <div className={css({ display: 'flex', flexDirection: 'column', gap: '1rem' })}>
+            <div className={row}>
+              <Button variant="outline" borderWidth={1}>border 1</Button>
+              <Button variant="outline" borderWidth={2}>border 2</Button>
+              <Button variant="outline" borderWidth={3}>border 3</Button>
+            </div>
+            <div className={row}>
+              <Button variant="dash" borderWidth={1}>border 1</Button>
+              <Button variant="dash" borderWidth={2}>border 2</Button>
+              <Button variant="dash" borderWidth={3}>border 3</Button>
+            </div>
+          </div>
+        </section>
+
+        <section className={section}>
           <h3 className={heading}>Button with icon</h3>
           <div className={row}>
             <Button><Heart size={20} /> Like</Button>

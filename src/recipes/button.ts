@@ -174,8 +174,14 @@ export const buttonStyles = cva({
       block: { width: '100%' },
       wide: { width: '100%', maxWidth: 'token(spacing.64)' },
     },
+    borderWidth: {
+      '1': { '--border': '1px' },
+      '2': { '--border': '2px' },
+      '3': { '--border': '3px' },
+    },
   },
   defaultVariants: {
     size: 'md',
+    borderWidth: '1',
   },
 })
