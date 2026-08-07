@@ -209,3 +209,14 @@ export const modal = sva({
     },
   },
 })
+
+import { cva } from '../../styled-system/css'
+
+export const modalCloseButton = cva({
+  base: {
+    position: 'absolute',
+    top: '0.75rem',
+    insetInlineEnd: '0.75rem',
+    zIndex: '1',
+  },
+})

@@ -1,7 +1,6 @@
 import m from 'mithril'
-import { modal } from '../../recipes/modal'
+import { modal, modalCloseButton } from '../../recipes/modal'
 import { cx } from '../../utils/cx'
-import { css } from '../../../styled-system/css'
 import { ButtonClose } from '../ButtonClose/index.js'
 
 // Slightly above the 0.2s exit animation — safety net so the dialog never
@@ -118,12 +117,7 @@ export const Modal = {
             child._buttonCloseInjected = true
             const boxChildren = Array.isArray(child.children) ? [...child.children] : [child.children]
             boxChildren.push(
-              m('form', { method: 'dialog', className: css({
-                position: 'absolute',
-                top: '0.75rem',
-                insetInlineEnd: '0.75rem',
-                zIndex: '1',
-              })},
+              m('form', { method: 'dialog', className: modalCloseButton() },
                 m(ButtonClose)
               )
             )
