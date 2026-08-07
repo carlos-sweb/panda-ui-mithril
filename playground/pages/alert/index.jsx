@@ -1,14 +1,12 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Alert } from '../../../src/index.js'
+import { Stack, Title, Alert } from '../../../src/index.js'
 import { Info, CheckCircle, AlertTriangle, AlertCircle, X, ChevronRight } from 'lucide-mithril'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
-const stack = css({ display: 'flex', flexDirection: 'column', gap: '1.5rem' })
 const sectionStack = css({ display: 'flex', flexDirection: 'column', gap: '0.75rem' })
-const sectionTitle = css({ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem' })
 const sectionDesc = css({ opacity: 0.6, marginBottom: '1rem', maxWidth: '600px' })
 
 const usageCode = `<Alert color="info">
@@ -47,15 +45,15 @@ export default {
   oninit() { loadPageI18n('alert') },
   view() {
     return (
-      <div className={stack}>
-        <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>Alert</h1>
+      <Stack gap="lg">
+        <Title as="h1" size="2">Alert</Title>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
           {t('paragraph')}
         </p>
 
         {/* Neutral Alert (no color) */}
         <section>
-          <h2 className={sectionTitle}>Neutral (No Color)</h2>
+          <Title as="h2" size="3">Neutral (No Color)</Title>
           <p className={sectionDesc}>Without a `color` prop, the alert falls back to a neutral base-200 background.</p>
           <div className={sectionStack}>
             <Alert>
@@ -67,7 +65,7 @@ export default {
 
         {/* Base Alert */}
         <section>
-          <h2 className={sectionTitle}>Base Alert</h2>
+          <Title as="h2" size="3">Base Alert</Title>
           <p className={sectionDesc}>Default alert with different colors.</p>
           <div className={sectionStack}>
             <Alert color="info">
@@ -91,7 +89,7 @@ export default {
 
         {/* Soft Style */}
         <section>
-          <h2 className={sectionTitle}>Soft Style</h2>
+          <Title as="h2" size="3">Soft Style</Title>
           <p className={sectionDesc}>Soft background with no border.</p>
           <div className={sectionStack}>
             <Alert variant="soft" color="info">
@@ -115,7 +113,7 @@ export default {
 
         {/* Outline Style */}
         <section>
-          <h2 className={sectionTitle}>Outline Style</h2>
+          <Title as="h2" size="3">Outline Style</Title>
           <p className={sectionDesc}>Transparent background with colored border.</p>
           <div className={sectionStack}>
             <Alert variant="outline" color="info">
@@ -139,7 +137,7 @@ export default {
 
         {/* Dash Style */}
         <section>
-          <h2 className={sectionTitle}>Dash Style</h2>
+          <Title as="h2" size="3">Dash Style</Title>
           <p className={sectionDesc}>Transparent background with dashed border.</p>
           <div className={sectionStack}>
             <Alert variant="dash" color="info">
@@ -163,7 +161,7 @@ export default {
 
         {/* With Buttons + Responsive */}
         <section>
-          <h2 className={sectionTitle}>With Buttons + Responsive</h2>
+          <Title as="h2" size="3">With Buttons + Responsive</Title>
           <p className={sectionDesc}>Vertical on mobile, horizontal on desktop. Includes action buttons.</p>
           <Alert direction="vertical" color="info">
             <Info />
@@ -177,7 +175,7 @@ export default {
 
         {/* With Title and Description */}
         <section>
-          <h2 className={sectionTitle}>With Title and Description</h2>
+          <Title as="h2" size="3">With Title and Description</Title>
           <p className={sectionDesc}>Structured alert with title, description, and action button.</p>
           <Alert direction="vertical" color="info">
             <Info />
@@ -191,7 +189,7 @@ export default {
 
         {/* Horizontal Direction (default) */}
         <section>
-          <h2 className={sectionTitle}>Horizontal Direction (Default)</h2>
+          <Title as="h2" size="3">Horizontal Direction (Default)</Title>
           <p className={sectionDesc}>Content flows horizontally, good for desktop.</p>
           <div className={sectionStack}>
             <Alert direction="horizontal" color="info">
@@ -207,7 +205,7 @@ export default {
 
         {/* Vertical Direction */}
         <section>
-          <h2 className={sectionTitle}>Vertical Direction</h2>
+          <Title as="h2" size="3">Vertical Direction</Title>
           <p className={sectionDesc}>Content stacks vertically, good for mobile.</p>
           <div className={sectionStack}>
             <Alert direction="vertical" color="info">
@@ -223,7 +221,7 @@ export default {
 
         {/* Style + Direction Combined */}
         <section>
-          <h2 className={sectionTitle}>Style + Vertical Direction</h2>
+          <Title as="h2" size="3">Style + Vertical Direction</Title>
           <p className={sectionDesc}>The `variant` prop (soft, outline, dash) combines with `direction="vertical"`.</p>
           <div className={sectionStack}>
             <Alert variant="soft" direction="vertical" color="warning">
@@ -243,7 +241,7 @@ export default {
 
         {/* Without Icons */}
         <section>
-          <h2 className={sectionTitle}>Without Icons</h2>
+          <Title as="h2" size="3">Without Icons</Title>
           <p className={sectionDesc}>Alerts can be used without icons.</p>
           <div className={sectionStack}>
             <Alert color="info">Info alert without icon</Alert>
@@ -254,12 +252,12 @@ export default {
         </section>
 
         <section>
-          <h2 className={sectionTitle}>{t('common.usage')}</h2>
+          <Title as="h2" size="3">{t('common.usage')}</Title>
           <CodeExample code={usageCode} />
         </section>
 
         <section>
-          <h2 className={sectionTitle}>{t('common.classReference')}</h2>
+          <Title as="h2" size="3">{t('common.classReference')}</Title>
           <ClassTable rows={classRows} />
         </section>
       </div>

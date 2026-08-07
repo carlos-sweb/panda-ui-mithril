@@ -1,13 +1,11 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { FAB, FABMain, FABAction } from '../../../src/index.js'
+import { Stack, Title, FAB, FABMain, FABAction } from '../../../src/index.js'
 import { Plus, Pencil, Trash2, Share2 } from 'lucide-mithril'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
-const stack = css({ display: 'flex', flexDirection: 'column', gap: '1.5rem' })
-const sectionTitle = css({ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem', marginTop: '2rem' })
 
 const usageCode = `<FAB>
   <FABMain><Plus size={22} /></FABMain>
@@ -31,8 +29,8 @@ export default {
   oninit() { loadPageI18n('fab') },
   view() {
     return (
-      <div className={stack}>
-        <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>FAB</h1>
+      <Stack gap="lg">
+        <Title as="h1" size="2">FAB</Title>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
           {t('paragraph')}
         </p>
@@ -45,12 +43,12 @@ export default {
         </FAB>
 
         <section>
-          <h2 className={sectionTitle}>{t('common.usage')}</h2>
+          <Title as="h2" size="3">{t('common.usage')}</Title>
           <CodeExample code={usageCode} />
         </section>
 
         <section>
-          <h2 className={sectionTitle}>{t('common.classReference')}</h2>
+          <Title as="h2" size="3">{t('common.classReference')}</Title>
           <ClassTable rows={classRows} />
         </section>
       </div>

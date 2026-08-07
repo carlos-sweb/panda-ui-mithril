@@ -1,12 +1,10 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Range } from '../../../src/index.js'
+import { Stack, Title, Range } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
-const stack = css({ display: 'flex', flexDirection: 'column', gap: '1.5rem' })
-const sectionTitle = css({ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem' })
 
 const usageCode = `<Range value={40} max={100} color="primary" />`
 
@@ -36,8 +34,8 @@ export default {
   oninit() { loadPageI18n('range') },
   view() {
     return (
-      <div className={stack}>
-        <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>Range</h1>
+      <Stack gap="lg">
+        <Title as="h1" size="2">Range</Title>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
           {t('paragraph')}
         </p>
@@ -47,12 +45,12 @@ export default {
         <Range value={80} max={100} color="secondary" />
 
         <section>
-          <h2 className={sectionTitle}>{t('common.usage')}</h2>
+          <Title as="h2" size="3">{t('common.usage')}</Title>
           <CodeExample code={usageCode} />
         </section>
 
         <section>
-          <h2 className={sectionTitle}>{t('common.classReference')}</h2>
+          <Title as="h2" size="3">{t('common.classReference')}</Title>
           <ClassTable rows={classRows} />
         </section>
       </div>

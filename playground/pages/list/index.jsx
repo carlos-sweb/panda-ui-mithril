@@ -1,13 +1,11 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { List, ListRow, ListCol, Avatar, Button } from '../../../src/index.js'
+import { Stack, Title, List, ListRow, ListCol, Avatar, Button } from '../../../src/index.js'
 import { Play, Heart } from 'lucide-mithril'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
-const stack = css({ display: 'flex', flexDirection: 'column', gap: '1.5rem' })
-const sectionTitle = css({ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem', marginTop: '2rem' })
 const wrapper = css({ maxWidth: '32rem', background: 'token(colors.base-100)', borderRadius: 'var(--radius-box)', boxShadow: '0 1px 3px color-mix(in oklab, black 15%, transparent)' })
 const kicker = css({ padding: '1rem 1rem 0.5rem', fontSize: '0.75rem', opacity: 0.6, letterSpacing: '0.02em' })
 const subtitle = css({ fontSize: '0.75rem', textTransform: 'uppercase', fontWeight: '600', opacity: 0.6 })
@@ -44,8 +42,8 @@ export default {
   oninit() { loadPageI18n('list') },
   view() {
     return (
-      <div className={stack}>
-        <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>List</h1>
+      <Stack gap="lg">
+        <Title as="h1" size="2">List</Title>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
           {t('paragraph')}
         </p>
@@ -68,12 +66,12 @@ export default {
         </div>
 
         <section>
-          <h2 className={sectionTitle}>{t('common.usage')}</h2>
+          <Title as="h2" size="3">{t('common.usage')}</Title>
           <CodeExample code={usageCode} />
         </section>
 
         <section>
-          <h2 className={sectionTitle}>{t('common.classReference')}</h2>
+          <Title as="h2" size="3">{t('common.classReference')}</Title>
           <ClassTable rows={classRows} />
         </section>
       </div>

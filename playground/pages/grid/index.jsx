@@ -1,11 +1,10 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Grid, Cell } from '../../../src/index.js'
+import { Stack, Title, Grid, Cell } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
-const stack = css({ display: 'flex', flexDirection: 'column', gap: '2rem' })
 const st = css({ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem', marginTop: '2rem' })
 
 const usageCode = `<Grid cols={3} gap="md">
@@ -26,8 +25,8 @@ const cell = css({ bg: 'token(colors.base-200)', p: '1rem', borderRadius: '0.25r
 export default {
   oninit() { loadPageI18n('grid') },
   view() {
-    return (<div className={stack}>
-      <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>Grid</h1>
+    return (<Stack gap="lg">
+      <Title as="h1" size="2">Grid</Title>
       <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>{t('paragraph')}</p>
       <section><h2 className={st}>{t('common.usage')}</h2><CodeExample code={usageCode} language="jsx" /></section>
       <section><h2 className={st}>3 columns, auto span</h2>

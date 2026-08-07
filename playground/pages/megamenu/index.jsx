@@ -1,12 +1,10 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Megamenu, MegamenuItem, MegamenuTrigger, MegamenuPanel } from '../../../src/index.js'
+import { Stack, Title, Megamenu, MegamenuItem, MegamenuTrigger, MegamenuPanel } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
-const stack = css({ display: 'flex', flexDirection: 'column', gap: '1.5rem' })
-const sectionTitle = css({ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem', marginTop: '2rem' })
 const surface = css({ background: 'token(colors.base-100)', border: '1px solid', borderColor: 'token(colors.base-300)', padding: '0.5rem', borderRadius: 'var(--radius-box)' })
 const grid = css({ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1.5rem' })
 const colTitle = css({ fontSize: '0.75rem', fontWeight: '600', textTransform: 'uppercase', opacity: 0.5, marginBottom: '0.5rem' })
@@ -46,8 +44,8 @@ export default {
   oninit() { loadPageI18n('megamenu') },
   view() {
     return (
-      <div className={stack}>
-        <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>Megamenu</h1>
+      <Stack gap="lg">
+        <Title as="h1" size="2">Megamenu</Title>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
           {t('paragraph')}
         </p>
@@ -88,12 +86,12 @@ export default {
         </Megamenu>
 
         <section>
-          <h2 className={sectionTitle}>{t('common.usage')}</h2>
+          <Title as="h2" size="3">{t('common.usage')}</Title>
           <CodeExample code={usageCode} />
         </section>
 
         <section>
-          <h2 className={sectionTitle}>{t('common.classReference')}</h2>
+          <Title as="h2" size="3">{t('common.classReference')}</Title>
           <ClassTable rows={classRows} />
         </section>
       </div>

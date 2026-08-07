@@ -1,12 +1,10 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Title } from '../../../src/index.js'
+import { Stack, Title } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
-const stack = css({ display: 'flex', flexDirection: 'column', gap: '2rem' })
-const sectionTitle = css({ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem', marginTop: '2rem' })
 const row = css({ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'baseline' })
 const heading = css({ fontSize: '0.875rem', fontWeight: '600', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em', opacity: 0.5 })
 
@@ -62,19 +60,19 @@ export default {
 
   view() {
     return (
-      <div className={stack}>
-        <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>Title</h1>
+      <Stack gap="lg">
+        <Title as="h1" size="2">Title</Title>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
           {t('paragraph')}
         </p>
 
         <section>
-          <h2 className={sectionTitle}>{t('common.usage')}</h2>
+          <Title as="h2" size="3">{t('common.usage')}</Title>
           <CodeExample code={usageCode} language="jsx" />
         </section>
 
         <section>
-          <h2 className={sectionTitle}>Sizes</h2>
+          <Title as="h2" size="3">Sizes</Title>
           <h4 className={heading}>7 size tiers — from hero to caption</h4>
           <div className={row}>
             <div className={css({ display: 'flex', flexDirection: 'column', gap: '0.25rem' })}>
@@ -90,7 +88,7 @@ export default {
         </section>
 
         <section>
-          <h2 className={sectionTitle}>Semantic tags</h2>
+          <Title as="h2" size="3">Semantic tags</Title>
           <h4 className={heading}>Auto-size from tag (h1→1, h2→2, …)</h4>
           <div className={row}>
             <div className={css({ display: 'flex', flexDirection: 'column', gap: '0.25rem' })}>
@@ -106,7 +104,7 @@ export default {
         </section>
 
         <section>
-          <h2 className={sectionTitle}>Colors</h2>
+          <Title as="h2" size="3">Colors</Title>
           <div className={row}>
             <Title as="h3" color="primary">Primary</Title>
             <Title as="h3" color="secondary">Secondary</Title>
@@ -119,7 +117,7 @@ export default {
         </section>
 
         <section>
-          <h2 className={sectionTitle}>Alignment</h2>
+          <Title as="h2" size="3">Alignment</Title>
           <div className={css({ display: 'flex', flexDirection: 'column', gap: '0.5rem', maxWidth: '400px', padding: '1rem', border: '1px solid token(colors.base-300)', borderRadius: 'token(radii.md)' })}>
             <Title as="h4" align="left">Left aligned</Title>
             <Title as="h4" align="center">Center aligned</Title>
@@ -129,7 +127,7 @@ export default {
         </section>
 
         <section>
-          <h2 className={sectionTitle}>Transform</h2>
+          <Title as="h2" size="3">Transform</Title>
           <div className={row}>
             <Title as="h4" transform="capitalize">capitalize me</Title>
             <Title as="h4" transform="uppercase">uppercase me</Title>
@@ -138,7 +136,7 @@ export default {
         </section>
 
         <section>
-          <h2 className={sectionTitle}>Weight</h2>
+          <Title as="h2" size="3">Weight</Title>
           <div className={css({ display: 'flex', flexDirection: 'column', gap: '0.25rem' })}>
             <Title size="4" weight="light">Light — 300</Title>
             <Title size="4" weight="normal">Normal — 400</Title>
@@ -150,7 +148,7 @@ export default {
         </section>
 
         <section>
-          <h2 className={sectionTitle}>Truncate & Italic</h2>
+          <Title as="h2" size="3">Truncate & Italic</Title>
           <div className={css({ display: 'flex', flexDirection: 'column', gap: '0.5rem', maxWidth: '300px' })}>
             <Title size="5" truncate>This is a very long title that should truncate with an ellipsis when it overflows its container</Title>
             <Title size="5" italic>Italic text style</Title>
@@ -158,7 +156,7 @@ export default {
         </section>
 
         <section>
-          <h2 className={sectionTitle}>{t('common.classReference')}</h2>
+          <Title as="h2" size="3">{t('common.classReference')}</Title>
           <ClassTable rows={classRows} />
         </section>
       </div>

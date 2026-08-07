@@ -1,15 +1,12 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Aura, Button, Card, CardBody } from '../../../src/index.js'
+import { Stack, Title, Aura, Button, Card, CardBody } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
 const row = css({ display: 'flex', gap: '1.5rem', flexWrap: 'wrap', alignItems: 'center' })
-const stack = css({ display: 'flex', flexDirection: 'column', gap: '1.5rem' })
 const section = css({ marginBottom: '2rem' })
-const heading = css({ fontSize: '0.875rem', fontWeight: '600', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em', opacity: 0.5 })
-const sectionTitle = css({ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem', marginTop: '2rem' })
 const cardSurface = css({ background: 'token(colors.base-100)', width: '14rem' })
 const primaryColor = css({ color: 'token(colors.primary)' })
 
@@ -47,14 +44,14 @@ export default {
   oninit() { loadPageI18n('aura') },
   view() {
     return (
-      <div className={stack}>
-        <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>Aura</h1>
+      <Stack gap="lg">
+        <Title as="h1" size="2">Aura</Title>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
           {t('paragraph')}
         </p>
 
         <section className={section}>
-          <h3 className={heading}>Around a button (default)</h3>
+          <Title as="h3" size="5">Around a button (default)</Title>
           <div className={row}>
             <Aura shape="field" className={primaryColor}>
               <Button color="primary">Upgrade now</Button>
@@ -63,7 +60,7 @@ export default {
         </section>
 
         <section className={section}>
-          <h3 className={heading}>Around a card</h3>
+          <Title as="h3" size="5">Around a card</Title>
           <div className={row}>
             <Aura shape="box">
               <Card className={cardSurface}>
@@ -74,7 +71,7 @@ export default {
         </section>
 
         <section className={section}>
-          <h3 className={heading}>Variants</h3>
+          <Title as="h3" size="5">Variants</Title>
           <div className={row}>
             <Aura variant="dual" shape="field" className={primaryColor}><Button>dual</Button></Aura>
             <Aura variant="rainbow" shape="field"><Button>rainbow</Button></Aura>
@@ -86,12 +83,12 @@ export default {
         </section>
 
         <section>
-          <h2 className={sectionTitle}>{t('common.usage')}</h2>
+          <Title as="h2" size="3">{t('common.usage')}</Title>
           <CodeExample code={usageCode} />
         </section>
 
         <section>
-          <h2 className={sectionTitle}>{t('common.classReference')}</h2>
+          <Title as="h2" size="3">{t('common.classReference')}</Title>
           <ClassTable rows={classRows} />
         </section>
       </div>

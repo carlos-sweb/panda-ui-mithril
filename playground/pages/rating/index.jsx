@@ -1,13 +1,11 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Rating } from '../../../src/index.js'
+import { Stack, Title, Rating } from '../../../src/index.js'
 import { RatingGroup } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
-const stack = css({ display: 'flex', flexDirection: 'column', gap: '1.5rem' })
-const sectionTitle = css({ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem', marginTop: '2rem' })
 const heading = css({ fontSize: '0.875rem', fontWeight: '600', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em', opacity: 0.5 })
 const section = css({ marginBottom: '2rem' })
 const row = css({ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'center' })
@@ -61,26 +59,26 @@ export default {
 
   view(vnode) {
     return (
-      <div className={stack}>
-        <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>Rating</h1>
+      <Stack gap="lg">
+        <Title as="h1" size="2">Rating</Title>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
           {t('paragraph')}
         </p>
 
         <section className={section}>
-          <h3 className={heading}>Editable (uncontrolled)</h3>
+          <Title as="h3" size="5">Editable (uncontrolled)</Title>
           <Rating defaultValue={vnode.state.uncontrolled} max={5} onchange={(v) => { vnode.state.uncontrolled = v }} />
           <p className={note}>Hover to preview, click to set, re-click the selected star to clear. Value: {vnode.state.uncontrolled}</p>
         </section>
 
         <section className={section}>
-          <h3 className={heading}>Editable (controlled)</h3>
+          <Title as="h3" size="5">Editable (controlled)</Title>
           <Rating value={vnode.state.controlled} max={5} onchange={(v) => { vnode.state.controlled = v }} />
           <p className={note}>Integer scores only. Value: {vnode.state.controlled}</p>
         </section>
 
         <section className={section}>
-          <h3 className={heading}>Configurable max score</h3>
+          <Title as="h3" size="5">Configurable max score</Title>
           <div className={column}>
             <div className={scaleRow}>
               <span className={scaleLabel}>1-3</span>
@@ -102,7 +100,7 @@ export default {
         </section>
 
         <section className={section}>
-          <h3 className={heading}>Readonly (static rating)</h3>
+          <Title as="h3" size="5">Readonly (static rating)</Title>
           <div className={row}>
             <Rating value={4} max={5} readonly />
             <Rating value={3} max={5} readonly />
@@ -112,7 +110,7 @@ export default {
         </section>
 
         <section className={section}>
-          <h3 className={heading}>Sizes</h3>
+          <Title as="h3" size="5">Sizes</Title>
           <div className={row}>
             <Rating value={3} size="xs" readonly />
             <Rating value={3} size="sm" readonly />
@@ -123,7 +121,7 @@ export default {
         </section>
 
         <section className={section}>
-          <h3 className={heading}>Colors</h3>
+          <Title as="h3" size="5">Colors</Title>
           <div className={row}>
             <Rating value={4} readonly />
             <Rating value={4} color="warning" readonly />
@@ -135,12 +133,12 @@ export default {
         </section>
 
         <section>
-          <h2 className={sectionTitle}>{t('common.usage')}</h2>
+          <Title as="h2" size="3">{t('common.usage')}</Title>
           <CodeExample code={usageCode} />
         </section>
 
         <section>
-          <h2 className={sectionTitle}>With RatingGroup</h2>
+          <Title as="h2" size="3">With RatingGroup</Title>
           <h4 className={heading}>Adds a label above the Rating — ideal for forms and surveys</h4>
           <div className={row}>
             <RatingGroup label="Quality" defaultValue={4} />
@@ -156,7 +154,7 @@ export default {
         </section>
 
         <section>
-          <h2 className={sectionTitle}>{t('common.classReference')}</h2>
+          <Title as="h2" size="3">{t('common.classReference')}</Title>
           <ClassTable rows={classRows} />
         </section>
       </div>

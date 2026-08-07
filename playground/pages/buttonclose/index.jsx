@@ -1,14 +1,12 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { ButtonClose } from '../../../src/index.js'
+import { Title, ButtonClose } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
 const section = css({ marginBottom: '2rem' })
-const heading = css({ fontSize: '0.875rem', fontWeight: '600', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em', opacity: 0.5 })
 const row = css({ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', alignItems: 'center' })
-const sectionTitle = css({ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem', marginTop: '2rem' })
 
 const usageCode = `<ButtonClose />
 <ButtonClose color="primary" />
@@ -37,13 +35,13 @@ export default {
   view() {
     return (
       <div>
-        <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>ButtonClose</h1>
+        <Title as="h1" size="2">ButtonClose</Title>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
           {t('paragraph')}
         </p>
 
         <section className={section}>
-          <h3 className={heading}>Default</h3>
+          <Title as="h3" size="5">Default</Title>
           <div className={row}>
             <ButtonClose />
             <ButtonClose>this text is ignored</ButtonClose>
@@ -51,7 +49,7 @@ export default {
         </section>
 
         <section className={section}>
-          <h3 className={heading}>Sizes</h3>
+          <Title as="h3" size="5">Sizes</Title>
           <div className={row}>
             <ButtonClose size="xs" />
             <ButtonClose size="sm" />
@@ -62,7 +60,7 @@ export default {
         </section>
 
         <section className={section}>
-          <h3 className={heading}>Colors</h3>
+          <Title as="h3" size="5">Colors</Title>
           <div className={row}>
             <ButtonClose />
             <ButtonClose color="neutral" />
@@ -73,7 +71,7 @@ export default {
         </section>
 
         <section className={section}>
-          <h3 className={heading}>Soft colors</h3>
+          <Title as="h3" size="5">Soft colors</Title>
           <div className={row}>
             <ButtonClose variant="soft" />
             <ButtonClose variant="soft" color="primary" />
@@ -84,7 +82,7 @@ export default {
         </section>
 
         <section className={section}>
-          <h3 className={heading}>Outline colors</h3>
+          <Title as="h3" size="5">Outline colors</Title>
           <div className={row}>
             <ButtonClose variant="outline" />
             <ButtonClose variant="outline" color="primary" />
@@ -95,7 +93,7 @@ export default {
         </section>
 
         <section className={section}>
-          <h3 className={heading}>Ghost + Link</h3>
+          <Title as="h3" size="5">Ghost + Link</Title>
           <div className={row}>
             <ButtonClose variant="ghost" />
             <ButtonClose variant="ghost" color="primary" />
@@ -105,7 +103,7 @@ export default {
         </section>
 
         <section className={section}>
-          <h3 className={heading}>Square + Circle</h3>
+          <Title as="h3" size="5">Square + Circle</Title>
           <div className={row}>
             <ButtonClose shape="square" />
             <ButtonClose shape="square" color="primary" />
@@ -114,7 +112,7 @@ export default {
         </section>
 
         <section className={section}>
-          <h3 className={heading}>Disabled</h3>
+          <Title as="h3" size="5">Disabled</Title>
           <div className={row}>
             <ButtonClose disabled />
             <ButtonClose disabled color="primary" />
@@ -122,7 +120,7 @@ export default {
         </section>
 
         <section className={section}>
-          <h3 className={heading}>Stroke Width</h3>
+          <Title as="h3" size="5">Stroke Width</Title>
           <div className={row}>
             <ButtonClose strokeWidth={1} />
             <ButtonClose strokeWidth={2} />
@@ -132,7 +130,7 @@ export default {
         </section>
 
         <section className={section}>
-          <h3 className={heading}>Border Width</h3>
+          <Title as="h3" size="5">Border Width</Title>
           <div className={row}>
             <ButtonClose variant="outline" borderWidth={1} />
             <ButtonClose variant="outline" borderWidth={2} />
@@ -141,12 +139,12 @@ export default {
         </section>
 
         <section>
-          <h2 className={sectionTitle}>{t('common.usage')}</h2>
+          <Title as="h2" size="3">{t('common.usage')}</Title>
           <CodeExample code={usageCode} />
         </section>
 
         <section>
-          <h2 className={sectionTitle}>{t('common.classReference')}</h2>
+          <Title as="h2" size="3">{t('common.classReference')}</Title>
           <ClassTable rows={classRows} />
         </section>
       </div>

@@ -1,13 +1,11 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { ButtonGroup, Button } from '../../../src/index.js'
+import { Title, ButtonGroup, Button } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
 const section = css({ marginBottom: '2rem' })
-const heading = css({ fontSize: '0.875rem', fontWeight: '600', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em', opacity: 0.5 })
-const sectionTitle = css({ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem', marginTop: '2rem' })
 
 const usageCode = `<ButtonGroup>
   <Button>Left</Button>
@@ -34,13 +32,13 @@ export default {
   view() {
     return (
       <div>
-        <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>ButtonGroup</h1>
+        <Title as="h1" size="2">ButtonGroup</Title>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
           {t('paragraph')}
         </p>
 
         <section className={section}>
-          <h3 className={heading}>Default</h3>
+          <Title as="h3" size="5">Default</Title>
           <ButtonGroup>
             <Button>Left</Button>
             <Button>Center</Button>
@@ -49,7 +47,7 @@ export default {
         </section>
 
         <section className={section}>
-          <h3 className={heading}>With color</h3>
+          <Title as="h3" size="5">With color</Title>
           <ButtonGroup color="primary">
             <Button>1</Button>
             <Button>2</Button>
@@ -58,7 +56,7 @@ export default {
         </section>
 
         <section className={section}>
-          <h3 className={heading}>With variant</h3>
+          <Title as="h3" size="5">With variant</Title>
           <ButtonGroup variant="outline">
             <Button>Yes</Button>
             <Button>No</Button>
@@ -66,7 +64,7 @@ export default {
         </section>
 
         <section className={section}>
-          <h3 className={heading}>With size</h3>
+          <Title as="h3" size="5">With size</Title>
           <ButtonGroup size="lg">
             <Button>A</Button>
             <Button>B</Button>
@@ -75,12 +73,12 @@ export default {
         </section>
 
         <section>
-          <h2 className={sectionTitle}>{t('common.usage')}</h2>
+          <Title as="h2" size="3">{t('common.usage')}</Title>
           <CodeExample code={usageCode} />
         </section>
 
         <section>
-          <h2 className={sectionTitle}>{t('common.classReference')}</h2>
+          <Title as="h2" size="3">{t('common.classReference')}</Title>
           <ClassTable rows={classRows} />
         </section>
       </div>

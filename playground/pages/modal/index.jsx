@@ -1,13 +1,11 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Button, Modal, ModalBox, ModalAction, ModalBackdrop } from '../../../src/index.js'
+import { Stack, Title, Button, Modal, ModalBox, ModalAction, ModalBackdrop } from '../../../src/index.js'
 import { modal } from '../../../src/recipes/modal'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
-const stack = css({ display: 'flex', flexDirection: 'column', gap: '1.5rem' })
-const sectionTitle = css({ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem', marginTop: '2rem' })
 const row = css({ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' })
 const title = css({ fontSize: '1.125rem', fontWeight: '700' })
 const body = css({ paddingBlock: '1rem' })
@@ -77,13 +75,13 @@ export default {
     const sizes = ['xs', 'sm', 'md', 'lg']
 
     return (
-      <div className={stack}>
-        <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>Modal</h1>
+      <Stack gap="lg">
+        <Title as="h1" size="2">Modal</Title>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
           {t('paragraph')}
         </p>
 
-        <h2 className={sectionTitle}>Sizes</h2>
+        <Title as="h2" size="3">Sizes</Title>
         <div className={row}>
           {sizes.map((s) => (
             <Button key={s} onclick={() => { vnode.state.sizeFor = s; vnode.state.sizeOpen = true }}>
@@ -114,7 +112,7 @@ export default {
           <ModalBackdrop onclick={closeSize} />
         </Modal>
 
-        <h2 className={sectionTitle}>Persistent</h2>
+        <Title as="h2" size="3">Persistent</Title>
         <p className={hint}>
           This modal is persistent — ESC and clicking outside won't close it; use the Close button.
         </p>
@@ -162,7 +160,7 @@ export default {
         ))}
 
         <section>
-          <h2 className={sectionTitle}>Auto Close Button</h2>
+          <Title as="h2" size="3">Auto Close Button</Title>
           <Button
             className={css({ marginBottom: '1rem' })}
             onclick={() => { vnode.state.autoCloseOpen = true }}
@@ -180,12 +178,12 @@ export default {
 
 
         <section>
-          <h2 className={sectionTitle}>{t('common.usage')}</h2>
+          <Title as="h2" size="3">{t('common.usage')}</Title>
           <CodeExample code={usageCode} />
         </section>
 
         <section>
-          <h2 className={sectionTitle}>{t('common.classReference')}</h2>
+          <Title as="h2" size="3">{t('common.classReference')}</Title>
           <ClassTable rows={classRows} />
         </section>
       </div>

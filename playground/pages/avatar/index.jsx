@@ -1,15 +1,12 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Avatar, AvatarGroup } from '../../../src/index.js'
+import { Stack, Title, Avatar, AvatarGroup } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
 const section = css({ marginBottom: '2rem' })
-const heading = css({ fontSize: '0.875rem', fontWeight: '600', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em', opacity: 0.5 })
 const row = css({ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', alignItems: 'center' })
-const stack = css({ display: 'flex', flexDirection: 'column', gap: '1.5rem' })
-const sectionTitle = css({ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem', marginTop: '2rem' })
 
 const usageCode = `<Avatar src="https://i.pravatar.cc/150?u=1" size="lg" status="online" />
 <Avatar placeholder>AB</Avatar>
@@ -36,14 +33,14 @@ export default {
   oninit() { loadPageI18n('avatar') },
   view() {
     return (
-      <div className={stack}>
-        <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>Avatar</h1>
+      <Stack gap="lg">
+        <Title as="h1" size="2">Avatar</Title>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
           {t('paragraph')}
         </p>
 
         <section className={section}>
-          <h3 className={heading}>Sizes</h3>
+          <Title as="h3" size="5">Sizes</Title>
           <div className={row}>
             <Avatar src="https://i.pravatar.cc/150?u=1" size="xs" />
             <Avatar src="https://i.pravatar.cc/150?u=2" size="sm" />
@@ -54,7 +51,7 @@ export default {
         </section>
 
         <section className={section}>
-          <h3 className={heading}>Shape</h3>
+          <Title as="h3" size="5">Shape</Title>
           <div className={row}>
             <Avatar src="https://i.pravatar.cc/150?u=7" size="lg" shape="circle" />
             <Avatar src="https://i.pravatar.cc/150?u=8" size="lg" shape="square" />
@@ -62,7 +59,7 @@ export default {
         </section>
 
         <section className={section}>
-          <h3 className={heading}>Status indicator</h3>
+          <Title as="h3" size="5">Status indicator</Title>
           <div className={row}>
             <Avatar src="https://i.pravatar.cc/150?u=6" status="online" />
             <Avatar src="https://i.pravatar.cc/150?u=9" status="offline" />
@@ -70,7 +67,7 @@ export default {
         </section>
 
         <section className={section}>
-          <h3 className={heading}>Placeholder (No Image)</h3>
+          <Title as="h3" size="5">Placeholder (No Image)</Title>
           <div className={row}>
             <Avatar placeholder>AB</Avatar>
             <Avatar placeholder size="lg">CD</Avatar>
@@ -78,7 +75,7 @@ export default {
         </section>
 
         <section className={section}>
-          <h3 className={heading}>Avatar Group</h3>
+          <Title as="h3" size="5">Avatar Group</Title>
           <AvatarGroup>
             <Avatar src="https://i.pravatar.cc/150?u=1" />
             <Avatar src="https://i.pravatar.cc/150?u=2" />
@@ -88,12 +85,12 @@ export default {
         </section>
 
         <section>
-          <h2 className={sectionTitle}>{t('common.usage')}</h2>
+          <Title as="h2" size="3">{t('common.usage')}</Title>
           <CodeExample code={usageCode} />
         </section>
 
         <section>
-          <h2 className={sectionTitle}>{t('common.classReference')}</h2>
+          <Title as="h2" size="3">{t('common.classReference')}</Title>
           <ClassTable rows={classRows} />
         </section>
       </div>

@@ -1,12 +1,10 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { RatingGroup, Rating } from '../../../src/index.js'
+import { Stack, Title, RatingGroup, Rating } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
-const stack = css({ display: 'flex', flexDirection: 'column', gap: '2rem' })
-const sectionTitle = css({ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem', marginTop: '2rem' })
 const row = css({ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'center' })
 const heading = css({ fontSize: '0.875rem', fontWeight: '600', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em', opacity: 0.5 })
 
@@ -23,19 +21,19 @@ export default {
 
   view() {
     return (
-      <div className={stack}>
-        <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>RatingGroup</h1>
+      <Stack gap="lg">
+        <Title as="h1" size="2">RatingGroup</Title>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
           {t('paragraph')}
         </p>
 
         <section>
-          <h2 className={sectionTitle}>{t('common.usage')}</h2>
+          <Title as="h2" size="3">{t('common.usage')}</Title>
           <CodeExample code={usageCode} language="jsx" />
         </section>
 
         <section>
-          <h2 className={sectionTitle}>Basic</h2>
+          <Title as="h2" size="3">Basic</Title>
           <h4 className={heading}>Wrap Rating with a label that shows the value</h4>
           <div className={row}>
             <RatingGroup label="Score" defaultValue={3} />
@@ -44,7 +42,7 @@ export default {
         </section>
 
         <section>
-          <h2 className={sectionTitle}>Readonly</h2>
+          <Title as="h2" size="3">Readonly</Title>
           <h4 className={heading}>Display-only: no interaction, label with score</h4>
           <div className={row}>
             <RatingGroup label="Rating" value={4} readonly />
@@ -53,7 +51,7 @@ export default {
         </section>
 
         <section>
-          <h2 className={sectionTitle}>Colors</h2>
+          <Title as="h2" size="3">Colors</Title>
           <div className={row}>
             <RatingGroup label="Default" defaultValue={3} />
             <RatingGroup label="Primary" defaultValue={3} color="primary" />
@@ -63,7 +61,7 @@ export default {
         </section>
 
         <section>
-          <h2 className={sectionTitle}>Sizes</h2>
+          <Title as="h2" size="3">Sizes</Title>
           <div className={row}>
             <RatingGroup label="xs" defaultValue={3} size="xs" />
             <RatingGroup label="sm" defaultValue={3} size="sm" />
@@ -74,7 +72,7 @@ export default {
         </section>
 
         <section>
-          <h2 className={sectionTitle}>Hide value</h2>
+          <Title as="h2" size="3">Hide value</Title>
           <h4 className={heading}>showValue={'{false}'} — label only, no numeric display</h4>
           <div className={row}>
             <RatingGroup label="Overall" defaultValue={4} showValue={false} />
@@ -82,7 +80,7 @@ export default {
         </section>
 
         <section>
-          <h2 className={sectionTitle}>With standalone Rating</h2>
+          <Title as="h2" size="3">With standalone Rating</Title>
           <h4 className={heading}>Compare: Rating (no label) vs RatingGroup (with label)</h4>
           <div className={row}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
@@ -97,7 +95,7 @@ export default {
         </section>
 
         <section>
-          <h2 className={sectionTitle}>{t('common.classReference')}</h2>
+          <Title as="h2" size="3">{t('common.classReference')}</Title>
           <ClassTable rows={classRows} />
         </section>
       </div>

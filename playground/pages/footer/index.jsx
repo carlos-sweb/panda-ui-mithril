@@ -1,13 +1,10 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Footer, FooterTitle, Link } from '../../../src/index.js'
+import { Stack, Title, Footer, FooterTitle, Link } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
-const stack = css({ display: 'flex', flexDirection: 'column', gap: '1.5rem' })
-const sectionTitle = css({ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem', marginTop: '2rem' })
-const heading = css({ fontSize: '0.875rem', fontWeight: '600', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em', opacity: 0.5 })
 const section = css({ marginBottom: '2rem' })
 const surface = css({ background: 'token(colors.base-200)', padding: '2.5rem', borderRadius: 'var(--radius-box)' })
 
@@ -40,14 +37,14 @@ export default {
   oninit() { loadPageI18n('footer') },
   view() {
     return (
-      <div className={stack}>
-        <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>Footer</h1>
+      <Stack gap="lg">
+        <Title as="h1" size="2">Footer</Title>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
           {t('paragraph')}
         </p>
 
         <section className={section}>
-          <h3 className={heading}>Columns</h3>
+          <Title as="h3" size="5">Columns</Title>
           <Footer horizontal className={surface}>
             <div>
               <FooterTitle>Services</FooterTitle>
@@ -70,7 +67,7 @@ export default {
         </section>
 
         <section className={section}>
-          <h3 className={heading}>Centered</h3>
+          <Title as="h3" size="5">Centered</Title>
           <Footer center className={surface}>
             <div>
               <FooterTitle>panda-ui-mithril</FooterTitle>
@@ -84,12 +81,12 @@ export default {
         </section>
 
         <section>
-          <h2 className={sectionTitle}>{t('common.usage')}</h2>
+          <Title as="h2" size="3">{t('common.usage')}</Title>
           <CodeExample code={usageCode} />
         </section>
 
         <section>
-          <h2 className={sectionTitle}>{t('common.classReference')}</h2>
+          <Title as="h2" size="3">{t('common.classReference')}</Title>
           <ClassTable rows={classRows} />
         </section>
       </div>
