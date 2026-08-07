@@ -6,7 +6,6 @@ import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
 const stack = css({ display: 'flex', flexDirection: 'column', gap: '2rem' })
-const st = css({ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem', marginTop: '2rem' })
 
 const usageCode = `<Columns gap="md">
   <Column width={4}><div>Sidebar</div></Column>
@@ -28,29 +27,29 @@ export default {
   oninit() { loadPageI18n('columns') },
   view() {
     return (<div className={stack}>
-      <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>Columns</h1>
+      <Title as="h1" size="2">Columns</Title>
       <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>{t('paragraph')}</p>
-      <section><h2 className={st}>{t('common.usage')}</h2><CodeExample code={usageCode} language="jsx" /></section>
-      <section><h2 className={st}>Equal width</h2>
+      <section><Title as="h2" size="3">{t('common.usage')}</Title><CodeExample code={usageCode} language="jsx" /></section>
+      <section><Title as="h2" size="3">Equal width</Title>
         <Columns gap="md">
           <Column><div className={cell}>Col 1</div></Column>
           <Column><div className={cell}>Col 2</div></Column>
           <Column><div className={cell}>Col 3</div></Column>
         </Columns>
       </section>
-      <section><h2 className={st}>Fixed widths (4+8)</h2>
+      <section><Title as="h2" size="3">Fixed widths (4+8)</Title>
         <Columns gap="md">
           <Column width={4}><div className={cell}>4/12</div></Column>
           <Column width={8}><div className={cell}>8/12</div></Column>
         </Columns>
       </section>
-      <section><h2 className={st}>Narrow column</h2>
+      <section><Title as="h2" size="3">Narrow column</Title>
         <Columns gap="md">
           <Column narrow><div className={cell}>Auto</div></Column>
           <Column><div className={cell}>Fills rest</div></Column>
         </Columns>
       </section>
-      <section><h2 className={st}>{t('common.classReference')}</h2><ClassTable rows={classRows} /></section>
+      <section><Title as="h2" size="3">{t('common.classReference')}</Title><ClassTable rows={classRows} /></section>
     </div>)
   }
 }

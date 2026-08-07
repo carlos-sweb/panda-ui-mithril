@@ -7,7 +7,6 @@ import { ClassTable } from '../../components/ClassTable.jsx'
 
 const stack = css({ display: 'flex', flexDirection: 'column', gap: '1.5rem' })
 const sectionTitle = css({ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem', marginTop: '2rem' })
-const heading = css({ fontSize: '0.875rem', fontWeight: '600', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em', opacity: 0.5 })
 const section = css({ marginBottom: '2rem' })
 const big = css({ fontFamily: 'var(--fonts-mono, monospace)', fontSize: '3.5rem' })
 const clock = css({ display: 'flex', alignItems: 'center', gap: '0.5rem' })
@@ -46,18 +45,18 @@ export default {
 
     return (
       <div className={stack}>
-        <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>Countdown</h1>
+        <Title as="h1" size="2">Countdown</Title>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
           {t('paragraph')}
         </p>
 
         <section className={section}>
-          <h3 className={heading}>Live (ticking)</h3>
+          <Title as="h3" size="5">Live (ticking)</Title>
           <Countdown value={seconds} className={big} />
         </section>
 
         <section className={section}>
-          <h3 className={heading}>Clock layout (hh:mm:ss)</h3>
+          <Title as="h3" size="5">Clock layout (hh:mm:ss)</Title>
           <div className={clock}>
             <div className={clockUnit}><Countdown value={hours} digits={2} className={big} /><span className={clockLabel}>hours</span></div>
             <span className={big}>:</span>

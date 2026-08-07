@@ -55,7 +55,7 @@ export default {
   view() {
     return (
       <div className={stack}>
-        <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>Toast</h1>
+        <Title as="h1" size="2">Toast</h1>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
           {t('paragraph')}
         </p>

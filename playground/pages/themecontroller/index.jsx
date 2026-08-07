@@ -9,7 +9,6 @@ import { ClassTable } from '../../components/ClassTable.jsx'
 const row = css({ display: 'flex', gap: '1.5rem', flexWrap: 'wrap', alignItems: 'center' })
 const stack = css({ display: 'flex', flexDirection: 'column', gap: '1.5rem' })
 const sectionTitle = css({ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem', marginTop: '2rem' })
-const heading = css({ fontSize: '0.875rem', fontWeight: '600', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em', opacity: 0.5 })
 const section = css({ marginBottom: '2rem' })
 const label = css({ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' })
 
@@ -48,13 +47,13 @@ export default {
 
     return (
       <div className={stack}>
-        <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>ThemeController</h1>
+        <Title as="h1" size="2">ThemeController</h1>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
           {t('paragraph')}
         </p>
 
         <section className={section}>
-          <h3 className={heading}>As a toggle</h3>
+          <Title as="h3" size="5">As a toggle</Title>
           <div className={row}>
             <label className={label}>
               <ThemeController theme="dark" checked={isDark} onchange={change} />
@@ -64,7 +63,7 @@ export default {
         </section>
 
         <section className={section}>
-          <h3 className={heading}>As a checkbox</h3>
+          <Title as="h3" size="5">As a checkbox</Title>
           <div className={row}>
             <label className={label}>
               <ThemeController variant="checkbox" theme="dark" checked={isDark} onchange={change} color="primary" />
@@ -74,7 +73,7 @@ export default {
         </section>
 
         <section className={section}>
-          <h3 className={heading}>As a swap (sun/moon)</h3>
+          <Title as="h3" size="5">As a swap (sun/moon)</Title>
           <div className={row}>
             <Swap
               style="rotate"

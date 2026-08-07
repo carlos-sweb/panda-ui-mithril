@@ -31,7 +31,7 @@ export default {
   view() {
     return (
       <div className={stack}>
-        <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>Progress</h1>
+        <Title as="h1" size="2">Progress</Title>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
           {t('paragraph')}
         </p>

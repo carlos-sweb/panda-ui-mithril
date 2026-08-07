@@ -38,7 +38,7 @@ export default {
   view() {
     return (
       <div>
-        <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>Swap</h1>
+        <Title as="h1" size="2">Swap</h1>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
           {t('paragraph')}
         </p>
@@ -57,8 +57,8 @@ export default {
           way you'd pass text.
         </p>
 
-        <h3 className={sectionTitle}>Sizes</h3>
-        <h4 className={heading}>XS · SM · MD · LG · XL</h4>
+        <Title as="h3" size="4">Sizes</Title>
+        <Title as="h4" size="6">XS · SM · MD · LG · XL</Title>
         <div className={row}>
           <Swap size="xs" on="XS" off="XS" style="flip" />
           <Swap size="sm" on="SM" off="SM" style="flip" />
@@ -68,12 +68,12 @@ export default {
         </div>
 
         <section>
-          <h2 className={sectionTitle}>{t('common.usage')}</h2>
+          <Title as="h2" size="3">{t('common.usage')}</Title>
           <CodeExample code={usageCode} />
         </section>
 
         <section>
-          <h2 className={sectionTitle}>{t('common.classReference')}</h2>
+          <Title as="h2" size="3">{t('common.classReference')}</Title>
           <ClassTable rows={classRows} />
         </section>
       </div>

@@ -24,19 +24,19 @@ export default {
   view() {
     return (
       <div className={stack}>
-        <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>RatingGroup</h1>
+        <Title as="h1" size="2">RatingGroup</h1>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
           {t('paragraph')}
         </p>
 
         <section>
-          <h2 className={sectionTitle}>{t('common.usage')}</h2>
+          <Title as="h2" size="3">{t('common.usage')}</Title>
           <CodeExample code={usageCode} language="jsx" />
         </section>
 
         <section>
-          <h2 className={sectionTitle}>Basic</h2>
-          <h4 className={heading}>Wrap Rating with a label that shows the value</h4>
+          <Title as="h2" size="3">Basic</Title>
+          <Title as="h4" size="6">Wrap Rating with a label that shows the value</Title>
           <div className={row}>
             <RatingGroup label="Score" defaultValue={3} />
             <RatingGroup label="Quality" defaultValue={4} color="secondary" size="lg" />
@@ -44,8 +44,8 @@ export default {
         </section>
 
         <section>
-          <h2 className={sectionTitle}>Readonly</h2>
-          <h4 className={heading}>Display-only: no interaction, label with score</h4>
+          <Title as="h2" size="3">Readonly</Title>
+          <Title as="h4" size="6">Display-only: no interaction, label with score</Title>
           <div className={row}>
             <RatingGroup label="Rating" value={4} readonly />
             <RatingGroup label="Performance" value={2} readonly color="info" />
@@ -53,7 +53,7 @@ export default {
         </section>
 
         <section>
-          <h2 className={sectionTitle}>Colors</h2>
+          <Title as="h2" size="3">Colors</Title>
           <div className={row}>
             <RatingGroup label="Default" defaultValue={3} />
             <RatingGroup label="Primary" defaultValue={3} color="primary" />
@@ -63,7 +63,7 @@ export default {
         </section>
 
         <section>
-          <h2 className={sectionTitle}>Sizes</h2>
+          <Title as="h2" size="3">Sizes</Title>
           <div className={row}>
             <RatingGroup label="xs" defaultValue={3} size="xs" />
             <RatingGroup label="sm" defaultValue={3} size="sm" />
@@ -74,16 +74,16 @@ export default {
         </section>
 
         <section>
-          <h2 className={sectionTitle}>Hide value</h2>
-          <h4 className={heading}>showValue={'{false}'} — label only, no numeric display</h4>
+          <Title as="h2" size="3">Hide value</Title>
+          <Title as="h4" size="6">showValue={'{false}'} — label only, no numeric display</Title>
           <div className={row}>
             <RatingGroup label="Overall" defaultValue={4} showValue={false} />
           </div>
         </section>
 
         <section>
-          <h2 className={sectionTitle}>With standalone Rating</h2>
-          <h4 className={heading}>Compare: Rating (no label) vs RatingGroup (with label)</h4>
+          <Title as="h2" size="3">With standalone Rating</Title>
+          <Title as="h4" size="6">Compare: Rating (no label) vs RatingGroup (with label)</Title>
           <div className={row}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
               <span className={heading}>Rating</span>
@@ -97,7 +97,7 @@ export default {
         </section>
 
         <section>
-          <h2 className={sectionTitle}>{t('common.classReference')}</h2>
+          <Title as="h2" size="3">{t('common.classReference')}</Title>
           <ClassTable rows={classRows} />
         </section>
       </div>

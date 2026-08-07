@@ -7,7 +7,6 @@ import { ClassTable } from '../../components/ClassTable.jsx'
 
 const stack = css({ display: 'flex', flexDirection: 'column', gap: '1.5rem' })
 const sectionTitle = css({ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem', marginTop: '2rem' })
-const heading = css({ fontSize: '0.875rem', fontWeight: '600', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em', opacity: 0.5 })
 const section = css({ marginBottom: '2rem' })
 const surface = css({ background: 'token(colors.base-200)', borderRadius: 'var(--radius-box)' })
 
@@ -44,13 +43,13 @@ export default {
   view() {
     return (
       <div className={stack}>
-        <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>Menu</h1>
+        <Title as="h1" size="2">Menu</Title>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
           {t('paragraph')}
         </p>
 
         <section className={section}>
-          <h3 className={heading}>Vertical (default)</h3>
+          <Title as="h3" size="5">Vertical (default)</Title>
           <Menu className={surface}>
             <MenuItem active>Dashboard</MenuItem>
             <MenuItem>Settings</MenuItem>
@@ -61,7 +60,7 @@ export default {
         </section>
 
         <section className={section}>
-          <h3 className={heading}>Horizontal</h3>
+          <Title as="h3" size="5">Horizontal</Title>
           <Menu horizontal className={surface}>
             <MenuItem active>Home</MenuItem>
             <MenuItem>Docs</MenuItem>

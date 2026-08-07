@@ -8,7 +8,6 @@ import { ClassTable } from '../../components/ClassTable.jsx'
 
 const stack = css({ display: 'flex', flexDirection: 'column', gap: '1.5rem' })
 const sectionTitle = css({ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem', marginTop: '2rem' })
-const heading = css({ fontSize: '0.875rem', fontWeight: '600', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em', opacity: 0.5 })
 const section = css({ marginBottom: '2rem' })
 const shadow = css({ boxShadow: '0 1px 3px color-mix(in oklab, black 15%, transparent)' })
 
@@ -42,13 +41,13 @@ export default {
   view() {
     return (
       <div className={stack}>
-        <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>Stats</h1>
+        <Title as="h1" size="2">Stats</Title>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
           {t('paragraph')}
         </p>
 
         <section className={section}>
-          <h3 className={heading}>With figures & actions</h3>
+          <Title as="h3" size="5">With figures & actions</Title>
           <Stats className={shadow}>
             <Stat>
               <StatFigure><Wallet size={32} /></StatFigure>
@@ -74,7 +73,7 @@ export default {
         </section>
 
         <section className={section}>
-          <h3 className={heading}>Vertical</h3>
+          <Title as="h3" size="5">Vertical</Title>
           <Stats vertical className={shadow}>
             <Stat>
               <StatTitle>Total Downloads</StatTitle>

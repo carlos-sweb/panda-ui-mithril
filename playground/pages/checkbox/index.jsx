@@ -6,7 +6,6 @@ import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
 const section = css({ marginBottom: '2rem' })
-const heading = css({ fontSize: '0.875rem', fontWeight: '600', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em', opacity: 0.5 })
 const row = css({ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', alignItems: 'center' })
 const stack = css({ display: 'flex', flexDirection: 'column', gap: '1.5rem' })
 const sectionTitle = css({ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem' })
@@ -40,13 +39,13 @@ export default {
   view() {
     return (
       <div className={stack}>
-        <h1 className={css({ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' })}>Checkbox</h1>
+        <Title as="h1" size="2">Checkbox</Title>
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
           {t('paragraph')}
         </p>
 
         <section className={section}>
-          <h3 className={heading}>Colors</h3>
+          <Title as="h3" size="5">Colors</Title>
           <div className={row}>
             <Checkbox />
             <Checkbox checked />
@@ -57,7 +56,7 @@ export default {
         </section>
 
         <section className={section}>
-          <h3 className={heading}>Sizes</h3>
+          <Title as="h3" size="5">Sizes</Title>
           <div className={row}>
             <Checkbox size="xs" checked />
             <Checkbox size="sm" checked />
