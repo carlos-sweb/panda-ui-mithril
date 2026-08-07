@@ -5,9 +5,12 @@ export const grid = sva({
   base: {
     root: {
       display: 'grid',
-      gap: 'token(spacing.4)',
-      '@media (max-width: 768px)': {
-        gridTemplateColumns: '1fr',
+      gridTemplateColumns: '1fr',
+      gap: 'token(spacing.2)',
+      '@media (min-width: 640px)': { gap: 'token(spacing.3)' },
+      '@media (min-width: 768px)': {
+        gap: 'token(spacing.4)',
+        gridTemplateColumns: 'repeat(1, 1fr)',
       },
     },
     cell: {
@@ -16,17 +19,48 @@ export const grid = sva({
   },
   variants: {
     cols: {
-      '1': { root: { gridTemplateColumns: 'repeat(1, 1fr)' } },
-      '2': { root: { gridTemplateColumns: 'repeat(2, 1fr)' } },
-      '3': { root: { gridTemplateColumns: 'repeat(3, 1fr)' } },
-      '4': { root: { gridTemplateColumns: 'repeat(4, 1fr)' } },
-      '6': { root: { gridTemplateColumns: 'repeat(6, 1fr)' } },
-      '12': { root: { gridTemplateColumns: 'repeat(12, 1fr)' } },
+      '1': {},
+      '2': {
+        root: {
+          '@media (min-width: 768px)': { gridTemplateColumns: 'repeat(2, 1fr)' },
+        },
+      },
+      '3': {
+        root: {
+          '@media (min-width: 768px)': { gridTemplateColumns: 'repeat(3, 1fr)' },
+        },
+      },
+      '4': {
+        root: {
+          '@media (min-width: 768px)': { gridTemplateColumns: 'repeat(4, 1fr)' },
+        },
+      },
+      '6': {
+        root: {
+          '@media (min-width: 768px)': { gridTemplateColumns: 'repeat(6, 1fr)' },
+        },
+      },
+      '12': {
+        root: {
+          '@media (min-width: 768px)': { gridTemplateColumns: 'repeat(12, 1fr)' },
+        },
+      },
     },
     gap: {
-      sm: { root: { gap: 'token(spacing.2)' } },
-      md: { root: { gap: 'token(spacing.4)' } },
-      lg: { root: { gap: 'token(spacing.6)' } },
+      sm: {
+        root: {
+          gap: 'token(spacing.1)',
+          '@media (min-width: 640px)': { gap: 'token(spacing.2)' },
+        },
+      },
+      md: {},
+      lg: {
+        root: {
+          gap: 'token(spacing.3)',
+          '@media (min-width: 640px)': { gap: 'token(spacing.5)' },
+          '@media (min-width: 1024px)': { gap: 'token(spacing.6)' },
+        },
+      },
     },
     span: {
       '1': { cell: { gridColumn: 'span 1' } },

@@ -5,10 +5,12 @@ export const columns = sva({
   base: {
     root: {
       display: 'flex',
+      flexDirection: 'column',
       flexWrap: 'wrap',
-      gap: 'token(spacing.4)',
-      '@media (max-width: 768px)': {
-        flexDirection: 'column',
+      gap: 'token(spacing.2)',
+      '@media (min-width: 768px)': {
+        flexDirection: 'row',
+        gap: 'token(spacing.4)',
       },
     },
     column: {
@@ -18,12 +20,22 @@ export const columns = sva({
   },
   variants: {
     gap: {
-      sm: { root: { gap: 'token(spacing.2)' } },
-      md: { root: { gap: 'token(spacing.4)' } },
-      lg: { root: { gap: 'token(spacing.6)' } },
+      sm: {
+        root: {
+          gap: 'token(spacing.1)',
+          '@media (min-width: 768px)': { gap: 'token(spacing.2)' },
+        },
+      },
+      md: {},
+      lg: {
+        root: {
+          gap: 'token(spacing.3)',
+          '@media (min-width: 768px)': { gap: 'token(spacing.6)' },
+        },
+      },
     },
     vertical: {
-      true: { root: { flexDirection: 'column', '@media (max-width: 768px)': { flexDirection: 'column' } } },
+      true: { root: { flexDirection: 'column' } },
     },
     centered: {
       true: { column: { alignItems: 'center' } },

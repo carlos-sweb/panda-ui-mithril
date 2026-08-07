@@ -27,25 +27,6 @@ const brand = css({
   color: 'token(colors.base-content)',
 })
 
-const searchBtn = css({
-  display: { base: 'none', md: 'flex' },
-  alignItems: 'center',
-  gap: '0.5rem',
-  padding: '0.5rem 1rem',
-  borderRadius: '0.5rem',
-  fontSize: '0.875rem',
-  background: 'token(colors.base-100)',
-  border: '1px solid',
-  borderColor: 'token(colors.base-300)',
-  color: 'token(colors.base-content)',
-  opacity: 0.7,
-  cursor: 'pointer',
-  transition: 'all 0.15s',
-  width: '100%',
-  maxWidth: '400px',
-  _hover: { opacity: 1, borderColor: 'token(colors.base-content/20)' },
-})
-
 const themeLabel = css({
   display: 'flex',
   alignItems: 'center',
@@ -88,11 +69,12 @@ export const Navbar = {
             <Search size={18} />
           </Button>
 
-          <button className={`${searchBtn} width-150px`} onclick={onSearchOpen}>
+          
+          <Button onclick={onSearchOpen} >
             <Search size={16} className={css({ opacity: 0.5 })} />
-            <span>{t('common.searchPlaceholder')}</span>
+            <span>{t('common.searchPlaceholder')}&nbsp;&nbsp;&nbsp;</span>
             <Kbd size="sm" className={css({ marginLeft: 'auto' })}>⌘K</Kbd>
-          </button>
+          </Button>
         </NavbarCenter>
 
         <NavbarEnd className={css({ gap: '0.25rem' })} style={{ width: 'auto' }}>
