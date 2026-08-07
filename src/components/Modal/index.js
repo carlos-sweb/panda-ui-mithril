@@ -112,16 +112,25 @@ export const Modal = {
     if (describedby) ariaProps['aria-describedby'] = describedby
 
     const children = buttonClose
-      ? [...(Array.isArray(vnode.children) ? vnode.children : [vnode.children]),
-         m('form', { method: 'dialog', className: css({
-           position: 'absolute',
-           top: '0.75rem',
-           insetInlineEnd: '0.75rem',
-           zIndex: '1',
-         })},
-           m(ButtonClose)
-         )
-        ]
+      ? (Array.isArray(vnode.children) ? vnode.children : [vnode.children]).map((child) => {
+          // Inject ButtonClose form into the first ModalBox child
+          if (child && child.tag === ModalBox && !child._buttonCloseInjected) {
+            child._buttonCloseInjected = true
+            const boxChildren = Array.isArray(child.children) ? [...child.children] : [child.children]
+            boxChildren.push(
+              m('form', { method: 'dialog', className: css({
+                position: 'absolute',
+                top: '0.75rem',
+                insetInlineEnd: '0.75rem',
+                zIndex: '1',
+              })},
+                m(ButtonClose)
+              )
+            )
+            return m(ModalBox, child.attrs, boxChildren)
+          }
+          return child
+        })
       : vnode.children
 
     return m('dialog', {
