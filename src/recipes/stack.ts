@@ -2,55 +2,57 @@ import { cva } from '../../styled-system/css'
 
 export const stackStyles = cva({
   base: {
-    display: 'inline-grid',
-    gridTemplateColumns: '3px 4px 1fr 4px 3px',
-    gridTemplateRows: '3px 4px 1fr 4px 3px',
-
-    '& > *': {
-      height: '100%',
-      width: '100%',
-      '&:nth-child(n+2)': { width: '100%', opacity: '0.7' },
-      '&:nth-child(2)': { zIndex: '2', opacity: '0.9' },
-      '&:nth-child(1)': { zIndex: '3', width: '100%' },
-    },
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 'token(spacing.2)',
+    '@media (min-width: 768px)': { gap: 'token(spacing.3)' },
+    '@media (min-width: 1024px)': { gap: 'token(spacing.4)' },
   },
   variants: {
-    placement: {
-      bottom: {
-        '& > *': {
-          gridColumn: '3 / 4',
-          gridRow: '3 / 6',
-          '&:nth-child(2)': { gridColumn: '2 / 5', gridRow: '2 / 5' },
-          '&:nth-child(1)': { gridColumn: '1 / 6', gridRow: '1 / 4' },
-        },
+    direction: {
+      column: { flexDirection: 'column' },
+      row: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center' },
+    },
+    gap: {
+      xs: {
+        gap: 'token(spacing.1)',
+        '@media (min-width: 768px)': { gap: 'token(spacing.1.5)' },
+        '@media (min-width: 1024px)': { gap: 'token(spacing.2)' },
       },
-      top: {
-        '& > *': {
-          gridColumn: '3 / 4',
-          gridRow: '1 / 4',
-          '&:nth-child(2)': { gridColumn: '2 / 5', gridRow: '2 / 5' },
-          '&:nth-child(1)': { gridColumn: '1 / 6', gridRow: '3 / 6' },
-        },
+      sm: {
+        gap: 'token(spacing.1.5)',
+        '@media (min-width: 768px)': { gap: 'token(spacing.2)' },
+        '@media (min-width: 1024px)': { gap: 'token(spacing.3)' },
       },
-      start: {
-        '& > *': {
-          gridColumn: '1 / 4',
-          gridRow: '3 / 4',
-          '&:nth-child(2)': { gridColumn: '2 / 5', gridRow: '2 / 5' },
-          '&:nth-child(1)': { gridColumn: '3 / 6', gridRow: '1 / 6' },
-        },
+      md: {},
+      lg: {
+        gap: 'token(spacing.3)',
+        '@media (min-width: 768px)': { gap: 'token(spacing.5)' },
+        '@media (min-width: 1024px)': { gap: 'token(spacing.6)' },
       },
-      end: {
-        '& > *': {
-          gridColumn: '3 / 6',
-          gridRow: '3 / 4',
-          '&:nth-child(2)': { gridColumn: '2 / 5', gridRow: '2 / 5' },
-          '&:nth-child(1)': { gridColumn: '1 / 4', gridRow: '1 / 6' },
-        },
+      xl: {
+        gap: 'token(spacing.4)',
+        '@media (min-width: 768px)': { gap: 'token(spacing.6)' },
+        '@media (min-width: 1024px)': { gap: 'token(spacing.8)' },
       },
+    },
+    align: {
+      start: { alignItems: 'flex-start' },
+      center: { alignItems: 'center' },
+      end: { alignItems: 'flex-end' },
+      stretch: { alignItems: 'stretch' },
+    },
+    justify: {
+      start: { justifyContent: 'flex-start' },
+      center: { justifyContent: 'center' },
+      end: { justifyContent: 'flex-end' },
+      between: { justifyContent: 'space-between' },
+      around: { justifyContent: 'space-around' },
     },
   },
   defaultVariants: {
-    placement: 'bottom',
+    direction: 'column',
+    gap: 'md',
+    align: 'stretch',
   },
 })

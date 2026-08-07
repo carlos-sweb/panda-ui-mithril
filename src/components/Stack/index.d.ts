@@ -1,9 +1,15 @@
-import { Component, Vnode } from 'mithril'
+import { Component } from 'mithril'
 import { ComponentAttrs } from '../../types'
 
 export interface StackAttrs extends ComponentAttrs {
-  placement?: 'top' | 'bottom' | 'start' | 'end'
-  children?: Vnode | Vnode[] | string | null
+  /** Stack direction. Default: column (vertical). Use 'row' for horizontal. */
+  direction?: 'column' | 'row'
+  /** Gap between children. Scales with viewport. Default: md. */
+  gap?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+  /** Cross-axis alignment. Default: stretch. */
+  align?: 'start' | 'center' | 'end' | 'stretch'
+  /** Main-axis justification. */
+  justify?: 'start' | 'center' | 'end' | 'between' | 'around'
   [key: string]: unknown
 }
 

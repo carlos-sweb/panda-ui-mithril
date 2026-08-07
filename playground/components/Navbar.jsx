@@ -59,17 +59,7 @@ export const Navbar = {
           </a>
         </NavbarStart>
 
-        <NavbarCenter className={css({ display: 'flex', justifyContent: 'center' })} style={{ width: 'auto' }}>
-          <Button
-            variant="ghost"
-            square
-            className={css({ display: { base: 'inline-flex', md: 'none' } })}
-            onclick={onSearchOpen}
-          >
-            <Search size={18} />
-          </Button>
-
-          
+        <NavbarCenter className={css({ display: 'flex', justifyContent: 'center' })} style={{ width: 'auto' }}>                    
           <Button onclick={onSearchOpen} >
             <Search size={16} className={css({ opacity: 0.5 })} />
             <span>{t('common.searchPlaceholder')}&nbsp;&nbsp;&nbsp;</span>

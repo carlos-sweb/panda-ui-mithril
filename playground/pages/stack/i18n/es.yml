@@ -1,1 +1,1 @@
-paragraph: Componente de pila para diseño vertical con espaciado consistente.
+paragraph: Stack apila hijos vertical u horizontalmente con un gap configurable y responsive. Inspirado en MUI/Chakra/Primer Stack — contenedor flex simple, no tarjetas superpuestas.

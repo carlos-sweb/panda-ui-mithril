@@ -3,23 +3,18 @@ import { stackStyles } from '../../recipes/stack'
 import { cx } from '../../utils/cx'
 
 /**
- * Componente Stack. Apila capas superpuestas; `placement` controla hacia
- * dónde se desplaza cada capa (top, bottom, start, end).
+ * Stack — apila hijos vertical u horizontalmente con gap configurable
+ * y responsive. Inspirado en MUI/Chakra/Primer Stack.
  *
  * @type {import('mithril').Component<import('./index').StackAttrs>}
  */
 export const Stack = {
   view(vnode) {
-    const { placement, className, ...rest } = vnode.attrs
+    const { direction, gap, align, justify, className, ...rest } = vnode.attrs
 
     return m('div', {
-      className: cx(
-        'stack',
-        placement && `stack-${placement}`,
-        stackStyles({ placement }),
-        className
-      ),
-      ...rest
+      className: cx('stack', stackStyles({ direction, gap, align, justify }), className),
+      ...rest,
     }, vnode.children)
   }
 }

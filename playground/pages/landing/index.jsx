@@ -3,10 +3,12 @@ import { css } from '../../../styled-system/css'
 import {
   Button, Badge, Card, CardBody, CardTitle, Alert, TextInput, Toggle, Checkbox, Radio,
   Progress, Loading, Hero, HeroContent, Stats, Stat, StatTitle, StatValue, StatDesc,
-  Tabs, Tab, TabContent,
+  Tabs, Tab, TabContent,Title , Block
 } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { t, loadPageI18n } from '../../i18n/index.js'
+
+import logo from './../../favicon-64.png'
 
 const heroSection = css({
   background: 'token(colors.base-200)',
@@ -78,10 +80,11 @@ export const Landing = {
         <Hero className={heroSection}>
           <HeroContent className={css({ flexDirection: 'column', textAlign: 'center', padding: '4rem 2rem' })}>
             <Badge color="primary" variant="soft" className={css({ marginBottom: '1rem' })}>{t('componentsCount')}</Badge>
-            <h1 className={css({ fontSize: '2.75rem', fontWeight: '800', marginBottom: '1rem', letterSpacing: '-0.02em' })}>PUM</h1>
+            <img src="favicon-64.png" />
+            <Title >PUM</Title> 
             <p className={css({ fontSize: '1.125rem', color: 'token(colors.base-content)', opacity: 0.6, maxWidth: '600px', margin: '0 auto 2rem' })}>
               {t('hero')}
-            </p>
+            </p>            
             <div className={css({ display: 'flex', gap: '0.75rem', justifyContent: 'center', flexWrap: 'wrap' })}>
               <Button color="primary" size="lg" href="#quick-start">Get Started</Button>
               <Button variant="outline" size="lg" onclick={() => window.open('https://github.com/carlos-sweb/panda-ui-mithril', '_blank')}>GitHub</Button>
