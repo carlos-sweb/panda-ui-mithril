@@ -24,7 +24,8 @@
     "build:lib": "bun run scripts/build-lib.ts",
     "typecheck": "tsc --noEmit --project tsconfig.lib.json",
     "test": "bun test",
-    "prepublishOnly": "bun run build:lib"
+    "prepublishOnly": "bun run build:lib",
+    "push": "bun run build && git push"
   },
   "peerDependencies": {
     "mithril": ">=2.3.8"
