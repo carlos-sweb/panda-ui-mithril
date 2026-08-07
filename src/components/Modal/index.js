@@ -1,6 +1,7 @@
 import m from 'mithril'
 import { modal } from '../../recipes/modal'
 import { cx } from '../../utils/cx'
+import { css } from '../../../styled-system/css'
 import { ButtonClose } from '../ButtonClose/index.js'
 
 // Slightly above the 0.2s exit animation — safety net so the dialog never
@@ -112,10 +113,13 @@ export const Modal = {
 
     const children = buttonClose
       ? [...(Array.isArray(vnode.children) ? vnode.children : [vnode.children]),
-         m('div', { className: cx('modal-action', defaultStyles.action) },
-           m('form', { method: 'dialog' },
-             m(ButtonClose)
-           )
+         m('form', { method: 'dialog', className: css({
+           position: 'absolute',
+           top: '0.75rem',
+           insetInlineEnd: '0.75rem',
+           zIndex: '1',
+         })},
+           m(ButtonClose)
          )
         ]
       : vnode.children
