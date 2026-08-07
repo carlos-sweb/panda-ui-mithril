@@ -7,8 +7,8 @@ import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
 const stack = css({ display: 'flex', flexDirection: 'column', gap: '1.5rem' })
-const sectionTitle = css({ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem', marginTop: '2rem' })
- filled/empty states via recipe' },
+const classRows = [
+  { className: 'rating-star', prop: '(internal)', type: 'Part', description: 'Each star is a lucide Star icon; filled/empty states via recipe' },
   { className: 'rating-xs', prop: 'size="xs"', type: 'Size', description: 'Extra small size' },
   { className: 'rating-sm', prop: 'size="sm"', type: 'Size', description: 'Small size' },
   { className: 'rating-md', prop: 'size="md" (default)', type: 'Size', description: 'Medium size', isDefault: true },
