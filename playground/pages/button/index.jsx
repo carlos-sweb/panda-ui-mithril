@@ -53,28 +53,25 @@ export default {
   view() {
     return (
       <Stack gap="lg">
-        <Title as="h1" size="2">Button</Title>        
+        <Title as="h1" size="1">Button</Title>        
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
           {t('paragraph')}
         </p>
-
-        <section>
-          <Title as="h3" size="5">Default</Title>
-          <div className={row}>
-            <Button>Default</Button>
-          </div>
-        </section>
-
-        <section className={section}>
-          <Title as="h3" size="5">Sizes</Title>
-          <div className={row}>
-            <Button size="xs">XS</Button>
-            <Button size="sm">SM</Button>
-            <Button size="md">MD</Button>
-            <Button size="lg">LG</Button>
-            <Button size="xl">XL</Button>
-          </div>
-        </section>
+        <Title as="h3" size="5">Default</Title>
+        <Stack direction="row" >
+          <Button>Default</Button>
+        </Stack>
+        <Title as="h3" size="5">Sizes</Title>
+        <Stack gap="xs" direction="row" align="center">
+          <Button size="xs">XS</Button>
+          <Button size="sm">SM</Button>
+          <Button size="md">MD</Button>
+          <Button size="lg">LG</Button>
+          <Button size="xl">XL</Button>
+        </Stack>
+        
+        
+        
 
         <section className={section}>
           <Title as="h3" size="5">Responsive</Title>
@@ -174,77 +171,50 @@ export default {
           </div>
         </section>
 
-        <section className={section}>
-          <Title as="h3" size="5">Wide</Title>
-          <div className={row}>
-            <Button wide>Wide</Button>
-          </div>
-        </section>
 
-        <section className={section}>
+        <Title as="h3" size="5">Wide</Title>        
+          <Stack>
+            <Button wide>Wide</Button>
+          </Stack>                
           <Title as="h3" size="5">Disabled</Title>
-          <div className={row}>
+          <Stack direction="row" gap="xs" >
             <Button disabled>Disabled (attribute)</Button>
             <Button className="btn-disabled">Disabled (class)</Button>
-          </div>
-        </section>
-
-        <section className={section}>
+          </Stack>                
           <Title as="h3" size="5">Square + Circle</Title>
-          <div className={row}>
+          <Stack direction="row" gap="xs" >
             <Button square><Heart size={20} /></Button>
             <Button circle><Heart size={20} /></Button>
-          </div>
-        </section>
-
-        <section className={section}>
-          <Title as="h3" size="5">Border Width</Title>
-          <div className={css({ display: 'flex', flexDirection: 'column', gap: '1rem' })}>
-            <div className={row}>
-              <Button variant="outline" borderWidth={1}>border 1</Button>
+          </Stack>
+        <Title as="h3" size="5">Border Width</Title>        
+        <Stack direction="row" gap="xs">
+          <Button variant="outline" borderWidth={1}>border 1</Button>
               <Button variant="outline" borderWidth={2}>border 2</Button>
               <Button variant="outline" borderWidth={3}>border 3</Button>
-            </div>
-            <div className={row}>
-              <Button variant="dash" borderWidth={1}>border 1</Button>
+        </Stack>
+        <Stack direction="row" gap="xs">
+          <Button variant="dash" borderWidth={1}>border 1</Button>
               <Button variant="dash" borderWidth={2}>border 2</Button>
               <Button variant="dash" borderWidth={3}>border 3</Button>
-            </div>
-          </div>
-        </section>
-
-        <section className={section}>
-          <Title as="h3" size="5">Button with icon</Title>
-          <div className={row}>
-            <Button><Heart size={20} /> Like</Button>
+        </Stack>                
+        <Title as="h3" size="5">Button with icon</Title>        
+        <Stack direction="row" gap="xs">
+          <Button><Heart size={20} /> Like</Button>
             <Button>Like <Heart size={20} /></Button>
-          </div>
-        </section>
-
-        <section className={section}>
-          <Title as="h3" size="5">Block</Title>
-          <div className={row}>
-            <Button block>Block</Button>
-          </div>
-        </section>
-
-        <section className={section}>
-          <Title as="h3" size="5">Loading spinner</Title>
-          <div className={row}>
+        </Stack>        
+        <Title as="h3" size="5">Block</Title>
+        <Stack>
+          <Button block>Block</Button>
+        </Stack>              
+        <Title as="h3" size="5">Loading spinner</Title>
+        <Stack direction="row" gap="xs">
             <Button square><Loading /></Button>
             <Button><Loading /> Loading</Button>
-          </div>
-        </section>
-
-        <section>
-          <Title as="h2" size="3">{t('common.usage')}</Title>
-          <CodeExample code={usageCode} />
-        </section>
-
-        <section>
-          <Title as="h2" size="3">{t('common.classReference')}</Title>
-          <ClassTable rows={classRows} />
-        </section>
+        </Stack>                    
+        <Title as="h2" size="3">{t('common.usage')}</Title>  
+        <CodeExample code={usageCode} />        
+        <Title as="h2" size="3">{t('common.classReference')}</Title>
+        <ClassTable rows={classRows} />        
       </Stack>
     )
   }
