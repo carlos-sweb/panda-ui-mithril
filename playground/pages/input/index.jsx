@@ -1,10 +1,11 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Block, TextInput } from '../../../src/index.js'
+import { Stack, Title, TextInput } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
+const section = css({ marginBottom: '2rem' })
 
 const usageCode = `<TextInput placeholder="Enter text..." />
 <TextInput color="primary" placeholder="Primary input" />
@@ -46,14 +47,14 @@ export default {
         <TextInput color="primary" placeholder="Primary input" />
         <TextInput color="error" placeholder="Error input" />
 
-        <Block spacing="lg" as="section">
+        <section className={section}>
           <Title as="h3" size="5">Sizes</Title>
           <TextInput size="xs" placeholder="XS" />
           <TextInput size="sm" placeholder="SM" />
           <TextInput size="md" placeholder="MD" />
           <TextInput size="lg" placeholder="LG" />
           <TextInput size="xl" placeholder="XL" />
-        </Block>
+        </section>
 
         <section>
           <Title as="h2" size="3">{t('common.usage')}</Title>

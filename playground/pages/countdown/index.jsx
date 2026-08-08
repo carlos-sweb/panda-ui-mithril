@@ -1,10 +1,11 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Block, Countdown } from '../../../src/index.js'
+import { Stack, Title, Countdown } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
+const section = css({ marginBottom: '2rem' })
 const big = css({ fontFamily: 'var(--fonts-mono, monospace)', fontSize: '3.5rem' })
 const clock = css({ display: 'flex', alignItems: 'center', gap: '0.5rem' })
 const clockUnit = css({ display: 'flex', flexDirection: 'column', alignItems: 'center' })
@@ -47,12 +48,12 @@ export default {
           {t('paragraph')}
         </p>
 
-        <Block spacing="lg" as="section">
+        <section className={section}>
           <Title as="h3" size="5">Live (ticking)</Title>
           <Countdown value={seconds} className={big} />
-        </Block>
+        </section>
 
-        <Block spacing="lg" as="section">
+        <section className={section}>
           <Title as="h3" size="5">Clock layout (hh:mm:ss)</Title>
           <div className={clock}>
             <div className={clockUnit}><Countdown value={hours} digits={2} className={big} /><span className={clockLabel}>hours</span></div>
@@ -61,7 +62,7 @@ export default {
             <span className={big}>:</span>
             <div className={clockUnit}><Countdown value={seconds} digits={2} className={big} /><span className={clockLabel}>sec</span></div>
           </div>
-        </Block>
+        </section>
 
         <section>
           <Title as="h2" size="3">{t('common.usage')}</Title>

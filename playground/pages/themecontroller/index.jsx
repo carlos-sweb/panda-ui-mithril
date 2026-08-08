@@ -1,12 +1,13 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Block, ThemeController, Swap } from '../../../src/index.js'
+import { Stack, Title, ThemeController, Swap } from '../../../src/index.js'
 import { Sun, Moon } from 'lucide-mithril'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
 const row = css({ display: 'flex', gap: '1.5rem', flexWrap: 'wrap', alignItems: 'center' })
+const section = css({ marginBottom: '2rem' })
 const label = css({ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' })
 
 const getTheme = () => document.documentElement.getAttribute('data-theme') || 'light'
@@ -49,29 +50,29 @@ export default {
           {t('paragraph')}
         </p>
 
-        <Block spacing="lg" as="section">
+        <section className={section}>
           <Title as="h3" size="5">As a toggle</Title>
-          <Stack direction="row" gap="sm" align="center">
+          <div className={row}>
             <label className={label}>
               <ThemeController theme="dark" checked={isDark} onchange={change} />
               <span>Dark mode</span>
             </label>
-          </Stack>
-        </Block>
+          </div>
+        </section>
 
-        <Block spacing="lg" as="section">
+        <section className={section}>
           <Title as="h3" size="5">As a checkbox</Title>
-          <Stack direction="row" gap="sm" align="center">
+          <div className={row}>
             <label className={label}>
               <ThemeController variant="checkbox" theme="dark" checked={isDark} onchange={change} color="primary" />
               <span>Dark mode</span>
             </label>
-          </Stack>
-        </Block>
+          </div>
+        </section>
 
-        <Block spacing="lg" as="section">
+        <section className={section}>
           <Title as="h3" size="5">As a swap (sun/moon)</Title>
-          <Stack direction="row" gap="sm" align="center">
+          <div className={row}>
             <Swap
               style="rotate"
               checked={isDark}
@@ -79,8 +80,8 @@ export default {
               on={<Moon size={24} />}
               off={<Sun size={24} />}
             />
-          </Stack>
-        </Block>
+          </div>
+        </section>
 
         <section>
           <Title as="h2" size="3">{t('common.usage')}</Title>

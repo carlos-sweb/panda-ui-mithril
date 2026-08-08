@@ -1,10 +1,11 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Block, Status } from '../../../src/index.js'
+import { Stack, Title, Status } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
+const row = css({ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', alignItems: 'center' })
 
 const usageCode = `<Status color="success" />
 <Status color="error" size="lg" />`
@@ -40,7 +41,7 @@ export default {
           {t('paragraph')}
         </p>
 
-        <Stack direction="row" gap="sm" align="center">
+        <div className={row}>
           <Status color="primary" />
           <Status color="secondary" />
           <Status color="accent" />
@@ -48,7 +49,7 @@ export default {
           <Status color="success" />
           <Status color="warning" />
           <Status color="error" />
-        </Stack>
+        </div>
 
         <section>
           <Title as="h2" size="3">{t('common.usage')}</Title>

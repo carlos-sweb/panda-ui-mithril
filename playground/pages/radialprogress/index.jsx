@@ -1,7 +1,7 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Block, RadialProgress } from '../../../src/index.js'
+import { Stack, Title, RadialProgress } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
@@ -27,13 +27,13 @@ export default {
           {t('paragraph')}
         </p>
 
-        <Stack direction="row" gap="sm" align="center">
+        <div className={row}>
           <RadialProgress value={0}>0%</RadialProgress>
           <RadialProgress value={25}>25%</RadialProgress>
           <RadialProgress value={50}>50%</RadialProgress>
           <RadialProgress value={75}>75%</RadialProgress>
           <RadialProgress value={100}>100%</RadialProgress>
-        </Stack>
+        </div>
 
         <section>
           <Title as="h2" size="3">{t('common.usage')}</Title>

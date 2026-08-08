@@ -220,7 +220,7 @@ const Layout = {
       m.route.set(m.route.get(), {}, { ...m.route.param(), lang })
     }
 
-    // Detect route changes; scroll to top when navigating
+    // Detect route changes; scroll to top and update title
     vnode.state._scrollOnRoute = () => {
       const current = m.route.get()
       if (vnode.state._prevRoute && vnode.state._prevRoute !== current) {
@@ -228,6 +228,36 @@ const Layout = {
         if (el) el.scrollTop = 0
       }
       vnode.state._prevRoute = current
+
+      // Set document title based on route
+      const pageTitles = {
+        '/': 'PUM — Mithril.js UI Components',
+        '/accordion': 'Accordion — PUM', '/alert': 'Alert — PUM',
+        '/avatar': 'Avatar — PUM', '/badge': 'Badge — PUM', '/block': 'Block — PUM',
+        '/box': 'Box — PUM', '/breadcrumbs': 'Breadcrumbs — PUM', '/button': 'Button — PUM',
+        '/buttonclose': 'ButtonClose — PUM', '/buttongroup': 'ButtonGroup — PUM',
+        '/calendar': 'Calendar — PUM', '/card': 'Card — PUM', '/carousel': 'Carousel — PUM',
+        '/chat': 'Chat — PUM', '/checkbox': 'Checkbox — PUM', '/collapse': 'Collapse — PUM',
+        '/columns': 'Columns — PUM', '/container': 'Container — PUM',
+        '/countdown': 'Countdown — PUM', '/diff': 'Diff — PUM', '/divider': 'Divider — PUM',
+        '/fab': 'FAB — PUM', '/fieldset': 'Fieldset — PUM', '/fileinput': 'FileInput — PUM',
+        '/filter': 'Filter — PUM', '/footer': 'Footer — PUM', '/grid': 'Grid — PUM',
+        '/hero': 'Hero — PUM', '/indicator': 'Indicator — PUM', '/input': 'Input — PUM',
+        '/join': 'Join — PUM', '/kbd': 'Kbd — PUM', '/label': 'Label — PUM',
+        '/link': 'Link — PUM', '/list': 'List — PUM', '/loading': 'Loading — PUM',
+        '/mask': 'Mask — PUM', '/megamenu': 'Megamenu — PUM', '/menu': 'Menu — PUM',
+        '/modal': 'Modal — PUM', '/navbar': 'Navbar — PUM', '/otp': 'OTP — PUM',
+        '/pagination': 'Pagination — PUM', '/progress': 'Progress — PUM',
+        '/radialprogress': 'RadialProgress — PUM', '/radio': 'Radio — PUM',
+        '/range': 'Range — PUM', '/rating': 'Rating — PUM', '/ratinggroup': 'RatingGroup — PUM',
+        '/select': 'Select — PUM', '/skeleton': 'Skeleton — PUM', '/stack': 'Stack — PUM',
+        '/stat': 'Stat — PUM', '/status': 'Status — PUM', '/steps': 'Steps — PUM',
+        '/swap': 'Swap — PUM', '/tag': 'Tag — PUM', '/table': 'Table — PUM',
+        '/tabs': 'Tabs — PUM', '/textarea': 'Textarea — PUM', '/themectrl': 'ThemeController — PUM',
+        '/title': 'Title — PUM', '/timeline': 'Timeline — PUM',
+        '/toast': 'Toast — PUM', '/toggle': 'Toggle — PUM', '/tooltip': 'Tooltip — PUM',
+      }
+      document.title = pageTitles[current] || 'PUM — Mithril.js UI Components'
     }
 
     vnode.state.onKeydown = (e) => {
@@ -238,38 +268,6 @@ const Layout = {
       }
     }
     window.addEventListener('keydown', vnode.state.onKeydown)
-  },
-
-  onupdate(vnode) {
-    const route = m.route.get()
-    const pageTitles = {
-      '/': 'PUM — Mithril.js UI Components',
-      '/accordion': 'Accordion — PUM', '/alert': 'Alert — PUM', '/aura': 'Aura — PUM',
-      '/avatar': 'Avatar — PUM', '/badge': 'Badge — PUM', '/block': 'Block — PUM',
-      '/box': 'Box — PUM', '/breadcrumbs': 'Breadcrumbs — PUM', '/button': 'Button — PUM',
-      '/buttonclose': 'ButtonClose — PUM', '/buttongroup': 'ButtonGroup — PUM',
-      '/calendar': 'Calendar — PUM', '/card': 'Card — PUM', '/carousel': 'Carousel — PUM',
-      '/chat': 'Chat — PUM', '/checkbox': 'Checkbox — PUM', '/collapse': 'Collapse — PUM',
-      '/columns': 'Columns — PUM', '/container': 'Container — PUM',
-      '/countdown': 'Countdown — PUM', '/diff': 'Diff — PUM', '/divider': 'Divider — PUM',
-      '/fab': 'FAB — PUM', '/fieldset': 'Fieldset — PUM', '/fileinput': 'FileInput — PUM',
-      '/filter': 'Filter — PUM', '/footer': 'Footer — PUM', '/grid': 'Grid — PUM',
-      '/hero': 'Hero — PUM', '/indicator': 'Indicator — PUM', '/input': 'Input — PUM',
-      '/join': 'Join — PUM', '/kbd': 'Kbd — PUM', '/label': 'Label — PUM',
-      '/link': 'Link — PUM', '/list': 'List — PUM', '/loading': 'Loading — PUM',
-      '/mask': 'Mask — PUM', '/megamenu': 'Megamenu — PUM', '/menu': 'Menu — PUM',
-      '/modal': 'Modal — PUM', '/navbar': 'Navbar — PUM', '/otp': 'OTP — PUM',
-      '/pagination': 'Pagination — PUM', '/progress': 'Progress — PUM',
-      '/radialprogress': 'RadialProgress — PUM', '/radio': 'Radio — PUM',
-      '/range': 'Range — PUM', '/rating': 'Rating — PUM', '/ratinggroup': 'RatingGroup — PUM',
-      '/select': 'Select — PUM', '/skeleton': 'Skeleton — PUM', '/stack': 'Stack — PUM',
-      '/stat': 'Stat — PUM', '/status': 'Status — PUM', '/steps': 'Steps — PUM',
-      '/swap': 'Swap — PUM', '/tag': 'Tag — PUM', '/table': 'Table — PUM',
-      '/tabs': 'Tabs — PUM', '/textarea': 'Textarea — PUM', '/themectrl': 'ThemeController — PUM',
-      '/title': 'Title — PUM', '/timeline': 'Timeline — PUM',
-      '/toast': 'Toast — PUM', '/toggle': 'Toggle — PUM', '/tooltip': 'Tooltip — PUM',
-    }
-    document.title = pageTitles[route] || 'PUM — Mithril.js UI Components'
   },
 
   onremove(vnode) {

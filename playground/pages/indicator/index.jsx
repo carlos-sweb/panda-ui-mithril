@@ -1,7 +1,7 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Block, Indicator, Badge, Button } from '../../../src/index.js'
+import { Stack, Title, Indicator, Badge, Button } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
@@ -37,12 +37,12 @@ export default {
           {t('paragraph')}
         </p>
 
-        <Stack direction="row" gap="sm" align="center">
+        <div className={row}>
           <Indicator position="end top">
             <Badge color="secondary" className="indicator-item">New</Badge>
             <Button>Main content</Button>
           </Indicator>
-        </Stack>
+        </div>
 
         <section>
           <Title as="h2" size="3">{t('common.usage')}</Title>

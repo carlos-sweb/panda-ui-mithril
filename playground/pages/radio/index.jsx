@@ -1,10 +1,12 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Block, Radio } from '../../../src/index.js'
+import { Stack, Title, Radio } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
+const section = css({ marginBottom: '2rem' })
+const row = css({ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', alignItems: 'center' })
 
 const usageCode = `<Radio name="option" color="primary" checked />
 <Radio name="option" size="lg" />`
@@ -40,26 +42,26 @@ export default {
           {t('paragraph')}
         </p>
 
-        <Block spacing="lg" as="section">
+        <section className={section}>
           <Title as="h3" size="5">Colors</Title>
-          <Stack direction="row" gap="sm" align="center">
+          <div className={row}>
             <Radio name="r1" checked />
             <Radio name="r1" color="primary" checked />
             <Radio name="r1" color="secondary" checked />
             <Radio name="r1" color="accent" checked />
-          </Stack>
-        </Block>
+          </div>
+        </section>
 
-        <Block spacing="lg" as="section">
+        <section className={section}>
           <Title as="h3" size="5">Sizes</Title>
-          <Stack direction="row" gap="sm" align="center">
+          <div className={row}>
             <Radio name="r2" size="xs" checked />
             <Radio name="r2" size="sm" checked />
             <Radio name="r2" size="md" checked />
             <Radio name="r2" size="lg" checked />
             <Radio name="r2" size="xl" checked />
-          </Stack>
-        </Block>
+          </div>
+        </section>
 
         <section>
           <Title as="h2" size="3">{t('common.usage')}</Title>

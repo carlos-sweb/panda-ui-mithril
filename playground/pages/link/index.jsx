@@ -1,7 +1,7 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Title, Block, Link } from '../../../src/index.js'
+import { Title, Link } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
@@ -38,12 +38,12 @@ export default {
           {t('paragraph')}
         </p>
 
-        <Stack direction="row" gap="sm" align="center">
+        <div className={row}>
           <Link href="#!/link">Default</Link>
           <Link href="#!/link" color="primary">Primary</Link>
           <Link href="#!/link" color="secondary">Secondary</Link>
           <Link href="#!/link" color="accent">Accent</Link>
-        </Stack>
+        </div>
 
         <section>
           <Title as="h2" size="3">{t('common.usage')}</Title>

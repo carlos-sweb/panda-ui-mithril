@@ -1,11 +1,12 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Block, Hero, HeroContent, HeroOverlay, Button } from '../../../src/index.js'
+import { Stack, Title, Hero, HeroContent, HeroOverlay, Button } from '../../../src/index.js'
 import { cx } from '../../../src/utils/cx.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
+const section = css({ marginBottom: '2rem' })
 const surface = css({ background: 'token(colors.base-200)', minHeight: '16rem', borderRadius: 'var(--radius-box)' })
 const withImage = css({
   minHeight: '16rem',
@@ -48,7 +49,7 @@ export default {
           {t('paragraph')}
         </p>
 
-        <Block spacing="lg" as="section">
+        <section className={section}>
           <Title as="h3" size="5">Basic</Title>
           <Hero className={surface}>
             <HeroContent className={center}>
@@ -59,9 +60,9 @@ export default {
               </div>
             </HeroContent>
           </Hero>
-        </Block>
+        </section>
 
-        <Block spacing="lg" as="section">
+        <section className={section}>
           <Title as="h3" size="5">With background image + overlay</Title>
           <Hero className={withImage}>
             <HeroOverlay />
@@ -73,7 +74,7 @@ export default {
               </div>
             </HeroContent>
           </Hero>
-        </Block>
+        </section>
 
         <section>
           <Title as="h2" size="3">{t('common.usage')}</Title>

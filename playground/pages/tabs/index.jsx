@@ -1,10 +1,11 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
+import { Stack, Title, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
+const section = css({ marginBottom: '2rem' })
 
 const usageCode = `<Tabs lifted>
   <Tab active={tab === 1} onclick={() => tab = 1}>Tab 1</Tab>
@@ -48,25 +49,25 @@ export default {
           {t('paragraph')}
         </p>
 
-        <Block spacing="lg" as="section">
+        <section className={section}>
           <Title as="h3" size="5">Boxed</Title>
           <Tabs boxed>
             {[1, 2, 3].map((n) => (
               <Tab key={n} active={vnode.state.boxed === n} onclick={() => { vnode.state.boxed = n }}>Tab {n}</Tab>
             ))}
           </Tabs>
-        </Block>
+        </section>
 
-        <Block spacing="lg" as="section">
+        <section className={section}>
           <Title as="h3" size="5">Border</Title>
           <Tabs bordered>
             {[1, 2, 3].map((n) => (
               <Tab key={n} variant="border" active={vnode.state.border === n} onclick={() => { vnode.state.border = n }}>Tab {n}</Tab>
             ))}
           </Tabs>
-        </Block>
+        </section>
 
-        <Block spacing="lg" as="section">
+        <section className={section}>
           <Title as="h3" size="5">Lifted (with content)</Title>
           <Tabs lifted>
             {[1, 2, 3].map((n) => (
@@ -78,7 +79,7 @@ export default {
               </TabContent>
             ))}
           </Tabs>
-        </Block>
+        </section>
 
         <section>
           <Title as="h2" size="3">{t('common.usage')}</Title>

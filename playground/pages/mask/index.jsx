@@ -1,7 +1,7 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Block, Mask } from '../../../src/index.js'
+import { Stack, Title, Mask } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
@@ -46,13 +46,13 @@ export default {
           {t('paragraph')}
         </p>
 
-        <Stack direction="row" gap="sm" align="center">
+        <div className={row}>
           <Mask src="https://picsum.photos/100/100" shape="circle" className="w-20 h-20" />
           <Mask src="https://picsum.photos/100/100" shape="hexagon" className="w-20 h-20" />
           <Mask src="https://picsum.photos/100/100" shape="diamond" className="w-20 h-20" />
           <Mask src="https://picsum.photos/100/100" shape="triangle" className="w-20 h-20" />
           <Mask src="https://picsum.photos/100/100" shape="star" className="w-20 h-20" />
-        </Stack>
+        </div>
 
         <section>
           <Title as="h2" size="3">{t('common.usage')}</Title>

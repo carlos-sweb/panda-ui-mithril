@@ -1,10 +1,11 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Block, Kbd } from '../../../src/index.js'
+import { Stack, Title, Kbd } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
+const row = css({ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', alignItems: 'center' })
 
 const usageCode = `<Kbd size="xs">K</Kbd>
 <Kbd size="sm">Shift</Kbd>
@@ -35,13 +36,13 @@ export default {
           {t('paragraph')}
         </p>
 
-        <Stack direction="row" gap="sm" align="center">
+        <div className={row}>
           <Kbd size="xs">K</Kbd>
           <Kbd size="sm">Shift</Kbd>
           <Kbd size="md">Enter</Kbd>
           <Kbd size="lg">Ctrl</Kbd>
           <Kbd size="xl">Space</Kbd>
-        </Stack>
+        </div>
 
         <section>
           <Title as="h2" size="3">{t('common.usage')}</Title>

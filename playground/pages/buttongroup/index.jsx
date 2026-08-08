@@ -1,10 +1,11 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Title, Block, ButtonGroup, Button } from '../../../src/index.js'
+import { Title, ButtonGroup, Button } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
+const section = css({ marginBottom: '2rem' })
 
 const usageCode = `<ButtonGroup>
   <Button>Left</Button>
@@ -36,40 +37,40 @@ export default {
           {t('paragraph')}
         </p>
 
-        <Block spacing="lg" as="section">
+        <section className={section}>
           <Title as="h3" size="5">Default</Title>
           <ButtonGroup>
             <Button>Left</Button>
             <Button>Center</Button>
             <Button>Right</Button>
           </ButtonGroup>
-        </Block>
+        </section>
 
-        <Block spacing="lg" as="section">
+        <section className={section}>
           <Title as="h3" size="5">With color</Title>
           <ButtonGroup color="primary">
             <Button>1</Button>
             <Button>2</Button>
             <Button>3</Button>
           </ButtonGroup>
-        </Block>
+        </section>
 
-        <Block spacing="lg" as="section">
+        <section className={section}>
           <Title as="h3" size="5">With variant</Title>
           <ButtonGroup variant="outline">
             <Button>Yes</Button>
             <Button>No</Button>
           </ButtonGroup>
-        </Block>
+        </section>
 
-        <Block spacing="lg" as="section">
+        <section className={section}>
           <Title as="h3" size="5">With size</Title>
           <ButtonGroup size="lg">
             <Button>A</Button>
             <Button>B</Button>
             <Button>C</Button>
           </ButtonGroup>
-        </Block>
+        </section>
 
         <section>
           <Title as="h2" size="3">{t('common.usage')}</Title>

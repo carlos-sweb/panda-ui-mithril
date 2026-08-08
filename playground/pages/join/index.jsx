@@ -1,10 +1,11 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Block, Join, JoinItem, PaginationButton } from '../../../src/index.js'
+import { Stack, Title, Join, JoinItem, PaginationButton } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
+const section = css({ marginBottom: '2rem' })
 
 const usageCode = `<Join>
   <PaginationButton>Button 1</PaginationButton>
@@ -33,32 +34,32 @@ export default {
           {t('paragraph')}
         </p>
 
-        <Block spacing="lg" as="section">
+        <section className={section}>
           <Title as="h3" size="5">Generic items</Title>
           <Join>
             <JoinItem>Button 1</JoinItem>
             <JoinItem>Button 2</JoinItem>
             <JoinItem>Button 3</JoinItem>
           </Join>
-        </Block>
+        </section>
 
-        <Block spacing="lg" as="section">
+        <section className={section}>
           <Title as="h3" size="5">Combined with Button (via PaginationButton)</Title>
           <Join>
             <PaginationButton>Button 1</PaginationButton>
             <PaginationButton active>Button 2</PaginationButton>
             <PaginationButton>Button 3</PaginationButton>
           </Join>
-        </Block>
+        </section>
 
-        <Block spacing="lg" as="section">
+        <section className={section}>
           <Title as="h3" size="5">Vertical</Title>
           <Join vertical>
             <JoinItem>Item 1</JoinItem>
             <JoinItem>Item 2</JoinItem>
             <JoinItem>Item 3</JoinItem>
           </Join>
-        </Block>
+        </section>
 
         <section>
           <Title as="h2" size="3">{t('common.usage')}</Title>

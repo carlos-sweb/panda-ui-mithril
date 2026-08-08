@@ -1,10 +1,12 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Block, Badge } from '../../../src/index.js'
+import { Stack, Title, Badge } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
+const section = css({ marginBottom: '2rem' })
+const row = css({ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', alignItems: 'center' })
 
 const usageCode = `<Badge color="primary">Primary</Badge>
 <Badge variant="outline" color="success">Outline</Badge>
@@ -45,9 +47,9 @@ export default {
           {t('paragraph')}
         </p>
 
-        <Block spacing="lg" as="section">
+        <section className={section}>
           <Title as="h3" size="5">Colors</Title>
-          <Stack direction="row" gap="sm" align="center">
+          <div className={row}>
             <Badge color="neutral">Neutral</Badge>
             <Badge color="primary">Primary</Badge>
             <Badge color="secondary">Secondary</Badge>
@@ -56,28 +58,28 @@ export default {
             <Badge color="success">Success</Badge>
             <Badge color="warning">Warning</Badge>
             <Badge color="error">Error</Badge>
-          </Stack>
-        </Block>
+          </div>
+        </section>
 
-        <Block spacing="lg" as="section">
+        <section className={section}>
           <Title as="h3" size="5">Variants</Title>
-          <Stack direction="row" gap="sm" align="center">
+          <div className={row}>
             <Badge variant="outline">Outline</Badge>
             <Badge variant="dash">Dash</Badge>
             <Badge variant="ghost">Ghost</Badge>
-          </Stack>
-        </Block>
+          </div>
+        </section>
 
-        <Block spacing="lg" as="section">
+        <section className={section}>
           <Title as="h3" size="5">Sizes</Title>
-          <Stack direction="row" gap="sm" align="center">
+          <div className={row}>
             <Badge size="xs">XS</Badge>
             <Badge size="sm">SM</Badge>
             <Badge size="md">MD</Badge>
             <Badge size="lg">LG</Badge>
             <Badge size="xl">XL</Badge>
-          </Stack>
-        </Block>
+          </div>
+        </section>
 
         <section>
           <Title as="h2" size="3">{t('common.usage')}</Title>

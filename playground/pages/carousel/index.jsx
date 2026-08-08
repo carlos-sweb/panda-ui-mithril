@@ -1,10 +1,11 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Block, Carousel, CarouselItem } from '../../../src/index.js'
+import { Stack, Title, Carousel, CarouselItem } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
+const section = css({ marginBottom: '2rem' })
 const gap = css({ gap: '1rem' })
 const img = css({ borderRadius: 'var(--radius-box)', height: '12rem', objectFit: 'cover' })
 const imgFull = css({ borderRadius: 'var(--radius-box)', height: '14rem', width: '100%', objectFit: 'cover' })
@@ -69,7 +70,7 @@ export default {
           {t('paragraph')}
         </p>
 
-        <Block spacing="lg" as="section">
+        <section className={section}>
           <Title as="h3" size="5">Basic (drag/scroll to snap)</Title>
           <Carousel className={gap}>
             {[1, 2, 3, 4].map((n) => (
@@ -78,9 +79,9 @@ export default {
               </CarouselItem>
             ))}
           </Carousel>
-        </Block>
+        </section>
 
-        <Block spacing="lg" as="section">
+        <section className={section}>
           <Title as="h3" size="5">Full width with next/prev navigation</Title>
           <p className={css({ opacity: 0.6, marginBottom: '0.5rem', fontSize: '0.875rem' })}>
             The reference implementation navigates with <code>&lt;a href="#slideId"&gt;</code>, but that collides
@@ -108,7 +109,7 @@ export default {
               )
             })}
           </Carousel>
-        </Block>
+        </section>
 
         <section>
           <Title as="h2" size="3">{t('common.usage')}</Title>

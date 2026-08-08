@@ -1,7 +1,7 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Block, Box } from '../../../src/index.js'
+import { Stack, Title, Box } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
@@ -26,20 +26,20 @@ export default {
       <section><h2 className={st}>{t('common.usage')}</h2><CodeExample code={usageCode} language="jsx" /></section>
       <section className={sectionBox}>
         <h2 className={st}>Padding</h2>
-        <Stack direction="row" gap="sm" align="center">
+        <div className={row}>
           <Box padding="sm">Small padding</Box>
           <Box>Medium (default)</Box>
           <Box padding="lg">Large padding</Box>
-        </Stack>
+        </div>
       </section>
       <section className={sectionBox}>
         <h2 className={st}>Shadow</h2>
-        <Stack direction="row" gap="sm" align="center">
+        <div className={row}>
           <Box shadow="none">No shadow</Box>
           <Box shadow="sm">Small shadow</Box>
           <Box>Medium (default)</Box>
           <Box shadow="lg">Large shadow</Box>
-        </Stack>
+        </div>
       </section>
       <section><h2 className={st}>{t('common.classReference')}</h2><ClassTable rows={classRows} /></section>
     </Stack>)

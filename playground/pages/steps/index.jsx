@@ -1,11 +1,12 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Block, Steps, Step, StepIcon } from '../../../src/index.js'
+import { Stack, Title, Steps, Step, StepIcon } from '../../../src/index.js'
 import { Check } from 'lucide-mithril'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
+const section = css({ marginBottom: '2rem' })
 
 const usageCode = `<Steps>
   <Step color="primary">Register</Step>
@@ -44,7 +45,7 @@ export default {
           {t('paragraph')}
         </p>
 
-        <Block spacing="lg" as="section">
+        <section className={section}>
           <Title as="h3" size="5">Horizontal (default)</Title>
           <Steps>
             <Step color="primary">Register</Step>
@@ -52,9 +53,9 @@ export default {
             <Step>Purchase</Step>
             <Step>Receive</Step>
           </Steps>
-        </Block>
+        </section>
 
-        <Block spacing="lg" as="section">
+        <section className={section}>
           <Title as="h3" size="5">With custom icon</Title>
           <Steps>
             <Step color="success">
@@ -67,9 +68,9 @@ export default {
             </Step>
             <Step>Purchase</Step>
           </Steps>
-        </Block>
+        </section>
 
-        <Block spacing="lg" as="section">
+        <section className={section}>
           <Title as="h3" size="5">Vertical</Title>
           <Steps vertical>
             <Step color="primary">Register</Step>
@@ -77,7 +78,7 @@ export default {
             <Step>Purchase</Step>
             <Step>Receive</Step>
           </Steps>
-        </Block>
+        </section>
 
         <section>
           <Title as="h2" size="3">{t('common.usage')}</Title>

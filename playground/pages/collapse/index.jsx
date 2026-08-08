@@ -1,10 +1,11 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Block, Collapse, CollapseTitle, CollapseContent } from '../../../src/index.js'
+import { Stack, Title, Collapse, CollapseTitle, CollapseContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
+const section = css({ marginBottom: '2rem' })
 
 const usageCode = `<Collapse plus border>
   <CollapseTitle>How do I create an account?</CollapseTitle>
@@ -37,7 +38,7 @@ export default {
           {t('paragraph')}
         </p>
 
-        <Block spacing="lg" as="section">
+        <section className={section}>
           <Title as="h3" size="5">Arrow</Title>
           <Collapse arrow border>
             <CollapseTitle>How do I create an account?</CollapseTitle>
@@ -45,9 +46,9 @@ export default {
               Click the "Sign Up" button in the top right corner and follow the registration process.
             </CollapseContent>
           </Collapse>
-        </Block>
+        </section>
 
-        <Block spacing="lg" as="section">
+        <section className={section}>
           <Title as="h3" size="5">Plus / minus</Title>
           <Collapse plus border>
             <CollapseTitle>Can I cancel my subscription?</CollapseTitle>
@@ -55,7 +56,7 @@ export default {
               Yes, you can cancel anytime from your account settings — no questions asked.
             </CollapseContent>
           </Collapse>
-        </Block>
+        </section>
 
         <section>
           <Title as="h2" size="3">{t('common.usage')}</Title>

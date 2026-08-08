@@ -1,11 +1,12 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Block, Timeline, TimelineItem, TimelineStart, TimelineMiddle, TimelineEnd } from '../../../src/index.js'
+import { Stack, Title, Timeline, TimelineItem, TimelineStart, TimelineMiddle, TimelineEnd } from '../../../src/index.js'
 import { CircleCheck } from 'lucide-mithril'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
+const section = css({ marginBottom: '2rem' })
 const icon = css({ color: 'token(colors.primary)' })
 
 const events = ['1984', '1998', '2001', '2007', '2015']
@@ -51,7 +52,7 @@ export default {
           {t('paragraph')}
         </p>
 
-        <Block spacing="lg" as="section">
+        <section className={section}>
           <Title as="h3" size="5">Horizontal (default)</Title>
           <Timeline>
             {events.map((year, i) => (
@@ -62,9 +63,9 @@ export default {
               </TimelineItem>
             ))}
           </Timeline>
-        </Block>
+        </section>
 
-        <Block spacing="lg" as="section">
+        <section className={section}>
           <Title as="h3" size="5">Vertical</Title>
           <Timeline vertical>
             {events.slice(0, 3).map((year, i) => (
@@ -75,7 +76,7 @@ export default {
               </TimelineItem>
             ))}
           </Timeline>
-        </Block>
+        </section>
 
         <section>
           <Title as="h2" size="3">{t('common.usage')}</Title>

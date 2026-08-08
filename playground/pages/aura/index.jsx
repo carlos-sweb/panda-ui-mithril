@@ -1,11 +1,12 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Block, Aura, Button, Card, CardBody } from '../../../src/index.js'
+import { Stack, Title, Aura, Button, Card, CardBody } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
 const row = css({ display: 'flex', gap: '1.5rem', flexWrap: 'wrap', alignItems: 'center' })
+const section = css({ marginBottom: '2rem' })
 const cardSurface = css({ background: 'token(colors.base-100)', width: '14rem' })
 const primaryColor = css({ color: 'token(colors.primary)' })
 
@@ -49,37 +50,37 @@ export default {
           {t('paragraph')}
         </p>
 
-        <Block spacing="lg" as="section">
+        <section className={section}>
           <Title as="h3" size="5">Around a button (default)</Title>
-          <Stack direction="row" gap="sm" align="center">
+          <div className={row}>
             <Aura shape="field" className={primaryColor}>
               <Button color="primary">Upgrade now</Button>
             </Aura>
-          </Stack>
-        </Block>
+          </div>
+        </section>
 
-        <Block spacing="lg" as="section">
+        <section className={section}>
           <Title as="h3" size="5">Around a card</Title>
-          <Stack direction="row" gap="sm" align="center">
+          <div className={row}>
             <Aura shape="box">
               <Card className={cardSurface}>
                 <CardBody><p>This card has aura</p></CardBody>
               </Card>
             </Aura>
-          </Stack>
-        </Block>
+          </div>
+        </section>
 
-        <Block spacing="lg" as="section">
+        <section className={section}>
           <Title as="h3" size="5">Variants</Title>
-          <Stack direction="row" gap="sm" align="center">
+          <div className={row}>
             <Aura variant="dual" shape="field" className={primaryColor}><Button>dual</Button></Aura>
             <Aura variant="rainbow" shape="field"><Button>rainbow</Button></Aura>
             <Aura variant="holo" shape="field"><Button>holo</Button></Aura>
             <Aura variant="gold" shape="field"><Button>gold</Button></Aura>
             <Aura variant="silver" shape="field"><Button>silver</Button></Aura>
             <Aura variant="glow" shape="field" className={primaryColor}><Button>glow</Button></Aura>
-          </Stack>
-        </Block>
+          </div>
+        </section>
 
         <section>
           <Title as="h2" size="3">{t('common.usage')}</Title>
