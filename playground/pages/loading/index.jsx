@@ -1,7 +1,7 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Loading } from '../../../src/index.js'
+import { Stack, Title, Block, Loading } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
@@ -39,13 +39,13 @@ export default {
           {t('paragraph')}
         </p>
 
-        <div className={row}>
+        <Stack direction="row" gap="sm" align="center">
           <Loading variant="spinner" />
           <Loading variant="ring" />
           <Loading variant="ball" />
           <Loading variant="bars" />
           <Loading variant="infinity" />
-        </div>
+        </Stack>
 
         <section>
           <Title as="h2" size="3">{t('common.usage')}</Title>

@@ -1,7 +1,7 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Title, Swap } from '../../../src/index.js'
+import { Title, Block, Swap } from '../../../src/index.js'
 import { Sun, Moon } from 'lucide-mithril'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
@@ -43,14 +43,14 @@ export default {
           {t('paragraph')}
         </p>
 
-        <div className={row}>
+        <Stack direction="row" gap="sm" align="center">
           <Swap on="On" off="Off" style="rotate" />
           <Swap on="On" off="Off" style="flip" />
           <Swap on={<Sun size={20} />} off={<Moon size={20} />} style="rotate" />
           <Swap>
             <span>Manual (children)</span>
           </Swap>
-        </div>
+        </Stack>
         <p className={css({ opacity: 0.6, marginTop: '0.5rem', fontSize: '0.875rem' })}>
           Click to toggle — the swap works with a hidden native checkbox (like the reference implementation), no
           JS state required. Pass an icon component to <code>on</code>/<code>off</code> the same
@@ -59,13 +59,13 @@ export default {
 
         <h3 className={sectionTitle}>Sizes</h3>
         <h4 className={heading}>XS · SM · MD · LG · XL</h4>
-        <div className={row}>
+        <Stack direction="row" gap="sm" align="center">
           <Swap size="xs" on="XS" off="XS" style="flip" />
           <Swap size="sm" on="SM" off="SM" style="flip" />
           <Swap size="md" on="MD" off="MD" style="flip" />
           <Swap size="lg" on="LG" off="LG" style="flip" />
           <Swap size="xl" on="XL" off="XL" style="flip" />
-        </div>
+        </Stack>
 
         <section>
           <Title as="h2" size="3">{t('common.usage')}</Title>

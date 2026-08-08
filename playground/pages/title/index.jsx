@@ -1,7 +1,7 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title } from '../../../src/index.js'
+import { Block, Stack, Title } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
@@ -74,7 +74,7 @@ export default {
         <section>
           <Title as="h2" size="3">Sizes</Title>
           <h4 className={heading}>7 size tiers — from hero to caption</h4>
-          <div className={row}>
+          <Stack direction="row" gap="sm" align="center">
             <div className={css({ display: 'flex', flexDirection: 'column', gap: '0.25rem' })}>
               <Title size="1">Size 1</Title>
               <Title size="2">Size 2</Title>
@@ -83,14 +83,14 @@ export default {
               <Title size="5">Size 5</Title>
               <Title size="6">Size 6</Title>
               <Title size="7">Size 7</Title>
-            </div>
+            </Stack>
           </div>
         </section>
 
         <section>
           <Title as="h2" size="3">Semantic tags</Title>
           <h4 className={heading}>Auto-size from tag (h1→1, h2→2, …)</h4>
-          <div className={row}>
+          <Stack direction="row" gap="sm" align="center">
             <div className={css({ display: 'flex', flexDirection: 'column', gap: '0.25rem' })}>
               <Title as="h1">h1 heading</Title>
               <Title as="h2">h2 heading</Title>
@@ -99,13 +99,13 @@ export default {
               <Title as="h5">h5 heading</Title>
               <Title as="h6">h6 heading</Title>
               <Title as="p">p paragraph</Title>
-            </div>
+            </Stack>
           </div>
         </section>
 
         <section>
           <Title as="h2" size="3">Colors</Title>
-          <div className={row}>
+          <Stack direction="row" gap="sm" align="center">
             <Title as="h3" color="primary">Primary</Title>
             <Title as="h3" color="secondary">Secondary</Title>
             <Title as="h3" color="accent">Accent</Title>
@@ -113,7 +113,7 @@ export default {
             <Title as="h3" color="success">Success</Title>
             <Title as="h3" color="warning">Warning</Title>
             <Title as="h3" color="error">Error</Title>
-          </div>
+          </Stack>
         </section>
 
         <section>
@@ -128,11 +128,11 @@ export default {
 
         <section>
           <Title as="h2" size="3">Transform</Title>
-          <div className={row}>
+          <Stack direction="row" gap="sm" align="center">
             <Title as="h4" transform="capitalize">capitalize me</Title>
             <Title as="h4" transform="uppercase">uppercase me</Title>
             <Title as="h4" transform="lowercase">LOWERCASE ME</Title>
-          </div>
+          </Stack>
         </section>
 
         <section>

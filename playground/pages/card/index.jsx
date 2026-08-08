@@ -1,11 +1,10 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Card, CardBody, CardTitle, CardActions, CardFigure, Button } from '../../../src/index.js'
+import { Stack, Title, Block, Card, CardBody, CardTitle, CardActions, CardFigure, Button } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
-const section = css({ marginBottom: '2rem' })
 const row = css({ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'flex-start' })
 const surface = css({ background: 'token(colors.base-100)', boxShadow: '0 1px 3px color-mix(in oklab, black 15%, transparent)', width: '20rem' })
 const surfaceSide = css({ background: 'token(colors.base-100)', boxShadow: '0 1px 3px color-mix(in oklab, black 15%, transparent)' })
@@ -54,9 +53,9 @@ export default {
           {t('paragraph')}
         </p>
 
-        <section className={section}>
+        <Block spacing="lg" as="section">
           <Title as="h3" size="5">With figure + actions</Title>
-          <div className={row}>
+          <Stack direction="row" gap="sm" align="center">
             <Card className={surface}>
               <CardFigure><img className={img200} src="https://picsum.photos/seed/panda-card/400/300" alt="Random" /></CardFigure>
               <CardBody>
@@ -84,10 +83,10 @@ export default {
                 <p>This card uses a dashed border style.</p>
               </CardBody>
             </Card>
-          </div>
-        </section>
+          </Stack>
+        </Block>
 
-        <section className={section}>
+        <Block spacing="lg" as="section">
           <Title as="h3" size="5">Side layout</Title>
           <Card side className={surfaceSide}>
             <CardFigure><img className={imgSide} src="https://picsum.photos/seed/panda-side/300/300" alt="Random" /></CardFigure>
@@ -99,9 +98,9 @@ export default {
               </CardActions>
             </CardBody>
           </Card>
-        </section>
+        </Block>
 
-        <section className={section}>
+        <Block spacing="lg" as="section">
           <Title as="h3" size="5">Image full (background)</Title>
           <Card imageFull className={css({ width: '20rem', height: '16rem' })}>
             <CardFigure><img className={css({ width: '100%', height: '100%', objectFit: 'cover' })} src="https://picsum.photos/seed/panda-full/400/300" alt="Random" /></CardFigure>
@@ -113,19 +112,19 @@ export default {
               </CardActions>
             </CardBody>
           </Card>
-        </section>
+        </Block>
 
-        <section className={section}>
+        <Block spacing="lg" as="section">
           <Title as="h3" size="5">Sizes</Title>
-          <div className={row}>
+          <Stack direction="row" gap="sm" align="center">
             <Card size="xs" border className={css({ width: '12rem', background: 'token(colors.base-100)' })}>
               <CardBody><CardTitle>XS</CardTitle><p>Extra small</p></CardBody>
             </Card>
             <Card size="lg" border className={css({ width: '16rem', background: 'token(colors.base-100)' })}>
               <CardBody><CardTitle>LG</CardTitle><p>Large size</p></CardBody>
             </Card>
-          </div>
-        </section>
+          </Stack>
+        </Block>
 
         <section>
           <Title as="h2" size="3">{t('common.usage')}</Title>

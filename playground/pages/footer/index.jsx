@@ -1,11 +1,10 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Footer, FooterTitle, Link } from '../../../src/index.js'
+import { Stack, Title, Block, Footer, FooterTitle, Link } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
-const section = css({ marginBottom: '2rem' })
 const surface = css({ background: 'token(colors.base-200)', padding: '2.5rem', borderRadius: 'var(--radius-box)' })
 
 const usageCode = `<Footer className="...">
@@ -43,7 +42,7 @@ export default {
           {t('paragraph')}
         </p>
 
-        <section className={section}>
+        <Block spacing="lg" as="section">
           <Title as="h3" size="5">Columns</Title>
           <Footer horizontal className={surface}>
             <div>
@@ -64,9 +63,9 @@ export default {
               <Link hover={false}>Privacy policy</Link>
             </div>
           </Footer>
-        </section>
+        </Block>
 
-        <section className={section}>
+        <Block spacing="lg" as="section">
           <Title as="h3" size="5">Centered</Title>
           <Footer center className={surface}>
             <div>
@@ -78,7 +77,7 @@ export default {
               </div>
             </div>
           </Footer>
-        </section>
+        </Block>
 
         <section>
           <Title as="h2" size="3">{t('common.usage')}</Title>

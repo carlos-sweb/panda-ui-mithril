@@ -1,12 +1,10 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Checkbox } from '../../../src/index.js'
+import { Stack, Title, Block, Checkbox } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
-const section = css({ marginBottom: '2rem' })
-const row = css({ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', alignItems: 'center' })
 
 const usageCode = `<Checkbox color="primary" checked />
 <Checkbox size="lg" />`
@@ -42,27 +40,27 @@ export default {
           {t('paragraph')}
         </p>
 
-        <section className={section}>
+        <Block spacing="lg" as="section">
           <Title as="h3" size="5">Colors</Title>
-          <div className={row}>
+          <Stack direction="row" gap="sm" align="center">
             <Checkbox />
             <Checkbox checked />
             <Checkbox color="primary" checked />
             <Checkbox color="secondary" checked />
             <Checkbox color="accent" checked />
-          </div>
-        </section>
+          </Stack>
+        </Block>
 
-        <section className={section}>
+        <Block spacing="lg" as="section">
           <Title as="h3" size="5">Sizes</Title>
-          <div className={row}>
+          <Stack direction="row" gap="sm" align="center">
             <Checkbox size="xs" checked />
             <Checkbox size="sm" checked />
             <Checkbox size="md" checked />
             <Checkbox size="lg" checked />
             <Checkbox size="xl" checked />
-          </div>
-        </section>
+          </Stack>
+        </Block>
 
         <section>
           <Title as="h2" size="3">{t('common.usage')}</Title>

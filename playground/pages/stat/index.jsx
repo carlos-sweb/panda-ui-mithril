@@ -1,12 +1,11 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Stats, Stat, StatTitle, StatValue, StatDesc, StatFigure, StatActions, Button } from '../../../src/index.js'
+import { Stack, Title, Block, Stats, Stat, StatTitle, StatValue, StatDesc, StatFigure, StatActions, Button } from '../../../src/index.js'
 import { Wallet, Users, ThumbsUp } from 'lucide-mithril'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
-const section = css({ marginBottom: '2rem' })
 const shadow = css({ boxShadow: '0 1px 3px color-mix(in oklab, black 15%, transparent)' })
 
 const usageCode = `<Stats>
@@ -44,7 +43,7 @@ export default {
           {t('paragraph')}
         </p>
 
-        <section className={section}>
+        <Block spacing="lg" as="section">
           <Title as="h3" size="5">With figures & actions</Title>
           <Stats className={shadow}>
             <Stat>
@@ -68,9 +67,9 @@ export default {
               </StatActions>
             </Stat>
           </Stats>
-        </section>
+        </Block>
 
-        <section className={section}>
+        <Block spacing="lg" as="section">
           <Title as="h3" size="5">Vertical</Title>
           <Stats vertical className={shadow}>
             <Stat>
@@ -84,7 +83,7 @@ export default {
               <StatDesc>42% more than last month</StatDesc>
             </Stat>
           </Stats>
-        </section>
+        </Block>
 
         <section>
           <Title as="h2" size="3">{t('common.usage')}</Title>

@@ -1,13 +1,11 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Button, Loading } from '../../../src/index.js'
+import { Stack, Title, Block, Button, Loading } from '../../../src/index.js'
 import { Heart } from 'lucide-mithril'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
-const section = css({ marginBottom: '2rem' })
-const row = css({ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', alignItems: 'center' })
 
 const usageCode = `<Button color="primary">Primary</Button>
 <Button variant="outline" color="error" size="lg">Error</Button>
@@ -60,35 +58,35 @@ export default {
 
         <section>
           <Title as="h3" size="5">Default</Title>
-          <div className={row}>
+          <Stack direction="row" gap="sm" align="center">
             <Button>Default</Button>
-          </div>
+          </Stack>
         </section>
 
-        <section className={section}>
+        <Block spacing="lg" as="section">
           <Title as="h3" size="5">Sizes</Title>
-          <div className={row}>
+          <Stack direction="row" gap="sm" align="center">
             <Button size="xs">XS</Button>
             <Button size="sm">SM</Button>
             <Button size="md">MD</Button>
             <Button size="lg">LG</Button>
             <Button size="xl">XL</Button>
-          </div>
-        </section>
+          </Stack>
+        </Block>
 
-        <section className={section}>
+        <Block spacing="lg" as="section">
           <Title as="h3" size="5">Responsive</Title>
           <p className={css({ opacity: 0.6, marginBottom: '0.5rem', fontSize: '0.875rem' })}>
             Responsive button sizes require Panda CSS responsive variants (not yet implemented in cva)
           </p>
-          <div className={row}>
+          <Stack direction="row" gap="sm" align="center">
             <Button size="xs">Responsive (xs)</Button>
-          </div>
-        </section>
+          </Stack>
+        </Block>
 
-        <section className={section}>
+        <Block spacing="lg" as="section">
           <Title as="h3" size="5">Colors</Title>
-          <div className={row}>
+          <Stack direction="row" gap="sm" align="center">
             <Button color="neutral">Neutral</Button>
             <Button color="primary">Primary</Button>
             <Button color="secondary">Secondary</Button>
@@ -97,12 +95,12 @@ export default {
             <Button color="success">Success</Button>
             <Button color="warning">Warning</Button>
             <Button color="error">Error</Button>
-          </div>
-        </section>
+          </Stack>
+        </Block>
 
-        <section className={section}>
+        <Block spacing="lg" as="section">
           <Title as="h3" size="5">Soft colors</Title>
-          <div className={row}>
+          <Stack direction="row" gap="sm" align="center">
             <Button variant="soft" color="neutral">Neutral</Button>
             <Button variant="soft" color="primary">Primary</Button>
             <Button variant="soft" color="secondary">Secondary</Button>
@@ -111,12 +109,12 @@ export default {
             <Button variant="soft" color="success">Success</Button>
             <Button variant="soft" color="warning">Warning</Button>
             <Button variant="soft" color="error">Error</Button>
-          </div>
-        </section>
+          </Stack>
+        </Block>
 
-        <section className={section}>
+        <Block spacing="lg" as="section">
           <Title as="h3" size="5">Outline colors</Title>
-          <div className={row}>
+          <Stack direction="row" gap="sm" align="center">
             <Button variant="outline" color="neutral">Neutral</Button>
             <Button variant="outline" color="primary">Primary</Button>
             <Button variant="outline" color="secondary">Secondary</Button>
@@ -125,12 +123,12 @@ export default {
             <Button variant="outline" color="success">Success</Button>
             <Button variant="outline" color="warning">Warning</Button>
             <Button variant="outline" color="error">Error</Button>
-          </div>
-        </section>
+          </Stack>
+        </Block>
 
-        <section className={section}>
+        <Block spacing="lg" as="section">
           <Title as="h3" size="5">Dash colors</Title>
-          <div className={row}>
+          <Stack direction="row" gap="sm" align="center">
             <Button variant="dash" color="neutral">Neutral</Button>
             <Button variant="dash" color="primary">Primary</Button>
             <Button variant="dash" color="secondary">Secondary</Button>
@@ -139,22 +137,22 @@ export default {
             <Button variant="dash" color="success">Success</Button>
             <Button variant="dash" color="warning">Warning</Button>
             <Button variant="dash" color="error">Error</Button>
-          </div>
-        </section>
+          </Stack>
+        </Block>
 
-        <section className={section}>
+        <Block spacing="lg" as="section">
           <Title as="h3" size="5">Neutral on light background</Title>
           <div style={{ background: 'white', padding: '1rem' }}>
-            <div className={row}>
+            <Stack direction="row" gap="sm" align="center">
               <Button variant="outline">Outline</Button>
               <Button variant="dash">Dash</Button>
-            </div>
+            </Stack>
           </div>
-        </section>
+        </Block>
 
-        <section className={section}>
+        <Block spacing="lg" as="section">
           <Title as="h3" size="5">Active colors</Title>
-          <div className={row}>
+          <Stack direction="row" gap="sm" align="center">
             <Button active color="neutral">Neutral</Button>
             <Button active color="primary">Primary</Button>
             <Button active color="secondary">Secondary</Button>
@@ -163,78 +161,78 @@ export default {
             <Button active color="success">Success</Button>
             <Button active color="warning">Warning</Button>
             <Button active color="error">Error</Button>
-          </div>
-        </section>
+          </Stack>
+        </Block>
 
-        <section className={section}>
+        <Block spacing="lg" as="section">
           <Title as="h3" size="5">Ghost + Link</Title>
-          <div className={row}>
+          <Stack direction="row" gap="sm" align="center">
             <Button variant="ghost">Ghost</Button>
             <Button variant="link">Link</Button>
-          </div>
-        </section>
+          </Stack>
+        </Block>
 
-        <section className={section}>
+        <Block spacing="lg" as="section">
           <Title as="h3" size="5">Wide</Title>
-          <div className={row}>
+          <Stack direction="row" gap="sm" align="center">
             <Button wide>Wide</Button>
-          </div>
-        </section>
+          </Stack>
+        </Block>
 
-        <section className={section}>
+        <Block spacing="lg" as="section">
           <Title as="h3" size="5">Disabled</Title>
-          <div className={row}>
+          <Stack direction="row" gap="sm" align="center">
             <Button disabled>Disabled (attribute)</Button>
             <Button className="btn-disabled">Disabled (class)</Button>
-          </div>
-        </section>
+          </Stack>
+        </Block>
 
-        <section className={section}>
+        <Block spacing="lg" as="section">
           <Title as="h3" size="5">Square + Circle</Title>
-          <div className={row}>
+          <Stack direction="row" gap="sm" align="center">
             <Button square><Heart size={20} /></Button>
             <Button circle><Heart size={20} /></Button>
-          </div>
-        </section>
+          </Stack>
+        </Block>
 
-        <section className={section}>
+        <Block spacing="lg" as="section">
           <Title as="h3" size="5">Border Width</Title>
           <div className={css({ display: 'flex', flexDirection: 'column', gap: '1rem' })}>
-            <div className={row}>
+            <Stack direction="row" gap="sm" align="center">
               <Button variant="outline" borderWidth={1}>border 1</Button>
               <Button variant="outline" borderWidth={2}>border 2</Button>
               <Button variant="outline" borderWidth={3}>border 3</Button>
-            </div>
-            <div className={row}>
+            </Stack>
+            <Stack direction="row" gap="sm" align="center">
               <Button variant="dash" borderWidth={1}>border 1</Button>
               <Button variant="dash" borderWidth={2}>border 2</Button>
               <Button variant="dash" borderWidth={3}>border 3</Button>
-            </div>
+            </Stack>
           </div>
-        </section>
+        </Block>
 
-        <section className={section}>
+        <Block spacing="lg" as="section">
           <Title as="h3" size="5">Button with icon</Title>
-          <div className={row}>
+          <Stack direction="row" gap="sm" align="center">
             <Button><Heart size={20} /> Like</Button>
             <Button>Like <Heart size={20} /></Button>
-          </div>
-        </section>
+          </Stack>
+        </Block>
 
-        <section className={section}>
+        <Block spacing="lg" as="section">
           <Title as="h3" size="5">Block</Title>
-          <div className={row}>
+          <Stack direction="row" gap="sm" align="center">
             <Button block>Block</Button>
-          </div>
-        </section>
+          </Stack>
+        </Block>
 
-        <section className={section}>
+        <Block spacing="lg" as="section">
           <Title as="h3" size="5">Loading spinner</Title>
-          <div className={row}>
+          <Stack direction="row" gap="sm" align="center">
             <Button square><Loading /></Button>
             <Button><Loading /> Loading</Button>
-          </div>
-        </section>
+          </Stack>
+        </Block>
 
         <section>
           <Title as="h2" size="3">{t('common.usage')}</Title>

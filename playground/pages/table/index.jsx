@@ -1,11 +1,10 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Table, TableContainer, TableRow, TableCell, TableHead, TableThead, TableTbody, TableTfoot } from '../../../src/index.js'
+import { Stack, Title, Block, Table, TableContainer, TableRow, TableCell, TableHead, TableThead, TableTbody, TableTfoot } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
-const section = css({ marginBottom: '2rem' })
 
 const rows = [
   ['Cy Ganderton', 'Lead Developer', 'Blue'],
@@ -58,7 +57,7 @@ export default {
           {t('paragraph')}
         </p>
 
-        <section className={section}>
+        <Block spacing="lg" as="section">
           <Title as="h3" size="5">Zebra + hoverable rows</Title>
           <TableContainer>
             <Table zebra>
@@ -87,9 +86,9 @@ export default {
               </TableTfoot>
             </Table>
           </TableContainer>
-        </section>
+        </Block>
 
-        <section className={section}>
+        <Block spacing="lg" as="section">
           <Title as="h3" size="5">Sizes</Title>
           <TableContainer>
             <Table size="xs" zebra>
@@ -101,7 +100,7 @@ export default {
               </TableTbody>
             </Table>
           </TableContainer>
-        </section>
+        </Block>
 
         <section>
           <Title as="h2" size="3">{t('common.usage')}</Title>

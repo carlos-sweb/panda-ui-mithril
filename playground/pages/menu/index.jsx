@@ -1,11 +1,10 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Menu, MenuItem, MenuTitle } from '../../../src/index.js'
+import { Stack, Title, Block, Menu, MenuItem, MenuTitle } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
-const section = css({ marginBottom: '2rem' })
 const surface = css({ background: 'token(colors.base-200)', borderRadius: 'var(--radius-box)' })
 
 const usageCode = `<Menu>
@@ -46,7 +45,7 @@ export default {
           {t('paragraph')}
         </p>
 
-        <section className={section}>
+        <Block spacing="lg" as="section">
           <Title as="h3" size="5">Vertical (default)</Title>
           <Menu className={surface}>
             <MenuItem active>Dashboard</MenuItem>
@@ -55,16 +54,16 @@ export default {
             <MenuItem>Profile</MenuItem>
             <MenuItem disabled>Logout</MenuItem>
           </Menu>
-        </section>
+        </Block>
 
-        <section className={section}>
+        <Block spacing="lg" as="section">
           <Title as="h3" size="5">Horizontal</Title>
           <Menu horizontal className={surface}>
             <MenuItem active>Home</MenuItem>
             <MenuItem>Docs</MenuItem>
             <MenuItem>About</MenuItem>
           </Menu>
-        </section>
+        </Block>
 
         <section>
           <Title as="h2" size="3">{t('common.usage')}</Title>

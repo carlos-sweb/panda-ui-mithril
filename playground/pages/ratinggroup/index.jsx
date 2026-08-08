@@ -1,7 +1,7 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, RatingGroup, Rating } from '../../../src/index.js'
+import { Stack, Title, Block, RatingGroup, Rating } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
@@ -35,58 +35,58 @@ export default {
         <section>
           <Title as="h2" size="3">Basic</Title>
           <h4 className={heading}>Wrap Rating with a label that shows the value</h4>
-          <div className={row}>
+          <Stack direction="row" gap="sm" align="center">
             <RatingGroup label="Score" defaultValue={3} />
             <RatingGroup label="Quality" defaultValue={4} color="secondary" size="lg" />
-          </div>
+          </Stack>
         </section>
 
         <section>
           <Title as="h2" size="3">Readonly</Title>
           <h4 className={heading}>Display-only: no interaction, label with score</h4>
-          <div className={row}>
+          <Stack direction="row" gap="sm" align="center">
             <RatingGroup label="Rating" value={4} readonly />
             <RatingGroup label="Performance" value={2} readonly color="info" />
-          </div>
+          </Stack>
         </section>
 
         <section>
           <Title as="h2" size="3">Colors</Title>
-          <div className={row}>
+          <Stack direction="row" gap="sm" align="center">
             <RatingGroup label="Default" defaultValue={3} />
             <RatingGroup label="Primary" defaultValue={3} color="primary" />
             <RatingGroup label="Secondary" defaultValue={3} color="secondary" />
             <RatingGroup label="Accent" defaultValue={3} color="accent" />
-          </div>
+          </Stack>
         </section>
 
         <section>
           <Title as="h2" size="3">Sizes</Title>
-          <div className={row}>
+          <Stack direction="row" gap="sm" align="center">
             <RatingGroup label="xs" defaultValue={3} size="xs" />
             <RatingGroup label="sm" defaultValue={3} size="sm" />
             <RatingGroup label="md" defaultValue={3} />
             <RatingGroup label="lg" defaultValue={3} size="lg" />
             <RatingGroup label="xl" defaultValue={3} size="xl" />
-          </div>
+          </Stack>
         </section>
 
         <section>
           <Title as="h2" size="3">Hide value</Title>
           <h4 className={heading}>showValue={'{false}'} — label only, no numeric display</h4>
-          <div className={row}>
+          <Stack direction="row" gap="sm" align="center">
             <RatingGroup label="Overall" defaultValue={4} showValue={false} />
-          </div>
+          </Stack>
         </section>
 
         <section>
           <Title as="h2" size="3">With standalone Rating</Title>
           <h4 className={heading}>Compare: Rating (no label) vs RatingGroup (with label)</h4>
-          <div className={row}>
+          <Stack direction="row" gap="sm" align="center">
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
               <span className={heading}>Rating</span>
               <Rating defaultValue={3} />
-            </div>
+            </Stack>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
               <span className={heading}>RatingGroup</span>
               <RatingGroup label="Score" defaultValue={3} />

@@ -1,11 +1,10 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Accordion, AccordionTitle, AccordionContent } from '../../../src/index.js'
+import { Stack, Title, Block, Accordion, AccordionTitle, AccordionContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
-const section = css({ marginBottom: '2rem' })
 const group = css({ display: 'flex', flexDirection: 'column', gap: '0.5rem' })
 
 const usageCode = `<Accordion name="faq" arrow border defaultChecked>
@@ -40,7 +39,7 @@ export default {
           {t('paragraph')}
         </p>
 
-        <section className={section}>
+        <Block spacing="lg" as="section">
           <Title as="h3" size="5">Grouped (only one open at a time)</Title>
           <div className={group}>
             <Accordion name="faq" arrow border defaultChecked>
@@ -56,7 +55,7 @@ export default {
               <AccordionContent>Yes — it's plain CSS, so it works with React, Vue, Svelte, Mithril, or plain HTML.</AccordionContent>
             </Accordion>
           </div>
-        </section>
+        </Block>
 
         <section>
           <Title as="h2" size="3">{t('common.usage')}</Title>

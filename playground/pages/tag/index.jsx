@@ -1,13 +1,11 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Title, Tag } from '../../../src/index.js'
+import { Title, Block, Tag } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 import { Sparkles, Hash } from 'lucide-mithril'
 
-const section = css({ marginBottom: '2rem' })
-const row = css({ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', alignItems: 'center' })
 
 const usageCode = `<Tag>Default</Tag>
 <Tag variant="info">Info</Tag>
@@ -48,69 +46,69 @@ export default {
           Small interactive UI element to label, categorize, or filter content. Supports icons, remove actions, and clickable states.
         </p>
 
-        <section className={section}>
+        <Block spacing="lg" as="section">
           <Title as="h3" size="5">Variants</Title>
-          <div className={row}>
+          <Stack direction="row" gap="sm" align="center">
             <Tag>Default</Tag>
             <Tag variant="info">Info</Tag>
             <Tag variant="success">Success</Tag>
             <Tag variant="warning">Warning</Tag>
             <Tag variant="error">Error</Tag>
-          </div>
-        </section>
+          </Stack>
+        </Block>
 
-        <section className={section}>
+        <Block spacing="lg" as="section">
           <Title as="h3" size="5">Styles</Title>
-          <div className={row}>
+          <Stack direction="row" gap="sm" align="center">
             <Tag variant="outline">Outline</Tag>
             <Tag variant="dash">Dash</Tag>
             <Tag variant="soft">Soft</Tag>
             <Tag variant="ghost">Ghost</Tag>
-          </div>
-        </section>
+          </Stack>
+        </Block>
 
-        <section className={section}>
+        <Block spacing="lg" as="section">
           <Title as="h3" size="5">Sizes</Title>
-          <div className={row}>
+          <Stack direction="row" gap="sm" align="center">
             <Tag size="md">Medium (md)</Tag>
             <Tag size="lg">Large (lg)</Tag>
-          </div>
-        </section>
+          </Stack>
+        </Block>
 
-        <section className={section}>
+        <Block spacing="lg" as="section">
           <Title as="h3" size="5">With icon</Title>
-          <div className={row}>
+          <Stack direction="row" gap="sm" align="center">
             <Tag icon={Sparkles}>AI Generated</Tag>
             <Tag variant="info" icon={Hash}>Channel</Tag>
-          </div>
-        </section>
+          </Stack>
+        </Block>
 
-        <section className={section}>
+        <Block spacing="lg" as="section">
           <Title as="h3" size="5">One character (square)</Title>
-          <div className={row}>
+          <Stack direction="row" gap="sm" align="center">
             <Tag>A</Tag>
             <Tag variant="success">S</Tag>
             <Tag variant="error">E</Tag>
-          </div>
-        </section>
+          </Stack>
+        </Block>
 
-        <section className={section}>
+        <Block spacing="lg" as="section">
           <Title as="h3" size="5">Clickable</Title>
-          <div className={row}>
+          <Stack direction="row" gap="sm" align="center">
             <Tag clickable>Click me</Tag>
             <Tag clickable variant="info">Info</Tag>
             <Tag clickable variant="success">Success</Tag>
             <Tag clickable disabled>Disabled</Tag>
-          </div>
-        </section>
+          </Stack>
+        </Block>
 
-        <section className={section}>
+        <Block spacing="lg" as="section">
           <Title as="h3" size="5">On remove</Title>
-          <div className={row}>
+          <Stack direction="row" gap="sm" align="center">
             <Tag onRemove={(e) => console.log('removed', e)}>Removable</Tag>
             <Tag variant="info" onRemove={(e) => console.log('removed', e)}>Info</Tag>
-          </div>
-        </section>
+          </Stack>
+        </Block>
 
         <section>
           <Title as="h2" size="3">{t('common.usage')}</Title>

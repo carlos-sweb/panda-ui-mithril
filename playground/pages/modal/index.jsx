@@ -1,7 +1,7 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Button, Modal, ModalBox, ModalAction, ModalBackdrop } from '../../../src/index.js'
+import { Stack, Title, Block, Button, Modal, ModalBox, ModalAction, ModalBackdrop } from '../../../src/index.js'
 import { modal } from '../../../src/recipes/modal'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
@@ -82,13 +82,13 @@ export default {
         </p>
 
         <Title as="h2" size="3">Sizes</Title>
-        <div className={row}>
+        <Stack direction="row" gap="sm" align="center">
           {sizes.map((s) => (
             <Button key={s} onclick={() => { vnode.state.sizeFor = s; vnode.state.sizeOpen = true }}>
               Open ({s.toUpperCase()})
             </Button>
           ))}
-        </div>
+        </Stack>
 
         <Modal
           size={vnode.state.sizeFor || undefined}
@@ -116,11 +116,11 @@ export default {
         <p className={hint}>
           This modal is persistent — ESC and clicking outside won't close it; use the Close button.
         </p>
-        <div className={row}>
+        <Stack direction="row" gap="sm" align="center">
           <Button onclick={() => { vnode.state.persistentOpen = true }}>
             Open persistent modal
           </Button>
-        </div>
+        </Stack>
 
         <Modal persistent open={vnode.state.persistentOpen}>
           <ModalBox>
@@ -135,13 +135,13 @@ export default {
           </ModalBox>
         </Modal>
 
-        <div className={row}>
+        <Stack direction="row" gap="sm" align="center">
           {positions.map((p) => (
             <Button key={p} onclick={() => { vnode.state.openFor = p }}>
               Open ({p})
             </Button>
           ))}
-        </div>
+        </Stack>
 
         {positions.map((p) => (
           <Modal key={p} position={p === 'middle' ? undefined : p} open={vnode.state.openFor === p} onclose={close}>
