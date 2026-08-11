@@ -35,7 +35,7 @@ export const card = sva({
       flexDirection: 'column',
       gap: 'token(spacing.2)',
       padding: 'var(--card-p, token(spacing.6))',
-      fontSize: 'var(--card-fs, token(fontSizes.base))',
+      fontSize: 'var(--card-fs, token(fontSizes.md))',
 
       '& p': { flexGrow: '1' },
     },
@@ -57,14 +57,14 @@ export const card = sva({
     size: {
       xs: {
         body: { '--card-p': 'token(spacing.2)', '--card-fs': 'token(fontSizes.xs)' },
-        title: { '--cardtitle-fs': 'token(fontSizes.base)' },
+        title: { '--cardtitle-fs': 'token(fontSizes.md)' },
       },
       sm: {
         body: { '--card-p': 'token(spacing.4)', '--card-fs': 'token(fontSizes.sm)' },
         title: { '--cardtitle-fs': 'token(fontSizes.lg)' },
       },
       md: {
-        body: { '--card-p': 'token(spacing.6)', '--card-fs': 'token(fontSizes.base)' },
+        body: { '--card-p': 'token(spacing.6)', '--card-fs': 'token(fontSizes.md)' },
         title: { '--cardtitle-fs': 'token(fontSizes.xl)' },
       },
       lg: {

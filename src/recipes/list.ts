@@ -6,7 +6,7 @@ export const list = sva({
     list: {
       display: 'flex',
       flexDirection: 'column',
-      fontSize: 'token(fontSizes.base)',
+      fontSize: 'token(fontSizes.md)',
 
       '& > li:not(:last-child)': {
         position: 'relative',

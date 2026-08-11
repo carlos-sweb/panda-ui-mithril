@@ -34,7 +34,7 @@ export const tabs = sva({
       border: 'none',
       background: 'none',
       height: 'var(--tab-height)',
-      fontSize: 'token(fontSizes.base)',
+      fontSize: 'token(fontSizes.md)',
       paddingInline: 'var(--tab-p)',
       color: 'inherit',
       fontFamily: 'inherit',

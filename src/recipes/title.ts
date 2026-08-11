@@ -8,13 +8,13 @@ export const titleStyles = cva({
   },
   variants: {
     size: {
-      '1': { fontSize: 'token(fontSizes.7xl)', fontWeight: '800', lineHeight: '1.15' },
-      '2': { fontSize: 'token(fontSizes.6xl)', fontWeight: '700', lineHeight: '1.2' },
-      '3': { fontSize: 'token(fontSizes.5xl)', fontWeight: '600', lineHeight: '1.25' },
-      '4': { fontSize: 'token(fontSizes.4xl)', fontWeight: '500', lineHeight: '1.3' },
-      '5': { fontSize: 'token(fontSizes.3xl)', fontWeight: '400' },
-      '6': { fontSize: 'token(fontSizes.2xl)', fontWeight: '400' },
-      '7': { fontSize: 'token(fontSizes.lg)', fontWeight: '400' },
+      '1': { fontSize: 'token(fontSizes.5xl)', fontWeight: '800', lineHeight: '1.15' },
+      '2': { fontSize: 'token(fontSizes.4xl)', fontWeight: '700', lineHeight: '1.2' },
+      '3': { fontSize: 'token(fontSizes.3xl)', fontWeight: '600', lineHeight: '1.25' },
+      '4': { fontSize: 'token(fontSizes.2xl)', fontWeight: '500', lineHeight: '1.3' },
+      '5': { fontSize: 'token(fontSizes.xl)', fontWeight: '400' },
+      '6': { fontSize: 'token(fontSizes.md)', fontWeight: '400' },
+      '7': { fontSize: 'token(fontSizes.xs)', fontWeight: '400' },
     },
     color: {
       neutral: { '--title-color': 'token(colors.neutral)' },

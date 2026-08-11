@@ -11,7 +11,7 @@ export const menuStyles = cva({
     width: 'fit-content',
     padding: 'token(spacing.2)',
     gap :'token(spacing.1)',
-    fontSize: 'token(fontSizes.base)',    
+    fontSize: 'token(fontSizes.md)',    
 
     '& > li': {
       position: 'relative',
@@ -54,7 +54,7 @@ export const menuStyles = cva({
       color: 'color-mix(in oklab, token(colors.base-content) 40%, transparent)',
       paddingInline: 'token(spacing.3)',
       paddingBlock: 'token(spacing.2)',
-      fontSize: 'token(fontSizes.base)',
+      fontSize: 'token(fontSizes.md)',
       fontWeight: '600',
     },
     '& .menu-dropdown': {
@@ -76,7 +76,7 @@ export const menuStyles = cva({
     size: {
       xs: { fontSize: 'token(fontSizes.xs)', [itemSelector]: { paddingInline: 'token(spacing.2)', paddingBlock: 'token(spacing.1)', fontSize: 'token(fontSizes.xs)' } },
       sm: { fontSize: 'token(fontSizes.sm)', [itemSelector]: { paddingInline: 'token(spacing.2.5)', paddingBlock: 'token(spacing.1)', fontSize: 'token(fontSizes.sm)' } },
-      md: { fontSize: 'token(fontSizes.base)', [itemSelector]: { paddingInline: 'token(spacing.3)', paddingBlock: 'token(spacing.1.5)', fontSize: 'token(fontSizes.base)' } },
+      md: { fontSize: 'token(fontSizes.md)', [itemSelector]: { paddingInline: 'token(spacing.3)', paddingBlock: 'token(spacing.1.5)', fontSize: 'token(fontSizes.md)' } },
       lg: { fontSize: 'token(fontSizes.xl)', [itemSelector]: { paddingInline: 'token(spacing.4)', paddingBlock: 'token(spacing.1.5)', fontSize: 'token(fontSizes.xl)' } },
       xl: { fontSize: 'token(fontSizes.3xl)', [itemSelector]: { paddingInline: 'token(spacing.5)', paddingBlock: 'token(spacing.1.5)', fontSize: 'token(fontSizes.3xl)' } },
     },

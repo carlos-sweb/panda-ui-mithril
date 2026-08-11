@@ -7,7 +7,7 @@ export const textareaStyles = cva({
     minHeight: 'token(spacing.20)',
     paddingInline: 'token(spacing.3)',
     paddingBlock: 'token(spacing.2)',
-    fontSize: 'token(fontSizes.base)',
+    fontSize: 'token(fontSizes.md)',
     borderRadius: 'var(--radius-field)',
     backgroundColor: 'token(colors.base-100)',
     '--input-color': 'color-mix(in oklab, token(colors.base-content) 20%, transparent)',
@@ -43,7 +43,7 @@ export const textareaStyles = cva({
     size: {
       xs: { fontSize: 'token(fontSizes.xs)' },
       sm: { fontSize: 'token(fontSizes.sm)' },
-      md: { fontSize: 'token(fontSizes.base)' },
+      md: { fontSize: 'token(fontSizes.md)' },
       lg: { fontSize: 'token(fontSizes.xl)' },
       xl: { fontSize: 'token(fontSizes.3xl)' },
     },

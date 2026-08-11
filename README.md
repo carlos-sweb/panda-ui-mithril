@@ -2,7 +2,7 @@
 
 > **[Demo en vivo →](https://carlos-sweb.github.io/panda-ui-mithril/)**
 
-Biblioteca de componentes UI para [Mithril.js](https://mithril.js.org/) estilizados con [Panda CSS](https://panda-css.com/). Nombres de clases inspirados por [daisyUI](https://daisyui.com/) (MIT). Iconos via [lucide-mithril](https://github.com/your-repo/lucide-mithril).
+Biblioteca de componentes UI para [Mithril.js](https://mithril.js.org/) estilizados con [Panda CSS](https://panda-css.com/). Convención de nombres inspirada por [daisyUI](https://daisyui.com/) (MIT); el resto de decisiones de diseño toman lo mejor de varias librerías de componentes UI. Iconos via [lucide-mithril](https://github.com/your-repo/lucide-mithril).
 
 ## Stack
 

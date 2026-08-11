@@ -23,7 +23,7 @@ export const alertStyles = cva({
       gridTemplateColumns: 'auto minmax(auto, 1fr)',
     },
     borderRadius: 'var(--radius-box)',
-    fontSize: 'token(fontSizes.base)',
+    fontSize: 'token(fontSizes.md)',
     lineHeight: 'token(spacing.5)',
     fontWeight: '400',
 

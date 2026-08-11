@@ -8,7 +8,7 @@ export const inputStyles = cva({
     width: 'clamp(3rem, 20rem, 100%)',
     height: 'token(spacing.10)',
     paddingInline: 'token(spacing.3)',
-    fontSize: 'token(fontSizes.base)',
+    fontSize: 'token(fontSizes.md)',
     borderRadius: 'var(--radius-field)',
     backgroundColor: 'token(colors.base-100)',
     whiteSpace: 'nowrap',
@@ -45,7 +45,7 @@ export const inputStyles = cva({
     size: {
       xs: { height: 'token(spacing.6)', fontSize: 'token(fontSizes.xs)' },
       sm: { height: 'token(spacing.8)', fontSize: 'token(fontSizes.sm)' },
-      md: { height: 'token(spacing.10)', fontSize: 'token(fontSizes.base)' },
+      md: { height: 'token(spacing.10)', fontSize: 'token(fontSizes.md)' },
       lg: { height: 'token(spacing.12)', fontSize: 'token(fontSizes.xl)' },
       xl: { height: 'token(spacing.14)', fontSize: 'token(fontSizes.3xl)' },
     },

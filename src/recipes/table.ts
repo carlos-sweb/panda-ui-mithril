@@ -4,7 +4,7 @@ export const table = sva({
   slots: ['table', 'row'],
   base: {
     table: {
-      fontSize: 'token(fontSizes.base)',
+      fontSize: 'token(fontSizes.md)',
       position: 'relative',
       width: '100%',
       borderCollapse: 'separate',
@@ -20,7 +20,7 @@ export const table = sva({
       '& :where(thead, tfoot)': {
         color: 'color-mix(in oklab, token(colors.base-content) 60%, transparent)',
         whiteSpace: 'nowrap',
-        fontSize: 'token(fontSizes.base)',
+        fontSize: 'token(fontSizes.md)',
         fontWeight: '600',
       },
       '& :where(tfoot tr:first-child :is(td, th))': {
@@ -48,7 +48,7 @@ export const table = sva({
       },
       md: {
         table: {
-          '& :not(thead, tfoot) tr': { fontSize: 'token(fontSizes.base)' },
+          '& :not(thead, tfoot) tr': { fontSize: 'token(fontSizes.md)' },
           '& :where(th, td)': { paddingInline: 'token(spacing.4)', paddingBlock: 'token(spacing.3)' },
         },
       },

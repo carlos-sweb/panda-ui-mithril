@@ -151,7 +151,7 @@ export const buttonStyles = cva({
     size: {
       xs: { '--fontsize': 'token(fontSizes.xs)', '--btn-p': 'token(spacing.2)', '--btn-size': 'token(spacing.6)' },
       sm: { '--fontsize': 'token(fontSizes.sm)', '--btn-p': 'token(spacing.3)', '--btn-size': 'token(spacing.8)' },
-      md: { '--fontsize': 'token(fontSizes.base)', '--btn-p': 'token(spacing.4)', '--btn-size': 'token(spacing.10)' },
+      md: { '--fontsize': 'token(fontSizes.md)', '--btn-p': 'token(spacing.4)', '--btn-size': 'token(spacing.10)' },
       lg: { '--fontsize': 'token(fontSizes.xl)', '--btn-p': 'token(spacing.5)', '--btn-size': 'token(spacing.12)' },
       xl: { '--fontsize': 'token(fontSizes.3xl)', '--btn-p': 'token(spacing.6)', '--btn-size': 'token(spacing.14)' },
     },

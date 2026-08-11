@@ -67,7 +67,7 @@ export const tagStyles = cva({
         '--tag-h': 'token(spacing.6)',
       },
       lg: {
-        fontSize: 'token(fontSizes.base)',
+        fontSize: 'token(fontSizes.md)',
         paddingInline: 'token(spacing.3)',
         height: 'token(spacing.8)',
         '--tag-h': 'token(spacing.8)',

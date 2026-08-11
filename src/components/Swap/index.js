@@ -3,7 +3,7 @@ import { swapStyles } from '../../recipes/swap'
 import { cx } from '../../utils/cx'
 
 /**
- * Swap — toggle on/off que intercambia dos contenidos (patrón daisyUI).
+ * Swap — toggle on/off que intercambia dos contenidos (patrón inspirado en daisyUI).
  *
  * Renderiza un `<label>` que envuelve un `<input type="checkbox">` oculto más
  * los bloques `.swap-on` / `.swap-off`. El toggle es 100% CSS: hacer click en

@@ -24,7 +24,7 @@ export const tooltipStyles = cva({
       textAlign: 'center',
       whiteSpace: 'normal',
       opacity: '0',
-      fontSize: 'token(fontSizes.base)',
+      fontSize: 'token(fontSizes.md)',
       lineHeight: '1.25',
       borderRadius: 'var(--radius-field)',
       backgroundColor: 'var(--tt-bg)',

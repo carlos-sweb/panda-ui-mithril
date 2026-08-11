@@ -11,7 +11,7 @@ export const fabStyles = cva({
     flexDirection: 'column-reverse',
     alignItems: 'flex-end',
     gap: 'token(spacing.2)',
-    fontSize: 'token(fontSizes.base)',
+    fontSize: 'token(fontSizes.md)',
     whiteSpace: 'nowrap',
     userSelect: 'none',
 

@@ -8,7 +8,7 @@ export const badgeStyles = cva({
     gap: 'token(spacing.2)',
     verticalAlign: 'middle',
     width: 'fit-content',
-    fontSize: 'token(fontSizes.base)',
+    fontSize: 'token(fontSizes.md)',
     borderRadius: 'var(--radius-selector)',
     borderWidth: 'var(--border, 1px)',
     borderStyle: 'solid',
@@ -63,7 +63,7 @@ export const badgeStyles = cva({
     size: {
       xs: { '--badge-size': 'token(spacing.4)', fontSize: 'token(fontSizes.2xs)' },
       sm: { '--badge-size': 'token(spacing.5)', fontSize: 'token(fontSizes.sm)' },
-      md: { '--badge-size': 'token(spacing.6)', fontSize: 'token(fontSizes.base)' },
+      md: { '--badge-size': 'token(spacing.6)', fontSize: 'token(fontSizes.md)' },
       lg: { '--badge-size': 'token(spacing.7)', fontSize: 'token(fontSizes.lg)' },
       xl: { '--badge-size': 'token(spacing.8)', fontSize: 'token(fontSizes.xl)' },
     },

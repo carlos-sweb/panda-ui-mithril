@@ -10,7 +10,7 @@ export const footer = sva({
       placeItems: 'start',
       columnGap: 'token(spacing.4)',
       rowGap: 'token(spacing.10)',
-      fontSize: 'token(fontSizes.base)',
+      fontSize: 'token(fontSizes.md)',
       lineHeight: 'token(spacing.5)',
 
       '& > *': {

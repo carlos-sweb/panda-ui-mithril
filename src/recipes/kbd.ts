@@ -19,13 +19,13 @@ export const kbdStyles = cva({
     '--kbd-size': 'token(spacing.6)',
     height: 'var(--kbd-size)',
     minWidth: 'var(--kbd-size)',
-    fontSize: 'token(fontSizes.base)',
+    fontSize: 'token(fontSizes.md)',
   },
   variants: {
     size: {
       xs: { '--kbd-size': 'token(spacing.4)', fontSize: 'token(fontSizes.2xs)' },
       sm: { '--kbd-size': 'token(spacing.5)', fontSize: 'token(fontSizes.sm)' },
-      md: { '--kbd-size': 'token(spacing.6)', fontSize: 'token(fontSizes.base)' },
+      md: { '--kbd-size': 'token(spacing.6)', fontSize: 'token(fontSizes.md)' },
       lg: { '--kbd-size': 'token(spacing.7)', fontSize: 'token(fontSizes.lg)' },
       xl: { '--kbd-size': 'token(spacing.8)', fontSize: 'token(fontSizes.xl)' },
     },

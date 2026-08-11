@@ -1,6 +1,7 @@
 # panda-ui-mithril
 
-Mithril.js component library styled with Panda CSS. Class naming inspired by daisyUI.
+Mithril.js component library styled with Panda CSS. Design inspired by the best
+of multiple UI component libraries (daisyUI class naming, etc.).
 Icons via lucide-mithril.
 
 ## Commands
@@ -92,7 +93,8 @@ siblings.
 
 ## Naming Convention
 
-All CSS class names follow the library's convention (inspired by daisyUI):
+All CSS class names follow the library's convention (inspired by daisyUI among
+other component libraries):
 - Lowercase, hyphen-separated: `btn-primary`, `card-body`, `alert-soft`
 - Component base class first: `btn`, `card`, `alert`
 - Modifiers: `{component}-{modifier}` -> `btn-primary`, `card-border`
@@ -116,12 +118,18 @@ while producing an empty DOM node. After changing any component's `view()`
 logic, run `npm run dev` and check the corresponding `playground/pages/*.jsx`
 page in a browser before considering the change done.
 
-## Replicating reference Component Styles
+## Porting Styles from Reference Libraries
 
-When porting or fixing a component's visual styling to match the reference implementation, don't
-rely on the rendered docs site or memory of "roughly what it looks like" —
-the reference site is JS-heavy and often fails to fetch cleanly, and approximate
-values pass a visual glance while still being wrong. Pull the real source:
+This library takes the best of several UI component libraries (daisyUI,
+shadcn/ui, Radix, Mantine, etc., depending on the component) — it is not a
+clone of any single one. daisyUI is one reference among several, mainly for
+its class naming convention; the final design decisions belong to this
+library. When porting or fixing a component's visual styling, don't rely on
+the rendered docs site or memory of "roughly what it looks like" — reference
+sites are JS-heavy and often fail to fetch cleanly, and approximate values
+pass a visual glance while still being wrong. Pull the real source. The
+daisyUI URLs below are one example of the verification method; adapt the repo
+paths to whichever reference library the component draws from:
 
 1. **Component CSS** — fetch the raw source file from GitHub, not the docs
    page:
@@ -161,15 +169,22 @@ values pass a visual glance while still being wrong. Pull the real source:
    the declaration.
 
 5. **Use the spacing/fontSizes token scale instead of rem literals.** Since the
-   2026-08 audit, `panda.config.ts` defines `theme.extend.tokens.spacing`
-   (numeric keys `0.5`–`320`, in rem) and `fontSizes` (`2xs`–`7xl`). Recipes
-   reference them with the string macro form `'token(spacing.4)'` /
-   `'token(fontSizes.base)'` — never bare numeric tokens (`paddingInline: '4'`
-   still resolves to literal `4px`) and **never direct token paths as values**
-   (`gap: 'spacing.4'`): in this Panda version a direct path in a `css()`/
-   recipe value is emitted as a literal and silently ignored by the browser.
-   The only working reference form is the `token(...)` string macro, including
-   inside `var()` fallbacks and `color-mix()`.
+   2026-08 audit, spacing and fontSizes both come from Panda's **native scale**
+   (keys `0.5`–`96` for spacing, `2xs`–`9xl` for fontSizes, from
+   `@pandacss/preset-panda`, same rem values), with only the three spacing keys
+   beyond it declared in `panda.config.ts`'s `theme.extend.tokens.spacing`:
+   `'128'` (32rem), `'192'` (48rem), `'320'` (80rem). **Merge warning:** never
+   add a top-level `theme.tokens` (without `extend`) to `panda.config.ts` —
+   Panda's first-wins `assign` would replace the preset's entire
+   `theme.tokens`, silently killing the native scale; only
+   `theme.extend.tokens.X` merges per category. Recipes reference these tokens
+   with the string macro form `'token(spacing.4)'` / `'token(fontSizes.md)'` —
+   never bare numeric tokens (`paddingInline: '4'` still resolves to literal
+   `4px`) and **never direct token paths as values** (`gap: 'spacing.4'`): in
+   this Panda version a direct path in a `css()`/recipe value is emitted as a
+   literal and silently ignored by the browser. The only working reference form
+   is the `token(...)` string macro, including inside `var()` fallbacks and
+   `color-mix()`.
 
 6. **Custom properties must be component-scoped.** Name component custom
    properties with a `--{component}-` prefix (`--btn-*`, `--rating-*`,
@@ -179,7 +194,7 @@ values pass a visual glance while still being wrong. Pull the real source:
    global inside a component subtree is a latent bug (see the `--size` → 
    `--btn-size`/`--rprogress-size` fix).
 
-6. **Verify with computed styles, not just a screenshot.** A screenshot can
+7. **Verify with computed styles, not just a screenshot.** A screenshot can
    look plausible even when a value is off by 4x (a 4px padding still renders
    a visible box). Check exact values in the browser and compare against the
    real reference number from step 1:
@@ -187,7 +202,7 @@ values pass a visual glance while still being wrong. Pull the real source:
    getComputedStyle(document.querySelector('[role="alert"]')).paddingInlineStart
    ```
 
-7. **After editing `panda.config.ts` (globalCss/theme tokens), run
+8. **After editing `panda.config.ts` (globalCss/theme tokens), run
    `npx panda cssgen`, not just `npm run codegen`.** `codegen` only
    regenerates the JS/TS helpers (`css()`, tokens, patterns, jsx); the static
    `styled-system/styles.css` that `playground/index.html` links via `<link>`
@@ -195,7 +210,7 @@ values pass a visual glance while still being wrong. Pull the real source:
    Then restart the dev server — Bun serves a bundled/hashed copy that can
    lag behind a plain page reload.
 
-8. **Check blast radius before changing a shared value.** Adding a variable
+9. **Check blast radius before changing a shared value.** Adding a variable
    to `globalCss: { ':root': {...} }` is shared infrastructure. Before doing
    it, grep which recipes reference that variable
    (`grep -rl "radius-box" src/recipes/`) so you know whether the fix is

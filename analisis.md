@@ -2,7 +2,7 @@
 
 ## 📊 Resumen Ejecutivo
 
-**panda-ui-mithril** es una biblioteca de componentes UI para Mithril.js estilizados con Panda CSS, siguiendo la convención de nombres de daisyUI. El proyecto está en versión **0.1.0** y cuenta con **56 componentes** implementados.
+**panda-ui-mithril** es una biblioteca de componentes UI para Mithril.js estilizados con Panda CSS, tomando lo mejor de varias librerías de componentes UI (convención de nombres inspirada en daisyUI, entre otras). El proyecto está en versión **0.1.0** y cuenta con **56 componentes** implementados.
 
 ---
 
@@ -50,7 +50,7 @@ panda-ui-mithril/
 
 ### Panda CSS Configuration
 
-**Tokens Semánticos** (daisyUI-compatible):
+**Tokens Semánticos** (inspirados en el modelo de colores semánticos de daisyUI):
 - **Colores base**: base-100, base-200, base-300, base-content
 - **Colores temáticos**: primary, secondary, accent, neutral
 - **Colores de estado**: info, success, warning, error
@@ -83,7 +83,7 @@ panda-ui-mithril/
 - Separación clara: componente (lógica) vs recipe (estilos)
 - Uso consistente de `cx()` para combinar clases
 - Props comunes: `className`, `children`, `...rest`
-- Soporte para variantes daisyUI (color, size, variant)
+- Soporte para variantes consistentes (color, size, variant)
 
 ---
 
@@ -174,7 +174,7 @@ panda-ui-mithril/
 | Aspecto | Estado | Nota |
 |---------|--------|------|
 | Componentes | ✅ Completo | 56 componentes implementados |
-| Sistema de diseño | ✅ Completo | Tokens daisyUI, modo oscuro |
+| Sistema de diseño | ✅ Completo | Tokens semánticos, modo oscuro |
 | Playground | ✅ Completo | Demos interactivas, búsqueda |
 | Build | ✅ Funcional | Biblioteca y playground |
 | Tipos | ⚠️ Parcial | Tipos base sí, tipos por componente no |
@@ -245,7 +245,7 @@ panda-ui-mithril/
 
 Sin embargo, carece de **infraestructura profesional**: tests, linting, CI/CD, y documentación pública. Esto lo mantiene en estado alpha y limita su adopción.
 
-**Potencial**: Alto. La combinación Mithril + Panda CSS + daisyUI es única y atractiva para proyectos que buscan simplicidad y rendimiento.
+**Potencial**: Alto. La combinación Mithril + Panda CSS con lo mejor de varias librerías de componentes UI es única y atractiva para proyectos que buscan simplicidad y rendimiento.
 
 **Próximo paso crítico**: Agregar README.md y tests básicos para convertirlo en un proyecto publicable.
 

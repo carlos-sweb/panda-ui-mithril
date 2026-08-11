@@ -26,7 +26,7 @@ export const calendar = sva({
       justifyContent: 'space-between',
       marginBottom: 'token(spacing.2)',
       fontWeight: '600',
-      fontSize: 'token(fontSizes.base)',
+      fontSize: 'token(fontSizes.md)',
     },
     nav: {
       display: 'flex',

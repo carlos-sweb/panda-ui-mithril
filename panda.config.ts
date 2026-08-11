@@ -2,7 +2,7 @@ import { defineConfig } from '@pandacss/dev'
 
 export default defineConfig({
   preflight: true,
-  include: ['./src/**/*.{js,jsx,ts}', './playground/**/*.{js,jsx}'],
+  include: ['./src/recipes/*.ts','./src/compoenntes/*/*.jsx', './playground/**/*.{js,jsx}'],
   exclude: [],
   outdir: 'styled-system',
   jsxFramework: 'mithril',
@@ -20,14 +20,12 @@ export default defineConfig({
     xl: '@media (min-width: 1280px)',
   },
   theme: {
-    tokens: {
-      colors: {
-        'white': { value: '#ffffff' },
-        'black': { value: '#000000' },
-      },
-    },
     extend: {
       tokens: {
+        colors: {
+          'white': { value: '#ffffff' },
+          'black': { value: '#000000' },
+        },
         radii: {
           btn: { value: '4px' },
         },
@@ -35,49 +33,17 @@ export default defineConfig({
           sans: { value: '"Ubuntu", system-ui, sans-serif' },
           mono: { value: '"Ubuntu Mono", monospace' },
         },
-        // Numeric spacing scale (Tailwind-compatible keys). Values in rem;
-        // used via `'spacing.x'` inside recipes/css() instead of rem literals.
+        // Only the spacing keys beyond Panda's native scale are declared here.
+        // The native scale (0.5–96, same rem values) comes from Panda's own
+        // tokens and is preserved because theme.tokens is not overridden at
+        // the top level — extending it would replace the whole category.
         spacing: {
-          '0.5': { value: '0.125rem' },
-          '1': { value: '0.25rem' },
-          '1.5': { value: '0.375rem' },
-          '2': { value: '0.5rem' },
-          '2.5': { value: '0.625rem' },
-          '3': { value: '0.75rem' },
-          '3.5': { value: '0.875rem' },
-          '4': { value: '1rem' },
-          '5': { value: '1.25rem' },
-          '6': { value: '1.5rem' },
-          '7': { value: '1.75rem' },
-          '8': { value: '2rem' },
-          '10': { value: '2.5rem' },
-          '12': { value: '3rem' },
-          '14': { value: '3.5rem' },
-          '16': { value: '4rem' },
-          '20': { value: '5rem' },
-          '24': { value: '6rem' },
-          '64': { value: '16rem' },
-          '72': { value: '18rem' },
-          '80': { value: '20rem' },
-          '96': { value: '24rem' },
           '128': { value: '32rem' },
           '192': { value: '48rem' },
           '320': { value: '80rem' },
         },
-        fontSizes: {
-          '2xs': { value: '0.625rem' },
-          xs: { value: '0.6875rem' },
-          sm: { value: '0.75rem' },
-          base: { value: '0.875rem' },
-          lg: { value: '1rem' },
-          xl: { value: '1.125rem' },
-          '2xl': { value: '1.25rem' },
-          '3xl': { value: '1.375rem' },
-          '4xl': { value: '1.5rem' },
-          '5xl': { value: '1.75rem' },
-          '6xl': { value: '2rem' },
-          '7xl': { value: '2.5rem' },
-        },
+        // fontSizes: removed — native Panda scale (2xs–9xl) applies now
+        // All recipes already reference tokens via 'token(fontSizes.md)' etc.
       },
       semanticTokens: {
         colors: {

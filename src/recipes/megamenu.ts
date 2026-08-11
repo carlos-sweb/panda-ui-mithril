@@ -79,7 +79,7 @@ export const megamenu = sva({
     size: {
       xs: { megamenu: { '--mm-size': 'token(spacing.6)', '--mm-p': 'token(spacing.2)', fontSize: 'token(fontSizes.xs)' } },
       sm: { megamenu: { '--mm-size': 'token(spacing.8)', '--mm-p': 'token(spacing.3)', fontSize: 'token(fontSizes.sm)' } },
-      md: { megamenu: { '--mm-size': 'token(spacing.10)', '--mm-p': 'token(spacing.4)', fontSize: 'token(fontSizes.base)' } },
+      md: { megamenu: { '--mm-size': 'token(spacing.10)', '--mm-p': 'token(spacing.4)', fontSize: 'token(fontSizes.md)' } },
       lg: { megamenu: { '--mm-size': 'token(spacing.12)', '--mm-p': 'token(spacing.5)', fontSize: 'token(fontSizes.xl)' } },
       xl: { megamenu: { '--mm-size': 'token(spacing.14)', '--mm-p': 'token(spacing.6)', fontSize: 'token(fontSizes.3xl)' } },
     },
