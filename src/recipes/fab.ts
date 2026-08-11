@@ -58,8 +58,8 @@ export const fabStyles = cva({
 
 export const fabLabelStyles = cva({
   base: {
-    backgroundColor: 'token(colors.neutral)',
-    color: 'token(colors.neutral-content)',
+    backgroundColor: 'neutral',
+    color: 'neutral-content',
     paddingInline: 'token(spacing.2.5)',
     paddingBlock: 'token(spacing.1)',
     borderRadius: 'var(--radius-field)',

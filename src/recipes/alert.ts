@@ -29,7 +29,7 @@ export const alertStyles = cva({
 
     // Colors via CSS variables (the original implementation pattern)
     backgroundColor: 'var(--alert-color, token(colors.base-200))',
-    color: 'token(colors.base-content)',
+    color: 'base-content',
     borderWidth: 'var(--border, 1px)',
     borderStyle: 'solid',
     borderColor: 'var(--alert-border-color, token(colors.base-200))',
@@ -68,22 +68,22 @@ export const alertStyles = cva({
       info: {
         '--alert-color': 'token(colors.info)',
         '--alert-border-color': 'token(colors.info)',
-        color: 'token(colors.info-content)',
+        color: 'info-content',
       },
       success: {
         '--alert-color': 'token(colors.success)',
         '--alert-border-color': 'token(colors.success)',
-        color: 'token(colors.success-content)',
+        color: 'success-content',
       },
       warning: {
         '--alert-color': 'token(colors.warning)',
         '--alert-border-color': 'token(colors.warning)',
-        color: 'token(colors.warning-content)',
+        color: 'warning-content',
       },
       error: {
         '--alert-color': 'token(colors.error)',
         '--alert-border-color': 'token(colors.error)',
-        color: 'token(colors.error-content)',
+        color: 'error-content',
       },
     },
     variant: {

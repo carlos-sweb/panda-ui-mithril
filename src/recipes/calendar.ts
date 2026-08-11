@@ -40,7 +40,7 @@ export const calendar = sva({
       color: 'inherit',
       cursor: 'pointer',
       '&:hover': {
-        backgroundColor: 'token(colors.base-200)',
+        backgroundColor: 'base-200',
       },
     },
     grid: {
@@ -70,7 +70,7 @@ export const calendar = sva({
       color: 'inherit',
       cursor: 'pointer',
       '&:hover': {
-        backgroundColor: 'token(colors.base-200)',
+        backgroundColor: 'base-200',
       },
     },
   },
@@ -81,18 +81,18 @@ export const calendar = sva({
     today: {
       true: {
         day: {
-          backgroundColor: 'token(colors.primary)',
-          color: 'token(colors.primary-content)',
-          '&:hover': { backgroundColor: 'token(colors.primary)' },
+          backgroundColor: 'primary',
+          color: 'primary-content',
+          '&:hover': { backgroundColor: 'primary' },
         },
       },
     },
     selected: {
       true: {
         day: {
-          backgroundColor: 'token(colors.base-content)',
-          color: 'token(colors.base-100)',
-          '&:hover': { backgroundColor: 'token(colors.base-content)' },
+          backgroundColor: 'base-content',
+          color: 'base-100',
+          '&:hover': { backgroundColor: 'base-content' },
         },
       },
     },

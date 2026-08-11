@@ -115,7 +115,7 @@ export const card = sva({
         card: {
           display: 'grid',
           '& > *': { gridColumnStart: '1', gridRowStart: '1' },
-          '& > .card-body': { position: 'relative', color: 'token(colors.neutral-content)' },
+          '& > .card-body': { position: 'relative', color: 'neutral-content' },
           '& figure': { overflow: 'hidden', borderRadius: 'inherit' },
           '& figure img': { height: '100%', objectFit: 'cover', filter: 'brightness(28%)' },
         },

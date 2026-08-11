@@ -20,7 +20,7 @@ export const radioStyles = cva({
     _before: { content: '""', display: 'block', width: '100%', height: '100%', borderRadius: '9999px' },
     '&:focus-visible': { outline: '2px solid currentColor' },
     '&:checked, &[aria-checked="true"]': {
-      backgroundColor: 'token(colors.base-100)',
+      backgroundColor: 'base-100',
       borderColor: 'currentColor',
       animation: 'radio 0.2s ease-out',
       _before: { backgroundColor: 'currentColor' },

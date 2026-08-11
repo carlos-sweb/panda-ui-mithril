@@ -54,9 +54,9 @@ export const badgeStyles = cva({
         backgroundImage: 'none',
       },
       ghost: {
-        borderColor: 'token(colors.base-200)',
-        backgroundColor: 'token(colors.base-200)',
-        color: 'token(colors.base-content)',
+        borderColor: 'base-200',
+        backgroundColor: 'base-200',
+        color: 'base-content',
         backgroundImage: 'none',
       },
     },

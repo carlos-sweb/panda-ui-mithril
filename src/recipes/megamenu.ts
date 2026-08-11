@@ -60,9 +60,9 @@ export const megamenu = sva({
     panel: {
       borderWidth: 'var(--border, 1px)',
       borderStyle: 'solid',
-      borderColor: 'token(colors.base-300)',
+      borderColor: 'base-300',
       borderRadius: 'var(--radius-box)',
-      backgroundColor: 'token(colors.base-100)',
+      backgroundColor: 'base-100',
       boxShadow: '0 10px 25px color-mix(in oklab, black 20%, transparent)',
       padding: 'token(spacing.4)',
       minWidth: 'token(spacing.64)',

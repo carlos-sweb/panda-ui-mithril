@@ -2,7 +2,7 @@ import { cva } from '../../styled-system/css'
 
 export const boxStyles = cva({
   base: {
-    backgroundColor: 'token(colors.base-100)',
+    backgroundColor: 'base-100',
     borderRadius: 'var(--radius-box, 0.5rem)',
     boxShadow: 'var(--shadow-md, 0 4px 6px -1px rgba(0,0,0,0.1))',
     border: '1px solid token(colors.base-300)',

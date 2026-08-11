@@ -178,13 +178,19 @@ paths to whichever reference library the component draws from:
    Panda's first-wins `assign` would replace the preset's entire
    `theme.tokens`, silently killing the native scale; only
    `theme.extend.tokens.X` merges per category. Recipes reference these tokens
-   with the string macro form `'token(spacing.4)'` / `'token(fontSizes.md)'` —
-   never bare numeric tokens (`paddingInline: '4'` still resolves to literal
-   `4px`) and **never direct token paths as values** (`gap: 'spacing.4'`): in
-   this Panda version a direct path in a `css()`/recipe value is emitted as a
-   literal and silently ignored by the browser. The only working reference form
-   is the `token(...)` string macro, including inside `var()` fallbacks and
-   `color-mix()`.
+   with the string macro form `'token(spacing.4)'` / `'token(fontSizes.md)'`
+   for numeric tokens. Token references split into two regimes by value type.
+   **Numeric spacing/fontSize tokens require the `token(...)` string macro**: a
+   bare numeric token (`paddingInline: '4'`) resolves to a literal `4px`, and a
+   dotted path as a value (`gap: 'spacing.4'`) is emitted as a literal the
+   browser silently ignores; the only working form is `token(...)`. **Named
+   colors do NOT**: direct values like `color: 'primary'`,
+   `backgroundColor: 'base-200'`, or `borderColor: 'accent'` pass through
+   Panda's token matcher and emit `var(--colors-X)`, identical to
+   `token(colors.X)` (verified in Panda 0.53). The macro stays required in
+   contexts that bypass the token matcher: custom properties
+   (`'--x': 'token(colors.Z)'`), `var()` fallbacks (`var(--x, token(colors.Z))`),
+   and `color-mix()`.
 
 6. **Custom properties must be component-scoped.** Name component custom
    properties with a `--{component}-` prefix (`--btn-*`, `--rating-*`,

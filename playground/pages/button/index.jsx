@@ -53,7 +53,7 @@ export default {
   view() {
     return (
       <Stack gap="lg">
-        <Title as="h1" size="1">Button</Title>        
+        <Title as="h1" size="2">Button</Title>        
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
           {t('paragraph')}
         </p>

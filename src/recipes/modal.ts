@@ -79,7 +79,7 @@ export const modal = sva({
       position: 'relative',
       gridColumnStart: '1',
       gridRowStart: '1',
-      backgroundColor: 'token(colors.base-100)',
+      backgroundColor: 'base-100',
       width: '91.666667%',
       maxWidth: 'token(spacing.128)',
       maxHeight: '100vh',

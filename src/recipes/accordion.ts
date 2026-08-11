@@ -99,7 +99,7 @@ export const collapseStyles = cva({
     // variant reproduces the same look via the recipe instead.
     border: {
       true: {
-        backgroundColor: 'token(colors.base-100)',
+        backgroundColor: 'base-100',
         border: 'var(--border, 1px) solid token(colors.base-300)',
       },
     },

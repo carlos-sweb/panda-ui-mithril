@@ -35,7 +35,7 @@ export const tagStyles = cva({
         borderColor: 'transparent',
       },
       ghost: {
-        backgroundColor: 'token(colors.base-200)',
+        backgroundColor: 'base-200',
         borderColor: 'transparent',
       },
       info: {

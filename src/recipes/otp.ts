@@ -49,7 +49,7 @@ export const otpStyles = cva({
       transition: 'border-color 0.2s',
       inlineSize: 'var(--otp-w)',
       blockSize: 'var(--otp-size)',
-      backgroundColor: 'token(colors.base-100)',
+      backgroundColor: 'base-100',
       border: 'var(--border, 1px) solid var(--input-color)',
       borderRadius: 'inherit',
       outline: '2px solid transparent',

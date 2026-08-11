@@ -16,14 +16,14 @@ export const statusStyles = cva({
   },
   variants: {
     color: {
-      neutral: { backgroundColor: 'token(colors.neutral)', color: 'token(colors.neutral)' },
-      primary: { backgroundColor: 'token(colors.primary)', color: 'token(colors.primary)' },
-      secondary: { backgroundColor: 'token(colors.secondary)', color: 'token(colors.secondary)' },
-      accent: { backgroundColor: 'token(colors.accent)', color: 'token(colors.accent)' },
-      info: { backgroundColor: 'token(colors.info)', color: 'token(colors.info)' },
-      success: { backgroundColor: 'token(colors.success)', color: 'token(colors.success)' },
-      warning: { backgroundColor: 'token(colors.warning)', color: 'token(colors.warning)' },
-      error: { backgroundColor: 'token(colors.error)', color: 'token(colors.error)' },
+      neutral: { backgroundColor: 'neutral', color: 'neutral' },
+      primary: { backgroundColor: 'primary', color: 'primary' },
+      secondary: { backgroundColor: 'secondary', color: 'secondary' },
+      accent: { backgroundColor: 'accent', color: 'accent' },
+      info: { backgroundColor: 'info', color: 'info' },
+      success: { backgroundColor: 'success', color: 'success' },
+      warning: { backgroundColor: 'warning', color: 'warning' },
+      error: { backgroundColor: 'error', color: 'error' },
     },
     size: {
       xs: { width: 'token(spacing.0.5)', height: 'token(spacing.0.5)' },

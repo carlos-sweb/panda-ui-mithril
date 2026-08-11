@@ -65,14 +65,14 @@ export const tabs = sva({
     variant: {
       box: {
         tabs: {
-          backgroundColor: 'token(colors.base-200)',
+          backgroundColor: 'base-200',
           padding: 'token(spacing.1)',
           borderRadius: 'calc(min(var(--tab-height) / 2, var(--radius-field)) + 0.25rem)',
         },
         tab: {
           borderRadius: 'var(--radius-field)',
           [activeSelector]: {
-            backgroundColor: 'token(colors.base-100)',
+            backgroundColor: 'base-100',
             boxShadow: '0 1px 3px color-mix(in oklab, black 15%, transparent)',
           },
         },
@@ -81,7 +81,7 @@ export const tabs = sva({
       border: {
         tabs: {
           borderBottomWidth: '1px',
-          borderColor: 'token(colors.base-300)',
+          borderColor: 'base-300',
         },
         tab: {
           '&:before': {
@@ -114,12 +114,12 @@ export const tabs = sva({
             borderWidth: 'var(--border, 1px) var(--border, 1px) 0 var(--border, 1px)',
             borderColor: 'token(colors.base-300) token(colors.base-300) transparent token(colors.base-300)',
             paddingTop: '0',
-            backgroundColor: 'token(colors.base-100)',
+            backgroundColor: 'base-100',
           },
         },
         content: {
           marginTop: 'calc(-1 * var(--border, 1px))',
-          borderColor: 'token(colors.base-300)',
+          borderColor: 'base-300',
           borderStartStartRadius: '0',
           borderStartEndRadius: 'var(--radius-box)',
           borderEndStartRadius: 'var(--radius-box)',

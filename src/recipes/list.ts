@@ -50,7 +50,7 @@ export const list = sva({
     hover: {
       true: {
         row: {
-          '&:hover': { backgroundColor: 'token(colors.base-200)' },
+          '&:hover': { backgroundColor: 'base-200' },
         },
       },
     },

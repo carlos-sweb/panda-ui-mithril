@@ -15,7 +15,7 @@ export const timeline = sva({
       },
       '& hr': {
         border: 'none',
-        backgroundColor: 'token(colors.base-300)',
+        backgroundColor: 'base-300',
       },
       '& .timeline-middle': {
         gridColumnStart: '2',
@@ -25,7 +25,7 @@ export const timeline = sva({
     box: {
       border: 'var(--border, 1px) solid token(colors.base-300)',
       borderRadius: 'var(--radius-box)',
-      backgroundColor: 'token(colors.base-100)',
+      backgroundColor: 'base-100',
       paddingInline: 'token(spacing.4)',
       paddingBlock: 'token(spacing.2)',
       fontSize: 'token(fontSizes.sm)',

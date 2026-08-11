@@ -62,10 +62,10 @@ export const joinItemStyles = cva({
     position: 'relative',
     borderStyle: 'solid',
     borderWidth: 'var(--border, 1px)',
-    borderColor: 'token(colors.base-300)',
+    borderColor: 'base-300',
     paddingInline: 'token(spacing.4)',
     paddingBlock: 'token(spacing.2)',
-    backgroundColor: 'token(colors.base-100)',
+    backgroundColor: 'base-100',
     cursor: 'pointer',
   },
 })

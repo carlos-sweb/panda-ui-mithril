@@ -38,7 +38,7 @@ export const toggleStyles = cva({
     '&:focus-visible': { outline: '2px solid currentColor', outlineOffset: '2px' },
     '&:checked, &[aria-checked="true"]': {
       gridTemplateColumns: '1fr 1fr 0fr',
-      backgroundColor: 'token(colors.base-100)',
+      backgroundColor: 'base-100',
       '--input-color': 'token(colors.base-content)',
     },
     _disabled: {

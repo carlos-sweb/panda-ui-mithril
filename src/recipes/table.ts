@@ -68,29 +68,29 @@ export const table = sva({
     zebra: {
       true: {
         table: {
-          '& tbody tr:where(:nth-child(even))': { backgroundColor: 'token(colors.base-200)' },
+          '& tbody tr:where(:nth-child(even))': { backgroundColor: 'base-200' },
         },
       },
     },
     pinRows: {
       true: {
         table: {
-          '& :where(thead tr)': { backgroundColor: 'token(colors.base-100)', position: 'sticky', top: '0', zIndex: '1' },
-          '& :where(tfoot tr)': { backgroundColor: 'token(colors.base-100)', position: 'sticky', bottom: '0', zIndex: '1' },
+          '& :where(thead tr)': { backgroundColor: 'base-100', position: 'sticky', top: '0', zIndex: '1' },
+          '& :where(tfoot tr)': { backgroundColor: 'base-100', position: 'sticky', bottom: '0', zIndex: '1' },
         },
       },
     },
     pinCols: {
       true: {
         table: {
-          '& :where(tr th)': { backgroundColor: 'token(colors.base-100)', position: 'sticky', insetInlineStart: '0', insetInlineEnd: '0' },
+          '& :where(tr th)': { backgroundColor: 'base-100', position: 'sticky', insetInlineStart: '0', insetInlineEnd: '0' },
         },
       },
     },
     hover: {
       true: {
         row: {
-          '&:hover': { backgroundColor: 'token(colors.base-200)' },
+          '&:hover': { backgroundColor: 'base-200' },
         },
       },
     },

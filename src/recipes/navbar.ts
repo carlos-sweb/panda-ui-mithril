@@ -10,8 +10,8 @@ export const navbar = sva({
       alignItems: 'center',
       padding: 'token(spacing.2)',
       minHeight: 'token(spacing.16)',
-      backgroundColor: 'token(colors.base-100)',
-      color: 'token(colors.base-content)',
+      backgroundColor: 'base-100',
+      color: 'base-content',
     },
     start: {
       display: 'inline-flex',

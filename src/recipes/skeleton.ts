@@ -2,7 +2,7 @@ import { cva } from '../../styled-system/css'
 
 export const skeletonStyles = cva({
   base: {
-    backgroundColor: 'token(colors.base-300)',
+    backgroundColor: 'base-300',
     borderRadius: 'var(--radius-box)',
     willChange: 'background-position',
     backgroundImage: 'linear-gradient(105deg, transparent 0% 40%, token(colors.base-100) 50%, transparent 60% 100%)',

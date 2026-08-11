@@ -46,8 +46,8 @@ export const menuStyles = cva({
         backgroundColor: 'color-mix(in oklab, token(colors.base-content) 10%, transparent)',
       },
       '&.menu-active': {
-        backgroundColor: 'token(colors.neutral)',
-        color: 'token(colors.neutral-content)',
+        backgroundColor: 'neutral',
+        color: 'neutral-content',
       },
     },
     '& .menu-title': {
