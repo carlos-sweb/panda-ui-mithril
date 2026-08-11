@@ -12,7 +12,7 @@ export const ratingGroupStyles = cva({
 export const ratingGroupLabel = cva({
   base: {
     fontSize: 'token(fontSizes.sm)',
-    fontWeight: '500',
+    fontWeight: 'token(fontWeights.medium)',
     color: 'token(colors.base-content)',
     opacity: 0.7,
   },

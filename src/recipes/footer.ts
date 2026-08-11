@@ -23,7 +23,7 @@ export const footer = sva({
       marginBottom: 'token(spacing.2)',
       textTransform: 'uppercase',
       opacity: '0.6',
-      fontWeight: '600',
+      fontWeight: 'token(fontWeights.semibold)',
     },
   },
   variants: {

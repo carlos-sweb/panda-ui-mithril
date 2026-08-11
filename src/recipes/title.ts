@@ -3,18 +3,18 @@ import { cva } from '../../styled-system/css'
 export const titleStyles = cva({
   base: {
     fontFamily: 'inherit',
-    lineHeight: '1.25',
+    lineHeight: 'token(lineHeights.tight)',
     color: 'var(--title-color, inherit)',
   },
   variants: {
     size: {
-      '1': { fontSize: 'token(fontSizes.5xl)', fontWeight: '800', lineHeight: '1.15' },
-      '2': { fontSize: 'token(fontSizes.4xl)', fontWeight: '700', lineHeight: '1.2' },
-      '3': { fontSize: 'token(fontSizes.3xl)', fontWeight: '600', lineHeight: '1.25' },
-      '4': { fontSize: 'token(fontSizes.2xl)', fontWeight: '500', lineHeight: '1.3' },
-      '5': { fontSize: 'token(fontSizes.xl)', fontWeight: '400' },
-      '6': { fontSize: 'token(fontSizes.md)', fontWeight: '400' },
-      '7': { fontSize: 'token(fontSizes.xs)', fontWeight: '400' },
+      '1': { fontSize: 'token(fontSizes.5xl)', fontWeight: 'token(fontWeights.extrabold)', lineHeight: '1.15' },
+      '2': { fontSize: 'token(fontSizes.4xl)', fontWeight: 'token(fontWeights.bold)', lineHeight: '1.2' },
+      '3': { fontSize: 'token(fontSizes.3xl)', fontWeight: 'token(fontWeights.semibold)', lineHeight: 'token(lineHeights.tight)' },
+      '4': { fontSize: 'token(fontSizes.2xl)', fontWeight: 'token(fontWeights.medium)', lineHeight: '1.3' },
+      '5': { fontSize: 'token(fontSizes.xl)', fontWeight: 'token(fontWeights.normal)' },
+      '6': { fontSize: 'token(fontSizes.md)', fontWeight: 'token(fontWeights.normal)' },
+      '7': { fontSize: 'token(fontSizes.xs)', fontWeight: 'token(fontWeights.normal)' },
     },
     color: {
       neutral: { '--title-color': 'token(colors.neutral)' },
@@ -39,12 +39,12 @@ export const titleStyles = cva({
       lowercase: { textTransform: 'lowercase' },
     },
     weight: {
-      light: { fontWeight: '300' },
+      light: { fontWeight: 'token(fontWeights.light)' },
       normal: {},
-      medium: { fontWeight: '500' },
-      semibold: { fontWeight: '600' },
-      bold: { fontWeight: '700' },
-      extrabold: { fontWeight: '800' },
+      medium: { fontWeight: 'token(fontWeights.medium)' },
+      semibold: { fontWeight: 'token(fontWeights.semibold)' },
+      bold: { fontWeight: 'token(fontWeights.bold)' },
+      extrabold: { fontWeight: 'token(fontWeights.extrabold)' },
     },
     truncate: {
       true: {

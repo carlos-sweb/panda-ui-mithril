@@ -25,7 +25,7 @@ export const alertStyles = cva({
     borderRadius: 'var(--radius-box)',
     fontSize: 'token(fontSizes.md)',
     lineHeight: 'token(spacing.5)',
-    fontWeight: '400',
+    fontWeight: 'token(fontWeights.normal)',
 
     // Colors via CSS variables (the original implementation pattern)
     backgroundColor: 'var(--alert-color, token(colors.base-200))',
@@ -53,7 +53,7 @@ export const alertStyles = cva({
 
     // Title/description styling
     '& h3': {
-      fontWeight: '700',
+      fontWeight: 'token(fontWeights.bold)',
       fontSize: 'inherit',
       lineHeight: 'inherit',
       margin: '0',

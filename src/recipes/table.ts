@@ -21,7 +21,7 @@ export const table = sva({
         color: 'color-mix(in oklab, token(colors.base-content) 60%, transparent)',
         whiteSpace: 'nowrap',
         fontSize: 'token(fontSizes.md)',
-        fontWeight: '600',
+        fontWeight: 'token(fontWeights.semibold)',
       },
       '& :where(tfoot tr:first-child :is(td, th))': {
         borderTop: 'var(--border, 1px) solid color-mix(in oklab, token(colors.base-content) 5%, transparent)',

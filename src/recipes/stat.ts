@@ -28,7 +28,7 @@ export const stat = sva({
       gridColumnStart: '1',
       whiteSpace: 'nowrap',
       fontSize: 'token(fontSizes.6xl)',
-      fontWeight: '800',
+      fontWeight: 'token(fontWeights.extrabold)',
     },
     desc: {
       color: 'color-mix(in oklab, token(colors.base-content) 60%, transparent)',

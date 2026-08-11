@@ -25,7 +25,7 @@ export const calendar = sva({
       alignItems: 'center',
       justifyContent: 'space-between',
       marginBottom: 'token(spacing.2)',
-      fontWeight: '600',
+      fontWeight: 'token(fontWeights.semibold)',
       fontSize: 'token(fontSizes.md)',
     },
     nav: {
@@ -55,7 +55,7 @@ export const calendar = sva({
       height: 'token(spacing.7)',
       fontSize: '0.7rem',
       opacity: '0.5',
-      fontWeight: 'normal',
+      fontWeight: 'token(fontWeights.normal)',
     },
     day: {
       display: 'flex',

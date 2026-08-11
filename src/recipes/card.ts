@@ -44,7 +44,7 @@ export const card = sva({
       alignItems: 'center',
       gap: 'token(spacing.2)',
       fontSize: 'var(--cardtitle-fs, token(fontSizes.xl))',
-      fontWeight: '600',
+      fontWeight: 'token(fontWeights.semibold)',
     },
     actions: {
       display: 'flex',

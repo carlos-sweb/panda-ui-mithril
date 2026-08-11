@@ -59,7 +59,7 @@ export const diff = sva({
         transform: 'translate(-50%, -50%)',
         zIndex: '1',
         fontSize: 'token(fontSizes.2xs)',
-        letterSpacing: '-0.05em',
+        letterSpacing: 'token(letterSpacings.tighter)',
         color: 'black',
       },
     },

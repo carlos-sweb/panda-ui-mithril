@@ -34,7 +34,7 @@ export const otpStyles = cva({
       padding: '0',
       paddingInlineStart: 'calc(var(--otp-ch) * 0.5 + var(--border, 1px))',
       outline: 'none',
-      lineHeight: '1',
+      lineHeight: 'token(lineHeights.none)',
       letterSpacing: 'calc(var(--stride) - var(--otp-ch))',
       fontVariantNumeric: 'tabular-nums',
       // keeps the (invisible) input's own box the width of its typed text,

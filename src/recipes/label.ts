@@ -22,7 +22,7 @@ export const labelStyles = cva({
           paddingInline: 'token(spacing.1)',
           backgroundColor: 'token(colors.base-100)',
           fontSize: 'token(fontSizes.md)',
-          lineHeight: '1',
+          lineHeight: 'token(lineHeights.none)',
           borderRadius: '2px',
           opacity: '0',
           pointerEvents: 'none',

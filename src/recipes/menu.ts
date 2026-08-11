@@ -55,7 +55,7 @@ export const menuStyles = cva({
       paddingInline: 'token(spacing.3)',
       paddingBlock: 'token(spacing.2)',
       fontSize: 'token(fontSizes.md)',
-      fontWeight: '600',
+      fontWeight: 'token(fontWeights.semibold)',
     },
     '& .menu-dropdown': {
       position: 'relative',

@@ -20,7 +20,7 @@ export const fieldsetLegendStyles = cva({
     paddingBlock: 'token(spacing.2)',
     marginBlockEnd: '-0.25rem',
     marginInlineEnd: 'auto',
-    fontWeight: '600',
+    fontWeight: 'token(fontWeights.semibold)',
     color: 'token(colors.base-content)',
   },
 })

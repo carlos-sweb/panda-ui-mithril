@@ -110,7 +110,7 @@ export const modal = sva({
       paddingBottom: 'token(spacing.4)',
       borderBottom: '1px solid token(colors.base-300)',
       fontSize: 'token(fontSizes.lg)',
-      fontWeight: '600',
+      fontWeight: 'token(fontWeights.semibold)',
     },
     body: {
       paddingBlock: 'token(spacing.4)',

@@ -18,7 +18,7 @@ export const buttonStyles = cva({
     '&:is([type="checkbox"], [type="radio"])[aria-label]:after': {
       content: 'attr(aria-label)',
     },
-    fontWeight: '400',
+    fontWeight: 'token(fontWeights.normal)',
     borderRadius: 'var(--radius-field)',
     borderWidth: 'var(--border, 1px)',
     touchAction: 'manipulation',

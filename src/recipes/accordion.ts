@@ -115,7 +115,7 @@ export const collapseTitleStyles = cva({
     padding: 'token(spacing.4)',
     paddingInlineEnd: 'token(spacing.12)',
     minHeight: '1lh',
-    fontWeight: '600',
+    fontWeight: 'token(fontWeights.semibold)',
     transition: 'background-color 0.2s ease-out',
   },
 })
