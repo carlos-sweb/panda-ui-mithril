@@ -7,7 +7,6 @@
  * - dist/index.d.ts, dist/types.d.ts, dist/components/*\/index.d.ts (type declarations, assembled from src/)
  * - dist/preset.js (Panda preset ESM bundle, @pandacss/dev bundled in)
  * - dist/preset.d.ts (hand-authored, copied from src/preset.d.ts)
- * - dist/styles.css (static Panda CSS output — consumers must import this)
  */
 
 import { existsSync, rmSync, mkdirSync, readFileSync, writeFileSync, readdirSync, statSync } from 'fs'
@@ -144,17 +143,6 @@ for (const name of readdirSync(componentsDir)) {
 }
 
 console.log('Type declarations assembled')
-
-// Step 3: Generate static CSS output
-// Component recipes (cva/sva from styled-system/css) resolve to static class
-// names at build time — the actual rules only exist in this generated stylesheet.
-// Consumers must import it explicitly; it is not bundled into index.js.
-console.log('Generating static CSS...')
-execSync(`bunx panda cssgen --outfile ${resolve(OUTDIR, 'styles.css')}`, {
-  cwd: ROOT,
-  stdio: 'inherit',
-})
-console.log('CSS generated')
 
 console.log(`\nBuild succeeded. Output in ${OUTDIR}`)
 
