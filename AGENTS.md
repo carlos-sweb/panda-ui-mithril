@@ -224,10 +224,9 @@ paths to whichever reference library the component draws from:
 
 10. **Consumer preset/source model: three silent-failure footguns.** The
     package ships `pumPreset` (`panda-ui-mithril/preset`) plus the recipes as
-    published source (`src/recipes/*.ts`), so a Panda consumer can compile
-    only the CSS for the components they import instead of the static
-    `styles.css`. Three misconfigurations fail silently: no build error,
-    styles just never appear:
+    published source (`src/recipes/*.ts`), so a Panda consumer compiles
+    only the CSS for the components they import. Three misconfigurations
+    fail silently: no build error, styles just never appear:
 
     (a) **Consumer `outdir` must be `styled-system`.** The `cva()` matcher
     derives its needle from the consumer's `outdir` via `getOutdir()` (with an
