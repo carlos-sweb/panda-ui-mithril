@@ -5,6 +5,8 @@
  * Outputs:
  * - dist/index.js (ES module, mithril external)
  * - dist/index.d.ts, dist/types.d.ts, dist/components/*\/index.d.ts (type declarations, assembled from src/)
+ * - dist/preset.js (Panda preset ESM bundle, @pandacss/dev bundled in)
+ * - dist/preset.d.ts (hand-authored, copied from src/preset.d.ts)
  * - dist/styles.css (static Panda CSS output — consumers must import this)
  */
 
@@ -52,6 +54,43 @@ if (!result.success) {
 
 console.log('JS bundle built successfully')
 
+// Step 1b: Bundle the Panda preset as a separate ESM file (dist/preset.js).
+// `@pandacss/dev` is intentionally NOT external here: `definePreset` is a
+// self-contained identity function, so bundling it in makes dist/preset.js
+// runnable without any runtime dependency on @pandacss/dev.
+console.log('Building preset bundle...')
+const presetResult = await Bun.build({
+  entrypoints: [resolve(ROOT, 'src/preset.ts')],
+  outdir: OUTDIR,
+  format: 'esm',
+  minify: true,
+  external: ['mithril'],
+  naming: {
+    entry: '[name].[ext]',
+    chunk: '[name]-[hash].[ext]',
+    asset: '[name]-[hash].[ext]',
+  },
+})
+
+if (!presetResult.success) {
+  console.error('Preset build failed:')
+  for (const message of presetResult.logs) {
+    console.error(message)
+  }
+  process.exit(1)
+}
+
+console.log('Preset bundle built successfully')
+
+// Guard: the barrel must NOT contain the preset — it ships as a separate
+// file. `definePreset`/`semanticTokens` only exist in src/preset.ts.
+const barrel = readFileSync(resolve(OUTDIR, 'index.js'), 'utf-8')
+if (barrel.includes('definePreset') || barrel.includes('semanticTokens')) {
+  console.error('Preset content leaked into dist/index.js barrel')
+  process.exit(1)
+}
+console.log('Verified: dist/index.js does not contain preset content')
+
 // Step 2: Type-check against the current source before publishing
 // (component prop types are hand-authored .d.ts files, not compiler output —
 // tsc here only validates them, it doesn't emit anything for dist/)
@@ -80,6 +119,9 @@ console.log('Assembling type declarations...')
 
 Bun.write(resolve(OUTDIR, 'index.d.ts'), readFileSync(resolve(ROOT, 'src/index.d.ts')))
 Bun.write(resolve(OUTDIR, 'types.d.ts'), readFileSync(resolve(ROOT, 'src/types.d.ts')))
+// preset.d.ts is hand-authored and copied as-is (self-contained, no
+// @pandacss/dev type imports — consumers resolve it via dist/preset.d.ts).
+Bun.write(resolve(OUTDIR, 'preset.d.ts'), readFileSync(resolve(ROOT, 'src/preset.d.ts')))
 mkdirSync(resolve(OUTDIR, 'utils'), { recursive: true })
 Bun.write(resolve(OUTDIR, 'utils/cx.d.ts'), readFileSync(resolve(ROOT, 'src/utils/cx.d.ts')))
 

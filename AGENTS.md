@@ -222,6 +222,42 @@ paths to whichever reference library the component draws from:
    (`grep -rl "radius-box" src/recipes/`) so you know whether the fix is
    scoped to one component today or affects several.
 
+10. **Consumer preset/source model: three silent-failure footguns.** The
+    package ships `pumPreset` (`panda-ui-mithril/preset`) plus the recipes as
+    published source (`src/recipes/*.ts`), so a Panda consumer can compile
+    only the CSS for the components they import instead of the static
+    `styles.css`. Three misconfigurations fail silently: no build error,
+    styles just never appear:
+
+    (a) **Consumer `outdir` must be `styled-system`.** The `cva()` matcher
+    derives its needle from the consumer's `outdir` via `getOutdir()` (with an
+    `importMap` fallback) and matches by substring `styled-system/css` against
+    the raw specifier `'../../styled-system/css'` in the recipes. Any other
+    `outdir` means the recipes never match and their styles are dropped with
+    no error (verified by Metis and the prototype).
+
+    (b) **`include` resolves relative to the consumer's `cwd`.** Consumers
+    must write `node_modules/panda-ui-mithril/src/recipes/*.ts` relative, not
+    as an absolute path. (Verified empirically in T6: an absolute path in
+    `include` yields 0 extracted files — the styles are silently dropped; only
+    the relative form works. Use `node_modules/panda-ui-mithril/src/recipes/*.ts`
+    relative to the consumer's cwd.)
+
+    (c) **The preset is mandatory.** Without `pumPreset`,
+    `token(spacing.X)`/`token(colors.X)`/`var(--colors-*)` emit the broken
+    literal (e.g. `color: colors.primary` or a `--colors-*` that is never
+    declared), which the browser ignores, with no build error. Failure is
+    silent
+    (verified by Metis: `expandTokenReferences` emits the escaped literal when
+    the token is missing).
+
+    Related: `styled-system/` is **not published** in the package (`files` is
+    `["dist", "src/recipes"]`). The recipes import `'../../styled-system/css'`
+    and it works only because Panda's extractor matches the specifier by
+    substring and never resolves the import. Never try to resolve those
+    imports with the consumer's tsc/bundler; they are expected to fail, and
+    that is fine.
+
 ## Playground Rules
 
 - Before creating a component in `playground/components/`, verify it does NOT already exist in `src/components/`

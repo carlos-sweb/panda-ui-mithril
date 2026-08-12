@@ -134,6 +134,43 @@ Si además quieres que **tu propio** `css()`/`cva()` (no solo los componentes de
 
 2. **Usa nombres de token distintos** en tu propio config (`brand` en vez de `primary`, por ejemplo) si prefieres mantener tu paleta totalmente separada de la de la librería.
 
+### Modo preset: tu propio Panda compila solo lo que usas
+
+Si tu proyecto ya usa Panda CSS, hay una alternativa a importar el CSS estático: en vez de cargar `panda-ui-mithril/styles.css` (que trae el CSS de los 56 componentes), puedes hacer que **tu** Panda genere únicamente las clases de los componentes que importas, dentro de tu propio `styled-system/`.
+
+Para este modo, la librería publica dos piezas:
+
+- **`panda-ui-mithril/preset`**: un preset de Panda (`pumPreset`) con los tokens semánticos (`primary`, `base-100`, `info`, etc.), condiciones de tema, keyframes, `globalCss` y `globalVars`.
+- **`src/recipes/*.ts`**: el código fuente de las recipes (llamadas a `cva()`/`sva()`), que es lo que el analizador estático de Panda necesita para generar CSS.
+
+Tu `panda.config.ts` se configura así:
+
+```ts
+// panda.config.ts (proyecto padre)
+import { defineConfig } from '@pandacss/dev'
+import pandaPreset from '@pandacss/preset-panda'
+import { pumPreset } from 'panda-ui-mithril/preset'
+
+export default defineConfig({
+  presets: [pandaPreset, pumPreset],
+  include: [
+    './src/**/*.{js,jsx,ts,tsx}',
+    'node_modules/panda-ui-mithril/src/recipes/*.ts', // solo las recipes que uses
+  ],
+  outdir: 'styled-system', // ← OBLIGATORIO, ver footguns
+})
+```
+
+Con este modelo importas los componentes desde `panda-ui-mithril` como siempre, y tu propio Panda (con `npx panda codegen` y `cssgen`, o el dev server) escanea las recipes incluidas y genera **solo** el CSS de los componentes que realmente usas, en `styled-system/styles.css`. Cuantos menos componentes uses, más chico queda el CSS.
+
+Para que funcione, tres detalles:
+
+- **`outdir: 'styled-system'` es obligatorio.** Las recipes de la librería importan sus utilidades desde `'../../styled-system/css'`; si usas otro `outdir`, el extractor no las encuentra y los estilos desaparecen **en silencio**, sin error de build.
+- **El `include` de las recipes es relativo** a la raíz de tu proyecto: usa `node_modules/panda-ui-mithril/src/recipes/*.ts`, no un path absoluto.
+- **No importes `panda-ui-mithril/styles.css` en este modo.** Las clases ya las genera tu Panda; importarla además duplicaría estilos.
+
+El modo estático (`import 'panda-ui-mithril/styles.css'`) sigue siendo totalmente válido: es la opción recomendada para proyectos que no usan Panda CSS, o que prefieren no configurar el preset.
+
 ## Componentes
 
 56 componentes organizados por categoria:
