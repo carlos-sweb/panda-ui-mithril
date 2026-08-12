@@ -14,8 +14,7 @@
     "./preset": {
       "types": "./dist/preset.d.ts",
       "import": "./dist/preset.js"
-    },
-    "./styles.css": "./dist/styles.css"
+    }
   },
   "files": [
     "dist",
@@ -35,6 +34,7 @@
   },
   "peerDependencies": {
     "@pandacss/dev": "^0.53.0",
+    "@pandacss/preset-panda": "^0.53.0",
     "mithril": ">=2.3.8"
   },
   "dependencies": {
