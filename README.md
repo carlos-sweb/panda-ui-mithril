@@ -15,16 +15,14 @@ Biblioteca de componentes UI para [Mithril.js](https://mithril.js.org/) estiliza
 ## Instalación
 
 ```bash
-npm install panda-ui-mithril mithril
+npm install panda-ui-mithril mithril @pandacss/dev @pandacss/preset-panda
 ```
+
+**Panda CSS y Mithril.js son requisitos del proyecto padre.** Esta librería no publica CSS precompilado: los estilos los genera el Panda de tu proyecto, configurado con el preset de la librería (ver [Uso](#uso)).
 
 ## Uso
 
-Los componentes usan [Panda CSS](https://panda-css.com/) internamente, pero las clases que generan (`btn`, `card`, etc.) se resuelven en **build time**, no en runtime. Por eso el paquete no trae CSS-in-JS: trae una hoja de estilos ya compilada (`dist/styles.css`) que hay que importar **una sola vez**, en el entrypoint de tu app — sin importar si tu proyecto usa Panda CSS o no:
-
-```js
-import 'panda-ui-mithril/styles.css'
-```
+Los componentes usan [Panda CSS](https://panda-css.com/) internamente: las clases que generan (`btn`, `card`, etc.) se resuelven en **build time**, no en runtime. Por eso el paquete no trae CSS-in-JS ni una hoja de estilos precompilada. **Panda CSS y Mithril.js son requisitos del proyecto padre**: para que los componentes tengan estilos, tu proyecto debe estar configurado con Panda CSS y usar el preset de esta librería (`pumPreset`). Tu propio Panda genera el CSS de los componentes que realmente importas, dentro de tu `styled-system/`.
 
 ```jsx
 import m from 'mithril'
@@ -45,100 +43,9 @@ const App = {
 }
 ```
 
-### Si el proyecto padre también usa Panda CSS
+### Configura tu propio Panda con el preset
 
-`dist/styles.css` es una hoja de estilos **estática y autocontenida** — las clases (`btn`, `card-body`, `badge-primary`, etc.) ya vienen resueltas desde el build de esta librería. Esto tiene una consecuencia importante para tu configuración:
-
-#### No agregues esta librería al `include` de tu `panda.config.ts`
-
-Panda genera CSS analizando **código fuente** (llamadas a `css()`, `cva()`, JSX con `styled-system`) — no puede extraer nada útil de `node_modules/panda-ui-mithril/dist/index.js`, porque ese archivo es un bundle minificado, no el código fuente con los patrones que el analizador estático de Panda necesita reconocer. Apuntar tu `include` ahí no generaría CSS adicional, solo haría más lento tu escaneo. Tu Panda y el de esta librería son **dos instancias completamente independientes**, cada una con su propio `styled-system/`; no necesitan saber una de la otra.
-
-Un `panda.config.ts` del proyecto padre normal, sin ningún cambio especial para esta librería, es suficiente:
-
-```ts
-// panda.config.ts (proyecto padre)
-import { defineConfig } from '@pandacss/dev'
-
-export default defineConfig({
-  preflight: true,
-  include: ['./src/**/*.{js,jsx,ts,tsx}'], // solo TU código — no toques esto por panda-ui-mithril
-  exclude: [],
-  outdir: 'styled-system',
-  theme: {
-    extend: {
-      // tus propios tokens/recipes
-    },
-  },
-})
-```
-
-#### Dónde importar el CSS
-
-Importa `panda-ui-mithril/styles.css` una sola vez en el entrypoint de tu app, **antes** de tu propio CSS generado por Panda (`styled-system/styles.css`) — el orden de carga importa para la resolución de tokens (ver abajo):
-
-```js
-// main.js / entry point
-import 'panda-ui-mithril/styles.css'
-import './styled-system/styles.css'   // el tuyo, generado por tu propio panda codegen/cssgen
-```
-
-Con Vite, webpack, Parcel, etc. ese `import` de un `.css` desde `node_modules` funciona igual que cualquier otro paquete que publique CSS (Bootstrap, Bulma, etc.) — no requiere loader especial más allá del soporte de CSS que ya tenga tu bundler.
-
-Ambas hojas declaran las mismas capas (`@layer reset, base, tokens, recipes, utilities`), así que **se fusionan por capa** en vez de pisarse por completo — la primera hoja que carga fija el orden de las capas, la segunda solo agrega reglas dentro de ellas.
-
-#### Personalizar los colores de marca (`--pum-*`)
-
-`primary`, `secondary`, `accent` y `neutral` (y sus `-content`) son colores de **marca** — se espera que cada proyecto los redefina, a diferencia de `info`/`success`/`warning`/`error`, que son colores **semánticos de estado** y se mantienen fijos sin importar el tema. Para sobreescribir los de marca, no necesitas tocar Panda ni conocer el nombre interno del token — cada uno tiene un hook con fallback (`var(--pum-primary, <valor por defecto>)`), así que basta con declarar la custom property en tu propio CSS, en cualquier `:root` que cargue (sea estático o generado dinámicamente por un selector de color en runtime):
-
-```css
-:root {
-  --pum-primary: oklch(55% 0.2 250);
-  --pum-primary-content: white;
-  --pum-secondary: #d946ef;
-  --pum-secondary-content: white;
-  --pum-accent: ...;
-  --pum-neutral: ...;
-}
-```
-
-No hace falta declarar los cuatro — cualquiera que dejes sin definir usa el valor por defecto de la librería. Si tu app ya tiene un selector de color en runtime (ej. clases `.primary-{color}` que cambian una custom property propia), simplemente enlázalo:
-
-```css
-:root {
-  --pum-primary: var(--primary-500); /* tu propia escala reactiva */
-}
-```
-
-#### Colisión de tokens semánticos
-
-Si además quieres que **tu propio** `css()`/`cva()` (no solo los componentes de esta librería) resuelva `primary`/`base-100`/etc. al mismo valor — por ejemplo para pintar tu propio UI con el mismo color de marca — hay dos formas, de más a menos recomendada:
-
-1. **Reusa los tokens de la librería en vez de duplicarlos.** Esta librería expone sus colores como custom properties reales (`--colors-primary`, `--colors-base-100`, ...) que cambian solas con `data-theme`. En tu propio `panda.config.ts` puedes referenciarlas directamente en vez de declarar tus propios valores hardcodeados:
-
-   ```ts
-   // panda.config.ts (proyecto padre)
-   theme: {
-     extend: {
-       semanticTokens: {
-         colors: {
-           primary: { value: 'var(--colors-primary)' },
-           'base-100': { value: 'var(--colors-base-100)' },
-           // ...el resto que necesites
-         },
-       },
-     },
-   },
-   ```
-
-   Así tu propio Panda genera utilidades (`css({ color: 'primary' })`, `<div bg="base-100">`) que quedan sincronizadas con el theme de la librería — una sola fuente de verdad, sin duplicar valores ni arriesgar que diverjan.
-
-2. **Usa nombres de token distintos** en tu propio config (`brand` en vez de `primary`, por ejemplo) si prefieres mantener tu paleta totalmente separada de la de la librería.
-
-### Modo preset: tu propio Panda compila solo lo que usas
-
-Si tu proyecto ya usa Panda CSS, hay una alternativa a importar el CSS estático: en vez de cargar `panda-ui-mithril/styles.css` (que trae el CSS de los 56 componentes), puedes hacer que **tu** Panda genere únicamente las clases de los componentes que importas, dentro de tu propio `styled-system/`.
-
-Para este modo, la librería publica dos piezas:
+Esta es la forma de consumir la librería: **tu** Panda genera únicamente las clases de los componentes que importas, dentro de tu propio `styled-system/`. Para ello, la librería publica dos piezas:
 
 - **`panda-ui-mithril/preset`**: un preset de Panda (`pumPreset`) con los tokens semánticos (`primary`, `base-100`, `info`, etc.), condiciones de tema, keyframes, `globalCss` y `globalVars`.
 - **`src/recipes/*.ts`**: el código fuente de las recipes (llamadas a `cva()`/`sva()`), que es lo que el analizador estático de Panda necesita para generar CSS.
@@ -167,9 +74,55 @@ Para que funcione, tres detalles:
 
 - **`outdir: 'styled-system'` es obligatorio.** Las recipes de la librería importan sus utilidades desde `'../../styled-system/css'`; si usas otro `outdir`, el extractor no las encuentra y los estilos desaparecen **en silencio**, sin error de build.
 - **El `include` de las recipes es relativo** a la raíz de tu proyecto: usa `node_modules/panda-ui-mithril/src/recipes/*.ts`, no un path absoluto.
-- **No importes `panda-ui-mithril/styles.css` en este modo.** Las clases ya las genera tu Panda; importarla además duplicaría estilos.
+- **El preset es obligatorio.** Sin `pumPreset`, las referencias a tokens (`token(spacing.4)`, `var(--colors-primary)`, etc.) se emiten como literales rotos que el navegador ignora, otra vez **en silencio**, sin error de build.
 
-El modo estático (`import 'panda-ui-mithril/styles.css'`) sigue siendo totalmente válido: es la opción recomendada para proyectos que no usan Panda CSS, o que prefieren no configurar el preset.
+#### Personalizar los colores de marca (`--pum-*`)
+
+`primary`, `secondary`, `accent` y `neutral` (y sus `-content`) son colores de **marca** — se espera que cada proyecto los redefina, a diferencia de `info`/`success`/`warning`/`error`, que son colores **semánticos de estado** y se mantienen fijos sin importar el tema. Para sobreescribir los de marca, no necesitas tocar Panda ni conocer el nombre interno del token — cada uno tiene un hook con fallback (`var(--pum-primary, <valor por defecto>)`), así que basta con declarar la custom property en el `:root` de tu app: en tu propio `globalCss`, en tu propia hoja de estilos, o generado dinámicamente por un selector de color en runtime.
+
+```css
+:root {
+  --pum-primary: oklch(55% 0.2 250);
+  --pum-primary-content: white;
+  --pum-secondary: #d946ef;
+  --pum-secondary-content: white;
+  --pum-accent: ...;
+  --pum-neutral: ...;
+}
+```
+
+No hace falta declarar los cuatro — cualquiera que dejes sin definir usa el valor por defecto de la librería. Si tu app ya tiene un selector de color en runtime (ej. clases `.primary-{color}` que cambian una custom property propia), simplemente enlázalo:
+
+```css
+:root {
+  --pum-primary: var(--primary-500); /* tu propia escala reactiva */
+}
+```
+
+#### Colisión de tokens semánticos
+
+Si además quieres que **tu propio** `css()`/`cva()` (no solo los componentes de esta librería) resuelva `primary`/`base-100`/etc. al mismo valor — por ejemplo para pintar tu propio UI con el mismo color de marca — hay dos formas, de más a menos recomendada:
+
+1. **Reusa los tokens del preset en vez de duplicarlos.** El preset expone los colores de la librería como custom properties reales (`--colors-primary`, `--colors-base-100`, ...) que cambian solas con `data-theme`. En tu propio `panda.config.ts` puedes referenciarlas directamente en vez de declarar tus propios valores hardcodeados:
+
+   ```ts
+   // panda.config.ts (proyecto padre)
+   theme: {
+     extend: {
+       semanticTokens: {
+         colors: {
+           primary: { value: 'var(--colors-primary)' },
+           'base-100': { value: 'var(--colors-base-100)' },
+           // ...el resto que necesites
+         },
+       },
+     },
+   },
+   ```
+
+   Así tu propio Panda genera utilidades (`css({ color: 'primary' })`, `<div bg="base-100">`) que quedan sincronizadas con el theme de la librería — una sola fuente de verdad, sin duplicar valores ni arriesgar que diverjan.
+
+2. **Usa nombres de token distintos** en tu propio config (`brand` en vez de `primary`, por ejemplo) si prefieres mantener tu paleta totalmente separada de la de la librería.
 
 ## Componentes
 
