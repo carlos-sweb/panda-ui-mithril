@@ -3,9 +3,9 @@
  * Usage: bun run scripts/build-lib.ts
  *
  * Outputs:
- * - dist/index.js (ES module, mithril external)
+ * - dist/index.js (ES module, mithril external, NOT minified — legible by design)
  * - dist/index.d.ts, dist/types.d.ts, dist/components/*\/index.d.ts (type declarations, assembled from src/)
- * - dist/preset.js (Panda preset ESM bundle, @pandacss/dev bundled in)
+ * - dist/preset.js (Panda preset ESM bundle, @pandacss/dev bundled in, NOT minified)
  * - dist/preset.d.ts (hand-authored, copied from src/preset.d.ts)
  */
 
@@ -28,12 +28,13 @@ console.log('Building library → dist/')
 console.log('Running Panda CSS codegen...')
 execSync('bunx panda codegen', { cwd: ROOT, stdio: 'inherit' })
 
-// Step 1: Bundle JS with Bun
+// Step 1: Bundle JS with Bun (NOT minified: the library ships readable code —
+// the end user's bundler minifies node_modules on their side if they opt in)
 const result = await Bun.build({
   entrypoints: [resolve(ROOT, 'src/index.js')],
   outdir: OUTDIR,
   format: 'esm',
-  minify: true,
+  minify: false,
   splitting: true,
   external: ['mithril'],
   naming: {
