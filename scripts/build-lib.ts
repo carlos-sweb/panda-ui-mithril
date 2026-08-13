@@ -57,12 +57,15 @@ console.log('JS bundle built successfully')
 // `@pandacss/dev` is intentionally NOT external here: `definePreset` is a
 // self-contained identity function, so bundling it in makes dist/preset.js
 // runnable without any runtime dependency on @pandacss/dev.
+// The preset is NOT minified on purpose: it is the public "contract" of the
+// library's theme, so consumers must be able to read the exact tokens,
+// semantic tokens, conditions, keyframes, globalCss and globalVars it ships.
 console.log('Building preset bundle...')
 const presetResult = await Bun.build({
   entrypoints: [resolve(ROOT, 'src/preset.ts')],
   outdir: OUTDIR,
   format: 'esm',
-  minify: true,
+  minify: false,
   external: ['mithril'],
   naming: {
     entry: '[name].[ext]',

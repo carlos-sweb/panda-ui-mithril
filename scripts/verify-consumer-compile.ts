@@ -96,7 +96,7 @@ const count = (css: string, re: RegExp) => (css.match(re) ?? []).length
 function writeConfig(opts: { outdir: string; include: string[] }) {
   const includeLines = opts.include.map((p) => `    ${JSON.stringify(p)}`).join(',\n')
   const config = `import { defineConfig } from '@pandacss/dev'
-import { preset as pandaPreset } from '@pandacss/preset-panda'
+import pandaPreset from '@pandacss/preset-panda'
 import { pumPreset } from 'panda-ui-mithril/preset'
 
 export default defineConfig({

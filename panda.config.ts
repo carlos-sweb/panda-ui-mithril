@@ -1,5 +1,5 @@
 import { defineConfig } from '@pandacss/dev'
-import { preset as pandaPreset } from '@pandacss/preset-panda'
+import pandaPreset from '@pandacss/preset-panda'
 import { pumPreset } from './src/preset'
 
 export default defineConfig({
