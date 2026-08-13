@@ -132,7 +132,9 @@ if (!existsSync(path.join(repoNodeModules, '@pandacss', 'dev'))) {
 
 // Simulate an installed package: node_modules/panda-ui-mithril -> this repo.
 // `import { pumPreset } from 'panda-ui-mithril/preset'` then resolves through
-// the package.json exports map to dist/preset.js, exactly like a real install.
+// the package.json exports map to src/preset.ts (the package ships source
+// only — `files` is ["src", "styled-system"], no dist build), exactly like a
+// real install.
 symlinkSync(REPO, path.join(CONSUMER, 'node_modules', 'panda-ui-mithril'))
 // Reuse the repo's @pandacss scope (defineConfig, preset-panda, the extractor).
 symlinkSync(path.join(repoNodeModules, '@pandacss'), path.join(CONSUMER, 'node_modules', '@pandacss'))

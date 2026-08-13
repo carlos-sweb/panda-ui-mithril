@@ -199,7 +199,7 @@ Si quieres crear un proyecto nuevo y ver un componente funcionando de punta a pu
 
    ```js
    import m from 'mithril'
-   import { Button } from 'panda-ui-mithril'
+   import { Button } from 'panda-ui-mithril/button'
 
    var root = document.body
 
@@ -212,6 +212,19 @@ Si quieres crear un proyecto nuevo y ver un componente funcionando de punta a pu
      }
    })
    ```
+
+   El import usa el subpath en minúscula kebab (`panda-ui-mithril/button`), igual que el resto de componentes (`panda-ui-mithril/alert`, `panda-ui-mithril/card`, ...).
+
+   **Requisito JSX para `Button` y `Alert`**: `Button` y `Alert` son los únicos componentes escritos como `.jsx` (los otros 66 son `.js` con hyperscript directo). Para usarlos, tu proyecto debe transpilar su JSX con la factory de Mithril. El `bun init -y` por defecto deja `"jsx": "react-jsx"` en `tsconfig.json`, así que el arranque falla con `Cannot find module 'react/jsx-dev-runtime'`. Crea un `bunfig.toml` en la raíz con la misma config JSX que usa esta librería:
+
+   ```toml
+   # bunfig.toml — JSX clásico con factory de Mithril
+   jsx = "react"
+   jsxFactory = "m"
+   jsxFragmentFactory = "m.Fragment"
+   ```
+
+   (O los mismos tres campos en `compilerOptions` de `tsconfig.json`.) Los 66 componentes `.js` restantes no requieren esta configuración.
 
 8. **Arranca el dev server y abre el navegador**:
 
@@ -247,9 +260,6 @@ Todos los componentes soportan variantes de color, tamaño y estilo: `color`, `s
 # Desarrollo (playground)
 npm run dev
 
-# Build de la biblioteca (para publicar en npm)
-npm run build:lib
-
 # Build del playground (sitio estatico)
 npm run build
 
@@ -259,6 +269,8 @@ npm run codegen
 # Verificar tipos TypeScript
 npm run typecheck
 ```
+
+> **Publicar en npm**: el paquete se publica como source (`src/` + `styled-system/`), sin build previo. `npm publish` ejecuta automáticamente `panda codegen && panda cssgen` (script `prepublishOnly`). No existe `build:lib`.
 
 ## Estructura
 

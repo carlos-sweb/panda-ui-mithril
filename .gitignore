@@ -1,6 +1,5 @@
 node_modules/
 dist/
 .omo/
-styled-system/
 *.log
 .DS_Store

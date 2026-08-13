@@ -3,33 +3,304 @@
   "version": "0.5.1",
   "description": "Mithril.js component library styled with Panda CSS. Class naming inspired by daisyUI (MIT).",
   "type": "module",
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./src/index.js",
+  "module": "./src/index.js",
+  "types": "./src/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "types": "./src/index.d.ts",
+      "import": "./src/index.js"
     },
     "./preset": {
-      "types": "./dist/preset.d.ts",
-      "import": "./dist/preset.js"
+      "types": "./src/preset.d.ts",
+      "import": "./src/preset.ts"
+    },
+    "./accordion": {
+      "types": "./src/components/Accordion/index.d.ts",
+      "import": "./src/components/Accordion/index.js"
+    },
+    "./alert": {
+      "types": "./src/components/Alert/index.d.ts",
+      "import": "./src/components/Alert/index.jsx"
+    },
+    "./aura": {
+      "types": "./src/components/Aura/index.d.ts",
+      "import": "./src/components/Aura/index.js"
+    },
+    "./avatar": {
+      "types": "./src/components/Avatar/index.d.ts",
+      "import": "./src/components/Avatar/index.js"
+    },
+    "./badge": {
+      "types": "./src/components/Badge/index.d.ts",
+      "import": "./src/components/Badge/index.js"
+    },
+    "./block": {
+      "types": "./src/components/Block/index.d.ts",
+      "import": "./src/components/Block/index.js"
+    },
+    "./box": {
+      "types": "./src/components/Box/index.d.ts",
+      "import": "./src/components/Box/index.js"
+    },
+    "./breadcrumbs": {
+      "types": "./src/components/Breadcrumbs/index.d.ts",
+      "import": "./src/components/Breadcrumbs/index.js"
+    },
+    "./button": {
+      "types": "./src/components/Button/index.d.ts",
+      "import": "./src/components/Button/index.jsx"
+    },
+    "./button-close": {
+      "types": "./src/components/ButtonClose/index.d.ts",
+      "import": "./src/components/ButtonClose/index.js"
+    },
+    "./button-group": {
+      "types": "./src/components/ButtonGroup/index.d.ts",
+      "import": "./src/components/ButtonGroup/index.js"
+    },
+    "./calendar": {
+      "types": "./src/components/Calendar/index.d.ts",
+      "import": "./src/components/Calendar/index.js"
+    },
+    "./card": {
+      "types": "./src/components/Card/index.d.ts",
+      "import": "./src/components/Card/index.js"
+    },
+    "./carousel": {
+      "types": "./src/components/Carousel/index.d.ts",
+      "import": "./src/components/Carousel/index.js"
+    },
+    "./cell": {
+      "types": "./src/components/Cell/index.d.ts",
+      "import": "./src/components/Cell/index.js"
+    },
+    "./chat-bubble": {
+      "types": "./src/components/ChatBubble/index.d.ts",
+      "import": "./src/components/ChatBubble/index.js"
+    },
+    "./checkbox": {
+      "types": "./src/components/Checkbox/index.d.ts",
+      "import": "./src/components/Checkbox/index.js"
+    },
+    "./column": {
+      "types": "./src/components/Column/index.d.ts",
+      "import": "./src/components/Column/index.js"
+    },
+    "./columns": {
+      "types": "./src/components/Columns/index.d.ts",
+      "import": "./src/components/Columns/index.js"
+    },
+    "./container": {
+      "types": "./src/components/Container/index.d.ts",
+      "import": "./src/components/Container/index.js"
+    },
+    "./countdown": {
+      "types": "./src/components/Countdown/index.d.ts",
+      "import": "./src/components/Countdown/index.js"
+    },
+    "./diff": {
+      "types": "./src/components/Diff/index.d.ts",
+      "import": "./src/components/Diff/index.js"
+    },
+    "./divider": {
+      "types": "./src/components/Divider/index.d.ts",
+      "import": "./src/components/Divider/index.js"
+    },
+    "./fab": {
+      "types": "./src/components/FAB/index.d.ts",
+      "import": "./src/components/FAB/index.js"
+    },
+    "./fieldset": {
+      "types": "./src/components/Fieldset/index.d.ts",
+      "import": "./src/components/Fieldset/index.js"
+    },
+    "./file-input": {
+      "types": "./src/components/FileInput/index.d.ts",
+      "import": "./src/components/FileInput/index.js"
+    },
+    "./filter": {
+      "types": "./src/components/Filter/index.d.ts",
+      "import": "./src/components/Filter/index.js"
+    },
+    "./footer": {
+      "types": "./src/components/Footer/index.d.ts",
+      "import": "./src/components/Footer/index.js"
+    },
+    "./grid": {
+      "types": "./src/components/Grid/index.d.ts",
+      "import": "./src/components/Grid/index.js"
+    },
+    "./hero": {
+      "types": "./src/components/Hero/index.d.ts",
+      "import": "./src/components/Hero/index.js"
+    },
+    "./indicator": {
+      "types": "./src/components/Indicator/index.d.ts",
+      "import": "./src/components/Indicator/index.js"
+    },
+    "./join": {
+      "types": "./src/components/Join/index.d.ts",
+      "import": "./src/components/Join/index.js"
+    },
+    "./kbd": {
+      "types": "./src/components/Kbd/index.d.ts",
+      "import": "./src/components/Kbd/index.js"
+    },
+    "./label": {
+      "types": "./src/components/Label/index.d.ts",
+      "import": "./src/components/Label/index.js"
+    },
+    "./link": {
+      "types": "./src/components/Link/index.d.ts",
+      "import": "./src/components/Link/index.js"
+    },
+    "./list": {
+      "types": "./src/components/List/index.d.ts",
+      "import": "./src/components/List/index.js"
+    },
+    "./loading": {
+      "types": "./src/components/Loading/index.d.ts",
+      "import": "./src/components/Loading/index.js"
+    },
+    "./mask": {
+      "types": "./src/components/Mask/index.d.ts",
+      "import": "./src/components/Mask/index.js"
+    },
+    "./megamenu": {
+      "types": "./src/components/Megamenu/index.d.ts",
+      "import": "./src/components/Megamenu/index.js"
+    },
+    "./menu": {
+      "types": "./src/components/Menu/index.d.ts",
+      "import": "./src/components/Menu/index.js"
+    },
+    "./modal": {
+      "types": "./src/components/Modal/index.d.ts",
+      "import": "./src/components/Modal/index.js"
+    },
+    "./navbar": {
+      "types": "./src/components/Navbar/index.d.ts",
+      "import": "./src/components/Navbar/index.js"
+    },
+    "./otp": {
+      "types": "./src/components/OTP/index.d.ts",
+      "import": "./src/components/OTP/index.js"
+    },
+    "./pagination": {
+      "types": "./src/components/Pagination/index.d.ts",
+      "import": "./src/components/Pagination/index.js"
+    },
+    "./progress": {
+      "types": "./src/components/Progress/index.d.ts",
+      "import": "./src/components/Progress/index.js"
+    },
+    "./radial-progress": {
+      "types": "./src/components/RadialProgress/index.d.ts",
+      "import": "./src/components/RadialProgress/index.js"
+    },
+    "./radio": {
+      "types": "./src/components/Radio/index.d.ts",
+      "import": "./src/components/Radio/index.js"
+    },
+    "./range": {
+      "types": "./src/components/Range/index.d.ts",
+      "import": "./src/components/Range/index.js"
+    },
+    "./rating": {
+      "types": "./src/components/Rating/index.d.ts",
+      "import": "./src/components/Rating/index.js"
+    },
+    "./rating-group": {
+      "types": "./src/components/RatingGroup/index.d.ts",
+      "import": "./src/components/RatingGroup/index.js"
+    },
+    "./select": {
+      "types": "./src/components/Select/index.d.ts",
+      "import": "./src/components/Select/index.js"
+    },
+    "./skeleton": {
+      "types": "./src/components/Skeleton/index.d.ts",
+      "import": "./src/components/Skeleton/index.js"
+    },
+    "./stack": {
+      "types": "./src/components/Stack/index.d.ts",
+      "import": "./src/components/Stack/index.js"
+    },
+    "./stat": {
+      "types": "./src/components/Stat/index.d.ts",
+      "import": "./src/components/Stat/index.js"
+    },
+    "./status": {
+      "types": "./src/components/Status/index.d.ts",
+      "import": "./src/components/Status/index.js"
+    },
+    "./steps": {
+      "types": "./src/components/Steps/index.d.ts",
+      "import": "./src/components/Steps/index.js"
+    },
+    "./swap": {
+      "types": "./src/components/Swap/index.d.ts",
+      "import": "./src/components/Swap/index.js"
+    },
+    "./table": {
+      "types": "./src/components/Table/index.d.ts",
+      "import": "./src/components/Table/index.js"
+    },
+    "./tabs": {
+      "types": "./src/components/Tabs/index.d.ts",
+      "import": "./src/components/Tabs/index.js"
+    },
+    "./tag": {
+      "types": "./src/components/Tag/index.d.ts",
+      "import": "./src/components/Tag/index.js"
+    },
+    "./textarea": {
+      "types": "./src/components/Textarea/index.d.ts",
+      "import": "./src/components/Textarea/index.js"
+    },
+    "./text-input": {
+      "types": "./src/components/TextInput/index.d.ts",
+      "import": "./src/components/TextInput/index.js"
+    },
+    "./theme-controller": {
+      "types": "./src/components/ThemeController/index.d.ts",
+      "import": "./src/components/ThemeController/index.js"
+    },
+    "./timeline": {
+      "types": "./src/components/Timeline/index.d.ts",
+      "import": "./src/components/Timeline/index.js"
+    },
+    "./title": {
+      "types": "./src/components/Title/index.d.ts",
+      "import": "./src/components/Title/index.js"
+    },
+    "./toast": {
+      "types": "./src/components/Toast/index.d.ts",
+      "import": "./src/components/Toast/index.js"
+    },
+    "./toggle": {
+      "types": "./src/components/Toggle/index.d.ts",
+      "import": "./src/components/Toggle/index.js"
+    },
+    "./tooltip": {
+      "types": "./src/components/Tooltip/index.d.ts",
+      "import": "./src/components/Tooltip/index.js"
     }
   },
   "files": [
-    "dist",
-    "src/recipes"
+    "src",
+    "styled-system"
   ],
   "scripts": {
     "prepare": "panda codegen",
     "codegen": "panda codegen",
     "dev": "bun playground/index.html",
     "build": "bun run scripts/build.ts",
-    "build:lib": "bun run scripts/build-lib.ts",
     "typecheck": "tsc --noEmit --project tsconfig.lib.json",
     "verify:consumer": "bun run scripts/verify-consumer-compile.ts",
     "test": "bun test",
-    "prepublishOnly": "bun run build:lib",
+    "prepublishOnly": "bunx panda codegen && bunx panda cssgen",
     "push": "bun run build && git push"
   },
   "peerDependencies": {
@@ -40,19 +311,19 @@
   "dependencies": {
     "@fontsource/ubuntu": "^5.3.0",
     "@fontsource/ubuntu-mono": "^5.3.0",
-    "highlight.js": "^11.11.1",
+    "highlight.js": "^11.12.0",
     "lucide-mithril": "^1.0.6",
     "voca": "^1.4.1"
   },
   "devDependencies": {
     "@fontsource/geist-mono": "^5.3.0",
     "@fontsource/geist-sans": "^5.3.0",
-    "@happy-dom/global-registrator": "^20.11.1",
-    "@pandacss/dev": "^0.53.0",
-    "@pandacss/preset-panda": "^0.53.0",
-    "happy-dom": "^20.11.1",
+    "@happy-dom/global-registrator": "^20.11.2",
+    "@pandacss/dev": "^1.12.0",
+    "@pandacss/preset-panda": "^1.12.0",
+    "happy-dom": "^20.11.2",
     "mithril": "^2.3.8",
-    "typescript": "^5.4.0"
+    "typescript": "^5.9.3"
   },
   "keywords": [
     "mithril",

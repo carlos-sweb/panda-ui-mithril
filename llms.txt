@@ -2,7 +2,7 @@
 
 > Mithril.js UI component library styled with Panda CSS (atomic, type-safe CSS-in-JS). Design patterns and class naming inspired by daisyUI, Bulma, MUI, Chakra UI, and Primer. 68 components, published as `panda-ui-mithril` on npm as a Panda preset (`panda-ui-mithril/preset`) plus the recipe source (`src/recipes/*.ts`). The consuming app must use Panda CSS + Mithril.js — its own Panda install compiles only the CSS for the components it imports.
 
-Install: `npm install panda-ui-mithril mithril`. Import the components you need from `panda-ui-mithril`. The consuming app configures its own `panda.config.ts` with `presets: [pandaPreset, pumPreset]`, an `include` that lists `node_modules/panda-ui-mithril/src/recipes/*.ts` (relative to the app's cwd), and `outdir: 'styled-system'` — its own Panda run (codegen/cssgen) then generates the CSS for exactly the components the app imports.
+Install: `npm install panda-ui-mithril mithril`. Import the components you need from `panda-ui-mithril`, or from a per-component subpath in lowercase kebab (`panda-ui-mithril/button`, `panda-ui-mithril/alert`, `panda-ui-mithril/button-group`, ...). The consuming app configures its own `panda.config.ts` with `presets: [pandaPreset, pumPreset]`, an `include` that lists `node_modules/panda-ui-mithril/src/recipes/*.ts` (relative to the app's cwd), and `outdir: 'styled-system'` — its own Panda run (codegen/cssgen) then generates the CSS for exactly the components the app imports.
 
 Facts worth knowing before helping someone integrate this library:
 - Dark mode is controlled by `[data-theme="dark"]` on any ancestor element — not a `.dark` class, and not `prefers-color-scheme`. The consuming app must set this attribute itself for dark-mode styling to apply.

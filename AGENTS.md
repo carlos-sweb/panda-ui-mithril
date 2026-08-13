@@ -250,12 +250,35 @@ paths to whichever reference library the component draws from:
     (verified by Metis: `expandTokenReferences` emits the escaped literal when
     the token is missing).
 
-    Related: `styled-system/` is **not published** in the package (`files` is
-    `["dist", "src/recipes"]`). The recipes import `'../../styled-system/css'`
-    and it works only because Panda's extractor matches the specifier by
-    substring and never resolves the import. Never try to resolve those
-    imports with the consumer's tsc/bundler; they are expected to fail, and
-    that is fine.
+    Related: the package ships **source only** (`files` is `["src",
+    "styled-system"]` — no `dist` build; `build:lib` was removed and
+    `prepublishOnly` runs `panda codegen && panda cssgen`). `styled-system/`
+    **is published**, so the recipes' `'../../styled-system/css'` imports
+    resolve inside the consumer's `node_modules/panda-ui-mithril/`. Panda's
+    extractor matches the specifier by substring and never resolves the
+    import, so the consumer's tsc/bundler only ever sees the published
+    `styled-system/` — both paths work.
+
+11. **Consumer JSX for the `.jsx` components + lowercase-kebab subpaths.** The
+    package ships source (`src/` + `styled-system/`). Only `Button` and `Alert`
+    are `.jsx` (JSX compiled with Mithril's factory); the other 66 components
+    are `.js` (direct `m()` hyperscript) and need no extra config. A consumer
+    importing Button or Alert must configure Mithril's classic JSX transform in
+    their bundler — the default `bun init -y` tsconfig (`"jsx": "react-jsx"`)
+    fails with `Cannot find module 'react/jsx-dev-runtime'`. The verified fix
+    (identical to this repo's root `bunfig.toml`) is top-level keys, NOT a
+    `[react]` section:
+
+    ```toml
+    jsx = "react"
+    jsxFactory = "m"
+    jsxFragmentFactory = "m.Fragment"
+    ```
+
+    (or the same three fields under `compilerOptions` in the consumer's
+    `tsconfig.json`). Import subpaths in the exports map are lowercase kebab:
+    `panda-ui-mithril/button`, `panda-ui-mithril/alert` — not the PascalCase
+    folder names.
 
 ## Playground Rules
 
