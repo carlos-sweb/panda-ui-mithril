@@ -55,7 +55,7 @@ Tu `panda.config.ts` se configura así:
 ```ts
 // panda.config.ts (proyecto padre)
 import { defineConfig } from '@pandacss/dev'
-import pandaPreset from '@pandacss/preset-panda'
+import { preset as pandaPreset } from '@pandacss/preset-panda'
 import { pumPreset } from 'panda-ui-mithril/preset'
 
 export default defineConfig({
@@ -158,7 +158,7 @@ Si quieres crear un proyecto nuevo y ver un componente funcionando de punta a pu
    ```ts
    // panda.config.ts
    import { defineConfig } from '@pandacss/dev'
-   import pandaPreset from '@pandacss/preset-panda'
+   import { preset as pandaPreset } from '@pandacss/preset-panda'
    import { pumPreset } from 'panda-ui-mithril/preset'
 
    export default defineConfig({
