@@ -124,6 +124,107 @@ Si además quieres que **tu propio** `css()`/`cva()` (no solo los componentes de
 
 2. **Usa nombres de token distintos** en tu propio config (`brand` en vez de `primary`, por ejemplo) si prefieres mantener tu paleta totalmente separada de la de la librería.
 
+## Empezar desde cero (bun)
+
+Si quieres crear un proyecto nuevo y ver un componente funcionando de punta a punta, esta es la ruta verificada con [bun](https://bun.sh/). Son 8 pasos.
+
+1. **Crea el proyecto e inicialízalo**:
+
+   ```bash
+   mkdir mi-app && cd mi-app && bun init -y
+   ```
+
+   `bun init -y` crea `package.json`, `tsconfig.json` e `index.ts` sin preguntar nada.
+
+2. **Instala la librería y Mithril**, en dos comandos separados:
+
+   ```bash
+   bun add panda-ui-mithril mithril
+   bun add -d @pandacss/dev @pandacss/preset-panda
+   ```
+
+   La librería soporta la última versión de Panda CSS (0.53.x y 1.x); `bun add -d` instalará la latest, que es la soportada.
+
+3. **Inicializa Panda**:
+
+   ```bash
+   bunx panda init
+   ```
+
+   Crea `panda.config.ts` en la raíz y corre el codegen automáticamente. No es interactivo.
+
+4. **Configura el preset de la librería** en `panda.config.ts`:
+
+   ```ts
+   // panda.config.ts
+   import { defineConfig } from '@pandacss/dev'
+   import pandaPreset from '@pandacss/preset-panda'
+   import { pumPreset } from 'panda-ui-mithril/preset'
+
+   export default defineConfig({
+     presets: [pandaPreset, pumPreset],
+     include: [
+       './src/**/*.{js,jsx,ts,tsx}',
+       'node_modules/panda-ui-mithril/src/recipes/*.ts',
+     ],
+     outdir: 'styled-system',
+   })
+   ```
+
+   `node_modules/panda-ui-mithril/src/recipes/*.ts` compila el CSS de los componentes de la librería que uses; `./src/**/*` es para tus propios estilos Panda.
+
+5. **Regenera los helpers y genera el CSS**:
+
+   ```bash
+   bunx panda codegen && bunx panda cssgen
+   ```
+
+   El `init` del paso 3 ya corrió codegen, pero lo hizo sobre el template sin tu preset. Este par vuelve a generarlo con tu configuración; `cssgen` es el que produce `styled-system/styles.css`.
+
+6. **Crea `index.html`** en la raíz:
+
+   ```html
+   <!DOCTYPE html>
+   <html>
+   <head>
+     <link rel="stylesheet" href="./styled-system/styles.css">
+   </head>
+   <body>
+     <script type="module" src="./src/main.js"></script>
+   </body>
+   </html>
+   ```
+
+7. **Crea `src/main.js`** (el equivalente al getting-started de Mithril, con el `Button` como hermano del `h1`, no anidado):
+
+   ```js
+   import m from 'mithril'
+   import { Button } from 'panda-ui-mithril'
+
+   var root = document.body
+
+   m.mount(root, {
+     view: function() {
+       return [
+         m("h1", "Try me out"),
+         m(Button, { color: 'primary', size: 'md' }, "try me")
+       ]
+     }
+   })
+   ```
+
+8. **Arranca el dev server y abre el navegador**:
+
+   ```bash
+   bun index.html
+   ```
+
+   Sirve la app en http://localhost:3000.
+
+Para que el flujo funcione tienen que cumplirse los tres requisitos de [Configura tu propio Panda con el preset](#configura-tu-propio-panda-con-el-preset): `outdir: 'styled-system'`, el `include` de las recipes relativo y el preset `pumPreset`. Si algo se ve sin estilos, es uno de esos tres.
+
+> **Nota**: las recipes generan el CSS como utilidades atómicas. No busques una regla `.btn-primary` en `styles.css`: `btn` es la clase base hook y cada variante (color, tamaño, estilo) se aplica como clases atómicas separadas.
+
 ## Componentes
 
 56 componentes organizados por categoria:
