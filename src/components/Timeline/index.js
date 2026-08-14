@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { timeline } from '../../recipes/timeline'
+import { timeline } from '../../../styled-system/recipes'
 import { cx } from '../../utils/cx'
 
 /**

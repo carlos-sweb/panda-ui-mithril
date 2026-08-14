@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { X } from 'lucide-mithril'
-import { tagRecipe } from '../../recipes/tag'
+import { tag } from '../../../styled-system/recipes'
 import { cx } from '../../utils/cx'
 
 /**
@@ -22,7 +22,7 @@ export const Tag = {
     const isOneChar = typeof children === 'string' && children.length === 1
 
     return m(clickable ? 'button' : 'span', {
-      className: cx('tag', tagRecipe({ variant, size, clickable, disabled, square: isOneChar }), className),
+      className: cx('tag', tag({ variant, size, clickable, disabled, square: isOneChar }), className),
       type: clickable ? 'button' : undefined,
       disabled,
       ...rest,

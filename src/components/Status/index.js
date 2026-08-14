@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { statusRecipe } from '../../recipes/status'
+import { status } from '../../../styled-system/recipes'
 import { cx } from '../../utils/cx'
 
 /**
@@ -13,7 +13,7 @@ export const Status = {
     const { color, size, className, ...rest } = vnode.attrs
 
     return m('span', {
-      className: cx('status', statusRecipe({ color, size }), className),
+      className: cx('status', status({ color, size }), className),
       ...rest
     })
   }

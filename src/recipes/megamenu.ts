@@ -1,6 +1,7 @@
-import { sva } from '../../styled-system/css'
+import { defineSlotRecipe } from '@pandacss/dev'
 
-export const megamenu = sva({
+export const megamenuRecipe = defineSlotRecipe({
+  className : 'megamenu',
   slots: ['megamenu', 'item', 'trigger', 'panel', 'active'],
   base: {
     megamenu: {

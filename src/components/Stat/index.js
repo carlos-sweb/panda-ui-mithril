@@ -1,7 +1,7 @@
 import m from 'mithril'
 import {
   stat,
-} from '../../recipes/stat'
+} from '../../../styled-system/recipes'
 import { cx } from '../../utils/cx'
 
 /**

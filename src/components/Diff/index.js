@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { diff } from '../../recipes/diff'
+import { diff } from '../../../styled-system/recipes'
 import { cx } from '../../utils/cx'
 
 // The original implementation drives this with a `<div class="diff-resizer">` that uses the

@@ -1,6 +1,8 @@
-import { sva } from '../../styled-system/css'
+import { defineSlotRecipe , defineRecipe } from '@pandacss/dev'
 
-export const modal = sva({
+
+export const modalRecipe = defineSlotRecipe({
+  className : 'modal',
   slots: ['modal', 'box', 'action', 'backdrop', 'header', 'body', 'footer'],
   base: {
     modal: {
@@ -210,9 +212,10 @@ export const modal = sva({
   },
 })
 
-import { defineRecipe } from '@pandacss/dev'
 
-export const modalCloseButton = defineRecipe({
+
+export const modalCloseButtonRecipe = defineRecipe({
+  className :'btn-close-modal',
   base: {
     position: 'absolute',
     top: '0.75rem',

@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { menuRecipe } from '../../recipes/menu'
+import { menu } from '../../../styled-system/recipes'
 import { cx } from '../../utils/cx'
 
 /**
@@ -13,7 +13,7 @@ export const Menu = {
     const { size, horizontal, className, ...rest } = vnode.attrs
 
     return m('ul', {
-      className: cx('menu', menuRecipe({ size, horizontal }), className),
+      className: cx('menu', menu({ size, horizontal }), className),
       ...rest
     }, vnode.children)
   }

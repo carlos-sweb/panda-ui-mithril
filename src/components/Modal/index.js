@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { modal, modalCloseButton } from '../../recipes/modal'
+import { modal, modalCloseButton } from '../../../styled-system/recipes'
 import { cx } from '../../utils/cx'
 import { ButtonClose } from '../ButtonClose/index.js'
 

@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { radialProgressRecipe } from '../../recipes/radialProgress'
+import { radialProgress } from '../../../styled-system/recipes'
 import { cx } from '../../utils/cx'
 
 export const RadialProgress = {
@@ -8,7 +8,7 @@ export const RadialProgress = {
 
     return m('div', {
       role: 'progressbar',
-      className: cx('radial-progress', radialProgressRecipe(), className),
+      className: cx('radial-progress', radialProgress(), className),
       style: `--value:${value || 0};${size ? `--rprogress-size:${size};` : ''}${thickness ? `--thickness:${thickness};` : ''}`,
       'aria-valuenow': value || 0,
       ...rest

@@ -1,6 +1,7 @@
-import { sva } from '../../styled-system/css'
+import { defineSlotRecipe } from '@pandacss/dev'
 
-export const stat = sva({
+export const statRecipe = defineSlotRecipe({
+  className : 'stat',
   slots: ['stats', 'stat', 'title', 'value', 'desc', 'figure', 'actions'],
   base: {
     stats: {

@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { tooltipRecipe } from '../../recipes/tooltip'
+import { tooltip } from '../../../styled-system/recipes'
 import { cx } from '../../utils/cx'
 
 /**
@@ -8,7 +8,7 @@ import { cx } from '../../utils/cx'
  *
  * - La burbuja y la cola son pseudo-elementos (`:before`/`:after`) que están
  *   siempre en el DOM con `opacity: 0`; el recipe los anima a `opacity: 1`
- *   con `transition` (ver `recipes/tooltip.ts`).
+ *   con `transition` (ver `recipes.ts`).
  * - Hover y focus-visible ya son 100% CSS (selectores `:hover` y
  *   `:has(:focus-visible)` en el recipe). El prop `open` cubre el estado
  *   controlado por el consumidor (cualquier condición que no sea hover/focus,
@@ -29,7 +29,7 @@ export const Tooltip = {
     return m('div', {
       className: cx(
         'tooltip',
-        tooltipRecipe({ position, color }),
+        tooltip({ position, color }),
         open && 'tooltip-open',
         className
       ),

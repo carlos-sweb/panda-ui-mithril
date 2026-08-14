@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { skeletonRecipe } from '../../recipes/skeleton'
+import { skeleton } from '../../../styled-system/recipes'
 import { cx } from '../../utils/cx'
 
 /**
@@ -13,7 +13,7 @@ export const Skeleton = {
     const { text, className, ...rest } = vnode.attrs
 
     return m('div', {
-      className: cx('skeleton', text && 'skeleton-text', skeletonRecipe({ text: !!text }), className),
+      className: cx('skeleton', text && 'skeleton-text', skeleton({ text: !!text }), className),
       ...rest
     })
   }

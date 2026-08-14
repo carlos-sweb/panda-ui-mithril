@@ -1,6 +1,7 @@
-import { sva } from '../../styled-system/css'
+import { defineSlotRecipe } from '@pandacss/dev'
 
-export const diff = sva({
+export const diffRecipe = defineSlotRecipe({
+  className : 'diff',
   slots: ['diff', 'item', 'resizer'],
   base: {
     diff: {

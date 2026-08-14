@@ -1,6 +1,5 @@
 import m from 'mithril'
-import { filterRecipe } from '../../recipes/filter'
-import { button } from '../../../styled-system/recipes'
+import { button , filter } from '../../../styled-system/recipes'
 import { cx } from '../../utils/cx'
 
 /**
@@ -14,7 +13,7 @@ export const Filter = {
     const { className, borderWidth, ...rest } = vnode.attrs
 
     return m('div', {
-      className: cx('filter', filterRecipe(), className),
+      className: cx('filter', filter(), className),
       ...rest
     }, vnode.children)
   }

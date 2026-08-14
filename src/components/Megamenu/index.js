@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { megamenu } from '../../recipes/megamenu'
+import { megamenu } from '../../../styled-system/recipes'
 import { cx } from '../../utils/cx'
 
 /**

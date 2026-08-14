@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { list } from '../../recipes/list'
+import { list } from '../../../styled-system/recipes'
 import { cx } from '../../utils/cx'
 
 /**

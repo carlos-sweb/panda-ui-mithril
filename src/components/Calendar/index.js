@@ -2,7 +2,7 @@ import m from 'mithril'
 import { ChevronLeft, ChevronRight } from 'lucide-mithril'
 import {
   calendar,
-} from '../../recipes/calendar'
+} from '../../../styled-system/recipes'
 import { cx } from '../../utils/cx'
 
 const WEEKDAYS = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']

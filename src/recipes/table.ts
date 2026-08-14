@@ -1,6 +1,7 @@
-import { sva } from '../../styled-system/css'
+import { defineSlotRecipe  , defineRecipe } from '@pandacss/dev'
 
-export const table = sva({
+export const tableRecipe = defineSlotRecipe({
+  className : 'table',
   slots: ['table', 'row'],
   base: {
     table: {
@@ -100,8 +101,9 @@ export const table = sva({
   },
 })
 
-import { defineRecipe } from '@pandacss/dev'
 
-export const tableOverflow = defineRecipe({
+
+export const tableOverflowRecipe = defineRecipe({
+  className : 'table-overflow',
   base: { overflowX: 'auto' },
 })

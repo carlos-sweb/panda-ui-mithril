@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { textareaRecipe } from '../../recipes/textarea'
+import { textarea } from '../../../styled-system/recipes'
 import { cx } from '../../utils/cx'
 
 /**
@@ -13,7 +13,7 @@ export const Textarea = {
     const { color, size, ghost, className, ...rest } = vnode.attrs
 
     return m('textarea', {
-      className: cx('textarea', textareaRecipe({ color, size, ghost }), className),
+      className: cx('textarea', textarea({ color, size, ghost }), className),
       ...rest
     })
   }

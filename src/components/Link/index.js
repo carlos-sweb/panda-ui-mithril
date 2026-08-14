@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { linkRecipe } from '../../recipes/link'
+import { link } from '../../../styled-system/recipes'
 import { cx } from '../../utils/cx'
 
 /**
@@ -12,7 +12,7 @@ export const Link = {
   view(vnode) {
     const { color, hover = true, className, ...rest } = vnode.attrs
     return m('a', {
-      className: cx('link', linkRecipe({ color, hover }), className),
+      className: cx('link', link({ color, hover }), className),
       ...rest
     }, vnode.children)
   }

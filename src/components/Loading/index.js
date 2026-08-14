@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { LoaderCircle } from 'lucide-mithril'
-import { loadingRecipe } from '../../recipes/loading'
+import { loading } from '../../../styled-system/recipes'
 import { cx } from '../../utils/cx'
 
 
@@ -22,7 +22,7 @@ export const Loading = {
 
     const styles = cx(
       'loading',
-      loadingRecipe({ variant, size }),
+      loading({ variant, size }),
       variant !== 'spinner' && variant !== 'ring' && variant !== 'ball' && variant !== 'infinity' && `loading-${variant}`,
       className
     )

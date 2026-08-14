@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { joinRecipe } from '../../recipes/join'
+import { join } from '../../../styled-system/recipes'
 import { button } from '../../../styled-system/recipes'
 import { cx } from '../../utils/cx'
 
@@ -14,7 +14,7 @@ export const Pagination = {
     const { className, ...rest } = vnode.attrs
 
     return m('div', {
-      className: cx('join', joinRecipe(), className),
+      className: cx('join', join(), className),
       ...rest
     }, vnode.children)
   }

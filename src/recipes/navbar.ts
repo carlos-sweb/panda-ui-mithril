@@ -1,6 +1,7 @@
-import { sva } from '../../styled-system/css'
+import { defineSlotRecipe } from '@pandacss/dev'
 
-export const navbar = sva({
+export const navbarRecipe = defineSlotRecipe({
+  className : 'navbar',
   slots: ['navbar', 'start', 'center', 'end'],
   base: {
     navbar: {

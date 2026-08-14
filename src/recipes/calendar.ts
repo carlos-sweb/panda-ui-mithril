@@ -1,4 +1,4 @@
-import { sva } from '../../styled-system/css'
+import { defineSlotRecipe } from '@pandacss/dev'
 
 // The original implementation has no calendar of its own — it only ships CSS (targeting
 // shadow-DOM ::part() selectors) to skin one of three external libraries
@@ -9,7 +9,8 @@ import { sva } from '../../styled-system/css'
 // styled to match the look of the original's own Cally skin (rounded day
 // buttons, muted weekday header, primary-colored "today", base-content
 // "selected").
-export const calendar = sva({
+export const calendarRecipe = defineSlotRecipe({
+  className : 'calendar',
   slots: ['calendar', 'header', 'nav', 'grid', 'weekday', 'day'],
   base: {
     calendar: {

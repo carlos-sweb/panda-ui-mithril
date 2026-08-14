@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { breadcrumbsRecipe } from '../../recipes/breadcrumbs'
+import { breadcrumbs } from '../../../styled-system/recipes'
 import { cx } from '../../utils/cx'
 
 /**
@@ -13,7 +13,7 @@ export const Breadcrumbs = {
     const { className, items, ...rest } = vnode.attrs
 
     return m('div', {
-      className: cx('breadcrumbs', breadcrumbsRecipe(), className),
+      className: cx('breadcrumbs', breadcrumbs(), className),
       ...rest
     }, m('ul', null, items
       ? items.map((item, i) =>

@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { dividerRecipe } from '../../recipes/divider'
+import { dividerPUM } from '../../../styled-system/recipes'
 import { cx } from '../../utils/cx'
 
 /**
@@ -14,7 +14,7 @@ export const Divider = {
 
     return m('div', {
       role: 'separator',
-      className: cx('divider', dividerRecipe({ color, direction, placement }), className),
+      className: cx('divider', dividerPUM({ color, direction, placement }), className),
       ...rest
     }, vnode.children)
   }

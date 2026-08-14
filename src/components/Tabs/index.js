@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { tabs } from '../../recipes/tabs'
+import { tabs } from '../../../styled-system/recipes'
 import { cx } from '../../utils/cx'
 
 function resolveVariant(vnode) {

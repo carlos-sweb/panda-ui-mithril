@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { auraRecipe } from '../../recipes/aura'
+import { aura } from '../../../styled-system/recipes'
 import { cx } from '../../utils/cx'
 
 /**
@@ -30,7 +30,7 @@ export const Aura = {
     const { variant, shape, size, className, ...rest } = vnode.attrs
 
     return m('div', {
-      className: cx('aura', variant && variant !== 'default' && `aura-${variant}`, auraRecipe({ variant, shape, size }), className),
+      className: cx('aura', variant && variant !== 'default' && `aura-${variant}`, aura({ variant, shape, size }), className),
       ...rest
     }, vnode.children)
   }

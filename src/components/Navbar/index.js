@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { navbar } from '../../recipes/navbar'
+import { navbar } from '../../../styled-system/recipes'
 import { cx } from '../../utils/cx'
 
 /**

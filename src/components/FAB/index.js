@@ -1,6 +1,5 @@
 import m from 'mithril'
-import { fabRecipe, fabLabelRecipe } from '../../recipes/fab'
-import { button } from '../../../styled-system/recipes'
+import { button , fab, fabLabel } from '../../../styled-system/recipes'
 import { cx } from '../../utils/cx'
 
 // TODO (noted 2026-08-02, needs a closer look later): visuals/CSS are fine,
@@ -20,7 +19,7 @@ export const FAB = {
     const { flower, className, ...rest } = vnode.attrs
 
     return m('div', {
-      className: cx('fab', flower && 'fab-flower', fabRecipe(), className),
+      className: cx('fab', flower && 'fab-flower', fab(), className),
       ...rest
     }, vnode.children)
   }
@@ -55,7 +54,7 @@ export const FABAction = {
     const { label, color, className, borderWidth, ...rest } = vnode.attrs
 
     return m('div', { className: cx(className) }, [
-      label && m('span', { className: cx('fab-action-label', fabLabelRecipe()) }, label),
+      label && m('span', { className: cx('fab-action-label', fabLabel()) }, label),
       m('button', {
         className: cx('btn btn-lg btn-circle', button({ shape: 'circle', size: 'lg', color, borderWidth })),
         ...rest

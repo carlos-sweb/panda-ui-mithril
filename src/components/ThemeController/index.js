@@ -1,6 +1,6 @@
 import m from 'mithril'
-import { toggleRecipe } from '../../recipes/toggle'
-import { checkboxRecipe } from '../../recipes/checkbox'
+import { toggle } from '../../../styled-system/recipes'
+import { checkbox } from '../../../styled-system/recipes'
 import { cx } from '../../utils/cx'
 
 // The original implementation's `theme-controller` class carries NO CSS of its own — theming
@@ -26,7 +26,7 @@ import { cx } from '../../utils/cx'
 export const ThemeController = {
   view(vnode) {
     const { variant = 'toggle', size, color, theme, checked, className, onchange, ...rest } = vnode.attrs
-    const styles = variant === 'checkbox' ? checkboxRecipe({ size, color }) : toggleRecipe({ size, color })
+    const styles = variant === 'checkbox' ? checkbox({ size, color }) : toggle({ size, color })
 
     return m('input', {
       type: 'checkbox',

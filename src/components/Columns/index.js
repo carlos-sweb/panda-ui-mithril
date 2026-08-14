@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { columns } from '../../recipes/columns'
+import { columns } from '../../../styled-system/recipes'
 import { cx } from '../../utils/cx'
 
 export const Columns = {

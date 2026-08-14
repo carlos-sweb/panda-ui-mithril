@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { Star } from 'lucide-mithril'
-import { rating } from '../../recipes/rating'
+import { rating } from '../../../styled-system/recipes'
 import { cx } from '../../utils/cx'
 
 const clamp = (v, min, max) => Math.min(max, Math.max(min, v))

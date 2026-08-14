@@ -1,4 +1,4 @@
-import { sva } from '../../styled-system/css'
+import { defineSlotRecipe } from '@pandacss/dev'
 
 // Scoped port: this project drives tabs via a controlled `active` prop
 // (real JS state) rather than the original's hidden input[radio]/label CSS-only
@@ -12,7 +12,8 @@ const activeSelector = '&.tab-active, &[aria-selected="true"], &[aria-current="t
 const activeBeforeSelector = '&.tab-active:before, &[aria-selected="true"]:before, &[aria-current="true"]:before'
 const inactiveSelector = '&:not(.tab-active, [aria-selected="true"], [aria-current="true"], :hover)'
 
-export const tabs = sva({
+export const tabsRecipe = defineSlotRecipe({
+  className : 'tabs',
   slots: ['tabs', 'tab', 'content'],
   base: {
     tabs: {

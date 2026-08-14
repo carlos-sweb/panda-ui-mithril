@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { countdownRecipe, countdownDigitRecipe } from '../../recipes/countdown'
+import { countdown, countdownDigit } from '../../../styled-system/recipes'
 import { cx } from '../../utils/cx'
 
 /**
@@ -17,13 +17,13 @@ export const Countdown = {
     const digitChars = String(clamped).padStart(numDigits, '0').split('')
 
     return m('span', {
-      className: cx('countdown', countdownRecipe(), className),
+      className: cx('countdown', countdown(), className),
       'aria-live': 'polite',
       'aria-label': String(value),
       ...rest
     }, digitChars.map((d, i) => m('span', {
       key: i,
-      className: countdownDigitRecipe(),
+      className: countdownDigit(),
       style: `--n:${d}`,
     })))
   }

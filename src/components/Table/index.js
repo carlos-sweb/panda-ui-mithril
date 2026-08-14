@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { table, tableOverflow } from '../../recipes/table'
+import { table, tableOverflow } from '../../../styled-system/recipes'
 import { cx } from '../../utils/cx'
 
 /**

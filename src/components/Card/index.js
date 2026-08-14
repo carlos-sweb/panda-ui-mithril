@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { card } from '../../recipes/card'
+import { card } from '../../../styled-system/recipes'
 import { cx } from '../../utils/cx'
 
 /**

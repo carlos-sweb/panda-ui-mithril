@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { avatar } from '../../recipes/avatar'
+import { avatar } from '../../../styled-system/recipes'
 import { cx } from '../../utils/cx'
 
 /**

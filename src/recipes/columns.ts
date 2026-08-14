@@ -1,6 +1,7 @@
-import { sva } from '../../styled-system/css'
+import { defineSlotRecipe } from '@pandacss/dev'
 
-export const columns = sva({
+export const columnsRecipe = defineSlotRecipe({
+  className : 'columns',
   slots: ['root', 'column'],
   base: {
     root: {

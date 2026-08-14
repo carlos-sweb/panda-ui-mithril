@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { fileInputRecipe } from '../../recipes/fileInput'
+import { fileInput } from '../../../styled-system/recipes'
 import { cx } from '../../utils/cx'
 
 /**
@@ -14,7 +14,7 @@ export const FileInput = {
 
     return m('input', {
       type: 'file',
-      className: cx('file-input', fileInputRecipe({ color, size, ghost }), className),
+      className: cx('file-input', fileInput({ color, size, ghost }), className),
       ...rest
     })
   }

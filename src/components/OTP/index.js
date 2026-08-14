@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { otpRecipe } from '../../recipes/otp'
+import { otp } from '../../../styled-system/recipes'
 import { cx } from '../../utils/cx'
 
 /**
@@ -15,7 +15,7 @@ export const OTP = {
     const { size, color, joined, className, value, length = 4, oninput, ...rest } = vnode.attrs
 
     return m('label', {
-      className: cx('otp', otpRecipe({ size, color, joined }), className),
+      className: cx('otp', otp({ size, color, joined }), className),
       ...rest
     }, [
       ...Array.from({ length }, () => m('span')),

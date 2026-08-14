@@ -1,6 +1,7 @@
-import { sva } from '../../styled-system/css'
+import { defineSlotRecipe } from '@pandacss/dev'
 
-export const timeline = sva({
+export const timelineRecipe = defineSlotRecipe({
+  className : 'timeline',
   slots: ['timeline', 'box'],
   base: {
     timeline: {

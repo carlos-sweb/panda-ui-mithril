@@ -1,13 +1,13 @@
 import { memo, splitProps } from '../helpers.mjs';
 import { createRecipe, mergeRecipes } from './create-recipe.mjs';
 
-const stackFn = /* @__PURE__ */ createRecipe('stack', {
+const stackPUMFn = /* @__PURE__ */ createRecipe('stack', {
   "direction": "column",
   "gap": "md",
   "align": "stretch"
 }, [])
 
-const stackVariantMap = {
+const stackPUMVariantMap = {
   "direction": [
     "column",
     "row"
@@ -34,20 +34,20 @@ const stackVariantMap = {
   ]
 }
 
-const stackVariantKeys = Object.keys(stackVariantMap)
+const stackPUMVariantKeys = Object.keys(stackPUMVariantMap)
 
-export const stack = /* @__PURE__ */ Object.assign(memo(stackFn.recipeFn), {
+export const stackPUM = /* @__PURE__ */ Object.assign(memo(stackPUMFn.recipeFn), {
   __recipe__: true,
-  __name__: 'stack',
-  __getCompoundVariantCss__: stackFn.__getCompoundVariantCss__,
+  __name__: 'stackPUM',
+  __getCompoundVariantCss__: stackPUMFn.__getCompoundVariantCss__,
   raw: (props) => props,
-  variantKeys: stackVariantKeys,
-  variantMap: stackVariantMap,
+  variantKeys: stackPUMVariantKeys,
+  variantMap: stackPUMVariantMap,
   merge(recipe) {
     return mergeRecipes(this, recipe)
   },
   splitVariantProps(props) {
-    return splitProps(props, stackVariantKeys)
+    return splitProps(props, stackPUMVariantKeys)
   },
-  getVariantProps: stackFn.getVariantProps,
+  getVariantProps: stackPUMFn.getVariantProps,
 })

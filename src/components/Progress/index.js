@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { progressRecipe } from '../../recipes/progress'
+import { progress } from '../../../styled-system/recipes'
 import { cx } from '../../utils/cx'
 
 
@@ -12,7 +12,7 @@ export const Progress = {
     const { color, value, max, className, ...rest } = vnode.attrs
 
     return m('progress', {
-      className: cx('progress', progressRecipe({ color }), className),
+      className: cx('progress', progress({ color }), className),
       value,
       max: max || 100,
       ...rest

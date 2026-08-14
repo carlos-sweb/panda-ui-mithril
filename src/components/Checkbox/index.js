@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { checkboxRecipe } from '../../recipes/checkbox'
+import { checkbox } from '../../../styled-system/recipes'
 import { cx } from '../../utils/cx'
 
 /**
@@ -35,7 +35,7 @@ export const Checkbox = {
 
     return m('input', {
       type: 'checkbox',
-      className: cx('checkbox', checkboxRecipe({ color, size }), className),
+      className: cx('checkbox', checkbox({ color, size }), className),
       checked,
       disabled,
       onchange,

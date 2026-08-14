@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { hero } from '../../recipes/hero'
+import { hero } from '../../../styled-system/recipes'
 import { cx } from '../../utils/cx'
 
 /**

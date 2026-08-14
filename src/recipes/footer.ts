@@ -1,6 +1,7 @@
-import { sva } from '../../styled-system/css'
+import { defineSlotRecipe } from '@pandacss/dev'
 
-export const footer = sva({
+export const footerRecipe = defineSlotRecipe({
+  className : 'footer',
   slots: ['footer', 'title'],
   base: {
     footer: {

@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { maskRecipe } from '../../recipes/mask'
+import { mask } from '../../../styled-system/recipes'
 import { cx } from '../../utils/cx'
 
 /**
@@ -14,7 +14,7 @@ export const Mask = {
     const { shape, half, className, ...rest } = vnode.attrs
 
     return m('img', {
-      className: cx('mask', maskRecipe({ shape, half }), className),
+      className: cx('mask', mask({ shape, half }), className),
       ...rest
     })
   }

@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { toastRecipe } from '../../recipes/toast'
+import { toast } from '../../../styled-system/recipes'
 import { cx } from '../../utils/cx'
 
 const VERTICALS = ['top', 'middle', 'bottom']
@@ -21,7 +21,7 @@ export const Toast = {
     const horizontal = tokens.find((t) => HORIZONTALS.includes(t)) || 'end'
 
     return m('div', {
-      className: cx('toast', toastRecipe({ vertical, horizontal }), className),
+      className: cx('toast', toast({ vertical, horizontal }), className),
       ...rest
     }, vnode.children)
   }
