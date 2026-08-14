@@ -1,11 +1,11 @@
 import m from 'mithril'
-import { alertStyles } from '../../recipes/alert'
+import { alertRecipe } from '../../recipes/alert'
 import { cx } from '../../utils/cx'
 
 /**
  * Alert — a feedback banner with semantic color variants.
  *
- * Renders a `div[role="alert"]` styled by the `alertStyles` recipe
+ * Renders a `div[role="alert"]` styled by the `alertRecipe` recipe
  * (`cva()`, no defaultStyles — all visuals go through className only).
  * The recipe styles descendants via CSS selectors, so a title
  * (`h3`) and description (`.alert-description`) can be placed as
@@ -34,7 +34,7 @@ export const Alert = {
     
     return m('div', {
       role: 'alert',
-      className: cx('alert', alertStyles({ variant, color, direction }), className),
+      className: cx('alert', alertRecipe({ variant, color, direction }), className),
       ...rest
     }, vnode.children)
   }

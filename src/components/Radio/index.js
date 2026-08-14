@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { radioStyles } from '../../recipes/radio'
+import { radioRecipe } from '../../recipes/radio'
 import { cx } from '../../utils/cx'
 
 /**
@@ -18,7 +18,7 @@ export const Radio = {
 
     return m('input', {
       type: 'radio',
-      className: cx('radio', radioStyles({ color, size }), className),
+      className: cx('radio', radioRecipe({ color, size }), className),
       checked,
       disabled,
       onchange,

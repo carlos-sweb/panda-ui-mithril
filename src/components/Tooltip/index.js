@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { tooltipStyles } from '../../recipes/tooltip'
+import { tooltipRecipe } from '../../recipes/tooltip'
 import { cx } from '../../utils/cx'
 
 /**
@@ -29,7 +29,7 @@ export const Tooltip = {
     return m('div', {
       className: cx(
         'tooltip',
-        tooltipStyles({ position, color }),
+        tooltipRecipe({ position, color }),
         open && 'tooltip-open',
         className
       ),

@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { carouselStyles, carouselItemStyles } from '../../recipes/carousel'
+import { carouselRecipe, carouselItemRecipe } from '../../recipes/carousel'
 import { cx } from '../../utils/cx'
 
 
@@ -37,7 +37,7 @@ export const Carousel = {
       className: cx(
         'carousel',
         resolvedAlign && `carousel-${resolvedAlign}`,
-        carouselStyles({ direction, align: resolvedAlign }),
+        carouselRecipe({ direction, align: resolvedAlign }),
         className
       ),
       ...rest
@@ -63,7 +63,7 @@ export const CarouselItem = {
     const { className, ...rest } = vnode.attrs
 
     return m('div', {
-      className: cx('carousel-item', carouselItemStyles(), className),
+      className: cx('carousel-item', carouselItemRecipe(), className),
       ...rest
     }, vnode.children)
   }

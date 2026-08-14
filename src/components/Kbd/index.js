@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { kbdStyles } from '../../recipes/kbd'
+import { kbdRecipe } from '../../recipes/kbd'
 import { cx } from '../../utils/cx'
 
 /**
@@ -13,7 +13,7 @@ export const Kbd = {
     const { size, className, ...rest } = vnode.attrs
 
     return m('kbd', {
-      className: cx('kbd', kbdStyles({ size }), className),
+      className: cx('kbd', kbdRecipe({ size }), className),
       ...rest
     }, vnode.children)
   }

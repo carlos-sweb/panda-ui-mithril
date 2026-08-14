@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { swapStyles } from '../../recipes/swap'
+import { swapRecipe } from '../../recipes/swap'
 import { cx } from '../../utils/cx'
 
 /**
@@ -41,7 +41,7 @@ export const Swap = {
   view(vnode) {
     const { active, style, size, className, on, off, checked, onchange, ...rest } = vnode.attrs
     return m('label', {
-      className: cx('swap', swapStyles({ style, size }), active && 'swap-active', className),
+      className: cx('swap', swapRecipe({ style, size }), active && 'swap-active', className),
       ...rest
     }, [
       m('input', { type: 'checkbox', checked, onchange }),

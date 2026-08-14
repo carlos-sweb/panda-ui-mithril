@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { collapseStyles, collapseTitleStyles } from '../../recipes/accordion'
+import { collapseRecipe, collapseTitleRecipe } from '../../recipes/accordion'
 import { cx } from '../../utils/cx'
 
 /**
@@ -27,7 +27,7 @@ export const Accordion = {
         'collapse', 
         arrow && 'collapse-arrow',
         plus && 'collapse-plus', 
-        collapseStyles({ arrow, plus, border }), className),
+        collapseRecipe({ arrow, plus, border }), className),
       ...rest
     }, [
       m('input', {
@@ -50,7 +50,7 @@ export const Accordion = {
 export const AccordionTitle = {
   view(vnode) {
     const { className, ...rest } = vnode.attrs
-    return m('div', { className: cx('collapse-title', collapseTitleStyles(), className), ...rest }, vnode.children)
+    return m('div', { className: cx('collapse-title', collapseTitleRecipe(), className), ...rest }, vnode.children)
   }
 }
 

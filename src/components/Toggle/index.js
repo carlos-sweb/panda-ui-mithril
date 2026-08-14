@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { toggleStyles } from '../../recipes/toggle'
+import { toggleRecipe } from '../../recipes/toggle'
 import { cx } from '../../utils/cx'
 
 /**
@@ -33,7 +33,7 @@ export const Toggle = {
 
     return m('input', {
       type: 'checkbox',
-      className: cx('toggle', toggleStyles({ color, size }), className),
+      className: cx('toggle', toggleRecipe({ color, size }), className),
       checked,
       disabled,
       onchange,

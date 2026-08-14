@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { selectStyles } from '../../recipes/select'
+import { selectRecipe } from '../../recipes/select'
 import { cx } from '../../utils/cx'
 
 /**
@@ -13,7 +13,7 @@ export const Select = {
     const { color, size, ghost, className, ...rest } = vnode.attrs
 
     return m('select', {
-      className: cx('select', selectStyles({ color, size, ghost }), className),
+      className: cx('select', selectRecipe({ color, size, ghost }), className),
       ...rest
     }, vnode.children)
   }

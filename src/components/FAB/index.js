@@ -1,6 +1,6 @@
 import m from 'mithril'
-import { fabStyles, fabLabelStyles } from '../../recipes/fab'
-import { buttonStyles } from '../../recipes/button'
+import { fabRecipe, fabLabelRecipe } from '../../recipes/fab'
+import { button } from '../../../styled-system/recipes'
 import { cx } from '../../utils/cx'
 
 // TODO (noted 2026-08-02, needs a closer look later): visuals/CSS are fine,
@@ -20,7 +20,7 @@ export const FAB = {
     const { flower, className, ...rest } = vnode.attrs
 
     return m('div', {
-      className: cx('fab', flower && 'fab-flower', fabStyles(), className),
+      className: cx('fab', flower && 'fab-flower', fabRecipe(), className),
       ...rest
     }, vnode.children)
   }
@@ -36,7 +36,7 @@ export const FABMain = {
     const { color, className, borderWidth, ...rest } = vnode.attrs
 
     return m('div', {
-      className: cx('btn btn-lg btn-circle', buttonStyles({ shape: 'circle', size: 'lg', color: color || 'primary', borderWidth }), className),
+      className: cx('btn btn-lg btn-circle', button({ shape: 'circle', size: 'lg', color: color || 'primary', borderWidth }), className),
       tabindex: '0',
       role: 'button',
       ...rest
@@ -55,9 +55,9 @@ export const FABAction = {
     const { label, color, className, borderWidth, ...rest } = vnode.attrs
 
     return m('div', { className: cx(className) }, [
-      label && m('span', { className: cx('fab-action-label', fabLabelStyles()) }, label),
+      label && m('span', { className: cx('fab-action-label', fabLabelRecipe()) }, label),
       m('button', {
-        className: cx('btn btn-lg btn-circle', buttonStyles({ shape: 'circle', size: 'lg', color, borderWidth })),
+        className: cx('btn btn-lg btn-circle', button({ shape: 'circle', size: 'lg', color, borderWidth })),
         ...rest
       }, vnode.children),
     ])

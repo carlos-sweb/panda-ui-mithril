@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { indicatorStyles, indicatorItemStyles } from '../../recipes/indicator'
+import { indicatorRecipe, indicatorItemRecipe } from '../../recipes/indicator'
 import { cx } from '../../utils/cx'
 
 const HORIZONTAL = ['start', 'center', 'end']
@@ -22,13 +22,13 @@ export const Indicator = {
     return m('div', {
       className: cx(
         'indicator',
-        indicatorStyles({ horizontal, vertical }),
+        indicatorRecipe({ horizontal, vertical }),
         words.map((w) => `indicator-${w}`),
         className
       ),
       ...rest
     }, [
-      item && m('span', { className: cx('indicator-item', indicatorItemStyles(), item.className) }, item),
+      item && m('span', { className: cx('indicator-item', indicatorItemRecipe(), item.className) }, item),
       vnode.children,
     ])
   }

@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { titleStyles } from '../../recipes/title'
+import { titleRecipe } from '../../recipes/title'
 import { cx } from '../../utils/cx'
 
 const tagSizes = { h1: '1', h2: '2', h3: '3', h4: '4', h5: '5', h6: '6', p: '7', span: '7', div: '7' }
@@ -28,7 +28,7 @@ export const Title = {
     const resolvedSize = size ?? tagSizes[as] ?? '1'
 
     return m(as, {
-      className: cx('title', titleStyles({
+      className: cx('title', titleRecipe({
         size: resolvedSize,
         color,
         align,

@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { fieldsetStyles, fieldsetLegendStyles } from '../../recipes/fieldset'
+import { fieldsetRecipe, fieldsetLegendRecipe } from '../../recipes/fieldset'
 import { cx } from '../../utils/cx'
 
 /**
@@ -13,10 +13,10 @@ export const Fieldset = {
     const { legend, className, ...rest } = vnode.attrs
 
     return m('fieldset', {
-      className: cx('fieldset', fieldsetStyles(), className),
+      className: cx('fieldset', fieldsetRecipe(), className),
       ...rest
     }, [
-      legend && m('legend', { className: cx('fieldset-legend', fieldsetLegendStyles()) }, legend),
+      legend && m('legend', { className: cx('fieldset-legend', fieldsetLegendRecipe()) }, legend),
       vnode.children,
     ])
   }

@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { rangeStyles } from '../../recipes/range'
+import { rangeRecipe } from '../../recipes/range'
 import { cx } from '../../utils/cx'
 
 /**
@@ -14,7 +14,7 @@ export const Range = {
 
     return m('input', {
       type: 'range',
-      className: cx('range', rangeStyles({ color, size, vertical }), className),
+      className: cx('range', rangeRecipe({ color, size, vertical }), className),
       ...rest
     })
   }

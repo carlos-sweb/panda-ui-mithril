@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { buttonGroupStyles } from '../../recipes/buttonGroup'
+import { buttonGroupRecipe } from '../../recipes/buttonGroup'
 import { cx } from '../../utils/cx'
 
 /**
@@ -13,7 +13,7 @@ export const ButtonGroup = {
     const { color, variant, size, vertical, borderWidth, className, ...rest } = vnode.attrs
 
     return m('div', {
-      className: cx('btn-group', buttonGroupStyles({ vertical }), className),
+      className: cx('btn-group', buttonGroupRecipe({ vertical }), className),
       ...rest,
     }, (Array.isArray(vnode.children) ? vnode.children : [vnode.children]).map((child) => {
       if (!child || typeof child === 'string' || typeof child === 'number') return child

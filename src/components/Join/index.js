@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { joinStyles, joinItemStyles } from '../../recipes/join'
+import { joinRecipe, joinItemRecipe } from '../../recipes/join'
 import { cx } from '../../utils/cx'
 
 /**
@@ -13,7 +13,7 @@ export const Join = {
     const { vertical, className, ...rest } = vnode.attrs
 
     return m('div', {
-      className: cx('join', joinStyles({ vertical }), className),
+      className: cx('join', joinRecipe({ vertical }), className),
       ...rest
     }, vnode.children)
   }
@@ -29,7 +29,7 @@ export const JoinItem = {
     const { className, ...rest } = vnode.attrs
 
     return m('button', {
-      className: cx('join-item', joinItemStyles(), className),
+      className: cx('join-item', joinItemRecipe(), className),
       ...rest
     }, vnode.children)
   }

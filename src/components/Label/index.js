@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { labelStyles } from '../../recipes/label'
+import { labelRecipe } from '../../recipes/label'
 import { cx } from '../../utils/cx'
 
 /**
@@ -14,7 +14,7 @@ export const Label = {
     const { floating, className, ...rest } = vnode.attrs
 
     return m(floating ? 'label' : 'span', {
-      className: cx(floating ? 'floating-label' : 'label', labelStyles({ floating: !!floating }), className),
+      className: cx(floating ? 'floating-label' : 'label', labelRecipe({ floating: !!floating }), className),
       ...rest
     }, vnode.children)
   }

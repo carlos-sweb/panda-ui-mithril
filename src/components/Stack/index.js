@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { stackStyles } from '../../recipes/stack'
+import { stackRecipe } from '../../recipes/stack'
 import { cx } from '../../utils/cx'
 
 /**
@@ -13,7 +13,7 @@ export const Stack = {
     const { direction, gap, align, justify, className, ...rest } = vnode.attrs
 
     return m('div', {
-      className: cx('stack', stackStyles({ direction, gap, align, justify }), className),
+      className: cx('stack', stackRecipe({ direction, gap, align, justify }), className),
       ...rest,
     }, vnode.children)
   }

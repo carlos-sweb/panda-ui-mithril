@@ -1,7 +1,7 @@
 import m from 'mithril'
 import { Rating } from '../Rating/index.js'
 import { cx } from '../../utils/cx'
-import { ratingGroupStyles, ratingGroupLabel } from '../../recipes/ratingGroup'
+import { ratingGroupRecipe, ratingGroupLabelRecipe } from '../../recipes/ratingGroup'
 
 /**
  * RatingGroup — envuelve un Rating con label y display de valor.
@@ -28,10 +28,10 @@ export const RatingGroup = {
     const current = typeof value === 'number' ? value : defaultValue
 
     return m('div', {
-      className: cx('rating-group', ratingGroupStyles(), className),
+      className: cx('rating-group', ratingGroupRecipe(), className),
       ...rest,
     }, [
-      label != null && m('span', { className: cx('rating-group-label', ratingGroupLabel()) }, [
+      label != null && m('span', { className: cx('rating-group-label', ratingGroupLabelRecipe()) }, [
         label,
         showValue && typeof current === 'number' ? `: ${current}` : ''
       ]),

@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { inputStyles } from '../../recipes/textInput'
+import { textInputRecipe } from '../../recipes/textInput'
 import { cx } from '../../utils/cx'
 
 /**
@@ -14,7 +14,7 @@ export const TextInput = {
 
     return m('input', {
       type: 'text',
-      className: cx('input', inputStyles({ color, size, ghost }), className),
+      className: cx('input', textInputRecipe({ color, size, ghost }), className),
       ...rest
     })
   }

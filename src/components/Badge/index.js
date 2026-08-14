@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { badgeStyles } from '../../recipes/badge'
+import { badgeRecipe } from '../../recipes/badge'
 import { cx } from '../../utils/cx'
 
 /**
@@ -15,7 +15,7 @@ export const Badge = {
     return m('span', {
       className: cx(
         'badge',
-        badgeStyles({ color, variant, size }),
+        badgeRecipe({ color, variant, size }),
         className
       ),
       ...rest

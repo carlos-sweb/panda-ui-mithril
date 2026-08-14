@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { buttonStyles } from '../../recipes/button'
+import { button } from '../../../styled-system/recipes'
 import { cx } from '../../utils/cx'
 
 /**
@@ -16,7 +16,7 @@ export const Button = {
 
     const styles = cx(
       'btn',
-      buttonStyles({
+      button({
         color,
         variant,
         size,
