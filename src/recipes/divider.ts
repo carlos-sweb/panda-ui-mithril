@@ -1,6 +1,7 @@
-import { cva } from '../../styled-system/css'
+import { defineRecipe } from '@pandacss/dev'
 
-export const dividerStyles = cva({
+export const dividerRecipe = defineRecipe({
+  className:'divider',
   base: {
     display: 'flex',
     flexDirection: 'row',

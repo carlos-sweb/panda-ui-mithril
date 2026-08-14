@@ -1,6 +1,7 @@
-import { cva } from '../../styled-system/css'
+import { defineRecipe } from '@pandacss/dev'
 
-export const fieldsetStyles = cva({
+export const fieldsetRecipe = defineRecipe({
+  className:'fieldset',
   base: {
     display: 'grid',
     gap: 'token(spacing.1.5)',
@@ -11,7 +12,8 @@ export const fieldsetStyles = cva({
   },
 })
 
-export const fieldsetLegendStyles = cva({
+export const fieldsetLegendRecipe = defineRecipe({
+  className:'fieldset-legend',
   base: {
     display: 'flex',
     alignItems: 'center',

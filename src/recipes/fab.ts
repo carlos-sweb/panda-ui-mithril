@@ -1,6 +1,7 @@
-import { cva } from '../../styled-system/css'
+import { defineRecipe } from '@pandacss/dev'
 
-export const fabStyles = cva({
+export const fabRecipe = defineRecipe({
+  className:'fab',
   base: {
     pointerEvents: 'none',
     position: 'fixed',
@@ -56,7 +57,8 @@ export const fabStyles = cva({
   },
 })
 
-export const fabLabelStyles = cva({
+export const fabLabelRecipe = defineRecipe({
+  className:'fab-label',
   base: {
     backgroundColor: 'neutral',
     color: 'neutral-content',

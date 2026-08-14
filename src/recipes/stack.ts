@@ -1,6 +1,7 @@
-import { cva } from '../../styled-system/css'
+import { defineRecipe } from '@pandacss/dev'
 
-export const stackStyles = cva({
+export const stackRecipe = defineRecipe({
+  className:'stack',
   base: {
     display: 'flex',
     flexDirection: 'column',

@@ -1,6 +1,7 @@
-import { cva } from '../../styled-system/css'
+import { defineRecipe } from '@pandacss/dev'
 
-export const otpStyles = cva({
+export const otpRecipe = defineRecipe({
+  className:'otp',
   base: {
     position: 'relative',
     display: 'inline-flex',

@@ -1,8 +1,9 @@
-import { cva } from '../../styled-system/css'
+import { defineRecipe } from '@pandacss/dev'
 
 const itemSelector = '& > li:not(.menu-title) > a, & > li:not(.menu-title) > .menu-dropdown-toggle'
 
-export const menuStyles = cva({
+export const menuRecipe = defineRecipe({
+  className:'menu',
   base: {
     display: 'inline-flex',
     flexDirection: 'column',

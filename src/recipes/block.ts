@@ -1,6 +1,7 @@
-import { cva } from '../../styled-system/css'
+import { defineRecipe } from '@pandacss/dev'
 
-export const blockStyles = cva({
+export const blockRecipe = defineRecipe({
+  className:'block',
   base: {
     '&:not(:last-child)': {
       marginBottom: 'token(spacing.4)',

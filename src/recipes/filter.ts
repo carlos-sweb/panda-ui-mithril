@@ -1,6 +1,7 @@
-import { cva } from '../../styled-system/css'
+import { defineRecipe } from '@pandacss/dev'
 
-export const filterStyles = cva({
+export const filterRecipe = defineRecipe({
+  className:'filter',
   base: {
     display: 'flex',
     flexWrap: 'wrap',

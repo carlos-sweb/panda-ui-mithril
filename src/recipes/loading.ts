@@ -1,6 +1,7 @@
-import { cva } from '../../styled-system/css'
+import { defineRecipe } from '@pandacss/dev'
 
-export const loadingStyles = cva({
+export const loadingRecipe = defineRecipe({
+  className:'loading',
   base: {
     display: 'inline-block',
     color: 'currentColor',

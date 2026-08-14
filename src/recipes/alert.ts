@@ -1,6 +1,7 @@
-import { cva } from '../../styled-system/css'
+import { defineRecipe } from '@pandacss/dev'
 
-export const alertStyles = cva({
+export const alertRecipe = defineRecipe({
+  className:'alert',
   base: {
     // the original implementation uses grid layout, not flex
     display: 'grid',

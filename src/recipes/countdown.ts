@@ -1,4 +1,4 @@
-import { cva } from '../../styled-system/css'
+import { defineRecipe } from '@pandacss/dev'
 
 // NOTE: the original implementation implements this with a single combined-value CSS trick
 // (mod()/round() math + a 00-99 content strip clipped via text-align:end +
@@ -12,14 +12,16 @@ import { cva } from '../../styled-system/css'
 // which character is showing.
 const digitStrip = Array.from({ length: 10 }, (_, i) => String(i)).join('\\A ')
 
-export const countdownStyles = cva({
+export const countdownRecipe = defineRecipe({
+  className:'countdown',
   base: {
     display: 'inline-flex',
     lineHeight: '1em',
   },
 })
 
-export const countdownDigitStyles = cva({
+export const countdownDigitRecipe = defineRecipe({
+  className:'countdown-digit',
   base: {
     position: 'relative',
     display: 'inline-block',

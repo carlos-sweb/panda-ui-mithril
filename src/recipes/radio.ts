@@ -1,6 +1,7 @@
-import { cva } from '../../styled-system/css'
+import { defineRecipe } from '@pandacss/dev'
 
-export const radioStyles = cva({
+export const radioRecipe = defineRecipe({
+  className:'radio',
   base: {
     position: 'relative',
     display: 'inline-block',

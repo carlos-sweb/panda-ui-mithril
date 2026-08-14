@@ -1,6 +1,7 @@
-import { cva } from '../../styled-system/css'
+import { defineRecipe } from '@pandacss/dev'
 
-export const textareaStyles = cva({
+export const textareaRecipe = defineRecipe({
+  className:'textarea',
   base: {
     display: 'block',
     width: 'clamp(3rem, 20rem, 100%)',

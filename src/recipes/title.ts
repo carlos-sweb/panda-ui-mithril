@@ -1,6 +1,7 @@
-import { cva } from '../../styled-system/css'
+import { defineRecipe } from '@pandacss/dev'
 
-export const titleStyles = cva({
+export const titleRecipe = defineRecipe({
+  className:'title',
   base: {
     fontFamily: 'inherit',
     lineHeight: 'token(lineHeights.tight)',

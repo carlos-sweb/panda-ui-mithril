@@ -1,6 +1,7 @@
-import { cva } from '../../styled-system/css'
+import { defineRecipe } from '@pandacss/dev'
 
-export const buttonGroupStyles = cva({
+export const buttonGroupRecipe = defineRecipe({
+  className:'button-group',
   base: {
     display: 'inline-flex',
 

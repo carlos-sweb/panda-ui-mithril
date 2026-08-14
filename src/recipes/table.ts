@@ -100,8 +100,8 @@ export const table = sva({
   },
 })
 
-import { cva } from '../../styled-system/css'
+import { defineRecipe } from '@pandacss/dev'
 
-export const tableOverflow = cva({
+export const tableOverflow = defineRecipe({
   base: { overflowX: 'auto' },
 })

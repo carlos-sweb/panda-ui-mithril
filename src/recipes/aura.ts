@@ -1,6 +1,7 @@
-import { cva } from '../../styled-system/css'
+import { defineRecipe } from '@pandacss/dev'
 
-export const auraStyles = cva({
+export const auraRecipe = defineRecipe({
+  className:'aura',
   base: {
     position: 'relative',
     display: 'inline-block',

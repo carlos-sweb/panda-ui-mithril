@@ -1,6 +1,7 @@
-import { cva } from '../../styled-system/css'
+import { defineRecipe } from '@pandacss/dev'
 
-export const checkboxStyles = cva({
+export const checkboxRecipe = defineRecipe({
+  className:'checkbox',
   base: {
     position: 'relative',
     display: 'inline-block',

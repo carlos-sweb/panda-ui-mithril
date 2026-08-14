@@ -1,6 +1,7 @@
-import { cva } from '../../styled-system/css'
+import { defineRecipe } from '@pandacss/dev'
 
-export const skeletonStyles = cva({
+export const skeletonRecipe = defineRecipe({
+  className:'skeleton',
   base: {
     backgroundColor: 'base-300',
     borderRadius: 'var(--radius-box)',

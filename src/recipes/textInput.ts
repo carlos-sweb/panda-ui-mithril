@@ -1,6 +1,7 @@
-import { cva } from '../../styled-system/css'
+import { defineRecipe } from '@pandacss/dev'
 
-export const inputStyles = cva({
+export const textInputRecipe = defineRecipe({
+  className:'input',
   base: {
     display: 'inline-flex',
     alignItems: 'center',

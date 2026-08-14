@@ -1,6 +1,7 @@
-import { cva } from '../../styled-system/css'
+import { defineRecipe } from '@pandacss/dev'
 
-export const indicatorStyles = cva({
+export const indicatorRecipe = defineRecipe({
+  className:'indicator',
   base: {
     position: 'relative',
     display: 'inline-flex',
@@ -32,7 +33,8 @@ export const indicatorStyles = cva({
   },
 })
 
-export const indicatorItemStyles = cva({
+export const indicatorItemRecipe = defineRecipe({
+  className:'indicator-item',
   base: {
     position: 'absolute',
     whiteSpace: 'nowrap',

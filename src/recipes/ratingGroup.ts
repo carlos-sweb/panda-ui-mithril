@@ -1,6 +1,7 @@
-import { cva } from '../../styled-system/css'
+import { defineRecipe } from '@pandacss/dev'
 
-export const ratingGroupStyles = cva({
+export const ratingGroupRecipe = defineRecipe({
+  className:'rating-group',
   base: {
     display: 'inline-flex',
     flexDirection: 'column',
@@ -9,7 +10,8 @@ export const ratingGroupStyles = cva({
   },
 })
 
-export const ratingGroupLabel = cva({
+export const ratingGroupLabelRecipe = defineRecipe({
+  className:'rating-group-label',
   base: {
     fontSize: 'token(fontSizes.sm)',
     fontWeight: 'token(fontWeights.medium)',

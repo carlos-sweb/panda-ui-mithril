@@ -1,6 +1,7 @@
-import { cva } from '../../styled-system/css'
+import { defineRecipe } from '@pandacss/dev'
 
-export const swapStyles = cva({
+export const swapRecipe = defineRecipe({
+  className:'swap',
   base: {
     position: 'relative',
     display: 'inline-grid',

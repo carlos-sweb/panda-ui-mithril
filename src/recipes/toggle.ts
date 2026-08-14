@@ -1,6 +1,7 @@
-import { cva } from '../../styled-system/css'
+import { defineRecipe } from '@pandacss/dev'
 
-export const toggleStyles = cva({
+export const toggleRecipe = defineRecipe({
+  className:'toggle',
   base: {
     position: 'relative',
     display: 'inline-grid',

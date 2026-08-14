@@ -1,6 +1,7 @@
-import { cva } from '../../styled-system/css'
+import { defineRecipe } from '@pandacss/dev'
 
-export const maskStyles = cva({
+export const maskRecipe = defineRecipe({
+  className:'mask',
   base: {
     display: 'inline-block',
     verticalAlign: 'middle',

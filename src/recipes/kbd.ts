@@ -1,6 +1,7 @@
-import { cva } from '../../styled-system/css'
+import { defineRecipe } from '@pandacss/dev'
 
-export const kbdStyles = cva({
+export const kbdRecipe = defineRecipe({
+  className:'kbd',
   base: {
     display: 'inline-flex',
     alignItems: 'center',

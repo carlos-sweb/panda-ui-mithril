@@ -1,6 +1,7 @@
-import { cva } from '../../styled-system/css'
+import { defineRecipe } from '@pandacss/dev'
 
-export const collapseStyles = cva({
+export const collapseRecipe = defineRecipe({
+  className:'collapse',
   base: {
     position: 'relative',
     display: 'grid',
@@ -106,7 +107,8 @@ export const collapseStyles = cva({
   },
 })
 
-export const collapseTitleStyles = cva({
+export const collapseTitleRecipe = defineRecipe({
+  className:'collapse-title',
   base: {
     gridColumnStart: '1',
     gridRowStart: '1',

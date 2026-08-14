@@ -1,6 +1,7 @@
-import { cva } from '../../styled-system/css'
+import { defineRecipe } from '@pandacss/dev'
 
-export const labelStyles = cva({
+export const labelRecipe = defineRecipe({
+   className:'label',
   base: {},
   variants: {
     floating: {

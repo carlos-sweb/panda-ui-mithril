@@ -1,6 +1,7 @@
-import { cva } from '../../styled-system/css'
+import { defineRecipe } from '@pandacss/dev'
 
-export const statusStyles = cva({
+export const statusRecipe = defineRecipe({
+  className:'status',
   base: {
     display: 'inline-block',
     verticalAlign: 'middle',

@@ -1,6 +1,7 @@
-import { cva } from '../../styled-system/css'
+import { defineRecipe } from '@pandacss/dev'
 
-export const toastStyles = cva({
+export const toastRecipe = defineRecipe({
+  className:'toast',
   base: {
     position: 'fixed',
     display: 'flex',

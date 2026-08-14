@@ -1,6 +1,7 @@
-import { cva } from '../../styled-system/css'
+import { defineRecipe } from '@pandacss/dev'
 
-export const selectStyles = cva({
+export const selectRecipe = defineRecipe({
+  className:'select',
   base: {
     display: 'inline-flex',
     alignItems: 'center',

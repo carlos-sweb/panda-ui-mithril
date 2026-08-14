@@ -1,6 +1,7 @@
-import { cva } from '../../styled-system/css'
+import { defineRecipe } from '@pandacss/dev'
 
-export const radialProgressStyles = cva({
+export const radialProgressRecipe = defineRecipe({
+  className:'radial-progress',
   base: {
     position: 'relative',
     display: 'inline-grid',

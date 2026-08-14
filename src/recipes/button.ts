@@ -1,6 +1,7 @@
-import { cva } from '../../styled-system/css'
+import { defineRecipe } from '@pandacss/dev'
 
-export const buttonStyles = cva({
+export const buttonRecipe = defineRecipe({
+  className:'button',  
   base: {
     display: 'inline-flex',
     flexShrink: '0',

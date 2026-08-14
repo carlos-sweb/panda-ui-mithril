@@ -1,6 +1,7 @@
-import { cva } from '../../styled-system/css'
+import { defineRecipe } from '@pandacss/dev'
 
-export const boxStyles = cva({
+export const boxRecipe = defineRecipe({
+  className:'box',
   base: {
     backgroundColor: 'base-100',
     borderRadius: 'var(--radius-box, 0.5rem)',

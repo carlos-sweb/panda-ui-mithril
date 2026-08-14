@@ -1,6 +1,7 @@
-import { cva } from '../../styled-system/css'
+import { defineRecipe } from '@pandacss/dev'
 
-export const containerStyles = cva({
+export const containerRecipe = defineRecipe({
+  className:'container',
   base: {
     width: '100%',
     marginLeft: 'auto',

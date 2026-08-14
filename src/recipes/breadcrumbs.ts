@@ -1,6 +1,7 @@
-import { cva } from '../../styled-system/css'
+import { defineRecipe } from '@pandacss/dev'
 
-export const breadcrumbsStyles = cva({
+export const breadcrumbsRecipe = defineRecipe({
+  className:'breadcrumbs',
   base: {
     maxWidth: '100%',
     overflowX: 'auto',

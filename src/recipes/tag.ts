@@ -1,6 +1,7 @@
-import { cva } from '../../styled-system/css'
+import { defineRecipe } from '@pandacss/dev'
 
-export const tagStyles = cva({
+export const tagRecipe = defineRecipe({
+  className:'tag',
   base: {
     display: 'inline-flex',
     alignItems: 'center',

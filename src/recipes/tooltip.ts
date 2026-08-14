@@ -1,10 +1,11 @@
-import { cva } from '../../styled-system/css'
+import { defineRecipe } from '@pandacss/dev'
 
 // The original implementation tail shape: a soft curved wedge (not a rotated square), masked
 // out of a solid background so it reads as a "connected" pointer under the bubble.
 const tailMask = `url("data:image/svg+xml,%3Csvg width='10' height='4' viewBox='0 0 8 4' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0.500009 1C3.5 1 3.00001 4 5.00001 4C7 4 6.5 1 9.5 1C10 1 10 0.499897 10 0H0C-1.99338e-08 0.5 0 1 0.500009 1Z' fill='black'/%3E%3C/svg%3E%0A")`
 
-export const tooltipStyles = cva({
+export const tooltipRecipe = defineRecipe({
+  className:'tooltip',
   base: {
     position: 'relative',
     display: 'inline-block',

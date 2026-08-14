@@ -1,7 +1,7 @@
-import { cva } from '../../styled-system/css'
+import { defineRecipe } from '@pandacss/dev'
 
 // TODO (reported 2026-08-02): PaginationButton (and any other component
-// combined with .join-item, e.g. via `buttonStyles()`) sets its OWN
+// combined with .join-item, e.g. via `buttonRecipe()`) sets its OWN
 // borderRadius on all 4 corners unconditionally in its base styles. That
 // competes with the :first-child/:last-child corner rules below — same
 // specificity (single class each), so whichever recipe's atomic class
@@ -10,7 +10,8 @@ import { cva } from '../../styled-system/css'
 // join container's own shape. Needs either higher specificity here, or for
 // combined components to skip their own borderRadius when .join-item is
 // present.
-export const joinStyles = cva({
+export const joinRecipe = defineRecipe({
+  className:'join',
   base: {
     display: 'inline-flex',
     alignItems: 'stretch',
@@ -57,7 +58,8 @@ export const joinStyles = cva({
   },
 })
 
-export const joinItemStyles = cva({
+export const joinItemRecipe = defineRecipe({
+  className:'join-item',
   base: {
     position: 'relative',
     borderStyle: 'solid',

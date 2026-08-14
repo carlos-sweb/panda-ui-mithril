@@ -210,9 +210,9 @@ export const modal = sva({
   },
 })
 
-import { cva } from '../../styled-system/css'
+import { defineRecipe } from '@pandacss/dev'
 
-export const modalCloseButton = cva({
+export const modalCloseButton = defineRecipe({
   base: {
     position: 'absolute',
     top: '0.75rem',

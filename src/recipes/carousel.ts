@@ -1,6 +1,7 @@
-import { cva } from '../../styled-system/css'
+import { defineRecipe } from '@pandacss/dev'
 
-export const carouselStyles = cva({
+export const carouselRecipe = defineRecipe({
+  className:'carousel',
   base: {
     display: 'inline-flex',
     overflowX: 'scroll',
@@ -37,7 +38,8 @@ export const carouselStyles = cva({
   },
 })
 
-export const carouselItemStyles = cva({
+export const carouselItemRecipe = defineRecipe({
+  className:'carousel-item',
   base: {
     position: 'relative',
     boxSizing: 'content-box',

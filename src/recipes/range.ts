@@ -1,11 +1,12 @@
-import { cva } from '../../styled-system/css'
+import { defineRecipe } from '@pandacss/dev'
 
 // Faithful to the original's sizing/color/border-radius formulas, but simplified:
 // the original implementation paints the "filled" track portion via a container-query-sized
 // box-shadow layer on the thumb (`--range-fill-x/y/spread`, `cqw`/`cqh` units).
 // That trick needs `container-type` wired up the DOM tree, so this version
 // uses a plain background-color thumb instead of the fill illusion.
-export const rangeStyles = cva({
+export const rangeRecipe = defineRecipe({
+  className:'range',
   base: {
     appearance: 'none',
     cursor: 'pointer',

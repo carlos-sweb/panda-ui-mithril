@@ -1,6 +1,7 @@
-import { cva } from '../../styled-system/css'
+import { defineRecipe } from '@pandacss/dev'
 
-export const progressStyles = cva({
+export const progressRecipe = defineRecipe({
+  className:'progress',
   base: {
     position: 'relative',
     display: 'block',
