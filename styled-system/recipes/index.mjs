@@ -42,6 +42,7 @@ export * from './skeleton.mjs';
 export * from './status.mjs';
 export * from './stack-pum.mjs';
 export * from './tag.mjs';
+export * from './text.mjs';
 export * from './textarea.mjs';
 export * from './text-input.mjs';
 export * from './title.mjs';

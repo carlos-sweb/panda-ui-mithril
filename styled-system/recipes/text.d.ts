@@ -1,0 +1,49 @@
+/* eslint-disable */
+import type { ConditionalValue } from '../types/index';
+import type { DistributiveOmit, Pretty } from '../types/system-types';
+
+interface TextVariant {
+  /**
+ * @default "md"
+ */
+size: "xs" | "sm" | "md" | "lg" | "xl"
+color: "neutral" | "primary" | "secondary" | "accent" | "info" | "success" | "warning" | "error"
+/**
+ * @default "left"
+ */
+align: "left" | "center" | "right" | "justify"
+/**
+ * @default "none"
+ */
+transform: "none" | "capitalize" | "uppercase" | "lowercase"
+/**
+ * @default "normal"
+ */
+weight: "light" | "normal" | "medium" | "semibold" | "bold" | "extrabold"
+truncate: boolean
+italic: boolean
+}
+
+type TextVariantMap = {
+  [key in keyof TextVariant]: Array<TextVariant[key]>
+}
+
+
+
+export type TextVariantProps = {
+  [key in keyof TextVariant]?: ConditionalValue<TextVariant[key]> | undefined
+}
+
+export interface TextRecipe {
+  
+  __type: TextVariantProps
+  (props?: TextVariantProps): string
+  raw: (props?: TextVariantProps) => TextVariantProps
+  variantMap: TextVariantMap
+  variantKeys: Array<keyof TextVariant>
+  splitVariantProps<Props extends TextVariantProps>(props: Props): [TextVariantProps, Pretty<DistributiveOmit<Props, keyof TextVariantProps>>]
+  getVariantProps: (props?: TextVariantProps) => TextVariantProps
+}
+
+
+export declare const text: TextRecipe

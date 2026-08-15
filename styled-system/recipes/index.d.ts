@@ -43,6 +43,7 @@ export * from './skeleton';
 export * from './status';
 export * from './stack-pum';
 export * from './tag';
+export * from './text';
 export * from './textarea';
 export * from './text-input';
 export * from './title';
