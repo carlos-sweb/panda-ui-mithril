@@ -1,7 +1,7 @@
 # panda-ui-mithril
 
 Mithril.js component library styled with Panda CSS. Design inspired by the best
-of multiple UI component libraries (daisyUI class naming, etc.).
+of multiple UI component libraries
 Icons via lucide-mithril.
 
 ## Commands
