@@ -123,6 +123,8 @@ import pagetabsEn from '../pages/tabs/i18n/en.yml'
 import pagetabsEs from '../pages/tabs/i18n/es.yml'
 import pagetagEn from '../pages/tag/i18n/en.yml'
 import pagetagEs from '../pages/tag/i18n/es.yml'
+import pagetextEn from '../pages/text/i18n/en.yml'
+import pagetextEs from '../pages/text/i18n/es.yml'
 import pagetextareaEn from '../pages/textarea/i18n/en.yml'
 import pagetextareaEs from '../pages/textarea/i18n/es.yml'
 import pagethemecontrollerEn from '../pages/themecontroller/i18n/en.yml'
@@ -263,6 +265,8 @@ pageI18n.en['tabs'] = pagetabsEn
 pageI18n.es['tabs'] = pagetabsEs
 pageI18n.en['tag'] = pagetagEn
 pageI18n.es['tag'] = pagetagEs
+pageI18n.en['text'] = pagetextEn
+pageI18n.es['text'] = pagetextEs
 pageI18n.en['textarea'] = pagetextareaEn
 pageI18n.es['textarea'] = pagetextareaEs
 pageI18n.en['themecontroller'] = pagethemecontrollerEn

@@ -12,7 +12,7 @@ const categories = [
   { i18n: 'sidebar.categories.feedback', icon: MessageCircleMore, items: ['alert', 'aura', 'indicator', 'loading', 'modal', 'progress', 'radialprogress', 'skeleton', 'status', 'toast', 'tooltip'] },
   { i18n: 'sidebar.categories.dataInput', icon: PenLine, items: ['calendar', 'checkbox', 'fieldset', 'fileinput', 'input', 'label', 'otp', 'radio', 'range', 'rating', 'ratinggroup', 'select', 'textarea', 'toggle'] },
   { i18n: 'sidebar.categories.layout', icon: PanelsTopLeft, items: ['accordion', 'block', 'box', 'carousel', 'collapse', 'columns', 'container', 'diff', 'divider', 'grid', 'hero', 'join', 'stack'] },
-  { i18n: 'sidebar.categories.typography', icon: Type, items: ['title'] },
+  { i18n: 'sidebar.categories.typography', icon: Type, items: ['text', 'title'] },
 ]
 
 const menu = css({ width: '100%', padding: '0'})

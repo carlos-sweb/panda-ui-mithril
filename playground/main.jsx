@@ -81,6 +81,7 @@ import Swap from './pages/swap/index.jsx'
 import TagPage from './pages/tag/index.jsx'
 import Table from './pages/table/index.jsx'
 import Tabs from './pages/tabs/index.jsx'
+import TextPage from './pages/text/index.jsx'
 import Textarea from './pages/textarea/index.jsx'
 import ThemeController from './pages/themecontroller/index.jsx'
 import TitlePage from "./pages/title/index.jsx"
@@ -155,6 +156,7 @@ const routes = {
   '/tag': TagPage,
   '/table': Table,
   '/tabs': Tabs,
+  '/text': TextPage,
   '/textarea': Textarea,
   '/themectrl': ThemeController,
   '/title': TitlePage,
@@ -253,7 +255,7 @@ const Layout = {
         '/select': 'Select — PUM', '/skeleton': 'Skeleton — PUM', '/stack': 'Stack — PUM',
         '/stat': 'Stat — PUM', '/status': 'Status — PUM', '/steps': 'Steps — PUM',
         '/swap': 'Swap — PUM', '/tag': 'Tag — PUM', '/table': 'Table — PUM',
-        '/tabs': 'Tabs — PUM', '/textarea': 'Textarea — PUM', '/themectrl': 'ThemeController — PUM',
+        '/tabs': 'Tabs — PUM', '/text': 'Text — PUM', '/textarea': 'Textarea — PUM', '/themectrl': 'ThemeController — PUM',
         '/title': 'Title — PUM', '/timeline': 'Timeline — PUM',
         '/toast': 'Toast — PUM', '/toggle': 'Toggle — PUM', '/tooltip': 'Tooltip — PUM',
       }

@@ -65,6 +65,7 @@ const allComponents = [
   { name: 'table', category: 'Data Display', route: '/table' },
   { name: 'tabs', category: 'Navigation', route: '/tabs' },
   { name: 'tag', category: 'Data Display', route: '/tag' },
+  { name: 'text', category: 'Typography', route: '/text' },
   { name: 'textarea', category: 'Data Input', route: '/textarea' },
   { name: 'themectrl', category: 'Actions', route: '/themectrl' },
   { name: 'timeline', category: 'Data Display', route: '/timeline' },
