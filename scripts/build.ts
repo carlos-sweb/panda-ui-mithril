@@ -3,9 +3,8 @@
  * Usage: bun run scripts/build.ts
  *
  * Steps:
- * 1. Run Panda CSS codegen (generates JS utilities)
- * 2. Run Panda CSS cssgen (generates static CSS)
- * 3. Run Bun build (bundles everything)
+ * 1. Run build-css.ts (postcss + Panda plugin + lightningcss → styled-system/styles.css)
+ * 2. Run Bun build (bundles everything)
  */
 
 import { existsSync, rmSync, mkdirSync, copyFileSync } from 'fs'
@@ -21,25 +20,19 @@ if (existsSync(OUTDIR)) {
 }
 mkdirSync(OUTDIR, { recursive: true })
 
-console.log('🐼 Step 1: Running Panda CSS codegen...')
+// build-css.ts corre todo el pipeline (plugin postcss de Panda + lightningcss)
+// y emite styled-system/styles.css con el target Safari 2024 por defecto.
+// Un exit != 0 del hijo propaga el error via execSync.
+console.log('🎨 Step 1: Generating CSS via scripts/build-css.ts...')
 try {
-  execSync('bunx panda codegen', { cwd: ROOT, stdio: 'inherit' })
-  console.log('✅ Panda CSS codegen completed\n')
+  execSync('bun run scripts/build-css.ts', { cwd: ROOT, stdio: 'inherit' })
+  console.log('✅ CSS generated\n')
 } catch (error) {
-  console.error('❌ Panda CSS codegen failed')
+  console.error('❌ scripts/build-css.ts failed')
   process.exit(1)
 }
 
-console.log('🎨 Step 2: Generating Panda CSS static styles...')
-try {
-  execSync('bunx panda cssgen --outfile styled-system/styles.css', { cwd: ROOT, stdio: 'inherit' })
-  console.log('✅ Panda CSS styles generated\n')
-} catch (error) {
-  console.error('❌ Panda CSS cssgen failed')
-  process.exit(1)
-}
-
-console.log('📦 Step 3: Building playground → dist-playground/')
+console.log('📦 Step 2: Building playground → dist-playground/')
 
 const result = await Bun.build({
   entrypoints: [resolve(ROOT, 'playground/index.html')],
