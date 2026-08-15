@@ -1,4 +1,4 @@
-@import '../src/index.css';
+@layer reset, base, tokens, recipes, utilities;
 
 body {
   font-family: 'Ubuntu', system-ui, -apple-system, sans-serif;
