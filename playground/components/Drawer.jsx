@@ -20,7 +20,7 @@ const side = css({
   top: 0,
   left: 0,
   bottom: 0,
-  zIndex: 90,
+  zIndex: 90,  
   transform: 'translateX(-100%)',
   transition: 'transform 0.25s ease-in-out',
   '@media (min-width: 769px)': { display: 'none' },

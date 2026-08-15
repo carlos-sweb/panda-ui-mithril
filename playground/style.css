@@ -7,6 +7,10 @@ body {
   background-color: var(--colors-base-100);
 }
 
+aside{
+  border-width:0px;
+}
+
 ::selection {
   background-color: var(--colors-primary);
   color: var(--colors-primary-content);
@@ -14,19 +18,21 @@ body {
 
 ::-webkit-scrollbar {
   width: 6px;
-  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
+  /*background: #eaeaea;*/
   background: transparent;
+  border-radius: 6px;
 }
 
 ::-webkit-scrollbar-thumb {
   background: var(--colors-base-300);
-  border-radius: 3px;
+  border-radius: 6px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--colors-base-content);
   opacity: 0.3;
 }
+
