@@ -56,6 +56,7 @@ import { swapRecipe } from './../src/recipes/swap'
 import { tableRecipe , tableOverflowRecipe } from './../src/recipes/table'
 import { tabsRecipe } from './../src/recipes/tabs'
 import { tagRecipe } from './../src/recipes/tag'
+import { textRecipe } from './../src/recipes/text'
 import { textareaRecipe } from './../src/recipes/textarea'
 import { textInputRecipe } from './../src/recipes/textInput'
 import { timelineRecipe } from './../src/recipes/timeline'
@@ -141,6 +142,7 @@ export const pumPreset = definePreset({
         status : statusRecipe ,
         stackPUM : stackRecipe ,
         tag : tagRecipe ,
+        text : textRecipe ,
         textarea : textareaRecipe , 
         textInput : textInputRecipe ,
         title : titleRecipe ,

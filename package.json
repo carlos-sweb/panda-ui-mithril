@@ -255,6 +255,10 @@
       "types": "./src/components/Tag/index.d.ts",
       "import": "./src/components/Tag/index.js"
     },
+    "./text": {
+      "types": "./src/components/Text/index.d.ts",
+      "import": "./src/components/Text/index.js"
+    },
     "./textarea": {
       "types": "./src/components/Textarea/index.d.ts",
       "import": "./src/components/Textarea/index.js"
