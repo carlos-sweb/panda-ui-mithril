@@ -7435,6 +7435,10 @@
     flex-direction: row;
 }
 
+  .bd-be-w_var\(--thickness\) {
+    border-block-end-width: var(--thickness);
+}
+
   .c_neutral {
     color: var(--colors-neutral);
 }
@@ -7509,10 +7513,6 @@
 
   .fs_3\.5rem {
     font-size: 3.5rem;
-}
-
-  .bd-be-w_var\(--thickness\) {
-    border-block-end-width: var(--thickness);
 }
 
   .grid-af_row_dense {
