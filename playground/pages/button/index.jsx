@@ -1,7 +1,7 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Button, Loading, Text, Block } from '../../../src/index.js'
+import { Stack, Title, Button, Loading, Text, Block , Divider } from '../../../src/index.js'
 import { Heart } from 'lucide-mithril'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
@@ -51,13 +51,14 @@ export default {
   oninit() { loadPageI18n('button') },
   view() {
     return (
-      <Stack gap="lg">
+      <Stack>
         <Title as="h1" size="2">Button</Title>
         <Text color="neutral" >{t('paragraph')}</Text>        
         <Title as="h3" size="5">Default</Title>
         <Stack direction="row" >
           <Button>Default</Button>
         </Stack>
+        <Divider/>
         <Title as="h3" size="5">Sizes</Title>
         <Stack gap="xs" direction="row" align="center">
           <Button size="xs">XS</Button>
@@ -66,6 +67,7 @@ export default {
           <Button size="lg">LG</Button>
           <Button size="xl">XL</Button>
         </Stack>
+        <Divider/>
         <Block spacing="lg">
           <Title as="h3" size="5">Responsive</Title>
           <Text size="sm" color="neutral">
@@ -75,7 +77,7 @@ export default {
             <Button size="xs">Responsive (xs)</Button>
           </Stack>
         </Block>
-
+        <Divider/>
         <Block spacing="lg">
           <Title as="h3" size="5">Colors</Title>
           <Stack direction="row" gap="sm">
@@ -89,7 +91,7 @@ export default {
             <Button color="error">Error</Button>
           </Stack>
         </Block>
-
+        <Divider/>
         <Block spacing="lg">
           <Title as="h3" size="5">Soft colors</Title>
           <Stack direction="row" gap="sm">
@@ -103,7 +105,7 @@ export default {
             <Button variant="soft" color="error">Error</Button>
           </Stack>
         </Block>
-
+        <Divider/>
         <Block spacing="lg">
           <Title as="h3" size="5">Outline colors</Title>
           <Stack direction="row" gap="sm">

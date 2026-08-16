@@ -36,6 +36,7 @@ export default {
     return (
       <div>
         <Title as="h1" size="2">ButtonClose</Title>
+        
         <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
           {t('paragraph')}
         </p>
