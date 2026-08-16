@@ -9,11 +9,31 @@ export const textRecipe = defineRecipe({
   },
   variants: {
     size: {
-      xs: { fontSize: 'token(fontSizes.xs)' },
-      sm: { fontSize: 'token(fontSizes.sm)' },
-      md: { fontSize: 'token(fontSizes.md)' },
-      lg: { fontSize: 'token(fontSizes.lg)' },
-      xl: { fontSize: 'token(fontSizes.xl)' },
+      xs: {
+        fontSize: 'token(fontSizes.xs)',
+        paddingTop: 'token(spacing.1)',
+        paddingBottom: 'token(spacing.1)',
+      },
+      sm: {
+        fontSize: 'token(fontSizes.sm)',
+        paddingTop: 'token(spacing.1.5)',
+        paddingBottom: 'token(spacing.1.5)',
+      },
+      md: {
+        fontSize: 'token(fontSizes.md)',
+        paddingTop: 'token(spacing.2)',
+        paddingBottom: 'token(spacing.2)',
+      },
+      lg: {
+        fontSize: 'token(fontSizes.lg)',
+        paddingTop: 'token(spacing.2.5)',
+        paddingBottom: 'token(spacing.2.5)',
+      },
+      xl: {
+        fontSize: 'token(fontSizes.xl)',
+        paddingTop: 'token(spacing.3)',
+        paddingBottom: 'token(spacing.3)',
+      },
     },
     color: {
       neutral: { '--text-color': 'token(colors.neutral)' },
