@@ -1,12 +1,14 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Card, CardBody, CardTitle, CardActions, CardFigure, Button } from '../../../src/index.js'
+import { Stack, Title, Card, CardBody, CardTitle, CardActions, CardFigure, Button, Text, Block } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
-const section = css({ marginBottom: '2rem' })
-const row = css({ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'flex-start' })
+import image_card1 from './../../assets/card/card1.jpg'
+import image_card2 from './../../assets/card/card2.jpg'
+import image_card3 from './../../assets/card/card3.jpg'
+
 const surface = css({ background: 'token(colors.base-100)', boxShadow: '0 1px 3px color-mix(in oklab, black 15%, transparent)', width: '20rem' })
 const surfaceSide = css({ background: 'token(colors.base-100)', boxShadow: '0 1px 3px color-mix(in oklab, black 15%, transparent)' })
 const img200 = css({ width: '100%', height: '10rem', objectFit: 'cover' })
@@ -50,15 +52,15 @@ export default {
     return (
       <Stack gap="lg">
         <Title as="h1" size="2">Card</Title>
-        <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
+        <Text color="neutral" className={css({ marginBottom: '2rem', maxWidth: '600px' })}>
           {t('paragraph')}
-        </p>
+        </Text>
 
-        <section className={section}>
+        <Block spacing="lg">
           <Title as="h3" size="5">With figure + actions</Title>
-          <div className={row}>
+          <Stack direction="row" gap="sm">
             <Card className={surface}>
-              <CardFigure><img className={img200} src="https://picsum.photos/seed/panda-card/400/300" alt="Random" /></CardFigure>
+              <CardFigure><img className={img200} src={image_card1} alt="Random" /></CardFigure>
               <CardBody>
                 <CardTitle>Card Title</CardTitle>
                 <p>A card has a figure, a body, and inside body a title and actions.</p>
@@ -84,13 +86,13 @@ export default {
                 <p>This card uses a dashed border style.</p>
               </CardBody>
             </Card>
-          </div>
-        </section>
+          </Stack>
+        </Block>
 
-        <section className={section}>
+        <Block spacing="lg">
           <Title as="h3" size="5">Side layout</Title>
           <Card side className={surfaceSide}>
-            <CardFigure><img className={imgSide} src="https://picsum.photos/seed/panda-side/300/300" alt="Random" /></CardFigure>
+            <CardFigure><img className={imgSide} src={image_card2} alt="Random" /></CardFigure>
             <CardBody>
               <CardTitle>Side Card</CardTitle>
               <p>The figure sits to the side instead of on top.</p>
@@ -99,12 +101,12 @@ export default {
               </CardActions>
             </CardBody>
           </Card>
-        </section>
+        </Block>
 
-        <section className={section}>
+        <Block spacing="lg">
           <Title as="h3" size="5">Image full (background)</Title>
           <Card imageFull className={css({ width: '20rem', height: '16rem' })}>
-            <CardFigure><img className={css({ width: '100%', height: '100%', objectFit: 'cover' })} src="https://picsum.photos/seed/panda-full/400/300" alt="Random" /></CardFigure>
+            <CardFigure><img className={css({ width: '100%', height: '100%', objectFit: 'cover' })} src={image_card3} alt="Random" /></CardFigure>
             <CardBody>
               <CardTitle>Full image</CardTitle>
               <p>The image becomes the card's background, text sits on top.</p>
@@ -113,29 +115,29 @@ export default {
               </CardActions>
             </CardBody>
           </Card>
-        </section>
+        </Block>
 
-        <section className={section}>
+        <Block spacing="lg">
           <Title as="h3" size="5">Sizes</Title>
-          <div className={row}>
+          <Stack direction="row" gap="sm">
             <Card size="xs" border className={css({ width: '12rem', background: 'token(colors.base-100)' })}>
               <CardBody><CardTitle>XS</CardTitle><p>Extra small</p></CardBody>
             </Card>
             <Card size="lg" border className={css({ width: '16rem', background: 'token(colors.base-100)' })}>
               <CardBody><CardTitle>LG</CardTitle><p>Large size</p></CardBody>
             </Card>
-          </div>
-        </section>
+          </Stack>
+        </Block>
 
-        <section>
+        <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
           <CodeExample code={usageCode} />
-        </section>
+        </Block>
 
-        <section>
+        <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
           <ClassTable rows={classRows} />
-        </section>
+        </Block>
       </Stack>
     )
   }

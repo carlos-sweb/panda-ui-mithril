@@ -1,11 +1,9 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Collapse, CollapseTitle, CollapseContent } from '../../../src/index.js'
+import { Stack, Title, Collapse, CollapseTitle, CollapseContent, Text, Block } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
-
-const section = css({ marginBottom: '2rem' })
 
 const usageCode = `<Collapse plus border>
   <CollapseTitle>How do I create an account?</CollapseTitle>
@@ -34,11 +32,11 @@ export default {
     return (
       <Stack gap="lg">
         <Title as="h1" size="2">Collapse</Title>
-        <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
+        <Text color="neutral" className={css({ marginBottom: '2rem', maxWidth: '600px' })}>
           {t('paragraph')}
-        </p>
+        </Text>
 
-        <section className={section}>
+        <Block spacing="lg">
           <Title as="h3" size="5">Arrow</Title>
           <Collapse arrow border>
             <CollapseTitle>How do I create an account?</CollapseTitle>
@@ -46,9 +44,9 @@ export default {
               Click the "Sign Up" button in the top right corner and follow the registration process.
             </CollapseContent>
           </Collapse>
-        </section>
+        </Block>
 
-        <section className={section}>
+        <Block spacing="lg">
           <Title as="h3" size="5">Plus / minus</Title>
           <Collapse plus border>
             <CollapseTitle>Can I cancel my subscription?</CollapseTitle>
@@ -56,17 +54,17 @@ export default {
               Yes, you can cancel anytime from your account settings — no questions asked.
             </CollapseContent>
           </Collapse>
-        </section>
+        </Block>
 
-        <section>
+        <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
           <CodeExample code={usageCode} />
-        </section>
+        </Block>
 
-        <section>
+        <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
           <ClassTable rows={classRows} />
-        </section>
+        </Block>
       </Stack>
     )
   }

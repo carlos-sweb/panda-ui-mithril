@@ -1,11 +1,9 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Title, Link } from '../../../src/index.js'
+import { Stack, Title, Link, Text, Block } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
-
-const row = css({ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'center' })
 
 const usageCode = `<Link href="#">Default</Link>
 <Link href="#" color="primary">Primary</Link>
@@ -32,29 +30,29 @@ export default {
   oninit() { loadPageI18n('link') },
   view() {
     return (
-      <div>
+      <Stack gap="lg">
         <Title as="h1" size="2">Link</Title>
-        <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
+        <Text color="neutral" className={css({ marginBottom: '2rem', maxWidth: '600px' })}>
           {t('paragraph')}
-        </p>
+        </Text>
 
-        <div className={row}>
+        <Stack direction="row" gap="md" wrap="wrap">
           <Link href="#!/link">Default</Link>
           <Link href="#!/link" color="primary">Primary</Link>
           <Link href="#!/link" color="secondary">Secondary</Link>
           <Link href="#!/link" color="accent">Accent</Link>
-        </div>
+        </Stack>
 
-        <section>
+        <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
           <CodeExample code={usageCode} />
-        </section>
+        </Block>
 
-        <section>
+        <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
           <ClassTable rows={classRows} />
-        </section>
-      </div>
+        </Block>
+      </Stack>
     )
   }
 }

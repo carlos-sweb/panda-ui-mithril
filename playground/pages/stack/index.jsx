@@ -1,11 +1,10 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Title, Stack, Button, Box } from '../../../src/index.js'
+import { Title, Stack, Button, Box, Text, Block } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
-const st = css({ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem', marginTop: '2rem' })
 const item = css({ bg: 'token(colors.base-200)', p: '1rem', borderRadius: '0.25rem', textAlign: 'center' })
 
 const usageCode = `<Stack gap="md">
@@ -32,26 +31,26 @@ export default {
   view() {
     return (<Stack gap="lg">
       <Title as="h1" size="2">Stack</Title>
-      <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>{t('paragraph')}</p>
-      <section><h2 className={st}>{t('common.usage')}</h2><CodeExample code={usageCode} language="jsx" /></section>
+      <Text color="neutral" className={css({ marginBottom: '2rem', maxWidth: '600px' })}>{t('paragraph')}</Text>
+      <Block spacing="lg"><Title as="h2" size="3">{t('common.usage')}</Title><CodeExample code={usageCode} language="jsx" /></Block>
 
-      <section><h2 className={st}>VStack (vertical)</h2>
+      <Block spacing="lg"><Title as="h2" size="3">VStack (vertical)</Title>
         <Stack gap="md">
           <div className={item}>Item 1</div>
           <div className={item}>Item 2</div>
           <div className={item}>Item 3</div>
         </Stack>
-      </section>
+      </Block>
 
-      <section><h2 className={st}>HStack (horizontal)</h2>
+      <Block spacing="lg"><Title as="h2" size="3">HStack (horizontal)</Title>
         <Stack direction="row" gap="md">
           <Button>Save</Button>
           <Button variant="outline">Cancel</Button>
           <Button variant="ghost">Help</Button>
         </Stack>
-      </section>
+      </Block>
 
-      <section><h2 className={st}>Gap sizes</h2>
+      <Block spacing="lg"><Title as="h2" size="3">Gap sizes</Title>
         <Stack gap="xs"><div className={item}>xs gap</div><div className={item}>xs gap</div></Stack>
         <br />
         <Stack gap="sm"><div className={item}>sm gap</div><div className={item}>sm gap</div></Stack>
@@ -59,9 +58,9 @@ export default {
         <Stack gap="md"><div className={item}>md gap (default)</div><div className={item}>md gap</div></Stack>
         <br />
         <Stack gap="lg"><div className={item}>lg gap</div><div className={item}>lg gap</div></Stack>
-      </section>
+      </Block>
 
-      <section><h2 className={st}>Alignment</h2>
+      <Block spacing="lg"><Title as="h2" size="3">Alignment</Title>
         <Box>
           <Stack gap="sm" align="start"><div className={item}>align start</div><div className={item}>align start</div></Stack>
           <br />
@@ -69,17 +68,17 @@ export default {
           <br />
           <Stack gap="sm" align="end"><div className={item}>align end</div><div className={item}>align end</div></Stack>
         </Box>
-      </section>
+      </Block>
 
-      <section><h2 className={st}>Justify</h2>
+      <Block spacing="lg"><Title as="h2" size="3">Justify</Title>
         <Box>
           <Stack direction="row" gap="sm" justify="between">
             <div className={item}>left</div><div className={item}>right</div>
           </Stack>
         </Box>
-      </section>
+      </Block>
 
-      <section><h2 className={st}>{t('common.classReference')}</h2><ClassTable rows={classRows} /></section>
+      <Block spacing="lg"><Title as="h2" size="3">{t('common.classReference')}</Title><ClassTable rows={classRows} /></Block>
     </Stack>)
   }
 }

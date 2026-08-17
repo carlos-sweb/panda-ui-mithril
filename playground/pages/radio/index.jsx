@@ -1,12 +1,9 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Radio } from '../../../src/index.js'
+import { Stack, Title, Radio, Text, Block } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
-
-const section = css({ marginBottom: '2rem' })
-const row = css({ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', alignItems: 'center' })
 
 const usageCode = `<Radio name="option" color="primary" checked />
 <Radio name="option" size="lg" />`
@@ -38,40 +35,40 @@ export default {
     return (
       <Stack gap="lg">
         <Title as="h1" size="2">Radio</Title>
-        <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
+        <Text color="neutral" className={css({ marginBottom: '2rem', maxWidth: '600px' })}>
           {t('paragraph')}
-        </p>
+        </Text>
 
-        <section className={section}>
+        <Block spacing="lg">
           <Title as="h3" size="5">Colors</Title>
-          <div className={row}>
+          <Stack direction="row" gap="sm" wrap="wrap">
             <Radio name="r1" checked />
             <Radio name="r1" color="primary" checked />
             <Radio name="r1" color="secondary" checked />
             <Radio name="r1" color="accent" checked />
-          </div>
-        </section>
+          </Stack>
+        </Block>
 
-        <section className={section}>
+        <Block spacing="lg">
           <Title as="h3" size="5">Sizes</Title>
-          <div className={row}>
+          <Stack direction="row" gap="sm" wrap="wrap">
             <Radio name="r2" size="xs" checked />
             <Radio name="r2" size="sm" checked />
             <Radio name="r2" size="md" checked />
             <Radio name="r2" size="lg" checked />
             <Radio name="r2" size="xl" checked />
-          </div>
-        </section>
+          </Stack>
+        </Block>
 
-        <section>
+        <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
           <CodeExample code={usageCode} />
-        </section>
+        </Block>
 
-        <section>
+        <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
           <ClassTable rows={classRows} />
-        </section>
+        </Block>
       </Stack>
     )
   }

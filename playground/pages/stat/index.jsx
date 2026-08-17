@@ -1,12 +1,11 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Stats, Stat, StatTitle, StatValue, StatDesc, StatFigure, StatActions, Button } from '../../../src/index.js'
+import { Stack, Title, Stats, Stat, StatTitle, StatValue, StatDesc, StatFigure, StatActions, Button, Text, Block } from '../../../src/index.js'
 import { Wallet, Users, ThumbsUp } from 'lucide-mithril'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
-const section = css({ marginBottom: '2rem' })
 const shadow = css({ boxShadow: '0 1px 3px color-mix(in oklab, black 15%, transparent)' })
 
 const usageCode = `<Stats>
@@ -40,11 +39,11 @@ export default {
     return (
       <Stack gap="lg">
         <Title as="h1" size="2">Stats</Title>
-        <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
+        <Text color="neutral" className={css({ marginBottom: '2rem', maxWidth: '600px' })}>
           {t('paragraph')}
-        </p>
+        </Text>
 
-        <section className={section}>
+        <Block spacing="lg">
           <Title as="h3" size="5">With figures & actions</Title>
           <Stats className={shadow}>
             <Stat>
@@ -68,9 +67,9 @@ export default {
               </StatActions>
             </Stat>
           </Stats>
-        </section>
+        </Block>
 
-        <section className={section}>
+        <Block spacing="lg">
           <Title as="h3" size="5">Vertical</Title>
           <Stats vertical className={shadow}>
             <Stat>
@@ -84,17 +83,17 @@ export default {
               <StatDesc>42% more than last month</StatDesc>
             </Stat>
           </Stats>
-        </section>
+        </Block>
 
-        <section>
+        <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
           <CodeExample code={usageCode} />
-        </section>
+        </Block>
 
-        <section>
+        <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
           <ClassTable rows={classRows} />
-        </section>
+        </Block>
       </Stack>
     )
   }

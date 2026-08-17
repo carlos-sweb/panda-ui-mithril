@@ -1,11 +1,9 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Table, TableContainer, TableRow, TableCell, TableHead, TableThead, TableTbody, TableTfoot } from '../../../src/index.js'
+import { Stack, Title, Table, TableContainer, TableRow, TableCell, TableHead, TableThead, TableTbody, TableTfoot, Text, Block } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
-
-const section = css({ marginBottom: '2rem' })
 
 const rows = [
   ['Cy Ganderton', 'Lead Developer', 'Blue'],
@@ -54,11 +52,11 @@ export default {
     return (
       <Stack gap="lg">
         <Title as="h1" size="2">Table</Title>
-        <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
+        <Text color="neutral" className={css({ marginBottom: '2rem', maxWidth: '600px' })}>
           {t('paragraph')}
-        </p>
+        </Text>
 
-        <section className={section}>
+        <Block spacing="lg">
           <Title as="h3" size="5">Zebra + hoverable rows</Title>
           <TableContainer>
             <Table zebra>
@@ -87,9 +85,9 @@ export default {
               </TableTfoot>
             </Table>
           </TableContainer>
-        </section>
+        </Block>
 
-        <section className={section}>
+        <Block spacing="lg">
           <Title as="h3" size="5">Sizes</Title>
           <TableContainer>
             <Table size="xs" zebra>
@@ -101,17 +99,17 @@ export default {
               </TableTbody>
             </Table>
           </TableContainer>
-        </section>
+        </Block>
 
-        <section>
+        <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
           <CodeExample code={usageCode} />
-        </section>
+        </Block>
 
-        <section>
+        <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
           <ClassTable rows={classRows} />
-        </section>
+        </Block>
       </Stack>
     )
   }

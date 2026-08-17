@@ -1,11 +1,9 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, TextInput } from '../../../src/index.js'
+import { Stack, Title, TextInput, Text, Block } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
-
-const section = css({ marginBottom: '2rem' })
 
 const usageCode = `<TextInput placeholder="Enter text..." />
 <TextInput color="primary" placeholder="Primary input" />
@@ -39,32 +37,32 @@ export default {
     return (
       <Stack gap="lg">
         <Title as="h1" size="2">TextInput</Title>
-        <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
+        <Text color="neutral" className={css({ marginBottom: '2rem', maxWidth: '600px' })}>
           {t('paragraph')}
-        </p>
+        </Text>
 
         <TextInput placeholder="Enter text..." />
         <TextInput color="primary" placeholder="Primary input" />
         <TextInput color="error" placeholder="Error input" />
 
-        <section className={section}>
+        <Block spacing="lg">
           <Title as="h3" size="5">Sizes</Title>
           <TextInput size="xs" placeholder="XS" />
           <TextInput size="sm" placeholder="SM" />
           <TextInput size="md" placeholder="MD" />
           <TextInput size="lg" placeholder="LG" />
           <TextInput size="xl" placeholder="XL" />
-        </section>
+        </Block>
 
-        <section>
+        <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
           <CodeExample code={usageCode} />
-        </section>
+        </Block>
 
-        <section>
+        <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
           <ClassTable rows={classRows} />
-        </section>
+        </Block>
       </Stack>
     )
   }

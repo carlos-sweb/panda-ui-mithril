@@ -1,11 +1,9 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Grid, Cell } from '../../../src/index.js'
+import { Stack, Title, Grid, Cell, Text, Block } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
-
-const st = css({ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem', marginTop: '2rem' })
 
 const usageCode = `<Grid cols={3} gap="md">
   <Cell span={2}><div>Wide cell</div></Cell>
@@ -27,23 +25,23 @@ export default {
   view() {
     return (<Stack gap="lg">
       <Title as="h1" size="2">Grid</Title>
-      <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>{t('paragraph')}</p>
-      <section><h2 className={st}>{t('common.usage')}</h2><CodeExample code={usageCode} language="jsx" /></section>
-      <section><h2 className={st}>3 columns, auto span</h2>
+      <Text color="neutral" className={css({ marginBottom: '2rem', maxWidth: '600px' })}>{t('paragraph')}</Text>
+      <Block spacing="lg"><Title as="h2" size="3">{t('common.usage')}</Title><CodeExample code={usageCode} language="jsx" /></Block>
+      <Block spacing="lg"><Title as="h2" size="3">3 columns, auto span</Title>
         <Grid cols={3} gap="md">
           <Cell><div className={cell}>1</div></Cell><Cell><div className={cell}>2</div></Cell><Cell><div className={cell}>3</div></Cell>
           <Cell><div className={cell}>4</div></Cell><Cell><div className={cell}>5</div></Cell><Cell><div className={cell}>6</div></Cell>
         </Grid>
-      </section>
-      <section><h2 className={st}>Spans</h2>
+      </Block>
+      <Block spacing="lg"><Title as="h2" size="3">Spans</Title>
         <Grid cols={6} gap="md">
           <Cell span={2}><div className={cell}>span 2</div></Cell>
           <Cell span={4}><div className={cell}>span 4</div></Cell>
           <Cell span={3}><div className={cell}>span 3</div></Cell>
           <Cell span={3}><div className={cell}>span 3</div></Cell>
         </Grid>
-      </section>
-      <section><h2 className={st}>{t('common.classReference')}</h2><ClassTable rows={classRows} /></section>
+      </Block>
+      <Block spacing="lg"><Title as="h2" size="3">{t('common.classReference')}</Title><ClassTable rows={classRows} /></Block>
     </Stack>)
   }
 }

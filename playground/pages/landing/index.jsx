@@ -4,6 +4,7 @@ import {
   Button, Badge, Card, CardBody, CardTitle, Alert, TextInput, Toggle, Checkbox, Radio,
   Progress, Loading, Hero, HeroContent, Stats, Stat, StatTitle, StatValue, StatDesc,
   Tabs, Tab, TabContent, Title, Block, Box, Stack, Container, Grid, Cell, Columns, Column,
+  Text,
 } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { t, loadPageI18n } from '../../i18n/index.js'
@@ -59,7 +60,7 @@ const categories = [
   { title: 'Feedback', desc: 'Alerts, modals, and loading states', items: ['Alert', 'Toast', 'Modal', 'Tooltip', 'Loading', 'Skeleton', 'Progress', 'RadialProgress', 'Status', 'Indicator'] },
   { title: 'Data Input', desc: 'Forms, selects, and input controls', items: ['TextInput', 'Textarea', 'Select', 'Checkbox', 'Radio', 'Toggle', 'Range', 'FileInput', 'OTP', 'Rating', 'RatingGroup', 'Calendar', 'Fieldset', 'Label'] },
   { title: 'Layout', desc: 'Structure, spacing, and visual hierarchy', items: ['Block', 'Box', 'Container', 'Grid', 'Columns', 'Stack', 'Hero', 'Divider', 'Join', 'Accordion', 'Collapse', 'Carousel', 'Diff'] },
-  { title: 'Typography', desc: 'Text styling and semantic headings', items: ['Title'] },
+  { title: 'Typography', desc: 'Text styling and semantic headings', items: ['Title','Text'] },
 ]
 
 export const Landing = {
@@ -188,7 +189,7 @@ export const Landing = {
         {/* ── Browse All Components ── */}
         <Title as="h2" size="3">Browse All Components</Title>
         <Block spacing="sm" />
-        <p className={css({ marginBottom: '1.5rem', color: 'token(colors.base-content)', opacity: 0.6 })}>{t('orgDesc')}</p>
+        <Text color="neutral" className={css({ marginBottom: '1.5rem' })}>{t('orgDesc')}</Text>
 
         <Stack gap="lg">
           {categories.map((cat) => (

@@ -1,11 +1,9 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Container } from '../../../src/index.js'
+import { Stack, Title, Container, Text, Block } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
-
-const st = css({ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem', marginTop: '2rem' })
 
 const usageCode = `<Container maxWidth="desktop"><h2>Centered content</h2></Container>
 <Container fluid><p>Full width with side padding</p></Container>`
@@ -26,16 +24,16 @@ export default {
   view() {
     return (<Stack gap="lg">
       <Title as="h1" size="2">Container</Title>
-      <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>{t('paragraph')}</p>
-      <section><h2 className={st}>{t('common.usage')}</h2><CodeExample code={usageCode} language="jsx" /></section>
-      <section><h2 className={st}>Max Widths</h2>
+      <Text color="neutral" className={css({ marginBottom: '2rem', maxWidth: '600px' })}>{t('paragraph')}</Text>
+      <Block spacing="lg"><Title as="h2" size="3">{t('common.usage')}</Title><CodeExample code={usageCode} language="jsx" /></Block>
+      <Block spacing="lg"><Title as="h2" size="3">Max Widths</Title>
         <Container maxWidth="tablet"><div className={demo}>tablet — 768px</div></Container>
         <br />
         <Container maxWidth="desktop"><div className={demo}>desktop — 960px</div></Container>
         <br />
         <Container><div className={demo}>fullhd — 1344px (default)</div></Container>
-      </section>
-      <section><h2 className={st}>{t('common.classReference')}</h2><ClassTable rows={classRows} /></section>
+      </Block>
+      <Block spacing="lg"><Title as="h2" size="3">{t('common.classReference')}</Title><ClassTable rows={classRows} /></Block>
     </Stack>)
   }
 }

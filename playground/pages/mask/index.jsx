@@ -1,11 +1,9 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Mask } from '../../../src/index.js'
+import { Stack, Title, Mask, Text, Block } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
-
-const row = css({ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'center' })
 
 const usageCode = `<Mask src="/avatar.jpg" shape="circle" />
 <Mask src="/avatar.jpg" shape="hexagon" />
@@ -42,27 +40,27 @@ export default {
     return (
       <Stack gap="lg">
         <Title as="h1" size="2">Mask</Title>
-        <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
+        <Text color="neutral" className={css({ marginBottom: '2rem', maxWidth: '600px' })}>
           {t('paragraph')}
-        </p>
+        </Text>
 
-        <div className={row}>
+        <Stack direction="row" gap="md" wrap="wrap">
           <Mask src="https://picsum.photos/100/100" shape="circle" className="w-20 h-20" />
           <Mask src="https://picsum.photos/100/100" shape="hexagon" className="w-20 h-20" />
           <Mask src="https://picsum.photos/100/100" shape="diamond" className="w-20 h-20" />
           <Mask src="https://picsum.photos/100/100" shape="triangle" className="w-20 h-20" />
           <Mask src="https://picsum.photos/100/100" shape="star" className="w-20 h-20" />
-        </div>
+        </Stack>
 
-        <section>
+        <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
           <CodeExample code={usageCode} />
-        </section>
+        </Block>
 
-        <section>
+        <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
           <ClassTable rows={classRows} />
-        </section>
+        </Block>
       </Stack>
     )
   }

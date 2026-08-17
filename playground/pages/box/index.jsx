@@ -1,13 +1,9 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Box } from '../../../src/index.js'
+import { Stack, Title, Box, Text, Block } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
-
-const st = css({ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem', marginTop: '2rem' })
-const sectionBox = css({ display: 'flex', flexDirection: 'column', gap: '0.75rem' })
-const row = css({ display: 'flex', gap: '1rem', flexWrap: 'wrap' })
 
 const usageCode = `<Box padding="lg" shadow="md"><p>Content in a box</p></Box>`
 
@@ -22,26 +18,26 @@ export default {
   view() {
     return (<Stack gap="lg">
       <Title as="h1" size="2">Box</Title>
-      <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>{t('paragraph')}</p>
-      <section><h2 className={st}>{t('common.usage')}</h2><CodeExample code={usageCode} language="jsx" /></section>
-      <section className={sectionBox}>
-        <h2 className={st}>Padding</h2>
-        <div className={row}>
+      <Text color="neutral" className={css({ marginBottom: '2rem', maxWidth: '600px' })}>{t('paragraph')}</Text>
+      <Block spacing="lg"><Title as="h2" size="3">{t('common.usage')}</Title><CodeExample code={usageCode} language="jsx" /></Block>
+      <Block spacing="lg">
+        <Title as="h2" size="3">Padding</Title>
+        <Stack direction="row" gap="sm">
           <Box padding="sm">Small padding</Box>
           <Box>Medium (default)</Box>
           <Box padding="lg">Large padding</Box>
-        </div>
-      </section>
-      <section className={sectionBox}>
-        <h2 className={st}>Shadow</h2>
-        <div className={row}>
+        </Stack>
+      </Block>
+      <Block spacing="lg">
+        <Title as="h2" size="3">Shadow</Title>
+        <Stack direction="row" gap="sm">
           <Box shadow="none">No shadow</Box>
           <Box shadow="sm">Small shadow</Box>
           <Box>Medium (default)</Box>
           <Box shadow="lg">Large shadow</Box>
-        </div>
-      </section>
-      <section><h2 className={st}>{t('common.classReference')}</h2><ClassTable rows={classRows} /></section>
+        </Stack>
+      </Block>
+      <Block spacing="lg"><Title as="h2" size="3">{t('common.classReference')}</Title><ClassTable rows={classRows} /></Block>
     </Stack>)
   }
 }

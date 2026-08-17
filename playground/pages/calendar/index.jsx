@@ -1,7 +1,7 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Calendar } from '../../../src/index.js'
+import { Stack, Title, Calendar, Text, Block } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
@@ -12,7 +12,6 @@ const surface = css({
   borderColor: 'token(colors.base-300)',
   boxShadow: '0 4px 12px color-mix(in oklab, black 15%, transparent)',
 })
-const picked = css({ marginTop: '0.75rem', fontSize: '0.875rem', opacity: 0.7 })
 
 const usageCode = `<Calendar
   value={selectedDate}
@@ -40,28 +39,28 @@ export default {
     return (
       <Stack gap="lg">
         <Title as="h1" size="2">Calendar</Title>
-        <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
+        <Text color="neutral" className={css({ marginBottom: '2rem', maxWidth: '600px' })}>
           {t('paragraph')}
-        </p>
+        </Text>
 
-        <div>
+        <Stack gap="xs">
           <Calendar
             className={surface}
             value={vnode.state.selected}
             onchange={(date) => { vnode.state.selected = date }}
           />
-          <p className={picked}>Selected: {vnode.state.selected.toDateString()}</p>
-        </div>
+          <Text size="sm" color="neutral">Selected: {vnode.state.selected.toDateString()}</Text>
+        </Stack>
 
-        <section>
+        <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
           <CodeExample code={usageCode} />
-        </section>
+        </Block>
 
-        <section>
+        <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
           <ClassTable rows={classRows} />
-        </section>
+        </Block>
       </Stack>
     )
   }

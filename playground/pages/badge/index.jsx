@@ -1,12 +1,9 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Badge } from '../../../src/index.js'
+import { Stack, Title, Badge, Text, Block } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
-
-const section = css({ marginBottom: '2rem' })
-const row = css({ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', alignItems: 'center' })
 
 const usageCode = `<Badge color="primary">Primary</Badge>
 <Badge variant="outline" color="success">Outline</Badge>
@@ -43,13 +40,13 @@ export default {
     return (
       <Stack gap="lg">
         <Title as="h1" size="2">Badge</Title>
-        <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
+        <Text color="neutral" className={css({ marginBottom: '2rem', maxWidth: '600px' })}>
           {t('paragraph')}
-        </p>
+        </Text>
 
-        <section className={section}>
+        <Block spacing="lg">
           <Title as="h3" size="5">Colors</Title>
-          <div className={row}>
+          <Stack direction="row" gap="sm" wrap="wrap">
             <Badge color="neutral">Neutral</Badge>
             <Badge color="primary">Primary</Badge>
             <Badge color="secondary">Secondary</Badge>
@@ -58,38 +55,38 @@ export default {
             <Badge color="success">Success</Badge>
             <Badge color="warning">Warning</Badge>
             <Badge color="error">Error</Badge>
-          </div>
-        </section>
+          </Stack>
+        </Block>
 
-        <section className={section}>
+        <Block spacing="lg">
           <Title as="h3" size="5">Variants</Title>
-          <div className={row}>
+          <Stack direction="row" gap="sm" wrap="wrap">
             <Badge variant="outline">Outline</Badge>
             <Badge variant="dash">Dash</Badge>
             <Badge variant="ghost">Ghost</Badge>
-          </div>
-        </section>
+          </Stack>
+        </Block>
 
-        <section className={section}>
+        <Block spacing="lg">
           <Title as="h3" size="5">Sizes</Title>
-          <div className={row}>
+          <Stack direction="row" gap="sm" wrap="wrap">
             <Badge size="xs">XS</Badge>
             <Badge size="sm">SM</Badge>
             <Badge size="md">MD</Badge>
             <Badge size="lg">LG</Badge>
             <Badge size="xl">XL</Badge>
-          </div>
-        </section>
+          </Stack>
+        </Block>
 
-        <section>
+        <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
           <CodeExample code={usageCode} />
-        </section>
+        </Block>
 
-        <section>
+        <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
           <ClassTable rows={classRows} />
-        </section>
+        </Block>
       </Stack>
     )
   }

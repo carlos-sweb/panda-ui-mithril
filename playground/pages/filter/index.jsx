@@ -1,10 +1,9 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Filter, FilterOption, FilterReset } from '../../../src/index.js'
+import { Stack, Title, Filter, FilterOption, FilterReset, Text, Block } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
-
 
 const usageCode = `<Filter>
   <FilterReset name="frameworks" aria-label="All" />
@@ -29,9 +28,9 @@ export default {
     return (
       <Stack gap="lg">
         <Title as="h1" size="2">Filter</Title>
-        <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
+        <Text color="neutral" className={css({ marginBottom: '2rem', maxWidth: '600px' })}>
           {t('paragraph')}
-        </p>
+        </Text>
 
         <Filter>
           <FilterReset name="frameworks" aria-label="All" />
@@ -40,15 +39,15 @@ export default {
           <FilterOption name="frameworks" aria-label="React" />
         </Filter>
 
-        <section>
+        <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
           <CodeExample code={usageCode} />
-        </section>
+        </Block>
 
-        <section>
+        <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
           <ClassTable rows={classRows} />
-        </section>
+        </Block>
       </Stack>
     )
   }

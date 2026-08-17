@@ -1,11 +1,9 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Loading } from '../../../src/index.js'
+import { Stack, Title, Loading, Text, Block } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
-
-const row = css({ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'center' })
 
 const usageCode = `<Loading variant="spinner" />
 <Loading variant="dots" size="lg" />`
@@ -35,27 +33,27 @@ export default {
     return (
       <Stack gap="lg">
         <Title as="h1" size="2">Loading</Title>
-        <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
+        <Text color="neutral" className={css({ marginBottom: '2rem', maxWidth: '600px' })}>
           {t('paragraph')}
-        </p>
+        </Text>
 
-        <div className={row}>
+        <Stack direction="row" gap="md" wrap="wrap">
           <Loading variant="spinner" />
           <Loading variant="ring" />
           <Loading variant="ball" />
           <Loading variant="bars" />
           <Loading variant="infinity" />
-        </div>
+        </Stack>
 
-        <section>
+        <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
           <CodeExample code={usageCode} />
-        </section>
+        </Block>
 
-        <section>
+        <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
           <ClassTable rows={classRows} />
-        </section>
+        </Block>
       </Stack>
     )
   }

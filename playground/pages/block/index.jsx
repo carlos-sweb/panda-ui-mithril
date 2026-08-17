@@ -1,11 +1,9 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Block } from '../../../src/index.js'
+import { Stack, Title, Block, Text } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
-
-const sectionBox = css({ display: 'flex', flexDirection: 'column', gap: '0.75rem' })
 
 const usageCode = `<Block spacing="md">
   <p>First block</p>
@@ -24,23 +22,23 @@ export default {
   view() {
     return (<Stack gap="lg">
       <Title as="h1" size="2">Block</Title>
-      <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>{t('paragraph')}</p>
-      <section>
+      <Text color="neutral" className={css({ marginBottom: '2rem', maxWidth: '600px' })}>{t('paragraph')}</Text>
+      <Block spacing="lg">
         <Title as="h2" size="3">{t('common.usage')}</Title>
         <CodeExample code={usageCode} language="jsx" />
-      </section>
-      <section className={sectionBox}>
+      </Block>
+      <Block spacing="lg">
         <Title as="h2" size="3">Spacing</Title>
         <div className={css({ border: '1px solid token(colors.base-300)', borderRadius: 'token(radii.md)', padding: '1rem' })}>
           <Block spacing="sm"><div className={css({ bg: 'token(colors.base-300)', p: '1rem', borderRadius: '0.25rem' })}>sm — 1rem</div></Block>
           <Block spacing="md"><div className={css({ bg: 'token(colors.base-300)', p: '1rem', borderRadius: '0.25rem' })}>md — 1.5rem</div></Block>
           <Block spacing="lg"><div className={css({ bg: 'token(colors.base-300)', p: '1rem', borderRadius: '0.25rem' })}>lg — 2rem</div></Block>
         </div>
-      </section>
-      <section>
+      </Block>
+      <Block spacing="lg">
         <Title as="h2" size="3">{t('common.classReference')}</Title>
         <ClassTable rows={classRows} />
-      </section>
+      </Block>
     </Stack>)
   }
 }

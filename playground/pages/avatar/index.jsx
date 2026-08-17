@@ -1,12 +1,19 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Avatar, AvatarGroup } from '../../../src/index.js'
+import { Stack, Title, Avatar, AvatarGroup, Text, Block } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
-const section = css({ marginBottom: '2rem' })
-const row = css({ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', alignItems: 'center' })
+import avatar1 from '../../assets/avatar/avatar1.jpg'
+import avatar2 from '../../assets/avatar/avatar2.jpg'
+import avatar3 from '../../assets/avatar/avatar3.jpg'
+import avatar4 from '../../assets/avatar/avatar4.jpg'
+import avatar5 from '../../assets/avatar/avatar5.jpg'
+import avatar6 from '../../assets/avatar/avatar6.jpg'
+import avatar7 from '../../assets/avatar/avatar7.jpg'
+import avatar8 from '../../assets/avatar/avatar8.jpg'
+import avatar9 from '../../assets/avatar/avatar9.jpg'
 
 const usageCode = `<Avatar src="https://i.pravatar.cc/150?u=1" size="lg" status="online" />
 <Avatar placeholder>AB</Avatar>
@@ -35,64 +42,64 @@ export default {
     return (
       <Stack gap="lg">
         <Title as="h1" size="2">Avatar</Title>
-        <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
+        <Text color="neutral" className={css({ marginBottom: '2rem', maxWidth: '600px' })}>
           {t('paragraph')}
-        </p>
+        </Text>
 
-        <section className={section}>
+        <Block spacing="lg">
           <Title as="h3" size="5">Sizes</Title>
-          <div className={row}>
-            <Avatar src="https://i.pravatar.cc/150?u=1" size="xs" />
-            <Avatar src="https://i.pravatar.cc/150?u=2" size="sm" />
-            <Avatar src="https://i.pravatar.cc/150?u=3" size="md" />
-            <Avatar src="https://i.pravatar.cc/150?u=4" size="lg" />
-            <Avatar src="https://i.pravatar.cc/150?u=5" size="xl" />
-          </div>
-        </section>
+          <Stack direction="row" gap="sm" wrap="wrap">
+            <Avatar src={avatar1} size="xs" />
+            <Avatar src={avatar2} size="sm" />
+            <Avatar src={avatar3} size="md" />
+            <Avatar src={avatar4} size="lg" />
+            <Avatar src={avatar5} size="xl" />
+          </Stack>
+        </Block>
 
-        <section className={section}>
+        <Block spacing="lg">
           <Title as="h3" size="5">Shape</Title>
-          <div className={row}>
-            <Avatar src="https://i.pravatar.cc/150?u=7" size="lg" shape="circle" />
-            <Avatar src="https://i.pravatar.cc/150?u=8" size="lg" shape="square" />
-          </div>
-        </section>
+          <Stack direction="row" gap="sm" wrap="wrap">
+            <Avatar src={avatar7} size="lg" shape="circle" />
+            <Avatar src={avatar8} size="lg" shape="square" />
+          </Stack>
+        </Block>
 
-        <section className={section}>
+        <Block spacing="lg">
           <Title as="h3" size="5">Status indicator</Title>
-          <div className={row}>
-            <Avatar src="https://i.pravatar.cc/150?u=6" status="online" />
-            <Avatar src="https://i.pravatar.cc/150?u=9" status="offline" />
-          </div>
-        </section>
+          <Stack direction="row" gap="sm" wrap="wrap">
+            <Avatar src={avatar6} status="online" />
+            <Avatar src={avatar9} status="offline" />
+          </Stack>
+        </Block>
 
-        <section className={section}>
+        <Block spacing="lg">
           <Title as="h3" size="5">Placeholder (No Image)</Title>
-          <div className={row}>
+          <Stack direction="row" gap="sm" wrap="wrap">
             <Avatar placeholder>AB</Avatar>
             <Avatar placeholder size="lg">CD</Avatar>
-          </div>
-        </section>
+          </Stack>
+        </Block>
 
-        <section className={section}>
+        <Block spacing="lg">
           <Title as="h3" size="5">Avatar Group</Title>
           <AvatarGroup>
-            <Avatar src="https://i.pravatar.cc/150?u=1" />
-            <Avatar src="https://i.pravatar.cc/150?u=2" />
-            <Avatar src="https://i.pravatar.cc/150?u=3" />
-            <Avatar src="https://i.pravatar.cc/150?u=4" />
+            <Avatar src={avatar1} />
+            <Avatar src={avatar2} />
+            <Avatar src={avatar3} />
+            <Avatar src={avatar4} />
           </AvatarGroup>
-        </section>
+        </Block>
 
-        <section>
+        <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
           <CodeExample code={usageCode} />
-        </section>
+        </Block>
 
-        <section>
+        <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
           <ClassTable rows={classRows} />
-        </section>
+        </Block>
       </Stack>
     )
   }

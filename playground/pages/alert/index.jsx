@@ -1,13 +1,12 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Alert } from '../../../src/index.js'
+import { Stack, Title, Alert, Text, Block } from '../../../src/index.js'
 import { Info, CheckCircle, AlertTriangle, AlertCircle, X, ChevronRight } from 'lucide-mithril'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
-const sectionStack = css({ display: 'flex', flexDirection: 'column', gap: '0.75rem' })
-const sectionDesc = css({ opacity: 0.6, marginBottom: '1rem', maxWidth: '600px' })
+
 
 const usageCode = `<Alert color="info">
   <Info />
@@ -47,27 +46,27 @@ export default {
     return (
       <Stack gap="lg">
         <Title as="h1" size="2">Alert</Title>
-        <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
+        <Text color="neutral" className={css({ marginBottom: '2rem', maxWidth: '600px' })}>
           {t('paragraph')}
-        </p>
+        </Text>
 
         {/* Neutral Alert (no color) */}
-        <section>
+        <Block spacing="lg">
           <Title as="h2" size="3">Neutral (No Color)</Title>
-          <p className={sectionDesc}>Without a `color` prop, the alert falls back to a neutral base-200 background.</p>
-          <div className={sectionStack}>
+          <Text color="neutral">Without a `color` prop, the alert falls back to a neutral base-200 background.</Text>
+          <Stack gap="xs">
             <Alert>
               <ChevronRight />
               <span>Neutral alert without a color prop.</span>
             </Alert>
-          </div>
-        </section>
+          </Stack>
+        </Block>
 
         {/* Base Alert */}
-        <section>
+        <Block spacing="lg">
           <Title as="h2" size="3">Base Alert</Title>
-          <p className={sectionDesc}>Default alert with different colors.</p>
-          <div className={sectionStack}>
+          <Text color="neutral">Default alert with different colors.</Text>
+          <Stack gap="xs">
             <Alert color="info">
               <Info />
               <span>12 unread messages. Tap to see.</span>
@@ -84,14 +83,14 @@ export default {
               <AlertCircle />
               <span>Error! Task failed successfully.</span>
             </Alert>
-          </div>
-        </section>
+          </Stack>
+        </Block>
 
         {/* Soft Style */}
-        <section>
+        <Block spacing="lg">
           <Title as="h2" size="3">Soft Style</Title>
-          <p className={sectionDesc}>Soft background with no border.</p>
-          <div className={sectionStack}>
+          <Text color="neutral">Soft background with no border.</Text>
+          <Stack gap="xs">
             <Alert variant="soft" color="info">
               <Info />
               <span>12 unread messages. Tap to see.</span>
@@ -108,14 +107,14 @@ export default {
               <AlertCircle />
               <span>Error! Task failed successfully.</span>
             </Alert>
-          </div>
-        </section>
+          </Stack>
+        </Block>
 
         {/* Outline Style */}
-        <section>
+        <Block spacing="lg">
           <Title as="h2" size="3">Outline Style</Title>
-          <p className={sectionDesc}>Transparent background with colored border.</p>
-          <div className={sectionStack}>
+          <Text color="neutral">Transparent background with colored border.</Text>
+          <Stack gap="xs">
             <Alert variant="outline" color="info">
               <Info />
               <span>12 unread messages. Tap to see.</span>
@@ -132,14 +131,14 @@ export default {
               <AlertCircle />
               <span>Error! Task failed successfully.</span>
             </Alert>
-          </div>
-        </section>
+          </Stack>
+        </Block>
 
         {/* Dash Style */}
-        <section>
+        <Block spacing="lg">
           <Title as="h2" size="3">Dash Style</Title>
-          <p className={sectionDesc}>Transparent background with dashed border.</p>
-          <div className={sectionStack}>
+          <Text color="neutral">Transparent background with dashed border.</Text>
+          <Stack gap="xs">
             <Alert variant="dash" color="info">
               <Info />
               <span>12 unread messages. Tap to see.</span>
@@ -156,13 +155,13 @@ export default {
               <AlertCircle />
               <span>Error! Task failed successfully.</span>
             </Alert>
-          </div>
-        </section>
+          </Stack>
+        </Block>
 
         {/* With Buttons + Responsive */}
-        <section>
+        <Block spacing="lg">
           <Title as="h2" size="3">With Buttons + Responsive</Title>
-          <p className={sectionDesc}>Vertical on mobile, horizontal on desktop. Includes action buttons.</p>
+          <Text color="neutral">Vertical on mobile, horizontal on desktop. Includes action buttons.</Text>
           <Alert direction="vertical" color="info">
             <Info />
             <span>we use cookies for no reason.</span>
@@ -171,12 +170,12 @@ export default {
               <button className={css({ padding: '0.5rem 1rem', fontSize: '0.875rem', border: '1px solid', borderColor: 'currentColor', borderRadius: 'var(--radius-selector)', background: 'var(--colors-primary)', color: 'var(--colors-primary-content)', cursor: 'pointer' })}>Accept</button>
             </div>
           </Alert>
-        </section>
+        </Block>
 
         {/* With Title and Description */}
-        <section>
+        <Block spacing="lg">
           <Title as="h2" size="3">With Title and Description</Title>
-          <p className={sectionDesc}>Structured alert with title, description, and action button.</p>
+          <Text color="neutral">Structured alert with title, description, and action button.</Text>
           <Alert direction="vertical" color="info">
             <Info />
             <div className={css({ display: 'flex', flexDirection: 'column', gap: '0.25rem' })}>
@@ -185,13 +184,13 @@ export default {
             </div>
             <button className={css({ padding: '0.5rem 1rem', fontSize: '0.875rem', border: '1px solid', borderColor: 'currentColor', borderRadius: 'var(--radius-selector)', background: 'transparent', cursor: 'pointer', marginTop: '0.5rem' })}>See</button>
           </Alert>
-        </section>
+        </Block>
 
         {/* Horizontal Direction (default) */}
-        <section>
+        <Block spacing="lg">
           <Title as="h2" size="3">Horizontal Direction (Default)</Title>
-          <p className={sectionDesc}>Content flows horizontally, good for desktop.</p>
-          <div className={sectionStack}>
+          <Text color="neutral">Content flows horizontally, good for desktop.</Text>
+          <Stack gap="xs">
             <Alert direction="horizontal" color="info">
               <Info />
               <span>Horizontal info alert</span>
@@ -200,14 +199,14 @@ export default {
               <CheckCircle />
               <span>Horizontal success alert</span>
             </Alert>
-          </div>
-        </section>
+          </Stack>
+        </Block>
 
         {/* Vertical Direction */}
-        <section>
+        <Block spacing="lg">
           <Title as="h2" size="3">Vertical Direction</Title>
-          <p className={sectionDesc}>Content stacks vertically, good for mobile.</p>
-          <div className={sectionStack}>
+          <Text color="neutral">Content stacks vertically, good for mobile.</Text>
+          <Stack gap="xs">
             <Alert direction="vertical" color="info">
               <Info />
               <span>Vertical info alert</span>
@@ -216,14 +215,14 @@ export default {
               <CheckCircle />
               <span>Vertical success alert</span>
             </Alert>
-          </div>
-        </section>
+          </Stack>
+        </Block>
 
         {/* Style + Direction Combined */}
-        <section>
+        <Block spacing="lg">
           <Title as="h2" size="3">Style + Vertical Direction</Title>
-          <p className={sectionDesc}>The `variant` prop (soft, outline, dash) combines with `direction="vertical"`.</p>
-          <div className={sectionStack}>
+          <Text color="neutral">The `variant` prop (soft, outline, dash) combines with `direction="vertical"`.</Text>
+          <Stack gap="xs">
             <Alert variant="soft" direction="vertical" color="warning">
               <AlertTriangle />
               <span>Soft + vertical warning alert</span>
@@ -236,30 +235,30 @@ export default {
               <CheckCircle />
               <span>Dash + vertical success alert</span>
             </Alert>
-          </div>
-        </section>
+          </Stack>
+        </Block>
 
         {/* Without Icons */}
-        <section>
+        <Block spacing="lg">
           <Title as="h2" size="3">Without Icons</Title>
-          <p className={sectionDesc}>Alerts can be used without icons.</p>
-          <div className={sectionStack}>
+          <Text color="neutral">Alerts can be used without icons.</Text>
+          <Stack gap="xs">
             <Alert color="info">Info alert without icon</Alert>
             <Alert color="success">Success alert without icon</Alert>
             <Alert color="warning">Warning alert without icon</Alert>
             <Alert color="error">Error alert without icon</Alert>
-          </div>
-        </section>
+          </Stack>
+        </Block>
 
-        <section>
+        <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
           <CodeExample code={usageCode} />
-        </section>
+        </Block>
 
-        <section>
+        <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
           <ClassTable rows={classRows} />
-        </section>
+        </Block>
       </Stack>
     )
   }

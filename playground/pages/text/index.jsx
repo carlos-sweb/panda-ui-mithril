@@ -1,11 +1,10 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Text, Title } from '../../../src/index.js'
+import { Stack, Text, Title, Block } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
-const row = css({ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'baseline' })
 const heading = css({ fontSize: '0.875rem', fontWeight: '600', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em', opacity: 0.5 })
 
 const usageCode = `<Text>Default paragraph text</Text>
@@ -54,44 +53,40 @@ export default {
     return (
       <Stack gap="lg">
         <Title as="h1" size="2">Text</Title>
-        <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
+        <Text color="neutral" className={css({ marginBottom: '2rem', maxWidth: '600px' })}>
           {t('paragraph')}
-        </p>
+        </Text>
 
-        <section>
+        <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
           <CodeExample code={usageCode} language="jsx" />
-        </section>
+        </Block>
 
-        <section>
+        <Block spacing="lg">
           <Title as="h2" size="3">Sizes</Title>
-          <h4 className={heading}>5 size tiers — from small to large</h4>
-          <div className={row}>
-            <div className={css({ display: 'flex', flexDirection: 'column', gap: '0.25rem' })}>
-              <Text size="xs">Size xs</Text>
-              <Text size="sm">Size sm</Text>
-              <Text size="md">Size md (default)</Text>
-              <Text size="lg">Size lg</Text>
-              <Text size="xl">Size xl</Text>
-            </div>
-          </div>
-        </section>
+          <Text size="sm" color="neutral" className={heading}>5 size tiers — from small to large</Text>
+          <Stack gap="xs">
+            <Text size="xs">Size xs</Text>
+            <Text size="sm">Size sm</Text>
+            <Text size="md">Size md (default)</Text>
+            <Text size="lg">Size lg</Text>
+            <Text size="xl">Size xl</Text>
+          </Stack>
+        </Block>
 
-        <section>
+        <Block spacing="lg">
           <Title as="h2" size="3">Semantic tags</Title>
-          <h4 className={heading}>as only switches the tag — size stays explicit (default md)</h4>
-          <div className={row}>
-            <div className={css({ display: 'flex', flexDirection: 'column', gap: '0.25rem' })}>
-              <Text as="p">p paragraph (default)</Text>
-              <Text as="span">span inline text</Text>
-              <Text as="div">div block text</Text>
-            </div>
-          </div>
-        </section>
+          <Text size="sm" color="neutral" className={heading}>as only switches the tag — size stays explicit (default md)</Text>
+          <Stack gap="xs">
+            <Text as="p">p paragraph (default)</Text>
+            <Text as="span">span inline text</Text>
+            <Text as="div">div block text</Text>
+          </Stack>
+        </Block>
 
-        <section>
+        <Block spacing="lg">
           <Title as="h2" size="3">Colors</Title>
-          <div className={row}>
+          <Stack direction="row" gap="sm">
             <Text size="lg" color="neutral">Neutral</Text>
             <Text size="lg" color="primary">Primary</Text>
             <Text size="lg" color="secondary">Secondary</Text>
@@ -100,52 +95,52 @@ export default {
             <Text size="lg" color="success">Success</Text>
             <Text size="lg" color="warning">Warning</Text>
             <Text size="lg" color="error">Error</Text>
-          </div>
-        </section>
+          </Stack>
+        </Block>
 
-        <section>
+        <Block spacing="lg">
           <Title as="h2" size="3">Alignment</Title>
-          <div className={css({ display: 'flex', flexDirection: 'column', gap: '0.5rem', maxWidth: '400px', padding: '1rem', border: '1px solid token(colors.base-300)', borderRadius: 'token(radii.md)' })}>
+          <Stack gap="xs" className={css({ maxWidth: '400px', padding: '1rem', border: '1px solid token(colors.base-300)', borderRadius: 'token(radii.md)' })}>
             <Text align="left">Left aligned</Text>
             <Text align="center">Center aligned</Text>
             <Text align="right">Right aligned</Text>
             <Text align="justify">Justify — this text fills the line width evenly</Text>
-          </div>
-        </section>
+          </Stack>
+        </Block>
 
-        <section>
+        <Block spacing="lg">
           <Title as="h2" size="3">Transform</Title>
-          <div className={row}>
+          <Stack direction="row" gap="sm">
             <Text size="lg" transform="capitalize">capitalize me</Text>
             <Text size="lg" transform="uppercase">uppercase me</Text>
             <Text size="lg" transform="lowercase">LOWERCASE ME</Text>
-          </div>
-        </section>
+          </Stack>
+        </Block>
 
-        <section>
+        <Block spacing="lg">
           <Title as="h2" size="3">Weight</Title>
-          <div className={css({ display: 'flex', flexDirection: 'column', gap: '0.25rem' })}>
+          <Stack gap="xs">
             <Text size="lg" weight="light">Light — 300</Text>
             <Text size="lg" weight="normal">Normal — 400</Text>
             <Text size="lg" weight="medium">Medium — 500</Text>
             <Text size="lg" weight="semibold">Semibold — 600</Text>
             <Text size="lg" weight="bold">Bold — 700</Text>
             <Text size="lg" weight="extrabold">Extrabold — 800</Text>
-          </div>
-        </section>
+          </Stack>
+        </Block>
 
-        <section>
+        <Block spacing="lg">
           <Title as="h2" size="3">Truncate & Italic</Title>
-          <div className={css({ display: 'flex', flexDirection: 'column', gap: '0.5rem', maxWidth: '300px' })}>
+          <Stack gap="xs" className={css({ maxWidth: '300px' })}>
             <Text size="lg" truncate>This is a very long text that should truncate with an ellipsis when it overflows its container</Text>
             <Text size="lg" italic>Italic text style</Text>
-          </div>
-        </section>
+          </Stack>
+        </Block>
 
-        <section>
+        <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
           <ClassTable rows={classRows} />
-        </section>
+        </Block>
       </Stack>
     )
   }

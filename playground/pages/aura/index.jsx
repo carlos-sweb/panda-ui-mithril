@@ -1,12 +1,10 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Aura, Button, Card, CardBody } from '../../../src/index.js'
+import { Stack, Title, Aura, Button, Card, CardBody, Text, Block } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
-const row = css({ display: 'flex', gap: '1.5rem', flexWrap: 'wrap', alignItems: 'center' })
-const section = css({ marginBottom: '2rem' })
 const cardSurface = css({ background: 'token(colors.base-100)', width: '14rem' })
 const primaryColor = css({ color: 'token(colors.primary)' })
 
@@ -46,51 +44,51 @@ export default {
     return (
       <Stack gap="lg">
         <Title as="h1" size="2">Aura</Title>
-        <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
+        <Text color="neutral" className={css({ marginBottom: '2rem', maxWidth: '600px' })}>
           {t('paragraph')}
-        </p>
+        </Text>
 
-        <section className={section}>
+        <Block spacing="lg">
           <Title as="h3" size="5">Around a button (default)</Title>
-          <div className={row}>
+          <Stack direction="row" gap="sm">
             <Aura shape="field" className={primaryColor}>
               <Button color="primary">Upgrade now</Button>
             </Aura>
-          </div>
-        </section>
+          </Stack>
+        </Block>
 
-        <section className={section}>
+        <Block spacing="lg">
           <Title as="h3" size="5">Around a card</Title>
-          <div className={row}>
+          <Stack direction="row" gap="sm">
             <Aura shape="box">
               <Card className={cardSurface}>
                 <CardBody><p>This card has aura</p></CardBody>
               </Card>
             </Aura>
-          </div>
-        </section>
+          </Stack>
+        </Block>
 
-        <section className={section}>
+        <Block spacing="lg">
           <Title as="h3" size="5">Variants</Title>
-          <div className={row}>
+          <Stack direction="row" gap="sm">
             <Aura variant="dual" shape="field" className={primaryColor}><Button>dual</Button></Aura>
             <Aura variant="rainbow" shape="field"><Button>rainbow</Button></Aura>
             <Aura variant="holo" shape="field"><Button>holo</Button></Aura>
             <Aura variant="gold" shape="field"><Button>gold</Button></Aura>
             <Aura variant="silver" shape="field"><Button>silver</Button></Aura>
             <Aura variant="glow" shape="field" className={primaryColor}><Button>glow</Button></Aura>
-          </div>
-        </section>
+          </Stack>
+        </Block>
 
-        <section>
+        <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
           <CodeExample code={usageCode} />
-        </section>
+        </Block>
 
-        <section>
+        <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
           <ClassTable rows={classRows} />
-        </section>
+        </Block>
       </Stack>
     )
   }

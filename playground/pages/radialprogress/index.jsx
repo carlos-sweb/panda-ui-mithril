@@ -1,11 +1,9 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, RadialProgress } from '../../../src/index.js'
+import { Stack, Title, RadialProgress, Text, Block } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
-
-const row = css({ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'center' })
 
 const usageCode = `<RadialProgress value={70}>70%</RadialProgress>`
 
@@ -23,27 +21,27 @@ export default {
     return (
       <Stack gap="lg">
         <Title as="h1" size="2">Radial Progress</Title>
-        <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
+        <Text color="neutral" className={css({ marginBottom: '2rem', maxWidth: '600px' })}>
           {t('paragraph')}
-        </p>
+        </Text>
 
-        <div className={row}>
+        <Stack direction="row" gap="md" wrap="wrap">
           <RadialProgress value={0}>0%</RadialProgress>
           <RadialProgress value={25}>25%</RadialProgress>
           <RadialProgress value={50}>50%</RadialProgress>
           <RadialProgress value={75}>75%</RadialProgress>
           <RadialProgress value={100}>100%</RadialProgress>
-        </div>
+        </Stack>
 
-        <section>
+        <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
           <CodeExample code={usageCode} />
-        </section>
+        </Block>
 
-        <section>
+        <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
           <ClassTable rows={classRows} />
-        </section>
+        </Block>
       </Stack>
     )
   }

@@ -1,12 +1,9 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Title, ButtonClose } from '../../../src/index.js'
+import { Stack, Title, ButtonClose, Text, Block } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
-
-const section = css({ marginBottom: '2rem' })
-const row = css({ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', alignItems: 'center' })
 
 const usageCode = `<ButtonClose />
 <ButtonClose color="primary" />
@@ -34,121 +31,121 @@ export default {
   oninit() { loadPageI18n('buttonclose') },
   view() {
     return (
-      <div>
+      <Stack gap="lg">
         <Title as="h1" size="2">ButtonClose</Title>
         
-        <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
+        <Text color="neutral" className={css({ marginBottom: '2rem', maxWidth: '600px' })}>
           {t('paragraph')}
-        </p>
+        </Text>
 
-        <section className={section}>
+        <Block spacing="lg">
           <Title as="h3" size="5">Default</Title>
-          <div className={row}>
+          <Stack direction="row" gap="sm" wrap="wrap">
             <ButtonClose />
             <ButtonClose>this text is ignored</ButtonClose>
-          </div>
-        </section>
+          </Stack>
+        </Block>
 
-        <section className={section}>
+        <Block spacing="lg">
           <Title as="h3" size="5">Sizes</Title>
-          <div className={row}>
+          <Stack direction="row" gap="sm" wrap="wrap">
             <ButtonClose size="xs" />
             <ButtonClose size="sm" />
             <ButtonClose size="md" />
             <ButtonClose size="lg" />
             <ButtonClose size="xl" />
-          </div>
-        </section>
+          </Stack>
+        </Block>
 
-        <section className={section}>
+        <Block spacing="lg">
           <Title as="h3" size="5">Colors</Title>
-          <div className={row}>
+          <Stack direction="row" gap="sm" wrap="wrap">
             <ButtonClose />
             <ButtonClose color="neutral" />
             <ButtonClose color="primary" />
             <ButtonClose color="secondary" />
             <ButtonClose color="accent" />
-          </div>
-        </section>
+          </Stack>
+        </Block>
 
-        <section className={section}>
+        <Block spacing="lg">
           <Title as="h3" size="5">Soft colors</Title>
-          <div className={row}>
+          <Stack direction="row" gap="sm" wrap="wrap">
             <ButtonClose variant="soft" />
             <ButtonClose variant="soft" color="primary" />
             <ButtonClose variant="soft" color="secondary" />
             <ButtonClose variant="soft" color="success" />
             <ButtonClose variant="soft" color="error" />
-          </div>
-        </section>
+          </Stack>
+        </Block>
 
-        <section className={section}>
+        <Block spacing="lg">
           <Title as="h3" size="5">Outline colors</Title>
-          <div className={row}>
+          <Stack direction="row" gap="sm" wrap="wrap">
             <ButtonClose variant="outline" />
             <ButtonClose variant="outline" color="primary" />
             <ButtonClose variant="outline" color="warning" />
             <ButtonClose variant="outline" color="info" />
             <ButtonClose variant="outline" color="error" />
-          </div>
-        </section>
+          </Stack>
+        </Block>
 
-        <section className={section}>
+        <Block spacing="lg">
           <Title as="h3" size="5">Ghost + Link</Title>
-          <div className={row}>
+          <Stack direction="row" gap="sm" wrap="wrap">
             <ButtonClose variant="ghost" />
             <ButtonClose variant="ghost" color="primary" />
             <ButtonClose variant="link" />
             <ButtonClose variant="link" color="secondary" />
-          </div>
-        </section>
+          </Stack>
+        </Block>
 
-        <section className={section}>
+        <Block spacing="lg">
           <Title as="h3" size="5">Square + Circle</Title>
-          <div className={row}>
+          <Stack direction="row" gap="sm" wrap="wrap">
             <ButtonClose shape="square" />
             <ButtonClose shape="square" color="primary" />
             <ButtonClose shape="circle" color="secondary" />
-          </div>
-        </section>
+          </Stack>
+        </Block>
 
-        <section className={section}>
+        <Block spacing="lg">
           <Title as="h3" size="5">Disabled</Title>
-          <div className={row}>
+          <Stack direction="row" gap="sm" wrap="wrap">
             <ButtonClose disabled />
             <ButtonClose disabled color="primary" />
-          </div>
-        </section>
+          </Stack>
+        </Block>
 
-        <section className={section}>
+        <Block spacing="lg">
           <Title as="h3" size="5">Stroke Width</Title>
-          <div className={row}>
+          <Stack direction="row" gap="sm" wrap="wrap">
             <ButtonClose strokeWidth={1} />
             <ButtonClose strokeWidth={2} />
             <ButtonClose strokeWidth={3} />
             <ButtonClose strokeWidth={4} color="primary" />
-          </div>
-        </section>
+          </Stack>
+        </Block>
 
-        <section className={section}>
+        <Block spacing="lg">
           <Title as="h3" size="5">Border Width</Title>
-          <div className={row}>
+          <Stack direction="row" gap="sm" wrap="wrap">
             <ButtonClose variant="outline" borderWidth={1} />
             <ButtonClose variant="outline" borderWidth={2} />
             <ButtonClose variant="outline" borderWidth={3} color="primary" />
-          </div>
-        </section>
+          </Stack>
+        </Block>
 
-        <section>
+        <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
           <CodeExample code={usageCode} />
-        </section>
+        </Block>
 
-        <section>
+        <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
           <ClassTable rows={classRows} />
-        </section>
-      </div>
+        </Block>
+      </Stack>
     )
   }
 }

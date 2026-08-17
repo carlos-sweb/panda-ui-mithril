@@ -1,11 +1,10 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Carousel, CarouselItem } from '../../../src/index.js'
+import { Stack, Title, Carousel, CarouselItem, Text, Block } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
-const section = css({ marginBottom: '2rem' })
 const gap = css({ gap: '1rem' })
 const img = css({ borderRadius: 'var(--radius-box)', height: '12rem', objectFit: 'cover' })
 const imgFull = css({ borderRadius: 'var(--radius-box)', height: '14rem', width: '100%', objectFit: 'cover' })
@@ -66,11 +65,11 @@ export default {
     return (
       <Stack gap="lg">
         <Title as="h1" size="2">Carousel</Title>
-        <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
+        <Text color="neutral" className={css({ marginBottom: '2rem', maxWidth: '600px' })}>
           {t('paragraph')}
-        </p>
+        </Text>
 
-        <section className={section}>
+        <Block spacing="lg">
           <Title as="h3" size="5">Basic (drag/scroll to snap)</Title>
           <Carousel className={gap}>
             {[1, 2, 3, 4].map((n) => (
@@ -79,15 +78,15 @@ export default {
               </CarouselItem>
             ))}
           </Carousel>
-        </section>
+        </Block>
 
-        <section className={section}>
+        <Block spacing="lg">
           <Title as="h3" size="5">Full width with next/prev navigation</Title>
-          <p className={css({ opacity: 0.6, marginBottom: '0.5rem', fontSize: '0.875rem' })}>
+          <Text size="sm" color="neutral">
             The reference implementation navigates with <code>&lt;a href="#slideId"&gt;</code>, but that collides
             with apps using hash-based routing (like this playground's own <code>#!/route</code>{' '}
             router) — using <code>scrollIntoView()</code> on click sidesteps it.
-          </p>
+          </Text>
           <Carousel className={css({ width: '100%' })}>
             {[1, 2, 3].map((n, i, arr) => {
               const prev = arr[(i - 1 + arr.length) % arr.length]
@@ -109,17 +108,17 @@ export default {
               )
             })}
           </Carousel>
-        </section>
+        </Block>
 
-        <section>
+        <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
           <CodeExample code={usageCode} />
-        </section>
+        </Block>
 
-        <section>
+        <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
           <ClassTable rows={classRows} />
-        </section>
+        </Block>
       </Stack>
     )
   }

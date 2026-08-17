@@ -1,15 +1,13 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Button, Modal, ModalBox, ModalAction, ModalBackdrop } from '../../../src/index.js'
+import { Stack, Title, Button, Modal, ModalBox, ModalAction, ModalBackdrop, Text, Block } from '../../../src/index.js'
 //import { modal } from '../../../src/recipes/modal'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
-const row = css({ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' })
 const title = css({ fontSize: '1.125rem', fontWeight: '700' })
 const body = css({ paddingBlock: '1rem' })
-const hint = css({ opacity: 0.6, maxWidth: '600px' })
 
 const usageCode = `<Button onclick={() => { open = true }}>Open Modal</Button>
 
@@ -77,18 +75,18 @@ export default {
     return (
       <Stack gap="lg">
         <Title as="h1" size="2">Modal</Title>
-        <p className={css({ opacity: 0.6, marginBottom: '2rem', maxWidth: '600px' })}>
+        <Text color="neutral" className={css({ marginBottom: '2rem', maxWidth: '600px' })}>
           {t('paragraph')}
-        </p>
+        </Text>
 
         <Title as="h2" size="3">Sizes</Title>
-        <div className={row}>
+        <Stack direction="row" gap="sm">
           {sizes.map((s) => (
             <Button key={s} onclick={() => { vnode.state.sizeFor = s; vnode.state.sizeOpen = true }}>
               Open ({s.toUpperCase()})
             </Button>
           ))}
-        </div>
+        </Stack>
 
         <Modal
           size={vnode.state.sizeFor || undefined}
@@ -113,14 +111,14 @@ export default {
         </Modal>
 
         <Title as="h2" size="3">Persistent</Title>
-        <p className={hint}>
+        <Text color="neutral">
           This modal is persistent — ESC and clicking outside won't close it; use the Close button.
-        </p>
-        <div className={row}>
+        </Text>
+        <Stack direction="row" gap="sm">
           <Button onclick={() => { vnode.state.persistentOpen = true }}>
             Open persistent modal
           </Button>
-        </div>
+        </Stack>
 
         <Modal persistent open={vnode.state.persistentOpen}>
           <ModalBox>
@@ -135,13 +133,13 @@ export default {
           </ModalBox>
         </Modal>
 
-        <div className={row}>
+        <Stack direction="row" gap="sm">
           {positions.map((p) => (
             <Button key={p} onclick={() => { vnode.state.openFor = p }}>
               Open ({p})
             </Button>
           ))}
-        </div>
+        </Stack>
 
         {positions.map((p) => (
           <Modal key={p} position={p === 'middle' ? undefined : p} open={vnode.state.openFor === p} onclose={close}>
@@ -159,7 +157,7 @@ export default {
           </Modal>
         ))}
 
-        <section>
+        <Block spacing="lg">
           <Title as="h2" size="3">Auto Close Button</Title>
           <Button
             className={css({ marginBottom: '1rem' })}
@@ -174,18 +172,18 @@ export default {
             </ModalBox>
             <ModalBackdrop onclick={() => { vnode.state.autoCloseOpen = false }} />
           </Modal>
-        </section>
+        </Block>
 
 
-        <section>
+        <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
           <CodeExample code={usageCode} />
-        </section>
+        </Block>
 
-        <section>
+        <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
           <ClassTable rows={classRows} />
-        </section>
+        </Block>
       </Stack>
     )
   }
