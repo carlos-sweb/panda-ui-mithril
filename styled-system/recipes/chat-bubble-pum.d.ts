@@ -8,13 +8,19 @@ interface ChatBubblePUMVariant {
  */
 placement: "start" | "end"
 color: "neutral" | "primary" | "secondary" | "accent" | "info" | "success" | "warning" | "error"
+/**
+ * @default "md"
+ */
+size: "sm" | "md" | "lg"
+status: "sent" | "delivered" | "read"
+grouped: boolean
 }
 
 type ChatBubblePUMVariantMap = {
   [key in keyof ChatBubblePUMVariant]: Array<ChatBubblePUMVariant[key]>
 }
 
-type ChatBubblePUMSlot = "chat" | "bubble"
+type ChatBubblePUMSlot = "chat" | "bubble" | "window" | "header" | "messages" | "footer" | "message" | "reply" | "reactions" | "status" | "audio" | "video" | "image" | "file" | "link" | "system" | "input" | "typing"
 
 export type ChatBubblePUMVariantProps = {
   [key in keyof ChatBubblePUMVariant]?: ConditionalValue<ChatBubblePUMVariant[key]> | undefined

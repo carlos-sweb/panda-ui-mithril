@@ -4,7 +4,26 @@ const maskChat = `url("data:image/svg+xml,%3csvg width='13' height='13' xmlns='h
 
 export const chatBubbleRecipe = defineSlotRecipe({
   className : 'chat',
-  slots: ['chat', 'bubble'],
+  slots: [
+    'chat',
+    'bubble',
+    'window',
+    'header',
+    'messages',
+    'footer',
+    'message',
+    'reply',
+    'reactions',
+    'status',
+    'audio',
+    'video',
+    'image',
+    'file',
+    'link',
+    'system',
+    'input',
+    'typing'
+  ],
   base: {
     chat: {
       display: 'grid',
@@ -56,6 +75,206 @@ export const chatBubbleRecipe = defineSlotRecipe({
         maskSize: '0.8125rem',
       },
     },
+    window: {
+      display: 'flex',
+      flexDirection: 'column',
+      height: '100%',
+      overflow: 'hidden',
+      borderRadius: 'var(--radius-box)',
+      border: '1px solid',
+      borderColor: 'base-200',
+      backgroundColor: 'base-100',
+    },
+    header: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: 'token(spacing.3)',
+      padding: 'token(spacing.3) token(spacing.4)',
+      borderBottom: '1px solid',
+      borderColor: 'base-200',
+      backgroundColor: 'base-100',
+      flexShrink: 0,
+    },
+    messages: {
+      flex: 1,
+      overflowY: 'auto',
+      padding: 'token(spacing.4)',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 'token(spacing.2)',
+    },
+    footer: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: 'token(spacing.2)',
+      padding: 'token(spacing.3) token(spacing.4)',
+      borderTop: '1px solid',
+      borderColor: 'base-200',
+      backgroundColor: 'base-100',
+      flexShrink: 0,
+    },
+    message: {
+      display: 'flex',
+      flexDirection: 'column',
+      maxWidth: '75%',
+      gap: 'token(spacing.1)',
+
+      '&[data-placement="start"]': {
+        alignSelf: 'flex-start',
+      },
+      '&[data-placement="end"]': {
+        alignSelf: 'flex-end',
+      },
+    },
+    reply: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 'token(spacing.1)',
+      padding: 'token(spacing.2) token(spacing.3)',
+      borderLeft: '3px solid',
+      borderColor: 'primary',
+      backgroundColor: 'base-200',
+      borderRadius: 'token(radii.md)',
+      fontSize: 'token(fontSizes.sm)',
+      marginBottom: 'token(spacing.1)',
+      cursor: 'pointer',
+
+      _hover: {
+        backgroundColor: 'base-300',
+      },
+    },
+    reactions: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      gap: 'token(spacing.1)',
+      marginTop: 'token(spacing.1)',
+    },
+    status: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: 'token(spacing.1)',
+      fontSize: 'token(fontSizes.xs)',
+      color: 'base-content',
+      opacity: 0.6,
+    },
+    audio: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: 'token(spacing.2)',
+      padding: 'token(spacing.2) token(spacing.3)',
+      backgroundColor: 'base-200',
+      borderRadius: 'token(radii.full)',
+      minWidth: '200px',
+
+      '& audio': {
+        width: '100%',
+        height: '32px',
+      },
+    },
+    video: {
+      position: 'relative',
+      borderRadius: 'token(radii.md)',
+      overflow: 'hidden',
+      maxWidth: '300px',
+
+      '& video': {
+        width: '100%',
+        display: 'block',
+      },
+    },
+    image: {
+      position: 'relative',
+      borderRadius: 'token(radii.md)',
+      overflow: 'hidden',
+      maxWidth: '300px',
+
+      '& img': {
+        width: '100%',
+        display: 'block',
+      },
+
+      '& figcaption': {
+        padding: 'token(spacing.2) token(spacing.3)',
+        fontSize: 'token(fontSizes.sm)',
+        backgroundColor: 'base-200',
+      },
+    },
+    file: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: 'token(spacing.3)',
+      padding: 'token(spacing.3) token(spacing.4)',
+      backgroundColor: 'base-200',
+      borderRadius: 'token(radii.md)',
+      textDecoration: 'none',
+      color: 'inherit',
+      transition: 'background-color 0.2s',
+
+      _hover: {
+        backgroundColor: 'base-300',
+      },
+    },
+    link: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 'token(spacing.1)',
+      padding: 'token(spacing.3) token(spacing.4)',
+      backgroundColor: 'base-200',
+      borderRadius: 'token(radii.md)',
+      textDecoration: 'none',
+      color: 'inherit',
+      border: '1px solid',
+      borderColor: 'base-300',
+      transition: 'border-color 0.2s',
+
+      _hover: {
+        borderColor: 'primary',
+      },
+
+      '& img': {
+        width: '100%',
+        height: '120px',
+        objectFit: 'cover',
+        borderRadius: 'token(radii.md)',
+      },
+    },
+    system: {
+      display: 'flex',
+      justifyContent: 'center',
+      padding: 'token(spacing.2) token(spacing.4)',
+      fontSize: 'token(fontSizes.xs)',
+      color: 'base-content',
+      opacity: 0.6,
+    },
+    input: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: 'token(spacing.2)',
+      flex: 1,
+
+      '& input': {
+        flex: 1,
+        padding: 'token(spacing.2) token(spacing.3)',
+        borderRadius: 'token(radii.full)',
+        border: '1px solid',
+        borderColor: 'base-300',
+        backgroundColor: 'base-100',
+        outline: 'none',
+
+        _focus: {
+          borderColor: 'primary',
+        },
+      },
+    },
+    typing: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: 'token(spacing.2)',
+      padding: 'token(spacing.2) token(spacing.3)',
+      fontSize: 'token(fontSizes.sm)',
+      color: 'base-content',
+      opacity: 0.6,
+    },
   },
   variants: {
     placement: {
@@ -104,8 +323,65 @@ export const chatBubbleRecipe = defineSlotRecipe({
       warning: { bubble: { backgroundColor: 'warning', color: 'warning-content' } },
       error: { bubble: { backgroundColor: 'error', color: 'error-content' } },
     },
+    size: {
+      sm: {
+        bubble: {
+          paddingInline: 'token(spacing.3)',
+          paddingBlock: 'token(spacing.1)',
+          fontSize: 'token(fontSizes.sm)',
+        },
+      },
+      md: {
+        bubble: {
+          paddingInline: 'token(spacing.4)',
+          paddingBlock: 'token(spacing.2)',
+          fontSize: 'token(fontSizes.md)',
+        },
+      },
+      lg: {
+        bubble: {
+          paddingInline: 'token(spacing.5)',
+          paddingBlock: 'token(spacing.3)',
+          fontSize: 'token(fontSizes.lg)',
+        },
+      },
+    },
+    status: {
+      sent: {
+        status: {
+          color: 'base-content',
+        },
+      },
+      delivered: {
+        status: {
+          color: 'base-content',
+        },
+      },
+      read: {
+        status: {
+          color: 'primary',
+        },
+      },
+    },
+    grouped: {
+      true: {
+        chat: {
+          paddingTop: 0,
+        },
+        bubble: {
+          borderTopStartRadius: '0',
+          borderTopEndRadius: '0',
+        },
+      },
+      false: {
+        chat: {
+          paddingTop: 'token(spacing.1)',
+        },
+      },
+    },
   },
   defaultVariants: {
     placement: 'start',
+    size: 'md',
   },
 })

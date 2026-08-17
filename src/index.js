@@ -16,7 +16,12 @@ export { ButtonGroup } from './components/ButtonGroup'
 export { Calendar, CalendarDate, CalendarMonth, CalendarHeader } from './components/Calendar'
 export { Card, CardBody, CardTitle, CardActions, CardFigure } from './components/Card'
 export { Carousel, CarouselItem } from './components/Carousel'
-export { Chat, ChatImage, ChatHeader, ChatBubble, ChatFooter } from './components/ChatBubble'
+export {
+  Chat, ChatImage, ChatHeader, ChatBubble, ChatFooter,
+  ChatWindow, ChatMessage, ChatReply, ChatReactions, ChatStatus,
+  ChatAudio, ChatVideo, ChatImageMessage, ChatFile, ChatLink,
+  ChatSystem, ChatInput, ChatTyping, ChatEmoji
+} from './components/ChatBubble'
 export { Checkbox } from './components/Checkbox'
 export { ButtonClose } from './components/ButtonClose'
 export { Countdown } from './components/Countdown'
