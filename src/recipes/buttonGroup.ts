@@ -5,21 +5,21 @@ export const buttonGroupRecipe = defineRecipe({
   base: {
     display: 'inline-flex',
 
-    '& > .btn:not(:first-child)': {
+    '& > .button:not(:first-child)': {
       marginInlineStart: 'calc(var(--border, 1px) * -1)',
     },
-    '& > .btn:first-child': {
+    '& > .button:first-child': {
       borderStartEndRadius: '0',
       borderEndEndRadius: '0',
     },
-    '& > .btn:last-child': {
+    '& > .button:last-child': {
       borderStartStartRadius: '0',
       borderEndStartRadius: '0',
     },
-    '& > .btn:not(:first-child):not(:last-child)': {
+    '& > .button:not(:first-child):not(:last-child)': {
       borderRadius: '0',
     },
-    '& > .btn:focus, & > .btn:hover': {
+    '& > .button:focus, & > .button:hover': {
       zIndex: '1',
       position: 'relative',
     },
@@ -28,15 +28,15 @@ export const buttonGroupRecipe = defineRecipe({
     vertical: {
       true: {
         flexDirection: 'column',
-        '& > .btn:not(:first-child)': {
+        '& > .button:not(:first-child)': {
           marginTop: 'calc(var(--border, 1px) * -1)',
           marginInlineStart: '0',
         },
-        '& > .btn:first-child': {
+        '& > .button:first-child': {
           borderEndStartRadius: '0',
           borderEndEndRadius: '0',
         },
-        '& > .btn:last-child': {
+        '& > .button:last-child': {
           borderStartStartRadius: '0',
           borderStartEndRadius: '0',
         },

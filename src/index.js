@@ -74,5 +74,4 @@ export { Title } from './components/Title'
 export { Tag } from './components/Tag'
 export { Tooltip } from './components/Tooltip'
 
-// Utility
-export { cx } from './utils/cx'
+
