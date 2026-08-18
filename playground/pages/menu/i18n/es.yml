@@ -1,1 +1,3 @@
 paragraph: Componente de menú para menús de navegación y barras laterales.
+autoActiveDescription: "Cuando autoActive es true, el Menu gestiona automáticamente qué ítem está activo al hacer click. No necesitas manejar el estado manualmente."
+callbackDescription: "Usa onActiveChange para recibir una notificación cuando cambia el ítem activo. Útil para sincronizar con el router o estado externo."

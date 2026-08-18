@@ -4,6 +4,12 @@ import { ComponentAttrs, PumSize } from '../../types'
 export interface MenuAttrs extends ComponentAttrs {
   size?: PumSize
   horizontal?: boolean
+  /** When true, Menu tracks which MenuItem is active and updates on click */
+  autoActive?: boolean
+  /** Index of the initially active item (used with autoActive) */
+  defaultActive?: number
+  /** Callback fired when active item changes (index: number) */
+  onActiveChange?: (index: number) => void
   children?: Vnode | Vnode[] | string | null
   [key: string]: unknown
 }
