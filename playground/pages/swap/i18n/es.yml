@@ -1,1 +1,3 @@
 paragraph: Intercambia elementos con una animación de transición.
+controlledTitle: Uso controlado (onchange)
+controlledDescription: "Usa `checked` y `onchange` para uso controlado. El callback recibe `(checked, e)` — el nuevo estado boolean y el evento DOM crudo."

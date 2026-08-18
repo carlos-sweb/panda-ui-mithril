@@ -8,7 +8,8 @@ export interface SwapAttrs extends ComponentAttrs {
   on?: Vnode | Vnode[] | string | null
   off?: Vnode | Vnode[] | string | null
   checked?: boolean
-  onchange?: (e: Event) => void
+  /** Handler de cambio del checkbox (uso controlado). Recibe (checked, e) */
+  onchange?: (checked: boolean, e: Event) => void
   children?: Vnode | Vnode[] | string | null
   [key: string]: unknown
 }

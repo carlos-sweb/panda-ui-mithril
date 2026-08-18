@@ -27,8 +27,8 @@ import { cx } from '../../../styled-system/css'
  * @param {import('mithril').Children} [vnode.attrs.off] - Contenido visible
  *   cuando el swap está inactivo (`swap-off`).
  * @param {boolean} [vnode.attrs.checked] - Estado controlado del checkbox.
- * @param {(e: Event) => void} [vnode.attrs.onchange] - Handler de cambio del
- *   checkbox (uso controlado).
+ * @param {(checked: boolean, e: Event) => void} [vnode.attrs.onchange] - Handler de cambio del
+ *   checkbox (uso controlado). Recibe el nuevo estado boolean y el evento DOM.
  * @param {string} [vnode.attrs.className] - Clase(s) extra añadida(s) tras la
  *   clase base `swap` y el output del recipe.
  * @param {object} [vnode.attrs] - Cualquier otro atributo se propaga al label.
@@ -44,7 +44,11 @@ export const Swap = {
       className: cx('swap', swap({ style, size }), active && 'swap-active', className),
       ...rest
     }, [
-      m('input', { type: 'checkbox', checked, onchange }),
+      m('input', {
+        type: 'checkbox',
+        checked,
+        onchange: onchange ? (e) => onchange(e.target.checked, e) : undefined
+      }),
       on && m('div', { className: 'swap-on' }, on),
       off && m('div', { className: 'swap-off' }, off),
       vnode.children,

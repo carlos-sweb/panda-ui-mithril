@@ -1,16 +1,31 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Title, Swap, Stack, Text, Block } from '../../../src/index.js'
+import { Title, Swap, Stack, Text, Block, Badge } from '../../../src/index.js'
 import { Sun, Moon } from 'lucide-mithril'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
 const heading = css({ fontSize: '0.875rem', fontWeight: '600', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em', opacity: 0.5 })
+const stateBadge = css({
+  padding: '0.5rem 1rem',
+  background: 'token(colors.base-300)',
+  borderRadius: 'var(--radius-box)',
+  fontSize: '0.875rem',
+  marginTop: '0.5rem',
+})
 
 const usageCode = `<Swap on="On" off="Off" style="rotate" />
 <Swap on="☀️" off="🌙" style="flip" />
 <Swap on={<Sun size={20} />} off={<Moon size={20} />} style="rotate" />`
+
+const controlledCode = `<Swap
+  on={<Sun size={20} />}
+  off={<Moon size={20} />}
+  style="rotate"
+  checked={state}
+  onchange={(checked, e) => { state = checked }}
+/>`
 
 const classRows = [
   { className: 'swap', prop: '<Swap on={...} off={...}>', type: 'Component', description: 'Swap container' },
@@ -25,6 +40,8 @@ const classRows = [
   { className: 'swap-md', prop: 'size="md" (default)', type: 'Size', description: 'Medium size', isDefault: true },
   { className: 'swap-lg', prop: 'size="lg"', type: 'Size', description: 'Large size' },
   { className: 'swap-xl', prop: 'size="xl"', type: 'Size', description: 'Extra large size' },
+  { className: '—', prop: 'checked', type: 'Prop', description: 'Controlled state of the checkbox' },
+  { className: '—', prop: 'onchange', type: 'Prop', description: 'Callback on toggle: (checked, e) => void' },
 ]
 
 export default {
@@ -32,8 +49,11 @@ export default {
   category: 'Actions',
   description: 'Swap elements with a transition animation.',
 
-  oninit() { loadPageI18n('swap') },
-  view() {
+  oninit(vnode) {
+    loadPageI18n('swap')
+    vnode.state.swapChecked = false
+  },
+  view(vnode) {
     return (
       <Stack gap="lg">
         <Title as="h1" size="2">Swap</Title>
@@ -66,8 +86,30 @@ export default {
         </Stack>
 
         <Block spacing="lg">
+          <Title as="h3" size="5">{t('controlledTitle')}</Title>
+          <Text size="sm" color="neutral" className={css({ marginBottom: '0.75rem' })}>
+            {t('controlledDescription')}
+          </Text>
+          <Stack direction="row" gap="sm" alignItems="center">
+            <Swap
+              on={<Sun size={20} />}
+              off={<Moon size={20} />}
+              style="rotate"
+              checked={vnode.state.swapChecked}
+              onchange={(checked) => { vnode.state.swapChecked = checked }}
+            />
+            <Text size="sm">State: {vnode.state.swapChecked ? 'on' : 'off'}</Text>
+          </Stack>
+        </Block>
+
+        <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
           <CodeExample code={usageCode} />
+        </Block>
+
+        <Block spacing="lg">
+          <Title as="h2" size="3">{t('controlledTitle')}</Title>
+          <CodeExample code={controlledCode} />
         </Block>
 
         <Block spacing="lg">

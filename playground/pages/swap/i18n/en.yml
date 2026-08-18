@@ -1,1 +1,3 @@
 paragraph: Swap elements with a transition animation.
+controlledTitle: Controlled (onchange)
+controlledDescription: "Use `checked` and `onchange` for controlled usage. The callback receives `(checked, e)` — the new boolean state and the raw DOM event."
