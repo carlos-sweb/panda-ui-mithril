@@ -17,9 +17,10 @@ const stateBadge = css({
 
 const usageCode = `<Swap on="On" off="Off" style="rotate" />
 <Swap on="☀️" off="🌙" style="flip" />
-<Swap on={<Sun size={20} />} off={<Moon size={20} />} style="rotate" />`
+<Swap on={<Sun size={20} />} off={<Moon size={20} />} style="rotate" />
 
-const controlledCode = `<Swap
+<!-- Controlled with onchange -->
+<Swap
   on={<Sun size={20} />}
   off={<Moon size={20} />}
   style="rotate"
@@ -105,11 +106,6 @@ export default {
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
           <CodeExample code={usageCode} />
-        </Block>
-
-        <Block spacing="lg">
-          <Title as="h2" size="3">{t('controlledTitle')}</Title>
-          <CodeExample code={controlledCode} />
         </Block>
 
         <Block spacing="lg">
