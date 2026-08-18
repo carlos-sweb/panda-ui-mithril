@@ -13,7 +13,7 @@ export const Menu = {
     const { size, horizontal, className, ...rest } = vnode.attrs
 
     return m('ul', {
-      className: cx('menu', menu({ size, horizontal }), className),
+      className: cx(menu({ size, horizontal }), className),
       ...rest
     }, vnode.children)
   }
