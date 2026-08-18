@@ -1,8 +1,8 @@
 import m from 'mithril'
-import { css } from '../../../styled-system/css'
+import { css , cx } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
 import { Stack, Title, Hero, HeroContent, HeroOverlay, Button, Text, Block } from '../../../src/index.js'
-import { cx } from '../../../src/utils/cx.js'
+
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
