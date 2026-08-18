@@ -22,6 +22,7 @@ export const modalRecipe = defineSlotRecipe({
 
       '&::backdrop': {
         backgroundColor: 'color-mix(in oklab, black 40%, transparent)',
+        backdropFilter: 'blur(2px)',
       },
       // Entrance: `@starting-style` supplies the pre-render state so the
       // transition into `[open]` values runs on the first open render.
@@ -106,7 +107,7 @@ export const modalRecipe = defineSlotRecipe({
       color: 'transparent',
       cursor: 'pointer',
       border: 'none',
-      background: 'none',
+      background: 'none',      
     },
     header: {
       paddingBottom: 'token(spacing.4)',

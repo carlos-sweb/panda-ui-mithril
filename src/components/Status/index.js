@@ -13,7 +13,7 @@ export const Status = {
     const { color, size, className, ...rest } = vnode.attrs
 
     return m('span', {
-      className: cx('status', status({ color, size }), className),
+      className: cx( status({ color, size }), className),
       ...rest
     })
   }
