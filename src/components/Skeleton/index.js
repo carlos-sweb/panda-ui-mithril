@@ -13,7 +13,7 @@ export const Skeleton = {
     const { text, className, ...rest } = vnode.attrs
 
     return m('div', {
-      className: cx('skeleton', text && 'skeleton-text', skeleton({ text: !!text }), className),
+      className: cx( text && 'skeleton-text', skeleton({ text: !!text }), className),
       ...rest
     })
   }
