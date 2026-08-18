@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { fileInput } from '../../../styled-system/recipes'
-import { cx } from '../../utils/cx'
+import { cx } from '../../../styled-system/css'
 
 /**
  * Componente FileInput. Selector de archivos (`<input type="file">`) con

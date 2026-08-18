@@ -3,7 +3,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-mithril'
 import {
   calendar,
 } from '../../../styled-system/recipes'
-import { cx } from '../../utils/cx'
+import { cx } from '../../../styled-system/css'
 
 const WEEKDAYS = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
 const MONTH_NAMES = [

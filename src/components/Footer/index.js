@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { footer } from '../../../styled-system/recipes'
-import { cx } from '../../utils/cx'
+import { cx } from '../../../styled-system/css'
 
 /**
  * Componente Footer. Pie de página en grid; `center` centra el contenido y

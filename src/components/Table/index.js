@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { table, tableOverflow } from '../../../styled-system/recipes'
-import { cx } from '../../utils/cx'
+import { cx } from '../../../styled-system/css'
 
 /**
  * Componente TableContainer. Wrapper con scroll horizontal para que la tabla

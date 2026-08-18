@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { kbd } from '../../../styled-system/recipes'
-import { cx } from '../../utils/cx'
+import { cx } from '../../../styled-system/css'
 
 /**
  * Componente Kbd. Representa una tecla del teclado (`<kbd>`), con tamaño
@@ -11,9 +11,9 @@ import { cx } from '../../utils/cx'
 export const Kbd = {
   view(vnode) {
     const { size, className, ...rest } = vnode.attrs
-
+        
     return m('kbd', {
-      className: cx('kbd', kbd({ size }), className),
+      className: cx( kbd({ size }), className),
       ...rest
     }, vnode.children)
   }

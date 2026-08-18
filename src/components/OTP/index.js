@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { otp } from '../../../styled-system/recipes'
-import { cx } from '../../utils/cx'
+import { cx } from '../../../styled-system/css'
 
 /**
  * Componente OTP. Entrada de código de un solo uso (one-time password) con

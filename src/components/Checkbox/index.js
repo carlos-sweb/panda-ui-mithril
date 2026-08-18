@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { checkbox } from '../../../styled-system/recipes'
-import { cx } from '../../utils/cx'
+import { cx } from '../../../styled-system/css'
 
 /**
  * Checkbox — a checkable box with native `checked`/`indeterminate` states.

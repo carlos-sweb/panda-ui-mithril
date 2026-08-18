@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { steps } from '../../../styled-system/recipes'
-import { cx } from '../../utils/cx'
+import { cx } from '../../../styled-system/css'
 
 /**
  * Componente Steps. Progreso por pasos, horizontal o vertical.

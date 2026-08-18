@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { status } from '../../../styled-system/recipes'
-import { cx } from '../../utils/cx'
+import { cx } from '../../../styled-system/css'
 
 /**
  * Componente Status. Punto indicador de estado con variante de color

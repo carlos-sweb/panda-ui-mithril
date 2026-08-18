@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { toggle } from '../../../styled-system/recipes'
-import { cx } from '../../utils/cx'
+import { cx } from '../../../styled-system/css'
 
 /**
  * Toggle — an on/off switch styled as a sliding checkbox.

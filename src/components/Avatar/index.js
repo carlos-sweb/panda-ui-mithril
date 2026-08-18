@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { avatar } from '../../../styled-system/recipes'
-import { cx } from '../../utils/cx'
+import { cx } from '../../../styled-system/css'
 
 /**
  * Componente Avatar. Imagen de perfil (o placeholder) con `size`, `shape`

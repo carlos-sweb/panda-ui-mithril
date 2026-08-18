@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { select } from '../../../styled-system/recipes'
-import { cx } from '../../utils/cx'
+import { cx } from '../../../styled-system/css'
 
 /**
  * Componente Select. Menú desplegable (`<select>`) con variantes de color,

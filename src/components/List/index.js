@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { list } from '../../../styled-system/recipes'
-import { cx } from '../../utils/cx'
+import { cx } from '../../../styled-system/css'
 
 /**
  * Componente List. Lista vertical con separadores entre filas; los hijos

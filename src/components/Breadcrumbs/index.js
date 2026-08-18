@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { breadcrumbs } from '../../../styled-system/recipes'
-import { cx } from '../../utils/cx'
+import { cx } from '../../../styled-system/css'
 
 /**
  * Componente Breadcrumbs. Miga de pan con separador en chevron entre items.

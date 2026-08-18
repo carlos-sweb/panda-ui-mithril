@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { Rating } from '../Rating/index.js'
-import { cx } from '../../utils/cx'
+import { cx } from '../../../styled-system/css'
 import { ratingGroup, ratingGroupLabel } from '../../../styled-system/recipes'
 
 /**

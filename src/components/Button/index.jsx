@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { button } from '../../../styled-system/recipes'
-import { cx } from '../../utils/cx'
+import { cx } from '../../../styled-system/css'
 
 /**
  * Componente Button. Botón con variantes de color, estilo y tamaño.
@@ -14,8 +14,7 @@ export const Button = {
     const { color, variant, size, active, disabled, block, wide, square, circle, borderWidth, className, ...rest } = vnode.attrs
     const isLink = !!vnode.attrs.href
 
-    const styles = cx(
-      'btn',
+    const styles = cx(      
       button({
         color,
         variant,

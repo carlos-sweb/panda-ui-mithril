@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { tabs } from '../../../styled-system/recipes'
-import { cx } from '../../utils/cx'
+import { cx } from '../../../styled-system/css'
 
 function resolveVariant(vnode) {
   const { variant, boxed, bordered, lifted } = vnode.attrs

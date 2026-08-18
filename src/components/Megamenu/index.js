@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { megamenu } from '../../../styled-system/recipes'
-import { cx } from '../../utils/cx'
+import { cx } from '../../../styled-system/css'
 
 /**
  * Resultado cacheado de `megamenu({})` — los subcomponentes sin variantes

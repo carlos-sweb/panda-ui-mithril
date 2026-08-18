@@ -1,7 +1,7 @@
 import m from 'mithril'
 import { X } from 'lucide-mithril'
 import { tag } from '../../../styled-system/recipes'
-import { cx } from '../../utils/cx'
+import { cx } from '../../../styled-system/css'
 
 /**
  * Tag — small interactive UI element to label, categorize, or filter content.
@@ -22,7 +22,7 @@ export const Tag = {
     const isOneChar = typeof children === 'string' && children.length === 1
 
     return m(clickable ? 'button' : 'span', {
-      className: cx('tag', tag({ variant, size, clickable, disabled, square: isOneChar }), className),
+      className: cx(tag({ variant, size, clickable, disabled, square: isOneChar }), className),
       type: clickable ? 'button' : undefined,
       disabled,
       ...rest,

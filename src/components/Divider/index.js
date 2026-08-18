@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { dividerPUM } from '../../../styled-system/recipes'
-import { cx } from '../../utils/cx'
+import { cx } from '../../../styled-system/css'
 
 /**
  * Componente Divider. Separador horizontal o vertical (role="separator"),

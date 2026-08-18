@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { badge } from '../../../styled-system/recipes'
-import { cx } from '../../utils/cx'
+import { cx } from '../../../styled-system/css'
 
 /**
  * Componente Badge. Etiqueta pequeña para marcar estado, categoría o conteo,
@@ -11,10 +11,9 @@ import { cx } from '../../utils/cx'
 export const Badge = {
   view(vnode) {
     const { color, variant, size, className, ...rest } = vnode.attrs
-
+    
     return m('span', {
       className: cx(
-        'badge',
         badge({ color, variant, size }),
         className
       ),

@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { aura } from '../../../styled-system/recipes'
-import { cx } from '../../utils/cx'
+import { cx } from '../../../styled-system/css'
 
 /**
  * Aura — a decorative animated glow/border wrapper component.
@@ -30,7 +30,7 @@ export const Aura = {
     const { variant, shape, size, className, ...rest } = vnode.attrs
 
     return m('div', {
-      className: cx('aura', variant && variant !== 'default' && `aura-${variant}`, aura({ variant, shape, size }), className),
+      className: cx(variant && variant !== 'default' && `aura-${variant}`, aura({ variant, shape, size }), className),
       ...rest
     }, vnode.children)
   }

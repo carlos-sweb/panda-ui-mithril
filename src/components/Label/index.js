@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { label } from '../../../styled-system/recipes'
-import { cx } from '../../utils/cx'
+import { cx } from '../../../styled-system/css'
 
 /**
  * Componente Label. Etiqueta para un campo de formulario. Con `floating`

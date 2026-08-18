@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { join, joinItem } from '../../../styled-system/recipes'
-import { cx } from '../../utils/cx'
+import { cx } from '../../../styled-system/css'
 
 /**
  * Componente Join. Agrupa elementos adyacentes con esquinas unificadas;

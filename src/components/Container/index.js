@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { containerPUM } from '../../../styled-system/recipes'
-import { cx } from '../../utils/cx'
+import { cx } from '../../../styled-system/css'
 
 export const Container = {
   view(vnode) {

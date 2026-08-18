@@ -1,7 +1,7 @@
 import m from 'mithril'
 import { LoaderCircle } from 'lucide-mithril'
 import { loading } from '../../../styled-system/recipes'
-import { cx } from '../../utils/cx'
+import { cx } from '../../../styled-system/css'
 
 
 /**

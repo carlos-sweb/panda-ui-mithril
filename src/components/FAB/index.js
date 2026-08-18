@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { button , fab, fabLabel } from '../../../styled-system/recipes'
-import { cx } from '../../utils/cx'
+import { cx } from '../../../styled-system/css'
 
 // TODO (noted 2026-08-02, needs a closer look later): visuals/CSS are fine,
 // but event handling is minimal — currently relies entirely on native

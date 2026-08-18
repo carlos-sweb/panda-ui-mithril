@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { menu } from '../../../styled-system/recipes'
-import { cx } from '../../utils/cx'
+import { cx } from '../../../styled-system/css'
 
 /**
  * Componente Menu. Menú de navegación (`<ul>`) con tamaño y orientación

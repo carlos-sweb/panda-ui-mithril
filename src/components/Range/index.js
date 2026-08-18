@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { range } from '../../../styled-system/recipes'
-import { cx } from '../../utils/cx'
+import { cx } from '../../../styled-system/css'
 
 /**
  * Componente Range. Control deslizante (`<input type="range">`) con variantes

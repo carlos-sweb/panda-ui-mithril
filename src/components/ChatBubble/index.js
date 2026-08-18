@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { ChatBubblePUM } from '../../../styled-system/recipes'
-import { cx } from '../../utils/cx'
+import { cx } from '../../../styled-system/css'
 
 /**
  * Componente Chat. Contenedor del hilo de conversación: agrupa el avatar,

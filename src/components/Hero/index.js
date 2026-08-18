@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { hero } from '../../../styled-system/recipes'
-import { cx } from '../../utils/cx'
+import { cx } from '../../../styled-system/css'
 
 /**
  * Componente Hero. Sección hero de ancho completo; los hijos HeroOverlay y

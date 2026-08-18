@@ -1,7 +1,7 @@
 import m from 'mithril'
 import { toggle } from '../../../styled-system/recipes'
 import { checkbox } from '../../../styled-system/recipes'
-import { cx } from '../../utils/cx'
+import { cx } from '../../../styled-system/css'
 
 // The original implementation's `theme-controller` class carries NO CSS of its own — theming
 // works via a build-time plugin that generates a `:root:has(input.theme-

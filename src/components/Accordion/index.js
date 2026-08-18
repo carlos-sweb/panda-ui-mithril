@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { collapse, collapseTitle } from '../../../styled-system/recipes'
-import { cx } from '../../utils/cx'
+import { cx } from '../../../styled-system/css'
 
 /**
  * Componente Accordion. Panel colapsable accionado por un `<input>` oculto

@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { diff } from '../../../styled-system/recipes'
-import { cx } from '../../utils/cx'
+import { cx } from '../../../styled-system/css'
 
 // The original implementation drives this with a `<div class="diff-resizer">` that uses the
 // native CSS `resize` property (a tiny corner-drag handle) combined with

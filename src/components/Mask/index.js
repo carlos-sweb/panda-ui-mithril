@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { mask } from '../../../styled-system/recipes'
-import { cx } from '../../utils/cx'
+import { cx } from '../../../styled-system/css'
 
 /**
  * Componente Mask. Aplica una forma recortada (CSS mask) a una imagen.

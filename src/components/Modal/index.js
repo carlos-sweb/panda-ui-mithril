@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { modal, modalCloseButton } from './../../../styled-system/recipes'
-import { cx } from '../../utils/cx'
+import { cx } from '../../../styled-system/css'
 import { ButtonClose } from '../ButtonClose/index.js'
 
 // Slightly above the 0.2s exit animation — safety net so the dialog never

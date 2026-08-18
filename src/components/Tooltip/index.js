@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { tooltip } from '../../../styled-system/recipes'
-import { cx } from '../../utils/cx'
+import { cx } from '../../../styled-system/css'
 
 /**
  * Tooltip. Muestra información adicional (`tip`) al hacer hover, al recibir

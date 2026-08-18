@@ -1,7 +1,7 @@
 import m from 'mithril'
 import { join } from '../../../styled-system/recipes'
 import { button } from '../../../styled-system/recipes'
-import { cx } from '../../utils/cx'
+import { cx } from '../../../styled-system/css'
 
 /**
  * Componente Pagination. Contenedor `join` que agrupa botones de paginación

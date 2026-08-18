@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { text } from '../../../styled-system/recipes'
-import { cx } from '../../utils/cx'
+import { cx } from '../../../styled-system/css'
 
 /**
  * Text — typography helper component.
@@ -24,7 +24,7 @@ export const Text = {
     } = vnode.attrs
 
     return m(as, {
-      className: cx('text', text({
+      className: cx(text({
         size,
         color,
         align,

@@ -2,7 +2,7 @@ import m from 'mithril'
 import {
   stat,
 } from '../../../styled-system/recipes'
-import { cx } from '../../utils/cx'
+import { cx } from '../../../styled-system/css'
 
 /**
  * Componente Stats. Contenedor en grid de una o más Stats, en horizontal

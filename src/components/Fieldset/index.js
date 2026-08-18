@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { fieldset, fieldsetLegend } from '../../../styled-system/recipes'
-import { cx } from '../../utils/cx'
+import { cx } from '../../../styled-system/css'
 
 /**
  * Componente Fieldset. Agrupa campos de formulario relacionados dentro de un

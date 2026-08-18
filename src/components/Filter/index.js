@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { button , filter } from '../../../styled-system/recipes'
-import { cx } from '../../utils/cx'
+import { cx } from '../../../styled-system/css'
 
 /**
  * Componente Filter. Contenedor de un grupo de filtros con opciones

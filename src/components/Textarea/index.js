@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { textarea } from '../../../styled-system/recipes'
-import { cx } from '../../utils/cx'
+import { cx } from '../../../styled-system/css'
 
 /**
  * Componente Textarea. Área de texto multilínea (`<textarea>`) con variantes

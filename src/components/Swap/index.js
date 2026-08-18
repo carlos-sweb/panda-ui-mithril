@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { swap } from '../../../styled-system/recipes'
-import { cx } from '../../utils/cx'
+import { cx } from '../../../styled-system/css'
 
 /**
  * Swap — toggle on/off que intercambia dos contenidos (patrón inspirado en daisyUI).

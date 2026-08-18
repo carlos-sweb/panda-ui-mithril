@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { card } from '../../../styled-system/recipes'
-import { cx } from '../../utils/cx'
+import { cx } from '../../../styled-system/css'
 
 /**
  * Componente Card. Contenedor de contenido con variantes de tamaño, borde

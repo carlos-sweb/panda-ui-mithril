@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { toast } from '../../../styled-system/recipes'
-import { cx } from '../../utils/cx'
+import { cx } from '../../../styled-system/css'
 
 const VERTICALS = ['top', 'middle', 'bottom']
 const HORIZONTALS = ['start', 'center', 'end']

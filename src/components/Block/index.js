@@ -1,10 +1,10 @@
 import m from 'mithril'
 import { block } from '../../../styled-system/recipes'
-import { cx } from '../../utils/cx'
+import { cx } from '../../../styled-system/css'
 
 export const Block = {
   view(vnode) {
     const { spacing, className, ...rest } = vnode.attrs
-    return m('div', { className: cx('block', block({ spacing }), className), ...rest }, vnode.children)
+    return m('div', { className: cx( block({ spacing }), className), ...rest }, vnode.children)
   }
 }

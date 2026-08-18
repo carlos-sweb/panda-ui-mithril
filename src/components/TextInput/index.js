@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { textInput } from '../../../styled-system/recipes'
-import { cx } from '../../utils/cx'
+import { cx } from '../../../styled-system/css'
 
 /**
  * Componente TextInput. Campo de texto de una línea (`<input type="text">`)

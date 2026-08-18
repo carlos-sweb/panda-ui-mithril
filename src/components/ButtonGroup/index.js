@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { buttonGroup } from '../../../styled-system/recipes'
-import { cx } from '../../utils/cx'
+import { cx } from '../../../styled-system/css'
 
 /**
  * ButtonGroup — agrupa botones horizontalmente unificando bordes.
@@ -13,7 +13,7 @@ export const ButtonGroup = {
     const { color, variant, size, vertical, borderWidth, className, ...rest } = vnode.attrs
 
     return m('div', {
-      className: cx('btn-group', buttonGroup({ vertical }), className),
+      className: cx( buttonGroup({ vertical }), className),
       ...rest,
     }, (Array.isArray(vnode.children) ? vnode.children : [vnode.children]).map((child) => {
       if (!child || typeof child === 'string' || typeof child === 'number') return child

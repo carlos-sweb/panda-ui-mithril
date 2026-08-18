@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { stackPUM } from '../../../styled-system/recipes'
-import { cx } from '../../utils/cx'
+import { cx } from '../../../styled-system/css'
 
 /**
  * Stack — apila hijos vertical u horizontalmente con gap configurable
@@ -13,7 +13,7 @@ export const Stack = {
     const { direction, gap, align, justify, className, ...rest } = vnode.attrs
 
     return m('div', {
-      className: cx('stack', stackPUM({ direction, gap, align, justify }), className),
+      className: cx(  stackPUM({ direction, gap, align, justify }), className ),
       ...rest,
     }, vnode.children)
   }

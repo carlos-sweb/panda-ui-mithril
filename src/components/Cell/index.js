@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { gridPUM } from '../../../styled-system/recipes'
-import { cx } from '../../utils/cx'
+import { cx } from '../../../styled-system/css'
 
 export const Cell = {
   view(vnode) {

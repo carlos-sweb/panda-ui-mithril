@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { alert } from '../../../styled-system/recipes'
-import { cx } from '../../utils/cx'
+import { cx } from '../../../styled-system/css'
 
 /**
  * Alert — a feedback banner with semantic color variants.
@@ -34,7 +34,7 @@ export const Alert = {
     
     return m('div', {
       role: 'alert',
-      className: cx('alert', alert({ variant, color, direction }), className),
+      className: cx( alert({ variant, color, direction }), className ),
       ...rest
     }, vnode.children)
   }

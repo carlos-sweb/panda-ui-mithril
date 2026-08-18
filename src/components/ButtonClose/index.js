@@ -1,7 +1,7 @@
 import m from 'mithril'
 import { X } from 'lucide-mithril'
 import { Button } from '../Button/index.jsx'
-import { cx } from '../../utils/cx'
+import { cx } from '../../../styled-system/css'
 
 const iconSizes = { xs: 12, sm: 14, md: 16, lg: 18, xl: 20 }
 

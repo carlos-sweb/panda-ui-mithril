@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { title } from '../../../styled-system/recipes'
-import { cx } from '../../utils/cx'
+import { cx } from '../../../styled-system/css'
 
 const tagSizes = { h1: '1', h2: '2', h3: '3', h4: '4', h5: '5', h6: '6', p: '7', span: '7', div: '7' }
 
@@ -28,7 +28,7 @@ export const Title = {
     const resolvedSize = size ?? tagSizes[as] ?? '1'
 
     return m(as, {
-      className: cx('title', title({
+      className: cx(title({
         size: resolvedSize,
         color,
         align,

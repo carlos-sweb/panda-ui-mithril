@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { navbar } from '../../../styled-system/recipes'
-import { cx } from '../../utils/cx'
+import { cx } from '../../../styled-system/css'
 
 /**
  * Componente Navbar. Barra de navegación de tres zonas; los subcomponentes
