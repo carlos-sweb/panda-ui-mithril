@@ -13,7 +13,7 @@ export const Breadcrumbs = {
     const { className, items, ...rest } = vnode.attrs
 
     return m('div', {
-      className: cx('breadcrumbs', breadcrumbs(), className),
+      className: cx(  breadcrumbs(), className),
       ...rest
     }, m('ul', null, items
       ? items.map((item, i) =>
