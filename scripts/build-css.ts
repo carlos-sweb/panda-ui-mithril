@@ -2,7 +2,9 @@ import postcss from 'postcss/lib/postcss'
 import pandacss from '@pandacss/dev/postcss'
 import atImport from 'postcss-import'
 import pruneVar from 'postcss-prune-var'
+import url from 'postcss-url'
 import nesting from 'postcss-nesting'
+import cascadeLayers from '@csstools/postcss-cascade-layers'
 import autoprefixer from 'autoprefixer'
 import stylelint from 'stylelint'
 import { transform, type Targets } from 'lightningcss'
@@ -21,20 +23,23 @@ const USAGE = `Uso:
   bun run scripts/build-css.ts [opciones]
 
 Opciones:
-  -i, --input=<ruta>    CSS de entrada (entry de Panda). Default: playground/style.css
-  -o, --output=<ruta>   Ruta de salida. Default: styled-system/styles.css
-  --target=<target>     "all" (solo minify, sin transform) o una expresión JS de
-                        targets de lightningcss. Default: "safari: 17 << 16" (Safari 2024)
-                        Ejemplos:
-                          --target=all
-                          --target="safari: 17 << 16"
-                          --target="chrome: 128 << 16, safari: 17 << 16"
-  -h, --help            Muestra esta ayuda
+  -i, --input=<ruta>     CSS de entrada (entry de Panda). Default: playground/style.css
+  -o, --output=<ruta>    Ruta de salida. Default: styled-system/styles.css
+  --target=<target>      "all" (solo minify, sin transform) o una expresión JS de
+                         targets de lightningcss. Default: "safari: 17 << 16" (Safari 2024)
+                         Ejemplos:
+                           --target=all
+                           --target="safari: 17 << 16"
+                           --target="chrome: 128 << 16, safari: 17 << 16"
+  --no-minify            Desactiva minificación (CSS con saltos de línea).
+                         Útil para WebKitGTK que falla con líneas muy largas.
+  -h, --help             Muestra esta ayuda
 
 Ejemplos:
   bun run scripts/build-css.ts
   bun run scripts/build-css.ts -o=styled-system/styles.css --target=all
   bun run scripts/build-css.ts -o=myproject/custom.css --target="safari: 17 << 16"
+  bun run scripts/build-css.ts --no-minify --target="safari: 17 << 16"
 `
 
 // Convierte una expresión JS de targets ("safari: 17 << 16") en un objeto
@@ -56,6 +61,7 @@ interface CliOptions {
   input: string
   output: string
   targets: Targets | undefined
+  minify: boolean
   help: boolean
 }
 
@@ -65,6 +71,7 @@ function parseArgv(argv: string[]): CliOptions {
     input: resolve(ROOT, 'playground/style.css'),
     output: resolve(ROOT, 'styled-system/styles.css'),
     targets: SAFARI_2024,
+    minify: true,
     help: false,
   }
 
@@ -90,7 +97,11 @@ function parseArgv(argv: string[]): CliOptions {
         break
       case '--target':
         if (!value) throw new Error('--target requiere un valor: --target=all | --target="safari: 17 << 16"')
-        opts.targets = value === 'all' ? undefined : evalTarget(value)
+        // Strip comillas que Bun shell agrega al pasar args
+        opts.targets = value.replace(/^['"]|['"]$/g, '') === 'all' ? undefined : evalTarget(value.replace(/^['"]|['"]$/g, ''))
+        break
+      case '--no-minify':
+        opts.minify = false
         break
       default:
         throw new Error(`Argumento desconocido: ${arg}\n\n${USAGE}`)
@@ -121,8 +132,15 @@ async function main() {
   const result = await postcss([
     pandacss({ configPath: resolve(ROOT, 'panda.config.ts'), cwd: ROOT }), // codegen + extract + genera el CSS de Panda
     atImport(), // resolver @import
+    url({
+        filter: /\.(woff|woff2|eot|ttf|otf)(\?.*)?$/,
+        url: 'copy',
+        assetsPath: 'fonts', // Se copiarán en dist/fonts (o relativo a tu CSS de salida)
+        useHash: true,       // Opcional: añade hash para cache-busting (fuente.a1b2c3.woff2)
+      },),
     pruneVar(),
     nesting(),
+    //cascadeLayers(),
     autoprefixer(),
     //stylelint(),
     reporter({ clearReportedMessages: true }), // reporter al final para capturar avisos
@@ -134,10 +152,11 @@ async function main() {
   // lightningcss: minify + transforma a la sintaxis soportada por el target
   // (mismo motor que `panda cssgen --lightningcss`, aquí con Safari 2024).
   // Con --target=all (targets: undefined) no transforma nada, solo minifica.
+  // Con --no-minify desactiva minificación (útil para WebKitGTK que falla con líneas muy largas).
   const { code } = transform({
     filename: basename(opts.output),
     code: Buffer.from(result.css),
-    minify: true,
+    minify: opts.minify !== false,
     ...(opts.targets ? { targets: opts.targets } : {}),
   })
 
