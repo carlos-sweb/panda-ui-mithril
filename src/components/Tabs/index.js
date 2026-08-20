@@ -4,7 +4,7 @@ import { cx } from '../../../styled-system/css'
 
 function resolveVariant(vnode) {
   const { variant, boxed, bordered, lifted } = vnode.attrs
-  return boxed ? 'box' : bordered ? 'border' : lifted ? 'lift' : variant
+  return boxed ? 'box' : bordered ? 'border' : lifted ? 'lift' : variant ?? 'box'
 }
 
 /**
