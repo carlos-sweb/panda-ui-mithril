@@ -2,13 +2,11 @@ import m from 'mithril'
 import hljs from 'highlight.js/lib/core'
 import xml from 'highlight.js/lib/languages/xml'
 import javascript from 'highlight.js/lib/languages/javascript'
-import jsx from '../jsx-language.js'
 import { css } from '../../styled-system/css'
 
 // Register languages
 hljs.registerLanguage('xml', xml)
 hljs.registerLanguage('javascript', javascript)
-hljs.registerLanguage('jsx', jsx)
 
 const wrapper = css({ position: 'relative' })
 

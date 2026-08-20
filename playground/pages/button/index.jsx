@@ -259,7 +259,7 @@ export default {
           <Tab ref="jsx" >Jsx</Tab>
           <Tab ref="js" >Js</Tab>
           <TabContent ref="jsx">            
-            <CodeExample type="jsx" code={usageCodeJsx} />
+            <CodeExample type="xml" code={usageCodeJsx} />
           </TabContent>
           <TabContent ref="js">            
             <CodeExample type="javascript" code={usageCodeJavascript} />
