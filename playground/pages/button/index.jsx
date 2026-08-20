@@ -12,39 +12,53 @@ const usageCodeJsx = `import m from 'mithril'
 import { Button } from 'panda-ui-mithril'
 import { Heart } from 'lucide-mithril'
 
-// Simple button
-<Button>Click me</Button>
+export const MyPage = {
+  view() {
+    return (
+      <div>
+        {/* Simple button */}
+        <Button>Click me</Button>
 
-// With color
-<Button color="primary">Primary</Button>
+        {/* With color */}
+        <Button color="primary">Primary</Button>
 
-// With variant and size
-<Button variant="outline" color="error" size="lg">Error</Button>
+        {/* With variant and size */}
+        <Button variant="outline" color="error" size="lg">Error</Button>
 
-// With icon
-<Button><Heart size={20} /> Like</Button>
+        {/* With icon */}
+        <Button><Heart size={20} /> Like</Button>
 
-// Circle button
-<Button circle><Heart size={20} /></Button>`
+        {/* Circle button */}
+        <Button circle><Heart size={20} /></Button>
+      </div>
+    )
+  }
+}`
 
 const usageCodeJavascript = `import m from 'mithril'
 import { Button } from 'panda-ui-mithril'
 import { Heart } from 'lucide-mithril'
 
-// Simple button
-m(Button, null, 'Click me')
+export const MyPage = {
+  view() {
+    return m('div', null, [
+      // Simple button
+      m(Button, null, 'Click me'),
 
-// With color
-m(Button, { color: 'primary' }, 'Primary')
+      // With color
+      m(Button, { color: 'primary' }, 'Primary'),
 
-// With variant and size
-m(Button, { variant: 'outline', color: 'error', size: 'lg' }, 'Error')
+      // With variant and size
+      m(Button, { variant: 'outline', color: 'error', size: 'lg' }, 'Error'),
 
-// With icon
-m(Button, null, [m(Heart, { size: 20 }), ' Like'])
+      // With icon
+      m(Button, null, [m(Heart, { size: 20 }), ' Like']),
 
-// Circle button
-m(Button, { circle: true }, m(Heart, { size: 20 }))`
+      // Circle button
+      m(Button, { circle: true }, m(Heart, { size: 20 }))
+    ])
+  }
+}`
 
 const classRows = [
   { className: 'btn', prop: '<Button>', type: 'Component', description: 'Button' },
