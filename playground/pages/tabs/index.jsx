@@ -5,28 +5,41 @@ import { Stack, Title, Tabs, Tab, TabContent, Text, Block } from '../../../src/i
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
-const usageCodeUncontrolled = `<Tabs defaultActive="info">
-  <Tab ref="info">Info</Tab>
-  <Tab ref="settings">Settings</Tab>
-  <Tab ref="profile">Profile</Tab>
-  <TabContent ref="info">Content for info tab</TabContent>
-  <TabContent ref="settings">Content for settings tab</TabContent>
-  <TabContent ref="profile">Content for profile tab</TabContent>
-</Tabs>`
+const usageCodeJsx = `import m from 'mithril'
+import { Tabs, Tab, TabContent } from 'panda-ui-mithril'
 
-const usageCodeControlled = `// Controlled mode
-<Tabs active={currentTab} onActiveChange={setCurrentTab}>
-  <Tab ref="info">Info</Tab>
-  <Tab ref="settings">Settings</Tab>
-  <TabContent ref="info">Content for info</TabContent>
-  <TabContent ref="settings">Content for settings</TabContent>
-</Tabs>`
+export const MyPage = {
+  view() {
+    return (
+      <div>
+        <Tabs defaultActive="info">
+          <Tab ref="info">Info</Tab>
+          <Tab ref="settings">Settings</Tab>
+          <Tab ref="profile">Profile</Tab>
+          <TabContent ref="info">Content for info tab</TabContent>
+          <TabContent ref="settings">Content for settings tab</TabContent>
+          <TabContent ref="profile">Content for profile tab</TabContent>
+        </Tabs>
+      </div>
+    )
+  }
+}`
 
-const usageCodeKeyboard = `// Keyboard navigation (built-in)
-// ArrowLeft/Right: Move between tabs
-// Home/End: Jump to first/last tab
-// Enter/Space: Activate focused tab
-// Tab: Move focus to active content`
+const usageCodeJavascript = `import m from 'mithril'
+import { Tabs, Tab, TabContent } from 'panda-ui-mithril'
+
+export const MyPage = {
+  view() {
+    return m(Tabs, { defaultActive: 'info' }, [
+      m(Tab, { ref: 'info' }, 'Info'),
+      m(Tab, { ref: 'settings' }, 'Settings'),
+      m(Tab, { ref: 'profile' }, 'Profile'),
+      m(TabContent, { ref: 'info' }, 'Content for info tab'),
+      m(TabContent, { ref: 'settings' }, 'Content for settings tab'),
+      m(TabContent, { ref: 'profile' }, 'Content for profile tab')
+    ])
+  }
+}`
 
 const classRows = [
   { className: 'tabs', prop: '<Tabs boxed|bordered|lifted>', type: 'Component', description: 'Tabs container' },
@@ -219,12 +232,16 @@ export default {
         {/* Usage Examples */}
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
-          <Title as="h4" size="5">Uncontrolled Mode</Title>
-          <CodeExample code={usageCodeUncontrolled} />
-          <Title as="h4" size="5">Controlled Mode</Title>
-          <CodeExample code={usageCodeControlled} />
-          <Title as="h4" size="5">Keyboard Navigation</Title>
-          <CodeExample code={usageCodeKeyboard} />
+          <Tabs defaultActive="jsx" lifted size="lg">
+            <Tab ref="jsx">Jsx</Tab>
+            <Tab ref="js">Js</Tab>
+            <TabContent ref="jsx">
+              <CodeExample type="jsx" code={usageCodeJsx} />
+            </TabContent>
+            <TabContent ref="js">
+              <CodeExample type="javascript" code={usageCodeJavascript} />
+            </TabContent>
+          </Tabs>
         </Block>
 
         {/* Class Reference */}
