@@ -8,23 +8,22 @@ interface TabsVariant {
  * @default "md"
  */
 size: "xs" | "sm" | "md" | "lg" | "xl"
-active: boolean
 }
 
 type TabsVariantMap = {
   [key in keyof TabsVariant]: Array<TabsVariant[key]>
 }
 
-type TabsSlot = "tabs" | "tab" | "content"
+
 
 export type TabsVariantProps = {
   [key in keyof TabsVariant]?: ConditionalValue<TabsVariant[key]> | undefined
 }
 
 export interface TabsRecipe {
-  __slot: TabsSlot
+  
   __type: TabsVariantProps
-  (props?: TabsVariantProps): Pretty<Record<TabsSlot, string>>
+  (props?: TabsVariantProps): string
   raw: (props?: TabsVariantProps) => TabsVariantProps
   variantMap: TabsVariantMap
   variantKeys: Array<keyof TabsVariant>

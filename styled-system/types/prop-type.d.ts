@@ -152,7 +152,7 @@ export interface UtilityValues {
 	transitionProperty: "common" | "colors" | "size" | "position" | "background";
 	transition: "all" | "common" | "size" | "position" | "background" | "colors" | "opacity" | "shadow" | "transform";
 	animation: Tokens["animations"];
-	animationName: "pulse" | "spin" | "ping" | "bounce" | "progress-bar" | "fade-in" | "fade-out" | "slide-in" | "skeleton" | "radio" | "toast" | "aura" | "aura-glow" | "aura-glow-after" | "modal-exit" | "modal-backdrop-exit";
+	animationName: "pulse" | "spin" | "ping" | "bounce" | "progress-bar" | "fade-in" | "fade-out" | "slide-in" | "skeleton" | "radio" | "toast" | "aura" | "aura-glow" | "aura-glow-after" | "modal-exit" | "modal-backdrop-exit" | "tab-fade-in" | "tab-indicator";
 	animationTimingFunction: Tokens["easings"];
 	animationDuration: Tokens["durations"];
 	animationDelay: Tokens["durations"];

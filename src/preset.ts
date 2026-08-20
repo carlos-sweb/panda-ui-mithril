@@ -92,7 +92,6 @@ export const pumPreset = definePreset({
         rating : ratingRecipe ,
         steps : stepsRecipe , 
         table : tableRecipe ,   
-        tabs : tabsRecipe ,  
         timeline : timelineRecipe  ,
         stat : statRecipe,
       },
@@ -153,7 +152,8 @@ export const pumPreset = definePreset({
         modalCloseButton : modalCloseButtonRecipe,
         boxPUM : boxRecipe ,
         swap : swapRecipe,
-        tableOverflow : tableOverflowRecipe
+        tableOverflow : tableOverflowRecipe,
+        tabs : tabsRecipe,
     },
     extend: {
       tokens: {
@@ -310,6 +310,14 @@ export const pumPreset = definePreset({
         'modal-backdrop-exit': {
           '0%': { opacity: '1' },
           '100%': { opacity: '0' },
+        },
+        'tab-fade-in': {
+          from: { opacity: '0', transform: 'translateY(-4px)' },
+          to: { opacity: '1', transform: 'translateY(0)' },
+        },
+        'tab-indicator': {
+          from: { transform: 'scaleX(0)' },
+          to: { transform: 'scaleX(1)' },
         },
       },
     },

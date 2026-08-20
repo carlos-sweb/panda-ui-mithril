@@ -1,4 +1,4 @@
-import { defineSlotRecipe } from '@pandacss/dev'
+import { defineRecipe } from '@pandacss/dev'
 
 // Scoped port: this project drives tabs via a controlled `active` prop
 // (real JS state) rather than the original's hidden input[radio]/label CSS-only
@@ -12,17 +12,16 @@ const activeSelector = '&.tab-active, &[aria-selected="true"], &[aria-current="t
 const activeBeforeSelector = '&.tab-active:before, &[aria-selected="true"]:before, &[aria-current="true"]:before'
 const inactiveSelector = '&:not(.tab-active, [aria-selected="true"], [aria-current="true"], :hover)'
 
-export const tabsRecipe = defineSlotRecipe({
-  className : 'tabs',
-  slots: ['tabs', 'tab', 'content'],
+export const tabsRecipe = defineRecipe({
+  className: 'tabs',
   base: {
-    tabs: {
-      display: 'flex',
-      flexWrap: 'wrap',
-      '--tab-height': 'token(spacing.10)',
-      '--tab-p': 'token(spacing.3)',
-    },
-    tab: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    '--tab-height': 'token(spacing.10)',
+    '--tab-p': 'token(spacing.3)',
+
+    // Tab styles via descendant
+    '& .tabs-tab': {
       position: 'relative',
       display: 'inline-flex',
       flexWrap: 'wrap',
@@ -52,7 +51,9 @@ export const tabsRecipe = defineSlotRecipe({
         outlineOffset: '-5px',
       },
     },
-    content: {
+
+    // Content styles via descendant
+    '& .tabs-content': {
       order: '1',
       display: 'none',
       width: '100%',
@@ -61,30 +62,31 @@ export const tabsRecipe = defineSlotRecipe({
       borderStyle: 'solid',
       borderColor: 'transparent',
     },
+
+    // Active content
+    '& .tabs-content.active': {
+      display: 'block',
+    }
   },
   variants: {
     variant: {
       box: {
-        tabs: {
-          backgroundColor: 'base-200',
-          padding: 'token(spacing.1)',
-          borderRadius: 'calc(min(var(--tab-height) / 2, var(--radius-field)) + 0.25rem)',
-        },
-        tab: {
+        backgroundColor: 'base-200',
+        padding: 'token(spacing.1)',
+        borderRadius: 'calc(min(var(--tab-height) / 2, var(--radius-field)) + 0.25rem)',
+        '& .tabs-tab': {
           borderRadius: 'var(--radius-field)',
           [activeSelector]: {
             backgroundColor: 'base-100',
             boxShadow: '0 1px 3px color-mix(in oklab, black 15%, transparent)',
           },
         },
-        content: {},
+        '& .tabs-content': {},
       },
       border: {
-        tabs: {
-          borderBottomWidth: '1px',
-          borderColor: 'base-300',
-        },
-        tab: {
+        borderBottomWidth: '1px',
+        borderColor: 'base-300',
+        '& .tabs-tab': {
           '&:before': {
             content: '""',
             position: 'absolute',
@@ -100,11 +102,10 @@ export const tabsRecipe = defineSlotRecipe({
             backgroundColor: 'currentColor',
           },
         },
-        content: {},
+        '& .tabs-content': {},
       },
       lift: {
-        tabs: {},
-        tab: {
+        '& .tabs-tab': {
           borderStyle: 'solid',
           borderWidth: '0 0 var(--border, 1px) 0',
           borderColor: 'transparent transparent token(colors.base-300) transparent',
@@ -118,7 +119,7 @@ export const tabsRecipe = defineSlotRecipe({
             backgroundColor: 'base-100',
           },
         },
-        content: {
+        '& .tabs-content': {
           marginTop: 'calc(-1 * var(--border, 1px))',
           borderColor: 'base-300',
           borderStartStartRadius: '0',
@@ -129,14 +130,11 @@ export const tabsRecipe = defineSlotRecipe({
       },
     },
     size: {
-      xs: { tabs: { '--tab-height': 'token(spacing.6)', '--tab-p': 'token(spacing.1.5)' } },
-      sm: { tabs: { '--tab-height': 'token(spacing.8)', '--tab-p': 'token(spacing.2)' } },
-      md: { tabs: { '--tab-height': 'token(spacing.10)', '--tab-p': 'token(spacing.3)' } },
-      lg: { tabs: { '--tab-height': 'token(spacing.12)', '--tab-p': 'token(spacing.4)' } },
-      xl: { tabs: { '--tab-height': 'token(spacing.14)', '--tab-p': 'token(spacing.5)' } },
-    },
-    active: {
-      true: { content: { display: 'block' } },
+      xs: { '--tab-height': 'token(spacing.6)', '--tab-p': 'token(spacing.1.5)' },
+      sm: { '--tab-height': 'token(spacing.8)', '--tab-p': 'token(spacing.2)' },
+      md: { '--tab-height': 'token(spacing.10)', '--tab-p': 'token(spacing.3)' },
+      lg: { '--tab-height': 'token(spacing.12)', '--tab-p': 'token(spacing.4)' },
+      xl: { '--tab-height': 'token(spacing.14)', '--tab-p': 'token(spacing.5)' },
     },
   },
   defaultVariants: {
