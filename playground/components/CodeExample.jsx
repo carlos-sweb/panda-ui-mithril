@@ -1,12 +1,14 @@
 import m from 'mithril'
 import hljs from 'highlight.js/lib/core'
 import xml from 'highlight.js/lib/languages/xml'
+import javascript from 'highlight.js/lib/languages/javascript'
+import jsx from '../jsx-language.js'
 import { css } from '../../styled-system/css'
 
-// Our examples are bare JSX tag fragments (no imports, no render() call), so
-// the 'javascript' grammar can't parse them — they're markup, not statements.
-// 'xml' highlights tags/attributes/strings correctly for this shape.
+// Register languages
 hljs.registerLanguage('xml', xml)
+hljs.registerLanguage('javascript', javascript)
+hljs.registerLanguage('jsx', jsx)
 
 const wrapper = css({ position: 'relative' })
 
@@ -37,8 +39,8 @@ const languageTag = css({
 
 export const CodeExample = {
   view(vnode) {
-    const { code } = vnode.attrs
-    const highlighted = hljs.highlight(code.trim(), { language: 'xml' }).value
+    const { code ,type } = vnode.attrs
+    const highlighted = hljs.highlight(code.trim(), { language: type ? type : "xml" }).value
 
     return m('div', { className: wrapper }, [
       m('span', { className: languageTag }, 'JSX'),
