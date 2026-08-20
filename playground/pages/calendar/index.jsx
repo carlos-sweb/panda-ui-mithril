@@ -1,7 +1,7 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Calendar, Text, Block } from '../../../src/index.js'
+import { Stack, Title, Calendar, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
@@ -13,10 +13,33 @@ const surface = css({
   boxShadow: '0 4px 12px color-mix(in oklab, black 15%, transparent)',
 })
 
-const usageCode = `<Calendar
-  value={selectedDate}
-  onchange={(date) => { selectedDate = date }}
-/>`
+const usageCodeJsx = `import m from 'mithril'
+import { Calendar } from 'panda-ui-mithril'
+
+export const MyPage = {
+  view() {
+    return (
+      <div>
+        <Calendar
+          value={selectedDate}
+          onchange={(date) => { selectedDate = date }}
+        />
+      </div>
+    )
+  }
+}`
+
+const usageCodeJavascript = `import m from 'mithril'
+import { Calendar } from 'panda-ui-mithril'
+
+export const MyPage = {
+  view() {
+    return m(Calendar, {
+      value: selectedDate,
+      onchange: (date) => { selectedDate = date }
+    })
+  }
+}`
 
 const classRows = [
   { className: 'cally', prop: '<Calendar value={...} onchange={...}>', type: 'Component', description: 'Month-grid calendar with real date logic (navigable, no external library)' },
@@ -54,7 +77,16 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
-          <CodeExample code={usageCode} />
+          <Tabs defaultActive="jsx" lifted size="lg">
+            <Tab ref="jsx">Jsx</Tab>
+            <Tab ref="js">Js</Tab>
+            <TabContent ref="jsx">
+              <CodeExample type="jsx" code={usageCodeJsx} />
+            </TabContent>
+            <TabContent ref="js">
+              <CodeExample type="javascript" code={usageCodeJavascript} />
+            </TabContent>
+          </Tabs>
         </Block>
 
         <Block spacing="lg">

@@ -1,7 +1,7 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Card, CardBody, CardTitle, CardActions, CardFigure, Button, Text, Block } from '../../../src/index.js'
+import { Stack, Title, Card, CardBody, CardTitle, CardActions, CardFigure, Button, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
@@ -14,16 +14,45 @@ const surfaceSide = css({ background: 'token(colors.base-100)', boxShadow: '0 1p
 const img200 = css({ width: '100%', height: '10rem', objectFit: 'cover' })
 const imgSide = css({ width: '12rem', height: '100%', objectFit: 'cover' })
 
-const usageCode = `<Card className="bg-base-100 shadow-sm w-96">
-  <CardFigure><img src="..." alt="..." /></CardFigure>
-  <CardBody>
-    <CardTitle>Card Title</CardTitle>
-    <p>A card has a figure, a body, and inside body a title and actions.</p>
-    <CardActions justify="end">
-      <Button color="primary">Buy Now</Button>
-    </CardActions>
-  </CardBody>
-</Card>`
+const usageCodeJsx = `import m from 'mithril'
+import { Card, CardFigure, CardBody, CardTitle, CardActions, Button } from 'panda-ui-mithril'
+
+export const MyPage = {
+  view() {
+    return (
+      <div>
+        <Card className="bg-base-100 shadow-sm w-96">
+          <CardFigure><img src="..." alt="..." /></CardFigure>
+          <CardBody>
+            <CardTitle>Card Title</CardTitle>
+            <p>A card has a figure, a body, and inside body a title and actions.</p>
+            <CardActions justify="end">
+              <Button color="primary">Buy Now</Button>
+            </CardActions>
+          </CardBody>
+        </Card>
+      </div>
+    )
+  }
+}`
+
+const usageCodeJavascript = `import m from 'mithril'
+import { Card, CardFigure, CardBody, CardTitle, CardActions, Button } from 'panda-ui-mithril'
+
+export const MyPage = {
+  view() {
+    return m(Card, { className: 'bg-base-100 shadow-sm w-96' }, [
+      m(CardFigure, null, m('img', { src: '...', alt: '...' })),
+      m(CardBody, null, [
+        m(CardTitle, null, 'Card Title'),
+        m('p', null, 'A card has a figure, a body, and inside body a title and actions.'),
+        m(CardActions, { justify: 'end' }, [
+          m(Button, { color: 'primary' }, 'Buy Now')
+        ])
+      ])
+    ])
+  }
+}`
 
 const classRows = [
   { className: 'card', prop: '<Card>', type: 'Component', description: 'Card' },
@@ -131,7 +160,16 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
-          <CodeExample code={usageCode} />
+          <Tabs defaultActive="jsx" lifted size="lg">
+            <Tab ref="jsx">Jsx</Tab>
+            <Tab ref="js">Js</Tab>
+            <TabContent ref="jsx">
+              <CodeExample type="jsx" code={usageCodeJsx} />
+            </TabContent>
+            <TabContent ref="js">
+              <CodeExample type="javascript" code={usageCodeJavascript} />
+            </TabContent>
+          </Tabs>
         </Block>
 
         <Block spacing="lg">

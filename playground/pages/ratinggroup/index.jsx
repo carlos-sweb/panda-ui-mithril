@@ -1,12 +1,35 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, RatingGroup, Rating, Text, Block } from '../../../src/index.js'
+import { Stack, Title, RatingGroup, Rating, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
-const usageCode = `<RatingGroup label="Score" defaultValue={3} onchange={(v) => console.log(v)} />
-<RatingGroup label="Rating" value={4} onchange={setValue} color="primary" />`
+const usageCodeJsx = `import m from 'mithril'
+import { RatingGroup } from 'panda-ui-mithril'
+
+export const MyPage = {
+  view() {
+    return (
+      <div>
+        <RatingGroup label="Score" defaultValue={3} onchange={(v) => console.log(v)} />
+        <RatingGroup label="Rating" value={4} onchange={setValue} color="primary" />
+      </div>
+    )
+  }
+}`
+
+const usageCodeJavascript = `import m from 'mithril'
+import { RatingGroup } from 'panda-ui-mithril'
+
+export const RatingGroupPage = {
+  view() {
+    return m('div', null, [
+      m(RatingGroup, { label: 'Score', defaultValue: 3, onchange: (v) => console.log(v) }),
+      m(RatingGroup, { label: 'Rating', value: 4, onchange: setValue, color: 'primary' })
+    ])
+  }
+}`
 
 const classRows = [
   { className: 'rating-group', prop: '<RatingGroup>', type: 'Component', description: 'Rating wrapper with label and value display' },
@@ -26,7 +49,16 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
-          <CodeExample code={usageCode} language="jsx" />
+          <Tabs defaultActive="jsx" lifted size="lg">
+            <Tab ref="jsx">Jsx</Tab>
+            <Tab ref="js">Js</Tab>
+            <TabContent ref="jsx">
+              <CodeExample type="jsx" code={usageCodeJsx} />
+            </TabContent>
+            <TabContent ref="js">
+              <CodeExample type="javascript" code={usageCodeJavascript} />
+            </TabContent>
+          </Tabs>
         </Block>
 
         <Block spacing="lg">

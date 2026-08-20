@@ -1,21 +1,50 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Stats, Stat, StatTitle, StatValue, StatDesc, StatFigure, StatActions, Button, Text, Block } from '../../../src/index.js'
+import { Stack, Title, Stats, Stat, StatTitle, StatValue, StatDesc, StatFigure, StatActions, Button, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { Wallet, Users, ThumbsUp } from 'lucide-mithril'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
 const shadow = css({ boxShadow: '0 1px 3px color-mix(in oklab, black 15%, transparent)' })
 
-const usageCode = `<Stats>
-  <Stat>
-    <StatFigure><Wallet size={32} /></StatFigure>
-    <StatTitle>Total Downloads</StatTitle>
-    <StatValue>31K</StatValue>
-    <StatDesc>From January 1 - February 1</StatDesc>
-  </Stat>
-</Stats>`
+const usageCodeJsx = `import m from 'mithril'
+import { Stats, Stat, StatFigure, StatTitle, StatValue, StatDesc } from 'panda-ui-mithril'
+import { Wallet } from 'lucide-mithril'
+
+export const MyPage = {
+  view() {
+    return (
+      <div>
+        <Stats>
+          <Stat>
+            <StatFigure><Wallet size={32} /></StatFigure>
+            <StatTitle>Total Downloads</StatTitle>
+            <StatValue>31K</StatValue>
+            <StatDesc>From January 1 - February 1</StatDesc>
+          </Stat>
+        </Stats>
+      </div>
+    )
+  }
+}`
+
+const usageCodeJavascript = `import m from 'mithril'
+import { Stats, Stat, StatFigure, StatTitle, StatValue, StatDesc } from 'panda-ui-mithril'
+import { Wallet } from 'lucide-mithril'
+
+export const StatsPage = {
+  view() {
+    return m(Stats, null, [
+      m(Stat, null, [
+        m(StatFigure, null, m(Wallet, { size: 32 })),
+        m(StatTitle, null, 'Total Downloads'),
+        m(StatValue, null, '31K'),
+        m(StatDesc, null, 'From January 1 - February 1')
+      ])
+    ])
+  }
+}`
 
 const classRows = [
   { className: 'stats', prop: '<Stats>', type: 'Component', description: 'Container for stat boxes' },
@@ -87,7 +116,16 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
-          <CodeExample code={usageCode} />
+          <Tabs defaultActive="jsx" lifted size="lg">
+            <Tab ref="jsx">Jsx</Tab>
+            <Tab ref="js">Js</Tab>
+            <TabContent ref="jsx">
+              <CodeExample type="jsx" code={usageCodeJsx} />
+            </TabContent>
+            <TabContent ref="js">
+              <CodeExample type="javascript" code={usageCodeJavascript} />
+            </TabContent>
+          </Tabs>
         </Block>
 
         <Block spacing="lg">

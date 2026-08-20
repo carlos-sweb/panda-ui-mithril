@@ -1,22 +1,54 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Aura, Button, Card, CardBody, Text, Block } from '../../../src/index.js'
+import { Stack, Title, Aura, Button, Card, CardBody, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
 const cardSurface = css({ background: 'token(colors.base-100)', width: '14rem' })
 const primaryColor = css({ color: 'token(colors.primary)' })
 
-const usageCode = `<Aura>
-  <Button>Button with aura</Button>
-</Aura>
+const usageCodeJsx = `import m from 'mithril'
+import { Aura, Button, Card, CardBody } from 'panda-ui-mithril'
 
-<Aura variant="holo" shape="box">
-  <Card className="bg-base-100">
-    <CardBody><p>This card has aura</p></CardBody>
-  </Card>
-</Aura>`
+export const MyPage = {
+  view() {
+    return (
+      <div>
+        <Aura>
+          <Button>Button with aura</Button>
+        </Aura>
+
+        <Aura variant="holo" shape="box">
+          <Card className="bg-base-100">
+            <CardBody><p>This card has aura</p></CardBody>
+          </Card>
+        </Aura>
+      </div>
+    )
+  }
+}`
+
+const usageCodeJavascript = `import m from 'mithril'
+import { Aura, Button, Card, CardBody } from 'panda-ui-mithril'
+
+export const MyPage = {
+  view() {
+    return m('div', null, [
+      m(Aura, null,
+        m(Button, null, 'Button with aura')
+      ),
+
+      m(Aura, { variant: 'holo', shape: 'box' },
+        m(Card, { className: 'bg-base-100' },
+          m(CardBody, null,
+            m('p', null, 'This card has aura')
+          )
+        )
+      )
+    ])
+  }
+}`
 
 const classRows = [
   { className: 'aura', prop: '<Aura>', type: 'Component', description: "Container that adds a light effect aura around an element. By default it's a rotating border" },
@@ -82,7 +114,16 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
-          <CodeExample code={usageCode} />
+          <Tabs defaultActive="jsx" lifted size="lg">
+            <Tab ref="jsx">Jsx</Tab>
+            <Tab ref="js">Js</Tab>
+            <TabContent ref="jsx">
+              <CodeExample type="jsx" code={usageCodeJsx} />
+            </TabContent>
+            <TabContent ref="js">
+              <CodeExample type="javascript" code={usageCodeJavascript} />
+            </TabContent>
+          </Tabs>
         </Block>
 
         <Block spacing="lg">

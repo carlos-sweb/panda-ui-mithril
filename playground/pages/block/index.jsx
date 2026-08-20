@@ -1,14 +1,37 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Block, Text } from '../../../src/index.js'
+import { Stack, Title, Block, Text, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
-const usageCode = `<Block spacing="md">
-  <p>First block</p>
-  <p>Second block — spaced from first, no margin after</p>
-</Block>`
+const usageCodeJsx = `import m from 'mithril'
+import { Block } from 'panda-ui-mithril'
+
+export const MyPage = {
+  view() {
+    return (
+      <div>
+        <Block spacing="md">
+          <p>First block</p>
+          <p>Second block — spaced from first, no margin after</p>
+        </Block>
+      </div>
+    )
+  }
+}`
+
+const usageCodeJavascript = `import m from 'mithril'
+import { Block } from 'panda-ui-mithril'
+
+export const MyPage = {
+  view() {
+    return m(Block, { spacing: 'md' }, [
+      m('p', null, 'First block'),
+      m('p', null, 'Second block — spaced from first, no margin after')
+    ])
+  }
+}`
 
 const classRows = [
   { className: 'block', prop: '<Block>', type: 'Component', description: 'Vertical spacer between siblings' },
@@ -25,7 +48,16 @@ export default {
       <Text color="neutral" className={css({ marginBottom: '2rem', maxWidth: '600px' })}>{t('paragraph')}</Text>
       <Block spacing="lg">
         <Title as="h2" size="3">{t('common.usage')}</Title>
-        <CodeExample code={usageCode} language="jsx" />
+        <Tabs defaultActive="jsx" lifted size="lg">
+          <Tab ref="jsx">Jsx</Tab>
+          <Tab ref="js">Js</Tab>
+          <TabContent ref="jsx">
+            <CodeExample type="jsx" code={usageCodeJsx} />
+          </TabContent>
+          <TabContent ref="js">
+            <CodeExample type="javascript" code={usageCodeJavascript} />
+          </TabContent>
+        </Tabs>
       </Block>
       <Block spacing="lg">
         <Title as="h2" size="3">Spacing</Title>

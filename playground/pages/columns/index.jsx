@@ -1,14 +1,37 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Columns, Column, Text, Block } from '../../../src/index.js'
+import { Stack, Title, Columns, Column, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
-const usageCode = `<Columns gap="md">
-  <Column width={4}><div>Sidebar</div></Column>
-  <Column width={8}><div>Content</div></Column>
-</Columns>`
+const usageCodeJsx = `import m from 'mithril'
+import { Columns, Column } from 'panda-ui-mithril'
+
+export const MyPage = {
+  view() {
+    return (
+      <div>
+        <Columns gap="md">
+          <Column width={4}><div>Sidebar</div></Column>
+          <Column width={8}><div>Content</div></Column>
+        </Columns>
+      </div>
+    )
+  }
+}`
+
+const usageCodeJavascript = `import m from 'mithril'
+import { Columns, Column } from 'panda-ui-mithril'
+
+export const MyPage = {
+  view() {
+    return m(Columns, { gap: 'md' }, [
+      m(Column, { width: 4 }, m('div', null, 'Sidebar')),
+      m(Column, { width: 8 }, m('div', null, 'Content'))
+    ])
+  }
+}`
 
 const classRows = [
   { className: 'columns', prop: '<Columns>', type: 'Component', description: 'Flexbox row container, wraps on mobile' },
@@ -27,7 +50,18 @@ export default {
     return (<Stack gap="lg">
       <Title as="h1" size="2">Columns</Title>
       <Text color="neutral" className={css({ marginBottom: '2rem', maxWidth: '600px' })}>{t('paragraph')}</Text>
-      <Block spacing="lg"><Title as="h2" size="3">{t('common.usage')}</Title><CodeExample code={usageCode} language="jsx" /></Block>
+      <Block spacing="lg"><Title as="h2" size="3">{t('common.usage')}</Title>
+        <Tabs defaultActive="jsx" lifted size="lg">
+          <Tab ref="jsx">Jsx</Tab>
+          <Tab ref="js">Js</Tab>
+          <TabContent ref="jsx">
+            <CodeExample type="jsx" code={usageCodeJsx} />
+          </TabContent>
+          <TabContent ref="js">
+            <CodeExample type="javascript" code={usageCodeJavascript} />
+          </TabContent>
+        </Tabs>
+      </Block>
       <Block spacing="lg"><Title as="h2" size="3">Equal width</Title>
         <Columns gap="md">
           <Column><div className={cell}>Col 1</div></Column>

@@ -1,12 +1,32 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Range, Text, Block } from '../../../src/index.js'
+import { Stack, Title, Range, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
 
-const usageCode = '<Range value={40} max={100} color="primary" />'
+const usageCodeJsx = `import m from 'mithril'
+import { Range } from 'panda-ui-mithril'
+
+export const MyPage = {
+  view() {
+    return (
+      <div>
+        <Range value={40} max={100} color="primary" />
+      </div>
+    )
+  }
+}`
+
+const usageCodeJavascript = `import m from 'mithril'
+import { Range } from 'panda-ui-mithril'
+
+export const RangePage = {
+  view() {
+    return m(Range, { value: 40, max: 100, color: 'primary' })
+  }
+}`
 
 const classRows = [
   { className: 'range', prop: '<Range value={...} max={...}>', type: 'Component', description: 'For <input type="range"> tag' },
@@ -46,7 +66,16 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
-          <CodeExample code={usageCode} />
+          <Tabs defaultActive="jsx" lifted size="lg">
+            <Tab ref="jsx">Jsx</Tab>
+            <Tab ref="js">Js</Tab>
+            <TabContent ref="jsx">
+              <CodeExample type="jsx" code={usageCodeJsx} />
+            </TabContent>
+            <TabContent ref="js">
+              <CodeExample type="javascript" code={usageCodeJavascript} />
+            </TabContent>
+          </Tabs>
         </Block>
 
         <Block spacing="lg">

@@ -1,7 +1,7 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Toast, Alert, Text, Block } from '../../../src/index.js'
+import { Stack, Title, Toast, Alert, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
@@ -30,9 +30,31 @@ const PLACEMENTS = [
   { label: 'bottom end (default)', bottom: '0.5rem', right: '0.5rem' },
 ]
 
-const usageCode = `<Toast position="bottom end">
-  <Alert color="info">Toast notification!</Alert>
-</Toast>`
+const usageCodeJsx = `import m from 'mithril'
+import { Toast, Alert } from 'panda-ui-mithril'
+
+export const MyPage = {
+  view() {
+    return (
+      <div>
+        <Toast position="bottom end">
+          <Alert color="info">Toast notification!</Alert>
+        </Toast>
+      </div>
+    )
+  }
+}`
+
+const usageCodeJavascript = `import m from 'mithril'
+import { Toast, Alert } from 'panda-ui-mithril'
+
+export const ToastPage = {
+  view() {
+    return m(Toast, { position: 'bottom end' }, [
+      m(Alert, { color: 'info' }, 'Toast notification!')
+    ])
+  }
+}`
 
 const classRows = [
   { className: 'toast', prop: '<Toast position="...">', type: 'Component', description: 'Container element, fixed to the viewport' },
@@ -82,7 +104,16 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
-          <CodeExample code={usageCode} />
+          <Tabs defaultActive="jsx" lifted size="lg">
+            <Tab ref="jsx">Jsx</Tab>
+            <Tab ref="js">Js</Tab>
+            <TabContent ref="jsx">
+              <CodeExample type="jsx" code={usageCodeJsx} />
+            </TabContent>
+            <TabContent ref="js">
+              <CodeExample type="javascript" code={usageCodeJavascript} />
+            </TabContent>
+          </Tabs>
         </Block>
 
         <Block spacing="lg">

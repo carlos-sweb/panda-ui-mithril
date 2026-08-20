@@ -1,12 +1,32 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, OTP, Text, Block } from '../../../src/index.js'
+import { Stack, Title, OTP, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
 
-const usageCode = '<OTP length={6} color="primary" />'
+const usageCodeJsx = `import m from 'mithril'
+import { OTP } from 'panda-ui-mithril'
+
+export const MyPage = {
+  view() {
+    return (
+      <div>
+        <OTP length={6} color="primary" />
+      </div>
+    )
+  }
+}`
+
+const usageCodeJavascript = `import m from 'mithril'
+import { OTP } from 'panda-ui-mithril'
+
+export const OTPPage = {
+  view() {
+    return m(OTP, { length: 6, color: 'primary' })
+  }
+}`
 
 const classRows = [
   { className: 'otp', prop: '<OTP length={...}>', type: 'Component', description: 'For the container label' },
@@ -45,7 +65,16 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
-          <CodeExample code={usageCode} />
+          <Tabs defaultActive="jsx" lifted size="lg">
+            <Tab ref="jsx">Jsx</Tab>
+            <Tab ref="js">Js</Tab>
+            <TabContent ref="jsx">
+              <CodeExample type="jsx" code={usageCodeJsx} />
+            </TabContent>
+            <TabContent ref="js">
+              <CodeExample type="javascript" code={usageCodeJavascript} />
+            </TabContent>
+          </Tabs>
         </Block>
 
         <Block spacing="lg">

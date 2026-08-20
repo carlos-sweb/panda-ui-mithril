@@ -1,7 +1,7 @@
 import m from 'mithril'
 import { css , cx } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Hero, HeroContent, HeroOverlay, Button, Text, Block } from '../../../src/index.js'
+import { Stack, Title, Hero, HeroContent, HeroOverlay, Button, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
@@ -17,16 +17,45 @@ const bigTitle = css({ fontSize: '2.5rem', fontWeight: '700' })
 const body = css({ paddingBlock: '1rem', maxWidth: '32rem' })
 const white = css({ color: 'token(colors.white)' })
 
-const usageCode = `<Hero>
-  <HeroOverlay />
-  <HeroContent className="text-white text-center">
-    <div>
-      <h1>Hello there</h1>
-      <p>Provident cupiditate voluptatem esse.</p>
-      <Button color="primary">Get Started</Button>
-    </div>
-  </HeroContent>
-</Hero>`
+const usageCodeJsx = `import m from 'mithril'
+import { Hero, HeroContent, HeroOverlay, Button } from 'panda-ui-mithril'
+
+export const MyPage = {
+  view() {
+    return (
+      <div>
+        <Hero>
+          <HeroOverlay />
+          <HeroContent className="text-white text-center">
+            <div>
+              <h1>Hello there</h1>
+              <p>Provident cupiditate voluptatem esse.</p>
+              <Button color="primary">Get Started</Button>
+            </div>
+          </HeroContent>
+        </Hero>
+      </div>
+    )
+  }
+}`
+
+const usageCodeJavascript = `import m from 'mithril'
+import { Hero, HeroContent, HeroOverlay, Button } from 'panda-ui-mithril'
+
+export const MyPage = {
+  view() {
+    return m(Hero, null, [
+      m(HeroOverlay),
+      m(HeroContent, { className: 'text-white text-center' }, [
+        m('div', null, [
+          m('h1', null, 'Hello there'),
+          m('p', null, 'Provident cupiditate voluptatem esse.'),
+          m(Button, { color: 'primary' }, 'Get Started')
+        ])
+      ])
+    ])
+  }
+}`
 
 const classRows = [
   { className: 'hero', prop: '<Hero>', type: 'Component', description: 'Hero container' },
@@ -77,7 +106,16 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
-          <CodeExample code={usageCode} />
+          <Tabs defaultActive="jsx" lifted size="lg">
+            <Tab ref="jsx">Jsx</Tab>
+            <Tab ref="js">Js</Tab>
+            <TabContent ref="jsx">
+              <CodeExample type="jsx" code={usageCodeJsx} />
+            </TabContent>
+            <TabContent ref="js">
+              <CodeExample type="javascript" code={usageCodeJavascript} />
+            </TabContent>
+          </Tabs>
         </Block>
 
         <Block spacing="lg">

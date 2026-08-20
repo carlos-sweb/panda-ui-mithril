@@ -43,7 +43,7 @@ export const CodeExample = {
     const highlighted = hljs.highlight(code.trim(), { language: type ? type : "xml" }).value
 
     return m('div', { className: wrapper }, [
-      m('span', { className: languageTag }, 'JSX'),
+      m('span', { className: languageTag }, type ),
       m('pre', { className: pre },
         m('code', { className: `hljs language-${type || 'xml'}` }, m.trust(highlighted))
       ),

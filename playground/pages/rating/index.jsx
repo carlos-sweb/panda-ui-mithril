@@ -1,8 +1,7 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Rating, Text, Block } from '../../../src/index.js'
-import { RatingGroup } from '../../../src/index.js'
+import { Stack, Title, Rating, Text, Block, RatingGroup, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
@@ -10,20 +9,50 @@ const heading = css({ fontSize: '0.875rem', fontWeight: '600', marginBottom: '0.
 const note = css({ fontSize: '0.875rem', opacity: 0.6, marginTop: '0.5rem' })
 const valueText = css({ fontSize: '0.875rem', opacity: 0.6 })
 
-const usageCode = `// Uncontrolled: internal state, defaultValue initializes
-<Rating defaultValue={3} max={5} onchange={(v) => console.log(v)} />
+const usageCodeJsx = `import m from 'mithril'
+import { Rating } from 'panda-ui-mithril'
 
-// Controlled: value + onchange
-<Rating value={state.rating} max={5} onchange={(v) => (state.rating = v)} />
+export const MyPage = {
+  view() {
+    return (
+      <div>
+        // Uncontrolled: internal state, defaultValue initializes
+        <Rating defaultValue={3} max={5} onchange={(v) => console.log(v)} />
 
-// Static (someone else's rating) — no interaction
-<Rating value={3} max={5} readonly />
+        // Controlled: value + onchange
+        <Rating value={state.rating} max={5} onchange={(v) => (state.rating = v)} />
 
-// Configurable max score: 1-3 scale, 1-5 scale, etc. (defaults to 5)
-<Rating defaultValue={2} max={3} />
-<Rating defaultValue={4} max={10} />
+        // Static (someone else's rating) — no interaction
+        <Rating value={3} max={5} readonly />
 
-// Re-click the selected star to clear (value 0)`
+        // Configurable max score: 1-3 scale, 1-5 scale, etc. (defaults to 5)
+        <Rating defaultValue={2} max={3} />
+        <Rating defaultValue={4} max={10} />
+
+        // Re-click the selected star to clear (value 0)
+      </div>
+    )
+  }
+}`
+
+const usageCodeJavascript = `import m from 'mithril'
+import { Rating } from 'panda-ui-mithril'
+
+export const RatingPage = {
+  view() {
+    return m('div', null, [
+      // Uncontrolled: internal state
+      m(Rating, { defaultValue: 3, max: 5, onchange: (v) => console.log(v) }),
+      // Controlled: value + onchange
+      m(Rating, { value: state.rating, max: 5, onchange: (v) => (state.rating = v) }),
+      // Static (no interaction)
+      m(Rating, { value: 3, max: 5, readonly: true }),
+      // Configurable max score
+      m(Rating, { defaultValue: 2, max: 3 }),
+      m(Rating, { defaultValue: 4, max: 10 })
+    ])
+  }
+}`
 
 const classRows = [
   { className: 'rating', prop: '<Rating value={...} max={...}>', type: 'Component', description: 'Rating container (flex row of stars)' },
@@ -129,7 +158,16 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
-          <CodeExample code={usageCode} />
+          <Tabs defaultActive="jsx" lifted size="lg">
+            <Tab ref="jsx">Jsx</Tab>
+            <Tab ref="js">Js</Tab>
+            <TabContent ref="jsx">
+              <CodeExample type="jsx" code={usageCodeJsx} />
+            </TabContent>
+            <TabContent ref="js">
+              <CodeExample type="javascript" code={usageCodeJavascript} />
+            </TabContent>
+          </Tabs>
         </Block>
 
         <Block spacing="lg">

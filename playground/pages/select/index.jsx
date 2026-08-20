@@ -1,15 +1,38 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Select, Text, Block } from '../../../src/index.js'
+import { Stack, Title, Select, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
 
-const usageCode = `<Select color="primary">
-  <option value="">Pick one</option>
-  <option value="1">Option 1</option>
-</Select>`
+const usageCodeJsx = `import m from 'mithril'
+import { Select } from 'panda-ui-mithril'
+
+export const MyPage = {
+  view() {
+    return (
+      <div>
+        <Select color="primary">
+          <option value="">Pick one</option>
+          <option value="1">Option 1</option>
+        </Select>
+      </div>
+    )
+  }
+}`
+
+const usageCodeJavascript = `import m from 'mithril'
+import { Select } from 'panda-ui-mithril'
+
+export const SelectPage = {
+  view() {
+    return m(Select, { color: 'primary' }, [
+      m('option', { value: '' }, 'Pick one'),
+      m('option', { value: '1' }, 'Option 1')
+    ])
+  }
+}`
 
 const classRows = [
   { className: 'select', prop: '<Select>', type: 'Component', description: 'For <select> element' },
@@ -55,7 +78,16 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
-          <CodeExample code={usageCode} />
+          <Tabs defaultActive="jsx" lifted size="lg">
+            <Tab ref="jsx">Jsx</Tab>
+            <Tab ref="js">Js</Tab>
+            <TabContent ref="jsx">
+              <CodeExample type="jsx" code={usageCodeJsx} />
+            </TabContent>
+            <TabContent ref="js">
+              <CodeExample type="javascript" code={usageCodeJavascript} />
+            </TabContent>
+          </Tabs>
         </Block>
 
         <Block spacing="lg">

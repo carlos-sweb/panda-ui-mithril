@@ -7,22 +7,54 @@ import {
   ChatWindow, ChatMessage, ChatReply, ChatReactions, ChatStatus,
   ChatAudio, ChatVideo, ChatImageMessage, ChatFile, ChatLink,
   ChatSystem, ChatInput, ChatTyping, ChatEmoji,
-  Avatar, Button, Badge
+  Avatar, Button, Badge,
+  Tabs, Tab, TabContent
 } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
 
-const usageCode = `<Chat placement="start">
-  <ChatImage><Avatar src="..." /></ChatImage>
-  <ChatHeader>John</ChatHeader>
-  <ChatBubble>Hey! How are you?</ChatBubble>
-  <ChatFooter>Just now</ChatFooter>
-</Chat>
-<Chat placement="end">
-  <ChatBubble color="primary">I am good, thanks!</ChatBubble>
-  <ChatFooter>2 minutes ago</ChatFooter>
-</Chat>`
+const usageCodeJsx = `import m from 'mithril'
+import { Chat, ChatImage, ChatHeader, ChatBubble, ChatFooter, Avatar } from 'panda-ui-mithril'
+
+export const MyPage = {
+  view() {
+    return (
+      <div>
+        <Chat placement="start">
+          <ChatImage><Avatar src="..." /></ChatImage>
+          <ChatHeader>John</ChatHeader>
+          <ChatBubble>Hey! How are you?</ChatBubble>
+          <ChatFooter>Just now</ChatFooter>
+        </Chat>
+        <Chat placement="end">
+          <ChatBubble color="primary">I am good, thanks!</ChatBubble>
+          <ChatFooter>2 minutes ago</ChatFooter>
+        </Chat>
+      </div>
+    )
+  }
+}`
+
+const usageCodeJavascript = `import m from 'mithril'
+import { Chat, ChatImage, ChatHeader, ChatBubble, ChatFooter, Avatar } from 'panda-ui-mithril'
+
+export const MyPage = {
+  view() {
+    return m('div', null, [
+      m(Chat, { placement: 'start' }, [
+        m(ChatImage, null, m(Avatar, { src: '...' })),
+        m(ChatHeader, null, 'John'),
+        m(ChatBubble, null, 'Hey! How are you?'),
+        m(ChatFooter, null, 'Just now')
+      ]),
+      m(Chat, { placement: 'end' }, [
+        m(ChatBubble, { color: 'primary' }, 'I am good, thanks!'),
+        m(ChatFooter, null, '2 minutes ago')
+      ])
+    ])
+  }
+}`
 
 const messageUsageCode = `<ChatMessage
   placement="start"
@@ -338,7 +370,16 @@ export default {
         {/* Usage & Class Reference */}
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
-          <CodeExample code={usageCode} />
+          <Tabs defaultActive="jsx" lifted size="lg">
+            <Tab ref="jsx">Jsx</Tab>
+            <Tab ref="js">Js</Tab>
+            <TabContent ref="jsx">
+              <CodeExample type="jsx" code={usageCodeJsx} />
+            </TabContent>
+            <TabContent ref="js">
+              <CodeExample type="javascript" code={usageCodeJavascript} />
+            </TabContent>
+          </Tabs>
         </Block>
 
         <Block spacing="lg">

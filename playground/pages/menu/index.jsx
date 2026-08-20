@@ -1,7 +1,7 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Menu, MenuItem, MenuTitle, Text, Block, Badge } from '../../../src/index.js'
+import { Stack, Title, Menu, MenuItem, MenuTitle, Text, Block, Badge, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
@@ -14,13 +14,39 @@ const callbackResult = css({
   marginTop: '0.5rem',
 })
 
-const usageCode = `<Menu>
-  <MenuItem active>Dashboard</MenuItem>
-  <MenuItem>Settings</MenuItem>
-  <MenuTitle>Actions</MenuTitle>
-  <MenuItem>Profile</MenuItem>
-  <MenuItem disabled>Logout</MenuItem>
-</Menu>`
+const usageCodeJsx = `import m from 'mithril'
+import { Menu, MenuItem, MenuTitle } from 'panda-ui-mithril'
+
+export const MyPage = {
+  view() {
+    return (
+      <div>
+        <Menu>
+          <MenuItem active>Dashboard</MenuItem>
+          <MenuItem>Settings</MenuItem>
+          <MenuTitle>Actions</MenuTitle>
+          <MenuItem>Profile</MenuItem>
+          <MenuItem disabled>Logout</MenuItem>
+        </Menu>
+      </div>
+    )
+  }
+}`
+
+const usageCodeJavascript = `import m from 'mithril'
+import { Menu, MenuItem, MenuTitle } from 'panda-ui-mithril'
+
+export const MyPage = {
+  view() {
+    return m(Menu, null, [
+      m(MenuItem, { active: true }, 'Dashboard'),
+      m(MenuItem, null, 'Settings'),
+      m(MenuTitle, null, 'Actions'),
+      m(MenuItem, null, 'Profile'),
+      m(MenuItem, { disabled: true }, 'Logout')
+    ])
+  }
+}`
 
 const autoActiveCode = `// Menu manages active state automatically
 // defaultActive sets the initially selected item (index)
@@ -134,7 +160,16 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
-          <CodeExample code={usageCode} />
+          <Tabs defaultActive="jsx" lifted size="lg">
+            <Tab ref="jsx">Jsx</Tab>
+            <Tab ref="js">Js</Tab>
+            <TabContent ref="jsx">
+              <CodeExample type="jsx" code={usageCodeJsx} />
+            </TabContent>
+            <TabContent ref="js">
+              <CodeExample type="javascript" code={usageCodeJavascript} />
+            </TabContent>
+          </Tabs>
         </Block>
 
         <Block spacing="lg">

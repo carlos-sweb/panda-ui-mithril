@@ -1,7 +1,7 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Skeleton, Text, Block } from '../../../src/index.js'
+import { Stack, Title, Skeleton, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
@@ -10,8 +10,31 @@ const line1 = css({ height: '8rem', width: '100%' })
 const line2 = css({ height: '1rem', width: '100%', marginTop: '1rem' })
 const line3 = css({ height: '1rem', width: '75%', marginTop: '0.5rem' })
 
-const usageCode = `<Skeleton style="height: 8rem; width: 100%" />
-<Skeleton style="height: 1rem; width: 100%" />`
+const usageCodeJsx = `import m from 'mithril'
+import { Skeleton } from 'panda-ui-mithril'
+
+export const MyPage = {
+  view() {
+    return (
+      <div>
+        <Skeleton style="height: 8rem; width: 100%" />
+        <Skeleton style="height: 1rem; width: 100%" />
+      </div>
+    )
+  }
+}`
+
+const usageCodeJavascript = `import m from 'mithril'
+import { Skeleton } from 'panda-ui-mithril'
+
+export const SkeletonPage = {
+  view() {
+    return m('div', null, [
+      m(Skeleton, { style: 'height: 8rem; width: 100%' }),
+      m(Skeleton, { style: 'height: 1rem; width: 100%' })
+    ])
+  }
+}`
 
 const classRows = [
   { className: 'skeleton', prop: '<Skeleton>', type: 'Component', description: 'A placeholder div with loading animation' },
@@ -40,7 +63,16 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
-          <CodeExample code={usageCode} />
+          <Tabs defaultActive="jsx" lifted size="lg">
+            <Tab ref="jsx">Jsx</Tab>
+            <Tab ref="js">Js</Tab>
+            <TabContent ref="jsx">
+              <CodeExample type="jsx" code={usageCodeJsx} />
+            </TabContent>
+            <TabContent ref="js">
+              <CodeExample type="javascript" code={usageCodeJavascript} />
+            </TabContent>
+          </Tabs>
         </Block>
 
         <Block spacing="lg">

@@ -1,21 +1,52 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, ButtonGroup, Button, Text, Block } from '../../../src/index.js'
+import { Stack, Title, ButtonGroup, Button, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
-const usageCode = `<ButtonGroup>
-  <Button>Left</Button>
-  <Button>Center</Button>
-  <Button>Right</Button>
-</ButtonGroup>
+const usageCodeJsx = `import m from 'mithril'
+import { ButtonGroup, Button } from 'panda-ui-mithril'
 
-<ButtonGroup color="primary">
-  <Button>1</Button>
-  <Button>2</Button>
-  <Button>3</Button>
-</ButtonGroup>`
+export const MyPage = {
+  view() {
+    return (
+      <div>
+        <ButtonGroup>
+          <Button>Left</Button>
+          <Button>Center</Button>
+          <Button>Right</Button>
+        </ButtonGroup>
+
+        <ButtonGroup color="primary">
+          <Button>1</Button>
+          <Button>2</Button>
+          <Button>3</Button>
+        </ButtonGroup>
+      </div>
+    )
+  }
+}`
+
+const usageCodeJavascript = `import m from 'mithril'
+import { ButtonGroup, Button } from 'panda-ui-mithril'
+
+export const MyPage = {
+  view() {
+    return m('div', null, [
+      m(ButtonGroup, null, [
+        m(Button, null, 'Left'),
+        m(Button, null, 'Center'),
+        m(Button, null, 'Right')
+      ]),
+      m(ButtonGroup, { color: 'primary' }, [
+        m(Button, null, '1'),
+        m(Button, null, '2'),
+        m(Button, null, '3')
+      ])
+    ])
+  }
+}`
 
 const classRows = [
   { className: 'btn-group', prop: '<ButtonGroup>', type: 'Component', description: 'Button group container (unifies borders)' },
@@ -72,7 +103,16 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
-          <CodeExample code={usageCode} />
+          <Tabs defaultActive="jsx" lifted size="lg">
+            <Tab ref="jsx">Jsx</Tab>
+            <Tab ref="js">Js</Tab>
+            <TabContent ref="jsx">
+              <CodeExample type="jsx" code={usageCodeJsx} />
+            </TabContent>
+            <TabContent ref="js">
+              <CodeExample type="javascript" code={usageCodeJavascript} />
+            </TabContent>
+          </Tabs>
         </Block>
 
         <Block spacing="lg">

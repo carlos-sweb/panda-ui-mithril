@@ -1,7 +1,7 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Title, Swap, Stack, Text, Block, Badge } from '../../../src/index.js'
+import { Title, Swap, Stack, Text, Block, Badge, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { Sun, Moon } from 'lucide-mithril'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
@@ -15,18 +15,52 @@ const stateBadge = css({
   marginTop: '0.5rem',
 })
 
-const usageCode = `<Swap on="On" off="Off" style="rotate" />
-<Swap on="☀️" off="🌙" style="flip" />
-<Swap on={<Sun size={20} />} off={<Moon size={20} />} style="rotate" />
+const usageCodeJsx = `import m from 'mithril'
+import { Swap } from 'panda-ui-mithril'
+import { Sun, Moon } from 'lucide-mithril'
 
-<!-- Controlled with onchange -->
-<Swap
-  on={<Sun size={20} />}
-  off={<Moon size={20} />}
-  style="rotate"
-  checked={state}
-  onchange={(checked, e) => { state = checked }}
-/>`
+export const MyPage = {
+  view() {
+    return (
+      <div>
+        <Swap on="On" off="Off" style="rotate" />
+        <Swap on="☀️" off="🌙" style="flip" />
+        <Swap on={<Sun size={20} />} off={<Moon size={20} />} style="rotate" />
+
+        <!-- Controlled with onchange -->
+        <Swap
+          on={<Sun size={20} />}
+          off={<Moon size={20} />}
+          style="rotate"
+          checked={state}
+          onchange={(checked, e) => { state = checked }}
+        />
+      </div>
+    )
+  }
+}`
+
+const usageCodeJavascript = `import m from 'mithril'
+import { Swap } from 'panda-ui-mithril'
+import { Sun, Moon } from 'lucide-mithril'
+
+export const SwapPage = {
+  view() {
+    return m('div', null, [
+      m(Swap, { on: 'On', off: 'Off', style: 'rotate' }),
+      m(Swap, { on: '☀️', off: '🌙', style: 'flip' }),
+      m(Swap, { on: m(Sun, { size: 20 }), off: m(Moon, { size: 20 }), style: 'rotate' }),
+      // Controlled
+      m(Swap, {
+        on: m(Sun, { size: 20 }),
+        off: m(Moon, { size: 20 }),
+        style: 'rotate',
+        checked: state,
+        onchange: (checked) => { state = checked }
+      })
+    ])
+  }
+}`
 
 const classRows = [
   { className: 'swap', prop: '<Swap on={...} off={...}>', type: 'Component', description: 'Swap container' },
@@ -105,7 +139,16 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
-          <CodeExample code={usageCode} />
+          <Tabs defaultActive="jsx" lifted size="lg">
+            <Tab ref="jsx">Jsx</Tab>
+            <Tab ref="js">Js</Tab>
+            <TabContent ref="jsx">
+              <CodeExample type="jsx" code={usageCodeJsx} />
+            </TabContent>
+            <TabContent ref="js">
+              <CodeExample type="javascript" code={usageCodeJavascript} />
+            </TabContent>
+          </Tabs>
         </Block>
 
         <Block spacing="lg">

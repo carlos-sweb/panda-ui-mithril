@@ -1,7 +1,7 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, List, ListRow, ListCol, Avatar, Button, Text, Block } from '../../../src/index.js'
+import { Stack, Title, List, ListRow, ListCol, Avatar, Button, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { Play, Heart } from 'lucide-mithril'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
@@ -16,16 +16,47 @@ const songs = [
   { title: 'Sabrino Gardener', subtitle: 'Cappuccino', seed: 3 },
 ]
 
-const usageCode = `<List>
-  <ListRow>
-    <Avatar src="..." size="sm" shape="square" />
-    <ListCol grow>
-      <div>Dio Lupa</div>
-      <div>Remaining Reason</div>
-    </ListCol>
-    <Button variant="ghost" square><Play size={18} /></Button>
-  </ListRow>
-</List>`
+const usageCodeJsx = `import m from 'mithril'
+import { List, ListRow, ListCol, Avatar, Button } from 'panda-ui-mithril'
+import { Play } from 'lucide-mithril'
+
+export const MyPage = {
+  view() {
+    return (
+      <div>
+        <List>
+          <ListRow>
+            <Avatar src="..." size="sm" shape="square" />
+            <ListCol grow>
+              <div>Dio Lupa</div>
+              <div>Remaining Reason</div>
+            </ListCol>
+            <Button variant="ghost" square><Play size={18} /></Button>
+          </ListRow>
+        </List>
+      </div>
+    )
+  }
+}`
+
+const usageCodeJavascript = `import m from 'mithril'
+import { List, ListRow, ListCol, Avatar, Button } from 'panda-ui-mithril'
+import { Play } from 'lucide-mithril'
+
+export const MyPage = {
+  view() {
+    return m(List, null, [
+      m(ListRow, null, [
+        m(Avatar, { src: '...', size: 'sm', shape: 'square' }),
+        m(ListCol, { grow: true }, [
+          m('div', null, 'Dio Lupa'),
+          m('div', null, 'Remaining Reason')
+        ]),
+        m(Button, { variant: 'ghost', square: true }, m(Play, { size: 18 }))
+      ])
+    ])
+  }
+}`
 
 const classRows = [
   { className: 'list', prop: '<List>', type: 'Component', description: 'A vertical flex layout to include list rows' },
@@ -67,7 +98,16 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
-          <CodeExample code={usageCode} />
+          <Tabs defaultActive="jsx" lifted size="lg">
+            <Tab ref="jsx">Jsx</Tab>
+            <Tab ref="js">Js</Tab>
+            <TabContent ref="jsx">
+              <CodeExample type="jsx" code={usageCodeJsx} />
+            </TabContent>
+            <TabContent ref="js">
+              <CodeExample type="javascript" code={usageCodeJavascript} />
+            </TabContent>
+          </Tabs>
         </Block>
 
         <Block spacing="lg">

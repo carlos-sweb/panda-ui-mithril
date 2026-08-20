@@ -1,7 +1,7 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Carousel, CarouselItem, Text, Block } from '../../../src/index.js'
+import { Stack, Title, Carousel, CarouselItem, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
@@ -34,16 +34,40 @@ const navBtn = css({
   fontSize: '1.25rem',
 })
 
-const usageCode = `<Carousel>
-  <CarouselItem><img src="1.jpg" /></CarouselItem>
-  <CarouselItem><img src="2.jpg" /></CarouselItem>
-  <CarouselItem><img src="3.jpg" /></CarouselItem>
-</Carousel>
+const usageCodeJsx = `import m from 'mithril'
+import { Carousel, CarouselItem } from 'panda-ui-mithril'
 
-// The reference implementation navigates with <a href="#slideId">, but that collides with
-// any app using hash-based routing (like this playground) — scrollIntoView
-// sidesteps it
-document.getElementById('slide-2').scrollIntoView({ behavior: 'smooth', inline: 'start' })`
+export const MyPage = {
+  view() {
+    return (
+      <div>
+        <Carousel>
+          <CarouselItem><img src="1.jpg" /></CarouselItem>
+          <CarouselItem><img src="2.jpg" /></CarouselItem>
+          <CarouselItem><img src="3.jpg" /></CarouselItem>
+        </Carousel>
+
+        // The reference implementation navigates with <a href="#slideId">, but that collides with
+        // any app using hash-based routing (like this playground) — scrollIntoView
+        // sidesteps it
+        document.getElementById('slide-2').scrollIntoView({ behavior: 'smooth', inline: 'start' })
+      </div>
+    )
+  }
+}`
+
+const usageCodeJavascript = `import m from 'mithril'
+import { Carousel, CarouselItem } from 'panda-ui-mithril'
+
+export const MyPage = {
+  view() {
+    return m(Carousel, null, [
+      m(CarouselItem, null, m('img', { src: '1.jpg' })),
+      m(CarouselItem, null, m('img', { src: '2.jpg' })),
+      m(CarouselItem, null, m('img', { src: '3.jpg' }))
+    ])
+  }
+}`
 
 const classRows = [
   { className: 'carousel', prop: '<Carousel align="..." vertical>', type: 'Component', description: 'Carousel container' },
@@ -112,7 +136,16 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
-          <CodeExample code={usageCode} />
+          <Tabs defaultActive="jsx" lifted size="lg">
+            <Tab ref="jsx">Jsx</Tab>
+            <Tab ref="js">Js</Tab>
+            <TabContent ref="jsx">
+              <CodeExample type="jsx" code={usageCodeJsx} />
+            </TabContent>
+            <TabContent ref="js">
+              <CodeExample type="javascript" code={usageCodeJavascript} />
+            </TabContent>
+          </Tabs>
         </Block>
 
         <Block spacing="lg">

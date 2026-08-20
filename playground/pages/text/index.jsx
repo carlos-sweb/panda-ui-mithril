@@ -1,15 +1,39 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Text, Title, Block } from '../../../src/index.js'
+import { Stack, Text, Title, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
 const heading = css({ fontSize: '0.875rem', fontWeight: '600', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em', opacity: 0.5 })
 
-const usageCode = `<Text>Default paragraph text</Text>
-<Text size="lg" color="primary">Larger primary text</Text>
-<Text as="span" weight="semibold" transform="uppercase">Inline span</Text>`
+const usageCodeJsx = `import m from 'mithril'
+import { Text } from 'panda-ui-mithril'
+
+export const MyPage = {
+  view() {
+    return (
+      <div>
+        <Text>Default paragraph text</Text>
+        <Text size="lg" color="primary">Larger primary text</Text>
+        <Text as="span" weight="semibold" transform="uppercase">Inline span</Text>
+      </div>
+    )
+  }
+}`
+
+const usageCodeJavascript = `import m from 'mithril'
+import { Text } from 'panda-ui-mithril'
+
+export const TextPage = {
+  view() {
+    return m('div', null, [
+      m(Text, null, 'Default paragraph text'),
+      m(Text, { size: 'lg', color: 'primary' }, 'Larger primary text'),
+      m(Text, { as: 'span', weight: 'semibold', transform: 'uppercase' }, 'Inline span')
+    ])
+  }
+}`
 
 const classRows = [
   { className: 'text', prop: '<Text>', type: 'Component', description: 'Typography helper — semantic text element with style props' },
@@ -59,7 +83,16 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
-          <CodeExample code={usageCode} language="jsx" />
+          <Tabs defaultActive="jsx" lifted size="lg">
+            <Tab ref="jsx">Jsx</Tab>
+            <Tab ref="js">Js</Tab>
+            <TabContent ref="jsx">
+              <CodeExample type="jsx" code={usageCodeJsx} />
+            </TabContent>
+            <TabContent ref="js">
+              <CodeExample type="javascript" code={usageCodeJavascript} />
+            </TabContent>
+          </Tabs>
         </Block>
 
         <Block spacing="lg">

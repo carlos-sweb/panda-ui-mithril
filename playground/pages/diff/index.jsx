@@ -1,17 +1,41 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Diff, DiffItem1, DiffItem2, DiffResizer, Text, Block } from '../../../src/index.js'
+import { Stack, Title, Diff, DiffItem1, DiffItem2, DiffResizer, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
 const wrapper = css({ maxWidth: '32rem' })
 
-const usageCode = `<Diff>
-  <DiffItem1><img src="before.jpg" alt="Before" /></DiffItem1>
-  <DiffItem2><img src="after.jpg" alt="After" /></DiffItem2>
-  <DiffResizer />
-</Diff>`
+const usageCodeJsx = `import m from 'mithril'
+import { Diff, DiffItem1, DiffItem2, DiffResizer } from 'panda-ui-mithril'
+
+export const MyPage = {
+  view() {
+    return (
+      <div>
+        <Diff>
+          <DiffItem1><img src="before.jpg" alt="Before" /></DiffItem1>
+          <DiffItem2><img src="after.jpg" alt="After" /></DiffItem2>
+          <DiffResizer />
+        </Diff>
+      </div>
+    )
+  }
+}`
+
+const usageCodeJavascript = `import m from 'mithril'
+import { Diff, DiffItem1, DiffItem2, DiffResizer } from 'panda-ui-mithril'
+
+export const MyPage = {
+  view() {
+    return m(Diff, null, [
+      m(DiffItem1, null, m('img', { src: 'before.jpg', alt: 'Before' })),
+      m(DiffItem2, null, m('img', { src: 'after.jpg', alt: 'After' })),
+      m(DiffResizer)
+    ])
+  }
+}`
 
 const classRows = [
   { className: 'diff', prop: '<Diff>', type: 'Component', description: 'Diff container — drag anywhere on the divider to compare' },
@@ -44,7 +68,16 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
-          <CodeExample code={usageCode} />
+          <Tabs defaultActive="jsx" lifted size="lg">
+            <Tab ref="jsx">Jsx</Tab>
+            <Tab ref="js">Js</Tab>
+            <TabContent ref="jsx">
+              <CodeExample type="jsx" code={usageCodeJsx} />
+            </TabContent>
+            <TabContent ref="js">
+              <CodeExample type="javascript" code={usageCodeJavascript} />
+            </TabContent>
+          </Tabs>
         </Block>
 
         <Block spacing="lg">

@@ -1,17 +1,43 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Label, TextInput, Text, Block } from '../../../src/index.js'
+import { Stack, Title, Label, TextInput, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
 
-const usageCode = `<Label>Regular Label</Label>
+const usageCodeJsx = `import m from 'mithril'
+import { Label, TextInput } from 'panda-ui-mithril'
 
-<Label floating>
-  <TextInput placeholder="Type here..." />
-  <span>Floating Label</span>
-</Label>`
+export const MyPage = {
+  view() {
+    return (
+      <div>
+        <Label>Regular Label</Label>
+
+        <Label floating>
+          <TextInput placeholder="Type here..." />
+          <span>Floating Label</span>
+        </Label>
+      </div>
+    )
+  }
+}`
+
+const usageCodeJavascript = `import m from 'mithril'
+import { Label, TextInput } from 'panda-ui-mithril'
+
+export const MyPage = {
+  view() {
+    return m('div', null, [
+      m(Label, null, 'Regular Label'),
+      m(Label, { floating: true }, [
+        m(TextInput, { placeholder: 'Type here...' }),
+        m('span', null, 'Floating Label')
+      ])
+    ])
+  }
+}`
 
 const classRows = [
   { className: 'label', prop: '<Label>', type: 'Component', description: 'For styling the text next to an input field (or select)' },
@@ -40,7 +66,16 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
-          <CodeExample code={usageCode} />
+          <Tabs defaultActive="jsx" lifted size="lg">
+            <Tab ref="jsx">Jsx</Tab>
+            <Tab ref="js">Js</Tab>
+            <TabContent ref="jsx">
+              <CodeExample type="jsx" code={usageCodeJsx} />
+            </TabContent>
+            <TabContent ref="js">
+              <CodeExample type="javascript" code={usageCodeJavascript} />
+            </TabContent>
+          </Tabs>
         </Block>
 
         <Block spacing="lg">

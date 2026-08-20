@@ -1,13 +1,37 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Link, Text, Block } from '../../../src/index.js'
+import { Stack, Title, Link, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
-const usageCode = `<Link href="#">Default</Link>
-<Link href="#" color="primary">Primary</Link>
-<Link href="#" hover>Hover only</Link>`
+const usageCodeJsx = `import m from 'mithril'
+import { Link } from 'panda-ui-mithril'
+
+export const MyPage = {
+  view() {
+    return (
+      <div>
+        <Link href="#">Default</Link>
+        <Link href="#" color="primary">Primary</Link>
+        <Link href="#" hover>Hover only</Link>
+      </div>
+    )
+  }
+}`
+
+const usageCodeJavascript = `import m from 'mithril'
+import { Link } from 'panda-ui-mithril'
+
+export const MyPage = {
+  view() {
+    return m('div', null, [
+      m(Link, { href: '#' }, 'Default'),
+      m(Link, { href: '#', color: 'primary' }, 'Primary'),
+      m(Link, { href: '#', hover: true }, 'Hover only')
+    ])
+  }
+}`
 
 const classRows = [
   { className: 'link', prop: 'hover={false}', type: 'Component', description: 'Adds underline — note: this component defaults to hover=true, so pass hover={false} to always show the underline' },
@@ -45,7 +69,16 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
-          <CodeExample code={usageCode} />
+          <Tabs defaultActive="jsx" lifted size="lg">
+            <Tab ref="jsx">Jsx</Tab>
+            <Tab ref="js">Js</Tab>
+            <TabContent ref="jsx">
+              <CodeExample type="jsx" code={usageCodeJsx} />
+            </TabContent>
+            <TabContent ref="js">
+              <CodeExample type="javascript" code={usageCodeJavascript} />
+            </TabContent>
+          </Tabs>
         </Block>
 
         <Block spacing="lg">

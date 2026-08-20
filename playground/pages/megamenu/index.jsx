@@ -1,7 +1,7 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Megamenu, MegamenuItem, MegamenuTrigger, MegamenuPanel, Text, Block } from '../../../src/index.js'
+import { Stack, Title, Megamenu, MegamenuItem, MegamenuTrigger, MegamenuPanel, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
@@ -10,18 +10,49 @@ const grid = css({ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 
 const colTitle = css({ fontSize: '0.75rem', fontWeight: '600', textTransform: 'uppercase', opacity: 0.5, marginBottom: '0.5rem' })
 const link = css({ display: 'block', padding: '0.375rem 0', fontSize: '0.875rem', textDecoration: 'none', color: 'inherit', opacity: 0.8, _hover: { opacity: 1 } })
 
-const usageCode = `<Megamenu>
-  <MegamenuItem>
-    <MegamenuTrigger>Products</MegamenuTrigger>
-    <MegamenuPanel>
-      <div>Analytics</div>
-      <div>Automation</div>
-    </MegamenuPanel>
-  </MegamenuItem>
-  <MegamenuItem>
-    <MegamenuTrigger href="#!/docs" chevron={false}>Docs</MegamenuTrigger>
-  </MegamenuItem>
-</Megamenu>`
+const usageCodeJsx = `import m from 'mithril'
+import { Megamenu, MegamenuItem, MegamenuTrigger, MegamenuPanel } from 'panda-ui-mithril'
+
+export const MyPage = {
+  view() {
+    return (
+      <div>
+        <Megamenu>
+          <MegamenuItem>
+            <MegamenuTrigger>Products</MegamenuTrigger>
+            <MegamenuPanel>
+              <div>Analytics</div>
+              <div>Automation</div>
+            </MegamenuPanel>
+          </MegamenuItem>
+          <MegamenuItem>
+            <MegamenuTrigger href="#!/docs" chevron={false}>Docs</MegamenuTrigger>
+          </MegamenuItem>
+        </Megamenu>
+      </div>
+    )
+  }
+}`
+
+const usageCodeJavascript = `import m from 'mithril'
+import { Megamenu, MegamenuItem, MegamenuTrigger, MegamenuPanel } from 'panda-ui-mithril'
+
+export const MyPage = {
+  view() {
+    return m(Megamenu, null, [
+      m(MegamenuItem, null, [
+        m(MegamenuTrigger, null, 'Products'),
+        m(MegamenuPanel, null, [
+          m('div', null, 'Analytics'),
+          m('div', null, 'Automation')
+        ])
+      ]),
+      m(MegamenuItem, null, [
+        m(MegamenuTrigger, { href: '#!/docs', chevron: false }, 'Docs')
+      ])
+    ])
+  }
+}`
 
 const classRows = [
   { className: 'megamenu', prop: '<Megamenu>', type: 'Component', description: 'Nav container' },
@@ -87,7 +118,16 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
-          <CodeExample code={usageCode} />
+          <Tabs defaultActive="jsx" lifted size="lg">
+            <Tab ref="jsx">Jsx</Tab>
+            <Tab ref="js">Js</Tab>
+            <TabContent ref="jsx">
+              <CodeExample type="jsx" code={usageCodeJsx} />
+            </TabContent>
+            <TabContent ref="js">
+              <CodeExample type="javascript" code={usageCodeJavascript} />
+            </TabContent>
+          </Tabs>
         </Block>
 
         <Block spacing="lg">

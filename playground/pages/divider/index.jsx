@@ -1,14 +1,38 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Divider, Text, Block } from '../../../src/index.js'
+import { Stack, Title, Divider, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
 
-const usageCode = `<Divider>OR</Divider>
-<Divider color="primary">Primary</Divider>
-<Divider direction="vertical">Vertical</Divider>`
+const usageCodeJsx = `import m from 'mithril'
+import { Divider } from 'panda-ui-mithril'
+
+export const MyPage = {
+  view() {
+    return (
+      <div>
+        <Divider>OR</Divider>
+        <Divider color="primary">Primary</Divider>
+        <Divider direction="vertical">Vertical</Divider>
+      </div>
+    )
+  }
+}`
+
+const usageCodeJavascript = `import m from 'mithril'
+import { Divider } from 'panda-ui-mithril'
+
+export const MyPage = {
+  view() {
+    return m('div', null, [
+      m(Divider, null, 'OR'),
+      m(Divider, { color: 'primary' }, 'Primary'),
+      m(Divider, { direction: 'vertical' }, 'Vertical')
+    ])
+  }
+}`
 
 const classRows = [
   { className: 'divider', prop: '<Divider>', type: 'Component', description: 'A divider line between two elements' },
@@ -46,7 +70,16 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
-          <CodeExample code={usageCode} />
+          <Tabs defaultActive="jsx" lifted size="lg">
+            <Tab ref="jsx">Jsx</Tab>
+            <Tab ref="js">Js</Tab>
+            <TabContent ref="jsx">
+              <CodeExample type="jsx" code={usageCodeJsx} />
+            </TabContent>
+            <TabContent ref="js">
+              <CodeExample type="javascript" code={usageCodeJavascript} />
+            </TabContent>
+          </Tabs>
         </Block>
 
         <Block spacing="lg">

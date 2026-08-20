@@ -1,7 +1,7 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Button, Modal, ModalBox, ModalAction, ModalBackdrop, Text, Block } from '../../../src/index.js'
+import { Stack, Title, Button, Modal, ModalBox, ModalAction, ModalBackdrop, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { modal } from '../../../styled-system/recipes'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
@@ -9,30 +9,52 @@ import { ClassTable } from '../../components/ClassTable.jsx'
 const title = css({ fontSize: '1.125rem', fontWeight: '700' })
 const body = css({ paddingBlock: '1rem' })
 
-const usageCode = `<Button onclick={() => { open = true }}>Open Modal</Button>
+const usageCodeJsx = `import m from 'mithril'
+import { Button, Modal, ModalBox, ModalAction, ModalBackdrop } from 'panda-ui-mithril'
 
-<!-- size prop: xs / sm / md (default) / lg ; labelledby wires aria-labelledby to the h3 id -->
-<Modal open={open} size="sm" labelledby="modal-title" onclose={() => { open = false }}>
-  <ModalBox>
-    <h3 id="modal-title" className={modal({}).header}>Hello!</h3>
-    <p className={modal({}).body}>This is a sized modal — press ESC, click outside, or the button to close.</p>
-    <ModalAction className={modal({}).footer}>
-      <Button onclick={() => { open = false }}>Close</Button>
-    </ModalAction>
-  </ModalBox>
-  <ModalBackdrop onclick={() => { open = false }} />
-</Modal>
+export const MyPage = {
+  view() {
+    return (
+      <div>
+        <Button onclick={() => { open = true }}>Open Modal</Button>
 
-<!-- persistent: ESC and backdrop click do NOT close it; only the button below dismisses -->
-<Modal open={open} persistent>
-  <ModalBox>
-    <h3>Persistent</h3>
-    <p>You must use the button below to close this modal.</p>
-    <ModalAction>
-      <Button onclick={() => { open = false }}>Close</Button>
-    </ModalAction>
-  </ModalBox>
-</Modal>`
+        <!-- size prop: xs / sm / md (default) / lg ; labelledby wires aria-labelledby to the h3 id -->
+        <Modal open={open} size="sm" labelledby="modal-title" onclose={() => { open = false }}>
+          <ModalBox>
+            <h3 id="modal-title" className={modal({}).header}>Hello!</h3>
+            <p className={modal({}).body}>This is a sized modal — press ESC, click outside, or the button to close.</p>
+            <ModalAction className={modal({}).footer}>
+              <Button onclick={() => { open = false }}>Close</Button>
+            </ModalAction>
+          </ModalBox>
+          <ModalBackdrop onclick={() => { open = false }} />
+        </Modal>
+      </div>
+    )
+  }
+}`
+
+const usageCodeJavascript = `import m from 'mithril'
+import { Button, Modal, ModalBox, ModalAction, ModalBackdrop } from 'panda-ui-mithril'
+import { modal } from 'panda-ui-mithril/styled-system/recipes'
+
+export const MyPage = {
+  view() {
+    return m('div', null, [
+      m(Button, { onclick: () => { open = true } }, 'Open Modal'),
+      m(Modal, { open: open, size: 'sm', labelledby: 'modal-title', onclose: () => { open = false } }, [
+        m(ModalBox, null, [
+          m('h3', { id: 'modal-title', className: modal({}).header }, 'Hello!'),
+          m('p', { className: modal({}).body }, 'This is a sized modal'),
+          m(ModalAction, { className: modal({}).footer }, [
+            m(Button, { onclick: () => { open = false } }, 'Close')
+          ])
+        ]),
+        m(ModalBackdrop, { onclick: () => { open = false } })
+      ])
+    ])
+  }
+}`
 
 const classRows = [
   { className: 'modal', prop: '<Modal open onclose={...}>', type: 'Component', description: 'Native <dialog>-backed modal — `open` drives real .showModal()/.close()' },
@@ -177,7 +199,16 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
-          <CodeExample code={usageCode} />
+          <Tabs defaultActive="jsx" lifted size="lg">
+            <Tab ref="jsx">Jsx</Tab>
+            <Tab ref="js">Js</Tab>
+            <TabContent ref="jsx">
+              <CodeExample type="jsx" code={usageCodeJsx} />
+            </TabContent>
+            <TabContent ref="js">
+              <CodeExample type="javascript" code={usageCodeJavascript} />
+            </TabContent>
+          </Tabs>
         </Block>
 
         <Block spacing="lg">

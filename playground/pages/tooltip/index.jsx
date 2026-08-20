@@ -1,16 +1,43 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Button, Tooltip, Text, Block } from '../../../src/index.js'
+import { Stack, Title, Button, Tooltip, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
-const usageCode = `<Tooltip tip="Top" position="top">
-  <Button>Top</Button>
-</Tooltip>
-<Tooltip tip="Info" color="primary">
-  <Button>Primary</Button>
-</Tooltip>`
+const usageCodeJsx = `import m from 'mithril'
+import { Tooltip, Button } from 'panda-ui-mithril'
+
+export const MyPage = {
+  view() {
+    return (
+      <div>
+        <Tooltip tip="Top" position="top">
+          <Button>Top</Button>
+        </Tooltip>
+        <Tooltip tip="Info" color="primary">
+          <Button>Primary</Button>
+        </Tooltip>
+      </div>
+    )
+  }
+}`
+
+const usageCodeJavascript = `import m from 'mithril'
+import { Tooltip, Button } from 'panda-ui-mithril'
+
+export const TooltipPage = {
+  view() {
+    return m('div', null, [
+      m(Tooltip, { tip: 'Top', position: 'top' }, [
+        m(Button, null, 'Top')
+      ]),
+      m(Tooltip, { tip: 'Info', color: 'primary' }, [
+        m(Button, null, 'Primary')
+      ])
+    ])
+  }
+}`
 
 const classRows = [
   { className: 'tooltip', prop: '<Tooltip tip="...">', type: 'Component', description: 'Container element' },
@@ -56,7 +83,16 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
-          <CodeExample code={usageCode} />
+          <Tabs defaultActive="jsx" lifted size="lg">
+            <Tab ref="jsx">Jsx</Tab>
+            <Tab ref="js">Js</Tab>
+            <TabContent ref="jsx">
+              <CodeExample type="jsx" code={usageCodeJsx} />
+            </TabContent>
+            <TabContent ref="js">
+              <CodeExample type="javascript" code={usageCodeJavascript} />
+            </TabContent>
+          </Tabs>
         </Block>
 
         <Block spacing="lg">

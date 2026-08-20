@@ -1,13 +1,37 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, TextInput, Text, Block } from '../../../src/index.js'
+import { Stack, Title, TextInput, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
-const usageCode = `<TextInput placeholder="Enter text..." />
-<TextInput color="primary" placeholder="Primary input" />
-<TextInput size="lg" placeholder="Large" />`
+const usageCodeJsx = `import m from 'mithril'
+import { TextInput } from 'panda-ui-mithril'
+
+export const MyPage = {
+  view() {
+    return (
+      <div>
+        <TextInput placeholder="Enter text..." />
+        <TextInput color="primary" placeholder="Primary input" />
+        <TextInput size="lg" placeholder="Large" />
+      </div>
+    )
+  }
+}`
+
+const usageCodeJavascript = `import m from 'mithril'
+import { TextInput } from 'panda-ui-mithril'
+
+export const MyPage = {
+  view() {
+    return m('div', null, [
+      m(TextInput, { placeholder: 'Enter text...' }),
+      m(TextInput, { color: 'primary', placeholder: 'Primary input' }),
+      m(TextInput, { size: 'lg', placeholder: 'Large' })
+    ])
+  }
+}`
 
 const classRows = [
   { className: 'input', prop: '<TextInput>', type: 'Component', description: 'For <input type="text"> tag or a wrapper of <input type="text"> tag' },
@@ -56,7 +80,16 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
-          <CodeExample code={usageCode} />
+          <Tabs defaultActive="jsx" lifted size="lg">
+            <Tab ref="jsx">Jsx</Tab>
+            <Tab ref="js">Js</Tab>
+            <TabContent ref="jsx">
+              <CodeExample type="jsx" code={usageCodeJsx} />
+            </TabContent>
+            <TabContent ref="js">
+              <CodeExample type="javascript" code={usageCodeJavascript} />
+            </TabContent>
+          </Tabs>
         </Block>
 
         <Block spacing="lg">

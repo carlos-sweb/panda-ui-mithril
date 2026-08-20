@@ -1,15 +1,39 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Text, Block } from '../../../src/index.js'
+import { Stack, Title, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
 const heading = css({ fontSize: '0.875rem', fontWeight: '600', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em', opacity: 0.5 })
 
-const usageCode = `<Title as="h1" size="1" color="primary">Hero Title</Title>
-<Title as="h2" size="3" align="center">Section Heading</Title>
-<Title as="p" size="6" transform="capitalize">paragraph text styled as h6</Title>`
+const usageCodeJsx = `import m from 'mithril'
+import { Title } from 'panda-ui-mithril'
+
+export const MyPage = {
+  view() {
+    return (
+      <div>
+        <Title as="h1" size="1" color="primary">Hero Title</Title>
+        <Title as="h2" size="3" align="center">Section Heading</Title>
+        <Title as="p" size="6" transform="capitalize">paragraph text styled as h6</Title>
+      </div>
+    )
+  }
+}`
+
+const usageCodeJavascript = `import m from 'mithril'
+import { Title } from 'panda-ui-mithril'
+
+export const TitlePage = {
+  view() {
+    return m('div', null, [
+      m(Title, { as: 'h1', size: '1', color: 'primary' }, 'Hero Title'),
+      m(Title, { as: 'h2', size: '3', align: 'center' }, 'Section Heading'),
+      m(Title, { as: 'p', size: '6', transform: 'capitalize' }, 'paragraph text styled as h6')
+    ])
+  }
+}`
 
 const classRows = [
   { className: 'title', prop: '<Title>', type: 'Component', description: 'Typography helper — semantic heading with style props' },
@@ -67,7 +91,16 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
-          <CodeExample code={usageCode} language="jsx" />
+          <Tabs defaultActive="jsx" lifted size="lg">
+            <Tab ref="jsx">Jsx</Tab>
+            <Tab ref="js">Js</Tab>
+            <TabContent ref="jsx">
+              <CodeExample type="jsx" code={usageCodeJsx} />
+            </TabContent>
+            <TabContent ref="js">
+              <CodeExample type="javascript" code={usageCodeJavascript} />
+            </TabContent>
+          </Tabs>
         </Block>
 
         <Block spacing="lg">

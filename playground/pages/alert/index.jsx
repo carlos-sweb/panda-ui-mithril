@@ -1,27 +1,64 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Alert, Text, Block } from '../../../src/index.js'
+import { Stack, Title, Alert, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { Info, CheckCircle, AlertTriangle, AlertCircle, X, ChevronRight } from 'lucide-mithril'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
 
 
-const usageCode = `<Alert color="info">
-  <Info />
-  <span>12 unread messages. Tap to see.</span>
-</Alert>
+const usageCodeJsx = `import m from 'mithril'
+import { Alert } from 'panda-ui-mithril'
+import { Info, CheckCircle, AlertTriangle } from 'lucide-mithril'
 
-<Alert variant="soft" color="success">
-  <CheckCircle />
-  <span>Your purchase has been confirmed!</span>
-</Alert>
+export const MyPage = {
+  view() {
+    return (
+      <div>
+        <Alert color="info">
+          <Info />
+          <span>12 unread messages. Tap to see.</span>
+        </Alert>
 
-<Alert direction="vertical" color="warning">
-  <AlertTriangle />
-  <span>Warning: Invalid email address!</span>
-</Alert>`
+        <Alert variant="soft" color="success">
+          <CheckCircle />
+          <span>Your purchase has been confirmed!</span>
+        </Alert>
+
+        <Alert direction="vertical" color="warning">
+          <AlertTriangle />
+          <span>Warning: Invalid email address!</span>
+        </Alert>
+      </div>
+    )
+  }
+}`
+
+const usageCodeJavascript = `import m from 'mithril'
+import { Alert } from 'panda-ui-mithril'
+import { Info, CheckCircle, AlertTriangle } from 'lucide-mithril'
+
+export const MyPage = {
+  view() {
+    return m('div', null, [
+      m(Alert, { color: 'info' }, [
+        m(Info),
+        m('span', null, '12 unread messages. Tap to see.')
+      ]),
+
+      m(Alert, { variant: 'soft', color: 'success' }, [
+        m(CheckCircle),
+        m('span', null, 'Your purchase has been confirmed!')
+      ]),
+
+      m(Alert, { direction: 'vertical', color: 'warning' }, [
+        m(AlertTriangle),
+        m('span', null, 'Warning: Invalid email address!')
+      ])
+    ])
+  }
+}`
 
 const classRows = [
   { className: 'alert', prop: '<Alert>', type: 'Component', description: 'Container for displaying an important message' },
@@ -252,7 +289,16 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
-          <CodeExample code={usageCode} />
+          <Tabs defaultActive="jsx" lifted size="lg">
+            <Tab ref="jsx">Jsx</Tab>
+            <Tab ref="js">Js</Tab>
+            <TabContent ref="jsx">
+              <CodeExample type="jsx" code={usageCodeJsx} />
+            </TabContent>
+            <TabContent ref="js">
+              <CodeExample type="javascript" code={usageCodeJavascript} />
+            </TabContent>
+          </Tabs>
         </Block>
 
         <Block spacing="lg">

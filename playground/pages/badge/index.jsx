@@ -1,13 +1,37 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Badge, Text, Block } from '../../../src/index.js'
+import { Stack, Title, Badge, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
-const usageCode = `<Badge color="primary">Primary</Badge>
-<Badge variant="outline" color="success">Outline</Badge>
-<Badge size="lg" color="error">Error</Badge>`
+const usageCodeJsx = `import m from 'mithril'
+import { Badge } from 'panda-ui-mithril'
+
+export const MyPage = {
+  view() {
+    return (
+      <div>
+        <Badge color="primary">Primary</Badge>
+        <Badge variant="outline" color="success">Outline</Badge>
+        <Badge size="lg" color="error">Error</Badge>
+      </div>
+    )
+  }
+}`
+
+const usageCodeJavascript = `import m from 'mithril'
+import { Badge } from 'panda-ui-mithril'
+
+export const MyPage = {
+  view() {
+    return m('div', null, [
+      m(Badge, { color: 'primary' }, 'Primary'),
+      m(Badge, { variant: 'outline', color: 'success' }, 'Outline'),
+      m(Badge, { size: 'lg', color: 'error' }, 'Error')
+    ])
+  }
+}`
 
 const classRows = [
   { className: 'badge', prop: '<Badge>', type: 'Component', description: 'Container element' },
@@ -80,7 +104,16 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
-          <CodeExample code={usageCode} />
+          <Tabs defaultActive="jsx" lifted size="lg">
+            <Tab ref="jsx">Jsx</Tab>
+            <Tab ref="js">Js</Tab>
+            <TabContent ref="jsx">
+              <CodeExample type="jsx" code={usageCodeJsx} />
+            </TabContent>
+            <TabContent ref="js">
+              <CodeExample type="javascript" code={usageCodeJavascript} />
+            </TabContent>
+          </Tabs>
         </Block>
 
         <Block spacing="lg">

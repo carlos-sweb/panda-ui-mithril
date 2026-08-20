@@ -1,7 +1,7 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Countdown, Text, Block } from '../../../src/index.js'
+import { Stack, Title, Countdown, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
@@ -10,8 +10,31 @@ const clock = css({ display: 'flex', alignItems: 'center', gap: '0.5rem' })
 const clockUnit = css({ display: 'flex', flexDirection: 'column', alignItems: 'center' })
 const clockLabel = css({ fontSize: '0.6875rem', opacity: 0.5, textTransform: 'uppercase' })
 
-const usageCode = `<Countdown value={59} />
-<Countdown value={7} digits={2} className="text-6xl font-mono" />`
+const usageCodeJsx = `import m from 'mithril'
+import { Countdown } from 'panda-ui-mithril'
+
+export const MyPage = {
+  view() {
+    return (
+      <div>
+        <Countdown value={59} />
+        <Countdown value={7} digits={2} className="text-6xl font-mono" />
+      </div>
+    )
+  }
+}`
+
+const usageCodeJavascript = `import m from 'mithril'
+import { Countdown } from 'panda-ui-mithril'
+
+export const MyPage = {
+  view() {
+    return m('div', null, [
+      m(Countdown, { value: 59 }),
+      m(Countdown, { value: 7, digits: 2, className: 'text-6xl font-mono' })
+    ])
+  }
+}`
 
 const classRows = [
   { className: 'countdown', prop: '<Countdown value={...}>', type: 'Component', description: 'Countdown wrapper — value must be a number between 0 and 999' },
@@ -65,7 +88,16 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
-          <CodeExample code={usageCode} />
+          <Tabs defaultActive="jsx" lifted size="lg">
+            <Tab ref="jsx">Jsx</Tab>
+            <Tab ref="js">Js</Tab>
+            <TabContent ref="jsx">
+              <CodeExample type="jsx" code={usageCodeJsx} />
+            </TabContent>
+            <TabContent ref="js">
+              <CodeExample type="javascript" code={usageCodeJavascript} />
+            </TabContent>
+          </Tabs>
         </Block>
 
         <Block spacing="lg">

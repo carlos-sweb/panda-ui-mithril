@@ -1,7 +1,7 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, ThemeController, Swap, Text, Block } from '../../../src/index.js'
+import { Stack, Title, ThemeController, Swap, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { Sun, Moon } from 'lucide-mithril'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
@@ -14,11 +14,35 @@ const setTheme = (theme) => {
   localStorage.setItem('panda-ui-theme', theme)
 }
 
-const usageCode = `<ThemeController
-  theme="dark"
-  checked={currentTheme === 'dark'}
-  onchange={(theme) => setTheme(theme || 'light')}
-/>`
+const usageCodeJsx = `import m from 'mithril'
+import { ThemeController } from 'panda-ui-mithril'
+
+export const MyPage = {
+  view() {
+    return (
+      <div>
+        <ThemeController
+          theme="dark"
+          checked={currentTheme === 'dark'}
+          onchange={(theme) => setTheme(theme || 'light')}
+        />
+      </div>
+    )
+  }
+}`
+
+const usageCodeJavascript = `import m from 'mithril'
+import { ThemeController } from 'panda-ui-mithril'
+
+export const ThemeControllerPage = {
+  view() {
+    return m(ThemeController, {
+      theme: 'dark',
+      checked: currentTheme === 'dark',
+      onchange: (theme) => setTheme(theme || 'light')
+    })
+  }
+}`
 
 const classRows = [
   { className: 'theme-controller', prop: '<ThemeController theme="...">', type: 'Component', description: 'A checkbox/radio that reports its checked state — wire onchange to set data-theme yourself (this project switches themes via JS, not the CSS-only :has() trick from the reference implementation)' },
@@ -83,7 +107,16 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
-          <CodeExample code={usageCode} />
+          <Tabs defaultActive="jsx" lifted size="lg">
+            <Tab ref="jsx">Jsx</Tab>
+            <Tab ref="js">Js</Tab>
+            <TabContent ref="jsx">
+              <CodeExample type="jsx" code={usageCodeJsx} />
+            </TabContent>
+            <TabContent ref="js">
+              <CodeExample type="javascript" code={usageCodeJavascript} />
+            </TabContent>
+          </Tabs>
         </Block>
 
         <Block spacing="lg">

@@ -1,17 +1,42 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Steps, Step, StepIcon, Text, Block } from '../../../src/index.js'
+import { Stack, Title, Steps, Step, StepIcon, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { Check } from 'lucide-mithril'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
-const usageCode = `<Steps>
-  <Step color="primary">Register</Step>
-  <Step color="primary">Choose Plan</Step>
-  <Step>Purchase</Step>
-  <Step>Receive</Step>
-</Steps>`
+const usageCodeJsx = `import m from 'mithril'
+import { Steps, Step } from 'panda-ui-mithril'
+
+export const MyPage = {
+  view() {
+    return (
+      <div>
+        <Steps>
+          <Step color="primary">Register</Step>
+          <Step color="primary">Choose Plan</Step>
+          <Step>Purchase</Step>
+          <Step>Receive</Step>
+        </Steps>
+      </div>
+    )
+  }
+}`
+
+const usageCodeJavascript = `import m from 'mithril'
+import { Steps, Step } from 'panda-ui-mithril'
+
+export const StepsPage = {
+  view() {
+    return m(Steps, null, [
+      m(Step, { color: 'primary' }, 'Register'),
+      m(Step, { color: 'primary' }, 'Choose Plan'),
+      m(Step, null, 'Purchase'),
+      m(Step, null, 'Receive')
+    ])
+  }
+}`
 
 const classRows = [
   { className: 'steps', prop: '<Steps>', type: 'Component', description: 'Steps container' },
@@ -80,7 +105,16 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
-          <CodeExample code={usageCode} />
+          <Tabs defaultActive="jsx" lifted size="lg">
+            <Tab ref="jsx">Jsx</Tab>
+            <Tab ref="js">Js</Tab>
+            <TabContent ref="jsx">
+              <CodeExample type="jsx" code={usageCodeJsx} />
+            </TabContent>
+            <TabContent ref="js">
+              <CodeExample type="javascript" code={usageCodeJavascript} />
+            </TabContent>
+          </Tabs>
         </Block>
 
         <Block spacing="lg">

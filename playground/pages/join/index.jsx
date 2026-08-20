@@ -1,15 +1,39 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Join, JoinItem, PaginationButton, Text, Block } from '../../../src/index.js'
+import { Stack, Title, Join, JoinItem, PaginationButton, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
-const usageCode = `<Join>
-  <PaginationButton>Button 1</PaginationButton>
-  <PaginationButton>Button 2</PaginationButton>
-  <PaginationButton>Button 3</PaginationButton>
-</Join>`
+const usageCodeJsx = `import m from 'mithril'
+import { Join, PaginationButton } from 'panda-ui-mithril'
+
+export const MyPage = {
+  view() {
+    return (
+      <div>
+        <Join>
+          <PaginationButton>Button 1</PaginationButton>
+          <PaginationButton>Button 2</PaginationButton>
+          <PaginationButton>Button 3</PaginationButton>
+        </Join>
+      </div>
+    )
+  }
+}`
+
+const usageCodeJavascript = `import m from 'mithril'
+import { Join, PaginationButton } from 'panda-ui-mithril'
+
+export const MyPage = {
+  view() {
+    return m(Join, null, [
+      m(PaginationButton, null, 'Button 1'),
+      m(PaginationButton, null, 'Button 2'),
+      m(PaginationButton, null, 'Button 3')
+    ])
+  }
+}`
 
 const classRows = [
   { className: 'join', prop: '<Join>', type: 'Component', description: 'For grouping multiple items' },
@@ -61,7 +85,16 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
-          <CodeExample code={usageCode} />
+          <Tabs defaultActive="jsx" lifted size="lg">
+            <Tab ref="jsx">Jsx</Tab>
+            <Tab ref="js">Js</Tab>
+            <TabContent ref="jsx">
+              <CodeExample type="jsx" code={usageCodeJsx} />
+            </TabContent>
+            <TabContent ref="js">
+              <CodeExample type="javascript" code={usageCodeJavascript} />
+            </TabContent>
+          </Tabs>
         </Block>
 
         <Block spacing="lg">

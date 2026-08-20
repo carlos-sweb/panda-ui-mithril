@@ -1,24 +1,55 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Footer, FooterTitle, Link, Text, Block } from '../../../src/index.js'
+import { Stack, Title, Footer, FooterTitle, Link, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
 const surface = css({ background: 'token(colors.base-200)', padding: '2.5rem', borderRadius: 'var(--radius-box)' })
 
-const usageCode = `<Footer className="...">
-  <div>
-    <FooterTitle>Services</FooterTitle>
-    <Link hover={false}>Branding</Link>
-    <Link hover={false}>Design</Link>
-  </div>
-  <div>
-    <FooterTitle>Company</FooterTitle>
-    <Link hover={false}>About us</Link>
-    <Link hover={false}>Contact</Link>
-  </div>
-</Footer>`
+const usageCodeJsx = `import m from 'mithril'
+import { Footer, FooterTitle, Link } from 'panda-ui-mithril'
+
+export const MyPage = {
+  view() {
+    return (
+      <div>
+        <Footer className="...">
+          <div>
+            <FooterTitle>Services</FooterTitle>
+            <Link hover={false}>Branding</Link>
+            <Link hover={false}>Design</Link>
+          </div>
+          <div>
+            <FooterTitle>Company</FooterTitle>
+            <Link hover={false}>About us</Link>
+            <Link hover={false}>Contact</Link>
+          </div>
+        </Footer>
+      </div>
+    )
+  }
+}`
+
+const usageCodeJavascript = `import m from 'mithril'
+import { Footer, FooterTitle, Link } from 'panda-ui-mithril'
+
+export const MyPage = {
+  view() {
+    return m(Footer, { className: '...' }, [
+      m('div', null, [
+        m(FooterTitle, null, 'Services'),
+        m(Link, { hover: false }, 'Branding'),
+        m(Link, { hover: false }, 'Design')
+      ]),
+      m('div', null, [
+        m(FooterTitle, null, 'Company'),
+        m(Link, { hover: false }, 'About us'),
+        m(Link, { hover: false }, 'Contact')
+      ])
+    ])
+  }
+}`
 
 const classRows = [
   { className: 'footer', prop: '<Footer>', type: 'Component', description: 'Footer container' },
@@ -81,7 +112,16 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
-          <CodeExample code={usageCode} />
+          <Tabs defaultActive="jsx" lifted size="lg">
+            <Tab ref="jsx">Jsx</Tab>
+            <Tab ref="js">Js</Tab>
+            <TabContent ref="jsx">
+              <CodeExample type="jsx" code={usageCodeJsx} />
+            </TabContent>
+            <TabContent ref="js">
+              <CodeExample type="javascript" code={usageCodeJavascript} />
+            </TabContent>
+          </Tabs>
         </Block>
 
         <Block spacing="lg">

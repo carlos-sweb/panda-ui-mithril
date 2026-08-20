@@ -1,7 +1,7 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Avatar, AvatarGroup, Text, Block } from '../../../src/index.js'
+import { Stack, Title, Avatar, AvatarGroup, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
@@ -15,12 +15,39 @@ import avatar7 from '../../assets/avatar/avatar7.jpg'
 import avatar8 from '../../assets/avatar/avatar8.jpg'
 import avatar9 from '../../assets/avatar/avatar9.jpg'
 
-const usageCode = `<Avatar src="https://i.pravatar.cc/150?u=1" size="lg" status="online" />
-<Avatar placeholder>AB</Avatar>
-<AvatarGroup>
-  <Avatar src="https://i.pravatar.cc/150?u=1" />
-  <Avatar src="https://i.pravatar.cc/150?u=2" />
-</AvatarGroup>`
+const usageCodeJsx = `import m from 'mithril'
+import { Avatar, AvatarGroup } from 'panda-ui-mithril'
+
+export const MyPage = {
+  view() {
+    return (
+      <div>
+        <Avatar src="https://i.pravatar.cc/150?u=1" size="lg" status="online" />
+        <Avatar placeholder>AB</Avatar>
+        <AvatarGroup>
+          <Avatar src="https://i.pravatar.cc/150?u=1" />
+          <Avatar src="https://i.pravatar.cc/150?u=2" />
+        </AvatarGroup>
+      </div>
+    )
+  }
+}`
+
+const usageCodeJavascript = `import m from 'mithril'
+import { Avatar, AvatarGroup } from 'panda-ui-mithril'
+
+export const MyPage = {
+  view() {
+    return m('div', null, [
+      m(Avatar, { src: 'https://i.pravatar.cc/150?u=1', size: 'lg', status: 'online' }),
+      m(Avatar, { placeholder: true }, 'AB'),
+      m(AvatarGroup, null, [
+        m(Avatar, { src: 'https://i.pravatar.cc/150?u=1' }),
+        m(Avatar, { src: 'https://i.pravatar.cc/150?u=2' })
+      ])
+    ])
+  }
+}`
 
 const classRows = [
   { className: 'avatar', prop: '<Avatar src={...}>', type: 'Component', description: 'Avatar' },
@@ -93,7 +120,16 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
-          <CodeExample code={usageCode} />
+          <Tabs defaultActive="jsx" lifted size="lg">
+            <Tab ref="jsx">Jsx</Tab>
+            <Tab ref="js">Js</Tab>
+            <TabContent ref="jsx">
+              <CodeExample type="jsx" code={usageCodeJsx} />
+            </TabContent>
+            <TabContent ref="js">
+              <CodeExample type="javascript" code={usageCodeJavascript} />
+            </TabContent>
+          </Tabs>
         </Block>
 
         <Block spacing="lg">

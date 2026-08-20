@@ -1,20 +1,49 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Accordion, AccordionTitle, AccordionContent, Text, Block } from '../../../src/index.js'
+import { Stack, Title, Accordion, AccordionTitle, AccordionContent, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
 const group = css({ display: 'flex', flexDirection: 'column', gap: '0.5rem' })
 
-const usageCode = `<Accordion name="faq" arrow border defaultChecked>
-  <AccordionTitle>What is panda-ui-mithril?</AccordionTitle>
-  <AccordionContent>A component library for Tailwind CSS.</AccordionContent>
-</Accordion>
-<Accordion name="faq" arrow border>
-  <AccordionTitle>Is it free?</AccordionTitle>
-  <AccordionContent>Yes, it's open source and free to use.</AccordionContent>
-</Accordion>`
+const usageCodeJsx = `import m from 'mithril'
+import { Accordion, AccordionTitle, AccordionContent } from 'panda-ui-mithril'
+
+export const MyPage = {
+  view() {
+    return (
+      <div>
+        <Accordion name="faq" arrow border defaultChecked>
+          <AccordionTitle>What is panda-ui-mithril?</AccordionTitle>
+          <AccordionContent>A component library for Tailwind CSS.</AccordionContent>
+        </Accordion>
+        <Accordion name="faq" arrow border>
+          <AccordionTitle>Is it free?</AccordionTitle>
+          <AccordionContent>Yes, it's open source and free to use.</AccordionContent>
+        </Accordion>
+      </div>
+    )
+  }
+}`
+
+const usageCodeJavascript = `import m from 'mithril'
+import { Accordion, AccordionTitle, AccordionContent } from 'panda-ui-mithril'
+
+export const MyPage = {
+  view() {
+    return m('div', null, [
+      m(Accordion, { name: 'faq', arrow: true, border: true, defaultChecked: true }, [
+        m(AccordionTitle, null, 'What is panda-ui-mithril?'),
+        m(AccordionContent, null, 'A component library for Tailwind CSS.')
+      ]),
+      m(Accordion, { name: 'faq', arrow: true, border: true }, [
+        m(AccordionTitle, null, 'Is it free?'),
+        m(AccordionContent, null, "Yes, it's open source and free to use.")
+      ])
+    ])
+  }
+}`
 
 const classRows = [
   { className: 'collapse', prop: '<Accordion name="...">', type: 'Component', description: 'An accordion item — same underlying component as Collapse, but items sharing a `name` become a radio group where only one stays open' },
@@ -59,7 +88,16 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
-          <CodeExample code={usageCode} />
+          <Tabs defaultActive="jsx" lifted size="lg">
+            <Tab ref="jsx">Jsx</Tab>
+            <Tab ref="js">Js</Tab>
+            <TabContent ref="jsx">
+              <CodeExample type="jsx" code={usageCodeJsx} />
+            </TabContent>
+            <TabContent ref="js">
+              <CodeExample type="javascript" code={usageCodeJavascript} />
+            </TabContent>
+          </Tabs>
         </Block>
 
         <Block spacing="lg">

@@ -1,7 +1,7 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Table, TableContainer, TableRow, TableCell, TableHead, TableThead, TableTbody, TableTfoot, Text, Block } from '../../../src/index.js'
+import { Stack, Title, Table, TableContainer, TableRow, TableCell, TableHead, TableThead, TableTbody, TableTfoot, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
@@ -11,22 +11,57 @@ const rows = [
   ['Brice Swyre', 'Tax Accountant', 'Red'],
 ]
 
-const usageCode = `<TableContainer>
-  <Table zebra>
-    <TableThead>
-      <TableRow>
-        <TableHead>Name</TableHead>
-        <TableHead>Job</TableHead>
-      </TableRow>
-    </TableThead>
-    <TableTbody>
-      <TableRow>
-        <TableCell>Cy Ganderton</TableCell>
-        <TableCell>Lead Developer</TableCell>
-      </TableRow>
-    </TableTbody>
-  </Table>
-</TableContainer>`
+const usageCodeJsx = `import m from 'mithril'
+import { TableContainer, Table, TableThead, TableRow, TableHead, TableTbody, TableCell } from 'panda-ui-mithril'
+
+export const MyPage = {
+  view() {
+    return (
+      <div>
+        <TableContainer>
+          <Table zebra>
+            <TableThead>
+              <TableRow>
+                <TableHead>Name</TableHead>
+                <TableHead>Job</TableHead>
+              </TableRow>
+            </TableThead>
+            <TableTbody>
+              <TableRow>
+                <TableCell>Cy Ganderton</TableCell>
+                <TableCell>Lead Developer</TableCell>
+              </TableRow>
+            </TableTbody>
+          </Table>
+        </TableContainer>
+      </div>
+    )
+  }
+}`
+
+const usageCodeJavascript = `import m from 'mithril'
+import { TableContainer, Table, TableThead, TableRow, TableHead, TableTbody, TableCell } from 'panda-ui-mithril'
+
+export const TablePage = {
+  view() {
+    return m(TableContainer, null, [
+      m(Table, { zebra: true }, [
+        m(TableThead, null,
+          m(TableRow, null, [
+            m(TableHead, null, 'Name'),
+            m(TableHead, null, 'Job')
+          ])
+        ),
+        m(TableTbody, null,
+          m(TableRow, null, [
+            m(TableCell, null, 'Cy Ganderton'),
+            m(TableCell, null, 'Lead Developer')
+          ])
+        )
+      ])
+    ])
+  }
+}`
 
 const classRows = [
   { className: 'table', prop: '<Table>', type: 'Component', description: 'Table element' },
@@ -103,7 +138,16 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
-          <CodeExample code={usageCode} />
+          <Tabs defaultActive="jsx" lifted size="lg">
+            <Tab ref="jsx">Jsx</Tab>
+            <Tab ref="js">Js</Tab>
+            <TabContent ref="jsx">
+              <CodeExample type="jsx" code={usageCodeJsx} />
+            </TabContent>
+            <TabContent ref="js">
+              <CodeExample type="javascript" code={usageCodeJavascript} />
+            </TabContent>
+          </Tabs>
         </Block>
 
         <Block spacing="lg">
