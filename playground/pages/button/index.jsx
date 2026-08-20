@@ -1,16 +1,50 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Button, Loading, Text, Block , Divider } from '../../../src/index.js'
+import { Stack, Title, Button, Loading, Text, Block , Divider , Tabs , Tab , TabContent } from '../../../src/index.js'
 import { Heart } from 'lucide-mithril'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 
 const whiteSurface = css({ background: 'white', padding: '1rem' })
 
-const usageCode = `<Button color="primary">Primary</Button>
+const usageCodeJsx = `import m from 'mithril'
+import { Button } from 'panda-ui-mithril'
+import { Heart } from 'lucide-mithril'
+
+// Simple button
+<Button>Click me</Button>
+
+// With color
+<Button color="primary">Primary</Button>
+
+// With variant and size
 <Button variant="outline" color="error" size="lg">Error</Button>
+
+// With icon
+<Button><Heart size={20} /> Like</Button>
+
+// Circle button
 <Button circle><Heart size={20} /></Button>`
+
+const usageCodeJavascript = `import m from 'mithril'
+import { Button } from 'panda-ui-mithril'
+import { Heart } from 'lucide-mithril'
+
+// Simple button
+m(Button, null, 'Click me')
+
+// With color
+m(Button, { color: 'primary' }, 'Primary')
+
+// With variant and size
+m(Button, { variant: 'outline', color: 'error', size: 'lg' }, 'Error')
+
+// With icon
+m(Button, null, [m(Heart, { size: 20 }), ' Like'])
+
+// Circle button
+m(Button, { circle: true }, m(Heart, { size: 20 }))`
 
 const classRows = [
   { className: 'btn', prop: '<Button>', type: 'Component', description: 'Button' },
@@ -206,10 +240,21 @@ export default {
             <Button square><Loading /></Button>
             <Button><Loading /> Loading</Button>
         </Stack>                    
-        <Title as="h2" size="3">{t('common.usage')}</Title>  
-        <CodeExample code={usageCode} />        
-        <Title as="h2" size="3">{t('common.classReference')}</Title>
-        <ClassTable rows={classRows} />        
+        <Title as="h2" size="3">{t('common.usage')}</Title>
+        <Tabs defaultActive="jsx" lifted size="lg">
+          <Tab ref="jsx" >Jsx</Tab>
+          <Tab ref="js" >Js</Tab>
+          <TabContent ref="jsx">            
+            <CodeExample type="xml" code={usageCodeJsx} />
+          </TabContent>
+          <TabContent ref="js">            
+            <CodeExample type="javascript" code={usageCodeJavascript} />
+          </TabContent>
+        </Tabs>
+        
+        <Title as="h2" size="3">{t('common.classReference')}</Title>        
+        <ClassTable rows={classRows} />
+        
       </Stack>
     )
   }
