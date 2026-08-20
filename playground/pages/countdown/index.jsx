@@ -17,8 +17,16 @@ export const MyPage = {
   view() {
     return (
       <div>
+        {/* Presentational mode */}
         <Countdown value={59} />
-        <Countdown value={7} digits={2} className="text-6xl font-mono" />
+        <Countdown value={7} digits={2} />
+
+        {/* Timer mode */}
+        <Countdown
+          duration={10}
+          autostart
+          oncomplete={() => console.log('done!')}
+        />
       </div>
     )
   }
@@ -30,28 +38,30 @@ import { Countdown } from 'panda-ui-mithril'
 export const MyPage = {
   view() {
     return m('div', null, [
+      // Presentational mode
       m(Countdown, { value: 59 }),
-      m(Countdown, { value: 7, digits: 2, className: 'text-6xl font-mono' })
+      m(Countdown, { value: 7, digits: 2 }),
+
+      // Timer mode
+      m(Countdown, {
+        duration: 10,
+        autostart: true,
+        oncomplete: () => console.log('done!')
+      })
     ])
   }
 }`
 
 const classRows = [
   { className: 'countdown', prop: '<Countdown value={...}>', type: 'Component', description: 'Countdown wrapper — value must be a number between 0 and 999' },
+  { className: 'countdown', prop: '<Countdown duration={10} autostart />', type: 'Timer', description: 'Starts a countdown from duration; fires oncomplete when it reaches 0' },
 ]
 
 export default {
   oninit(vnode) {
     loadPageI18n('countdown')
     vnode.state.seconds = 59
-    vnode.state.timer = setInterval(() => {
-      vnode.state.seconds = vnode.state.seconds > 0 ? vnode.state.seconds - 1 : 59
-      m.redraw()
-    }, 1000)
-  },
-
-  onremove(vnode) {
-    clearInterval(vnode.state.timer)
+    vnode.state.done = false
   },
 
   name: 'Countdown',
@@ -59,7 +69,7 @@ export default {
   description: 'Countdown component for displaying remaining time.',
 
   view(vnode) {
-    const { seconds } = vnode.state
+    const { seconds, done } = vnode.state
     const minutes = 59
     const hours = 23
 
@@ -71,7 +81,7 @@ export default {
         </Text>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Live (ticking)</Title>
+          <Title as="h3" size="5">Presentational</Title>
           <Countdown value={seconds} className={big} />
         </Block>
 
@@ -84,6 +94,27 @@ export default {
             <span className={big}>:</span>
             <div className={clockUnit}><Countdown value={seconds} digits={2} className={big} /><span className={clockLabel}>sec</span></div>
           </div>
+        </Block>
+
+        <Block spacing="lg">
+          <Title as="h3" size="5">Timer Mode (with oncomplete)</Title>
+          <Countdown
+            duration={10}
+            autostart
+            oncomplete={() => { vnode.state.done = true }}
+          />
+          <Text color={done ? 'success' : 'neutral'} className={css({ marginTop: '0.5rem' })}>
+            {done ? 'Ready to resend!' : 'Waiting...'}
+          </Text>
+          {done && (
+            <Block spacing="sm">
+              <Countdown
+                duration={10}
+                autostart
+                oncomplete={() => { vnode.state.done = false }}
+              />
+            </Block>
+          )}
         </Block>
 
         <Block spacing="lg">

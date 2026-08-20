@@ -3,23 +3,61 @@ import { countdown, countdownDigit } from '../../../styled-system/recipes'
 import { cx } from '../../../styled-system/css'
 
 /**
- * Componente Countdown. Muestra un número como dígitos individuales con
- * transición flip. `value` es el número a mostrar (0-999) y `digits` fija
- * cuántos dígitos rellenar con ceros a la izquierda.
+ * Componente Countdown. Modo presentacional: muestra un número con `value`.
+ * Modo timer: cuenta regresiva con `duration`, autostart y callbacks.
  *
  * @type {import('mithril').Component<import('./index').CountdownAttrs>}
  */
 export const Countdown = {
+  oninit(vnode) {
+    const { duration, autostart } = vnode.attrs
+    if (duration != null) {
+      vnode.state.remaining = duration
+      vnode.state._interval = null
+      if (autostart) this._startTimer(vnode)
+    }
+  },
+
+  onremove(vnode) {
+    this._stopTimer(vnode)
+  },
+
+  _startTimer(vnode) {
+    if (vnode.state._interval) return
+    const { onstart } = vnode.attrs
+    if (onstart) onstart()
+    vnode.state._interval = setInterval(() => {
+      vnode.state.remaining--
+      m.redraw()
+      if (vnode.state.remaining <= 0) {
+        this._stopTimer(vnode)
+        const { oncomplete } = vnode.attrs
+        if (oncomplete) oncomplete(0)
+      }
+    }, 1000)
+  },
+
+  _stopTimer(vnode) {
+    if (vnode.state._interval) {
+      clearInterval(vnode.state._interval)
+      vnode.state._interval = null
+      const { onstop } = vnode.attrs
+      if (onstop) onstop(vnode.state.remaining)
+    }
+  },
+
   view(vnode) {
-    const { value, digits, className, ...rest } = vnode.attrs
-    const clamped = Math.max(0, Math.min(999, value))
+    const { value, digits, duration, autostart, oncomplete, onstart, onstop, className, ...rest } = vnode.attrs
+    const isTimer = duration != null
+    const display = isTimer ? vnode.state.remaining : value
+    const clamped = Math.max(0, Math.min(999, display))
     const numDigits = digits || Math.max(1, String(clamped).length)
     const digitChars = String(clamped).padStart(numDigits, '0').split('')
 
     return m('span', {
       className: cx('countdown', countdown(), className),
       'aria-live': 'polite',
-      'aria-label': String(value),
+      'aria-label': String(display),
       ...rest
     }, digitChars.map((d, i) => m('span', {
       key: i,
