@@ -12,6 +12,8 @@ import {
 } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
+import table from './table.yaml'
+import { tableToRows } from '../../components/table-rows'
 
 
 const usageCodeJsx = `import m from 'mithril'
@@ -141,30 +143,6 @@ const windowUsageCode = `<ChatWindow style={{ height: '500px' }}>
     <ChatInput onSend={handleSend} />
   </ChatFooter>
 </ChatWindow>`
-
-const classRows = [
-  { className: 'chat', prop: '<Chat placement="...">', type: 'Component', description: 'Chat container (basic)' },
-  { className: 'chat-image', prop: '<ChatImage>', type: 'Part', description: 'Container for an avatar image' },
-  { className: 'chat-header', prop: '<ChatHeader>', type: 'Part', description: 'Header for the chat bubble' },
-  { className: 'chat-bubble', prop: '<ChatBubble color="...">', type: 'Component', description: 'The chat bubble itself' },
-  { className: 'chat-footer', prop: '<ChatFooter>', type: 'Part', description: 'Footer for the chat bubble' },
-  { className: 'chat-window', prop: '<ChatWindow>', type: 'Component', description: 'Full chat container with fixed header/footer' },
-  { className: 'chat-message', prop: '<ChatMessage>', type: 'Component', description: 'Complete message with bubble, status, reactions' },
-  { className: 'chat-reply', prop: '<ChatReply>', type: 'Component', description: 'Reply/quote to a previous message' },
-  { className: 'chat-reactions', prop: '<ChatReactions>', type: 'Component', description: 'Emoji reactions for a message' },
-  { className: 'chat-status', prop: '<ChatStatus>', type: 'Component', description: 'Read receipt indicators' },
-  { className: 'chat-audio', prop: '<ChatAudio>', type: 'Component', description: 'Audio player for voice messages' },
-  { className: 'chat-video', prop: '<ChatVideo>', type: 'Component', description: 'Inline video player' },
-  { className: 'chat-image', prop: '<ChatImageMessage>', type: 'Component', description: 'Image message with caption' },
-  { className: 'chat-file', prop: '<ChatFile>', type: 'Component', description: 'File attachment with icon' },
-  { className: 'chat-link', prop: '<ChatLink>', type: 'Component', description: 'URL preview with title/description' },
-  { className: 'chat-system', prop: '<ChatSystem>', type: 'Component', description: 'System messages (dates, info)' },
-  { className: 'chat-input', prop: '<ChatInput>', type: 'Component', description: 'Message input area' },
-  { className: 'chat-typing', prop: '<ChatTyping>', type: 'Component', description: 'Typing indicator' },
-  { className: 'chat-emoji', prop: '<ChatEmoji>', type: 'Component', description: 'Emoji selector grid' },
-  { className: 'chat-start', prop: 'placement="start" (default)', type: 'Placement', description: 'Bubble on the left', isDefault: true },
-  { className: 'chat-end', prop: 'placement="end"', type: 'Placement', description: 'Bubble on the right' },
-]
 
 export default {
   name: 'Chat',
@@ -384,7 +362,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
-          <ClassTable rows={classRows} />
+          <ClassTable rows={tableToRows(table)} />
         </Block>
       </Stack>
     )

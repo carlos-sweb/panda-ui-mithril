@@ -4,6 +4,8 @@ import { t, loadPageI18n } from '../../i18n/index.js'
 import { Stack, Title, Progress, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
+import table from './table.yaml'
+import { tableToRows } from '../../components/table-rows'
 
 const usageCodeJsx = `import m from 'mithril'
 import { Progress } from 'panda-ui-mithril'
@@ -26,18 +28,6 @@ export const ProgressPage = {
     return m(Progress, { value: 70, max: 100, color: 'primary' })
   }
 }`
-
-const classRows = [
-  { className: 'progress', prop: '<Progress value={...} max={...}>', type: 'Component', description: 'For <progress> tag' },
-  { className: 'progress-neutral', prop: 'color="neutral"', type: 'Color', description: 'neutral color' },
-  { className: 'progress-primary', prop: 'color="primary"', type: 'Color', description: 'primary color' },
-  { className: 'progress-secondary', prop: 'color="secondary"', type: 'Color', description: 'secondary color' },
-  { className: 'progress-accent', prop: 'color="accent"', type: 'Color', description: 'accent color' },
-  { className: 'progress-info', prop: 'color="info"', type: 'Color', description: 'info color' },
-  { className: 'progress-success', prop: 'color="success"', type: 'Color', description: 'success color' },
-  { className: 'progress-warning', prop: 'color="warning"', type: 'Color', description: 'warning color' },
-  { className: 'progress-error', prop: 'color="error"', type: 'Color', description: 'error color' },
-]
 
 export default {
   name: 'Progress',
@@ -75,7 +65,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
-          <ClassTable rows={classRows} />
+          <ClassTable rows={tableToRows(table)} />
         </Block>
       </Stack>
     )

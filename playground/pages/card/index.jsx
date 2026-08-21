@@ -4,6 +4,8 @@ import { t, loadPageI18n } from '../../i18n/index.js'
 import { Stack, Title, Card, CardBody, CardTitle, CardActions, CardFigure, Button, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
+import table from './table.yaml'
+import { tableToRows } from '../../components/table-rows'
 
 import image_card1 from './../../assets/card/card1.jpg'
 import image_card2 from './../../assets/card/card2.jpg'
@@ -53,23 +55,6 @@ export const MyPage = {
     ])
   }
 }`
-
-const classRows = [
-  { className: 'card', prop: '<Card>', type: 'Component', description: 'Card' },
-  { className: 'card-title', prop: '<CardTitle>', type: 'Part', description: 'Title part' },
-  { className: 'card-body', prop: '<CardBody>', type: 'Part', description: 'Body part (content)' },
-  { className: 'card-actions', prop: '<CardActions justify="...">', type: 'Part', description: 'Actions part (buttons, etc.)' },
-  { className: '(figure)', prop: '<CardFigure>', type: 'Part', description: 'Image/figure container' },
-  { className: 'card-border', prop: 'border', type: 'Style', description: 'Adds border to card' },
-  { className: 'card-dash', prop: 'dash', type: 'Style', description: 'Dash style border' },
-  { className: 'card-side', prop: 'side', type: 'Modifier', description: 'The image in the figure will be on the side' },
-  { className: 'image-full', prop: 'imageFull', type: 'Modifier', description: 'The image in the figure will be the background' },
-  { className: 'card-xs', prop: 'size="xs"', type: 'Size', description: 'Extra small size' },
-  { className: 'card-sm', prop: 'size="sm"', type: 'Size', description: 'Small size' },
-  { className: 'card-md', prop: 'size="md" (default)', type: 'Size', description: 'Medium size', isDefault: true },
-  { className: 'card-lg', prop: 'size="lg"', type: 'Size', description: 'Large size' },
-  { className: 'card-xl', prop: 'size="xl"', type: 'Size', description: 'Extra large size' },
-]
 
 export default {
   name: 'Card',
@@ -174,7 +159,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
-          <ClassTable rows={classRows} />
+          <ClassTable rows={tableToRows(table)} />
         </Block>
       </Stack>
     )

@@ -4,6 +4,8 @@ import { t, loadPageI18n } from '../../i18n/index.js'
 import { Stack, Title, Divider, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
+import table from './table.yaml'
+import { tableToRows } from '../../components/table-rows'
 
 
 const usageCodeJsx = `import m from 'mithril'
@@ -33,22 +35,6 @@ export const MyPage = {
     ])
   }
 }`
-
-const classRows = [
-  { className: 'divider', prop: '<Divider>', type: 'Component', description: 'A divider line between two elements' },
-  { className: 'divider-neutral', prop: 'color="neutral"', type: 'Color', description: 'neutral color' },
-  { className: 'divider-primary', prop: 'color="primary"', type: 'Color', description: 'primary color' },
-  { className: 'divider-secondary', prop: 'color="secondary"', type: 'Color', description: 'secondary color' },
-  { className: 'divider-accent', prop: 'color="accent"', type: 'Color', description: 'accent color' },
-  { className: 'divider-success', prop: 'color="success"', type: 'Color', description: 'success color' },
-  { className: 'divider-warning', prop: 'color="warning"', type: 'Color', description: 'warning color' },
-  { className: 'divider-info', prop: 'color="info"', type: 'Color', description: 'info color' },
-  { className: 'divider-error', prop: 'color="error"', type: 'Color', description: 'error color' },
-  { className: 'divider-vertical', prop: 'direction="horizontal" (default)', type: 'Direction', description: 'Divide vertical elements (on top of each other) — this is the default, no prop needed', isDefault: true },
-  { className: 'divider-horizontal', prop: 'direction="vertical"', type: 'Direction', description: 'Divide horizontal elements (next to each other) — note: this component\'s direction prop names the opposite of its class name' },
-  { className: 'divider-start', prop: 'placement="start"', type: 'Placement', description: 'Pushes the divider text to the start' },
-  { className: 'divider-end', prop: 'placement="end"', type: 'Placement', description: 'Pushes the divider text to the end' },
-]
 
 export default {
   name: 'Divider',
@@ -84,7 +70,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
-          <ClassTable rows={classRows} />
+          <ClassTable rows={tableToRows(table)} />
         </Block>
       </Stack>
     )

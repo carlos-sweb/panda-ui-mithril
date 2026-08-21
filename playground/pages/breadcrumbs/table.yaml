@@ -1,0 +1,5 @@
+rows:
+  - class: "breadcrumbs"
+    prop: "<Breadcrumbs items={...}>"
+    type: "Component"
+    description: "Wrapper around a <ul>"

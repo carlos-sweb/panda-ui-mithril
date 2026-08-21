@@ -4,6 +4,8 @@ import { t, loadPageI18n } from '../../i18n/index.js'
 import { Stack, Title, Calendar, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
+import table from './table.yaml'
+import { tableToRows } from '../../components/table-rows'
 
 const surface = css({
   display: 'inline-block',
@@ -40,13 +42,6 @@ export const MyPage = {
     })
   }
 }`
-
-const classRows = [
-  { className: 'cally', prop: '<Calendar value={...} onchange={...}>', type: 'Component', description: 'Month-grid calendar with real date logic (navigable, no external library)' },
-  { className: 'calendar-header', prop: '(internal)', type: 'Part', description: 'Month/year label with previous/next navigation' },
-  { className: 'calendar-month', prop: '(internal)', type: 'Part', description: 'The 7-column weekday + day grid' },
-  { className: 'calendar-date', prop: '(internal)', type: 'Part', description: 'A single day cell — today is highlighted primary, the selected value is highlighted solid' },
-]
 
 export default {
   oninit(vnode) {
@@ -91,7 +86,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
-          <ClassTable rows={classRows} />
+          <ClassTable rows={tableToRows(table)} />
         </Block>
       </Stack>
     )

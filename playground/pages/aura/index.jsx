@@ -4,6 +4,8 @@ import { t, loadPageI18n } from '../../i18n/index.js'
 import { Stack, Title, Aura, Button, Card, CardBody, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
+import table from './table.yaml'
+import { tableToRows } from '../../components/table-rows'
 
 const cardSurface = css({ background: 'token(colors.base-100)', width: '14rem' })
 const primaryColor = css({ color: 'token(colors.primary)' })
@@ -49,22 +51,6 @@ export const MyPage = {
     ])
   }
 }`
-
-const classRows = [
-  { className: 'aura', prop: '<Aura>', type: 'Component', description: "Container that adds a light effect aura around an element. By default it's a rotating border" },
-  { className: 'aura-dual', prop: 'variant="dual"', type: 'Style', description: 'Uses two light effects' },
-  { className: 'aura-rainbow', prop: 'variant="rainbow"', type: 'Style', description: 'Uses rainbow colors for the light effect' },
-  { className: 'aura-holo', prop: 'variant="holo"', type: 'Style', description: 'Uses holographic colors for the light effect' },
-  { className: 'aura-gold', prop: 'variant="gold"', type: 'Style', description: 'Uses gold colors for the light effect' },
-  { className: 'aura-silver', prop: 'variant="silver"', type: 'Style', description: 'Uses silver colors for the light effect' },
-  { className: 'aura-glow', prop: 'variant="glow"', type: 'Style', description: 'Uses a glowing effect instead of a rotating border' },
-  { className: '(corner radius)', prop: 'shape="box" | "field" | "selector"', type: 'Modifier', description: 'Matches the aura\'s corner radius to what it wraps (card/alert, button/input, checkbox/toggle/badge)' },
-  { className: 'aura-xs', prop: 'size="xs"', type: 'Size', description: 'Extra small size' },
-  { className: 'aura-sm', prop: 'size="sm"', type: 'Size', description: 'Small size' },
-  { className: 'aura-md', prop: 'size="md" (default)', type: 'Size', description: 'Medium size', isDefault: true },
-  { className: 'aura-lg', prop: 'size="lg"', type: 'Size', description: 'Large size' },
-  { className: 'aura-xl', prop: 'size="xl"', type: 'Size', description: 'Extra large size' },
-]
 
 export default {
   name: 'Aura',
@@ -128,7 +114,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
-          <ClassTable rows={classRows} />
+          <ClassTable rows={tableToRows(table)} />
         </Block>
       </Stack>
     )

@@ -5,6 +5,8 @@ import { Stack, Title, Alert, Text, Block, Tabs, Tab, TabContent } from '../../.
 import { Info, CheckCircle, AlertTriangle, AlertCircle, X, ChevronRight } from 'lucide-mithril'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
+import table from './table.yaml'
+import { tableToRows } from '../../components/table-rows'
 
 
 
@@ -59,19 +61,6 @@ export const MyPage = {
     ])
   }
 }`
-
-const classRows = [
-  { className: 'alert', prop: '<Alert>', type: 'Component', description: 'Container for displaying an important message' },
-  { className: 'alert-info', prop: 'color="info"', type: 'Color', description: 'Info alert color' },
-  { className: 'alert-success', prop: 'color="success"', type: 'Color', description: 'Success alert color' },
-  { className: 'alert-warning', prop: 'color="warning"', type: 'Color', description: 'Warning alert color' },
-  { className: 'alert-error', prop: 'color="error"', type: 'Color', description: 'Error alert color' },
-  { className: 'alert-outline', prop: 'variant="outline"', type: 'Style', description: 'Transparent background with a colored border' },
-  { className: 'alert-dash', prop: 'variant="dash"', type: 'Style', description: 'Transparent background with a dashed border' },
-  { className: 'alert-soft', prop: 'variant="soft"', type: 'Style', description: 'Soft background tint with no border' },
-  { className: 'alert-horizontal', prop: 'direction="horizontal" (default)', type: 'Direction', description: 'Lays out content in a row', isDefault: true },
-  { className: 'alert-vertical', prop: 'direction="vertical"', type: 'Direction', description: 'Stacks content in a column — useful on mobile' },
-]
 
 export default {
   name: 'Alert',
@@ -303,7 +292,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
-          <ClassTable rows={classRows} />
+          <ClassTable rows={tableToRows(table)} />
         </Block>
       </Stack>
     )

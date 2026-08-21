@@ -5,6 +5,8 @@ import { Stack, Title, Timeline, TimelineItem, TimelineStart, TimelineMiddle, Ti
 import { CircleCheck } from 'lucide-mithril'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
+import table from './table.yaml'
+import { tableToRows } from '../../components/table-rows'
 
 const icon = css({ color: 'token(colors.primary)' })
 
@@ -56,19 +58,6 @@ export const TimelinePage = {
     ])
   }
 }`
-
-const classRows = [
-  { className: 'timeline', prop: '<Timeline>', type: 'Component', description: 'Timeline container' },
-  { className: 'timeline-start', prop: '<TimelineStart>', type: 'Part', description: 'The content inside <li> at the start direction' },
-  { className: 'timeline-middle', prop: '<TimelineMiddle>', type: 'Part', description: 'The content inside <li> at the middle' },
-  { className: 'timeline-end', prop: '<TimelineEnd>', type: 'Part', description: 'The content inside <li> at the end direction' },
-  { className: 'hr', prop: '<TimelineItem hrBefore/hrAfter>', type: 'Part', description: 'Connects items with a line' },
-  { className: 'timeline-box', prop: '<TimelineStart box> / <TimelineEnd box>', type: 'Modifier', description: 'Applies a box style to timeline-start or timeline-end' },
-  { className: 'timeline-snap-icon', prop: 'snapIcon', type: 'Modifier', description: 'snaps the icon to the start instead of middle' },
-  { className: 'timeline-compact', type: 'Modifier', description: 'forces all items on one side — not supported by this component' },
-  { className: 'timeline-horizontal', prop: '(default)', type: 'Placement', description: 'horizontal layout', isDefault: true },
-  { className: 'timeline-vertical', prop: 'vertical', type: 'Placement', description: 'vertical layout' },
-]
 
 export default {
   name: 'Timeline',
@@ -126,7 +115,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
-          <ClassTable rows={classRows} />
+          <ClassTable rows={tableToRows(table)} />
         </Block>
       </Stack>
     )

@@ -4,6 +4,8 @@ import { t, loadPageI18n } from '../../i18n/index.js'
 import { Stack, Title, RatingGroup, Rating, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
+import table from './table.yaml'
+import { tableToRows } from '../../components/table-rows'
 
 const usageCodeJsx = `import m from 'mithril'
 import { RatingGroup } from 'panda-ui-mithril'
@@ -30,11 +32,6 @@ export const RatingGroupPage = {
     ])
   }
 }`
-
-const classRows = [
-  { className: 'rating-group', prop: '<RatingGroup>', type: 'Component', description: 'Rating wrapper with label and value display' },
-  { className: 'rating-group-label', prop: 'label', type: 'string', description: 'Label text displayed above/beside the stars' },
-]
 
 export default {
   oninit() { loadPageI18n('ratinggroup') },
@@ -125,7 +122,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
-          <ClassTable rows={classRows} />
+          <ClassTable rows={tableToRows(table)} />
         </Block>
       </Stack>
     )

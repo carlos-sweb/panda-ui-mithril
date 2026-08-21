@@ -1,0 +1,13 @@
+rows:
+  - class: "box"
+    prop: "<Box>"
+    type: "Component"
+    description: "Bordered container with padding and shadow"
+  - class: "box-sm|md|lg"
+    prop: "padding=\"sm|md|lg\""
+    type: "Size"
+    description: "Small / medium / large padding"
+  - class: "box-shadow-sm|md|lg|none"
+    prop: "shadow=\"sm|md|lg|none\""
+    type: "Modifier"
+    description: "Shadow depth"

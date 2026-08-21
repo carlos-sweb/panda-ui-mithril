@@ -4,6 +4,8 @@ import { t, loadPageI18n } from '../../i18n/index.js'
 import { Stack, Title, Collapse, CollapseTitle, CollapseContent, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
+import table from './table.yaml'
+import { tableToRows } from '../../components/table-rows'
 
 const usageCodeJsx = `import m from 'mithril'
 import { Collapse, CollapseTitle, CollapseContent } from 'panda-ui-mithril'
@@ -36,16 +38,6 @@ export const MyPage = {
     ])
   }
 }`
-
-const classRows = [
-  { className: 'collapse', prop: '<Collapse>', type: 'Component', description: 'Collapse container — click the title to toggle' },
-  { className: 'collapse-title', prop: '<CollapseTitle>', type: 'Part', description: 'Title part' },
-  { className: 'collapse-content', prop: '<CollapseContent>', type: 'Part', description: 'Content part' },
-  { className: 'collapse-arrow', prop: 'arrow', type: 'Modifier', description: 'Adds arrow icon' },
-  { className: 'collapse-plus', prop: 'plus', type: 'Modifier', description: 'Adds plus/minus icon' },
-  { className: 'collapse-open', prop: 'checked', type: 'Modifier', description: 'Force open (controlled)' },
-  { className: '—', prop: 'border', type: 'Modifier', description: 'base-100 background + base-300 border (the reference implementation applies this via plain utility classes, not a component class)' },
-]
 
 export default {
   name: 'Collapse',
@@ -97,7 +89,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
-          <ClassTable rows={classRows} />
+          <ClassTable rows={tableToRows(table)} />
         </Block>
       </Stack>
     )

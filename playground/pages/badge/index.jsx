@@ -4,6 +4,8 @@ import { t, loadPageI18n } from '../../i18n/index.js'
 import { Stack, Title, Badge, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
+import table from './table.yaml'
+import { tableToRows } from '../../components/table-rows'
 
 const usageCodeJsx = `import m from 'mithril'
 import { Badge } from 'panda-ui-mithril'
@@ -32,27 +34,6 @@ export const MyPage = {
     ])
   }
 }`
-
-const classRows = [
-  { className: 'badge', prop: '<Badge>', type: 'Component', description: 'Container element' },
-  { className: 'badge-outline', prop: 'variant="outline"', type: 'Style', description: 'outline style' },
-  { className: 'badge-dash', prop: 'variant="dash"', type: 'Style', description: 'dash outline style' },
-  { className: 'badge-soft', prop: 'variant="soft"', type: 'Style', description: 'soft style' },
-  { className: 'badge-ghost', prop: 'variant="ghost"', type: 'Style', description: 'ghost style' },
-  { className: 'badge-neutral', prop: 'color="neutral"', type: 'Color', description: 'neutral color' },
-  { className: 'badge-primary', prop: 'color="primary"', type: 'Color', description: 'primary color' },
-  { className: 'badge-secondary', prop: 'color="secondary"', type: 'Color', description: 'secondary color' },
-  { className: 'badge-accent', prop: 'color="accent"', type: 'Color', description: 'accent color' },
-  { className: 'badge-info', prop: 'color="info"', type: 'Color', description: 'info color' },
-  { className: 'badge-success', prop: 'color="success"', type: 'Color', description: 'success color' },
-  { className: 'badge-warning', prop: 'color="warning"', type: 'Color', description: 'warning color' },
-  { className: 'badge-error', prop: 'color="error"', type: 'Color', description: 'error color' },
-  { className: 'badge-xs', prop: 'size="xs"', type: 'Size', description: 'extra small size' },
-  { className: 'badge-sm', prop: 'size="sm"', type: 'Size', description: 'small size' },
-  { className: 'badge-md', prop: 'size="md"', type: 'Size', description: 'medium size', isDefault: true },
-  { className: 'badge-lg', prop: 'size="lg"', type: 'Size', description: 'large size' },
-  { className: 'badge-xl', prop: 'size="xl"', type: 'Size', description: 'extra large size' },
-]
 
 export default {
   name: 'Badge',
@@ -118,7 +99,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
-          <ClassTable rows={classRows} />
+          <ClassTable rows={tableToRows(table)} />
         </Block>
       </Stack>
     )

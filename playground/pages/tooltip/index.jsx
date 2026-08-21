@@ -4,6 +4,8 @@ import { t, loadPageI18n } from '../../i18n/index.js'
 import { Stack, Title, Button, Tooltip, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
+import table from './table.yaml'
+import { tableToRows } from '../../components/table-rows'
 
 const usageCodeJsx = `import m from 'mithril'
 import { Tooltip, Button } from 'panda-ui-mithril'
@@ -38,27 +40,6 @@ export const TooltipPage = {
     ])
   }
 }`
-
-const classRows = [
-  { className: 'tooltip', prop: '<Tooltip tip="...">', type: 'Component', description: 'Container element' },
-  { className: 'tooltip-content', type: 'Part', description: 'Optional. Setting a div as the content of the tooltip instead of the `data-tip` text — not supported by this component, only the `tip` attribute is' },
-  { className: 'tooltip-top', prop: 'position="top" (default)', type: 'Placement', description: 'Put tooltip on top', isDefault: true },
-  { className: 'tooltip-bottom', prop: 'position="bottom"', type: 'Placement', description: 'Put tooltip on bottom' },
-  { className: 'tooltip-left', prop: 'position="left"', type: 'Placement', description: 'Put tooltip on left' },
-  { className: 'tooltip-right', prop: 'position="right"', type: 'Placement', description: 'Put tooltip on right' },
-  { className: 'tooltip-start', type: 'Placement', description: 'Align tooltip on start — not supported by this component' },
-  { className: 'tooltip-center', type: 'Placement', description: 'Align tooltip on center — not supported by this component' },
-  { className: 'tooltip-end', type: 'Placement', description: 'Align tooltip on end — not supported by this component' },
-  { className: 'tooltip-open', prop: 'open', type: 'Modifier', description: 'Force open tooltip' },
-  { className: 'tooltip-neutral', prop: 'color="neutral" (default)', type: 'Color', description: 'neutral color', isDefault: true },
-  { className: 'tooltip-primary', prop: 'color="primary"', type: 'Color', description: 'primary color' },
-  { className: 'tooltip-secondary', prop: 'color="secondary"', type: 'Color', description: 'secondary color' },
-  { className: 'tooltip-accent', prop: 'color="accent"', type: 'Color', description: 'accent color' },
-  { className: 'tooltip-info', prop: 'color="info"', type: 'Color', description: 'info color' },
-  { className: 'tooltip-success', prop: 'color="success"', type: 'Color', description: 'success color' },
-  { className: 'tooltip-warning', prop: 'color="warning"', type: 'Color', description: 'warning color' },
-  { className: 'tooltip-error', prop: 'color="error"', type: 'Color', description: 'error color' },
-]
 
 export default {
   name: 'Tooltip',
@@ -97,7 +78,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
-          <ClassTable rows={classRows} />
+          <ClassTable rows={tableToRows(table)} />
         </Block>
       </Stack>
     )

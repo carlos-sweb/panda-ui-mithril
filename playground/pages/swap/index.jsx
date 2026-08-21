@@ -5,6 +5,8 @@ import { Title, Swap, Stack, Text, Block, Badge, Tabs, Tab, TabContent } from '.
 import { Sun, Moon } from 'lucide-mithril'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
+import table from './table.yaml'
+import { tableToRows } from '../../components/table-rows'
 
 const heading = css({ fontSize: '0.875rem', fontWeight: '600', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em', opacity: 0.5 })
 const stateBadge = css({
@@ -61,23 +63,6 @@ export const SwapPage = {
     ])
   }
 }`
-
-const classRows = [
-  { className: 'swap', prop: '<Swap on={...} off={...}>', type: 'Component', description: 'Swap container' },
-  { className: 'swap-on', prop: 'on={...}', type: 'Part', description: 'The child element that should be visible when checkbox is checked or when swap is active' },
-  { className: 'swap-off', prop: 'off={...}', type: 'Part', description: 'The child element that should be visible when checkbox is not checked or when swap is not active' },
-  { className: 'swap-indeterminate', type: 'Part', description: 'The child element that should be visible when checkbox is indeterminate — not supported by this component' },
-  { className: 'swap-active', prop: 'active', type: 'Modifier', description: 'Activates the swap (no need for checkbox)' },
-  { className: 'swap-rotate', prop: 'style="rotate"', type: 'Style', description: 'Adds rotate effect to swap' },
-  { className: 'swap-flip', prop: 'style="flip"', type: 'Style', description: 'Adds flip effect to swap' },
-  { className: 'swap-xs', prop: 'size="xs"', type: 'Size', description: 'Extra small size' },
-  { className: 'swap-sm', prop: 'size="sm"', type: 'Size', description: 'Small size' },
-  { className: 'swap-md', prop: 'size="md" (default)', type: 'Size', description: 'Medium size', isDefault: true },
-  { className: 'swap-lg', prop: 'size="lg"', type: 'Size', description: 'Large size' },
-  { className: 'swap-xl', prop: 'size="xl"', type: 'Size', description: 'Extra large size' },
-  { className: '—', prop: 'checked', type: 'Prop', description: 'Controlled state of the checkbox' },
-  { className: '—', prop: 'onchange', type: 'Prop', description: 'Callback on toggle: (checked, e) => void' },
-]
 
 export default {
   name: 'Swap',
@@ -153,7 +138,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
-          <ClassTable rows={classRows} />
+          <ClassTable rows={tableToRows(table)} />
         </Block>
       </Stack>
     )

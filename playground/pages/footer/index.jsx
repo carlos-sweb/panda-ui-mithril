@@ -4,6 +4,8 @@ import { t, loadPageI18n } from '../../i18n/index.js'
 import { Stack, Title, Footer, FooterTitle, Link, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
+import table from './table.yaml'
+import { tableToRows } from '../../components/table-rows'
 
 const surface = css({ background: 'token(colors.base-200)', padding: '2.5rem', borderRadius: 'var(--radius-box)' })
 
@@ -50,14 +52,6 @@ export const MyPage = {
     ])
   }
 }`
-
-const classRows = [
-  { className: 'footer', prop: '<Footer>', type: 'Component', description: 'Footer container' },
-  { className: 'footer-title', prop: '<FooterTitle>', type: 'Part', description: 'Section title inside the footer' },
-  { className: 'footer-center', prop: 'center', type: 'Modifier', description: 'Centers all items' },
-  { className: 'footer-horizontal', prop: 'horizontal', type: 'Placement', description: 'Shows items horizontally (default on larger screens)' },
-  { className: 'footer-vertical', prop: 'vertical', type: 'Placement', description: 'Shows items vertically' },
-]
 
 export default {
   name: 'Footer',
@@ -126,7 +120,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
-          <ClassTable rows={classRows} />
+          <ClassTable rows={tableToRows(table)} />
         </Block>
       </Stack>
     )

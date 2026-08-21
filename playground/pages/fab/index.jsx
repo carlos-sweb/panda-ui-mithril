@@ -5,6 +5,8 @@ import { Stack, Title, FAB, FABMain, FABAction, Text, Block, Tabs, Tab, TabConte
 import { Plus, Pencil, Trash2, Share2 } from 'lucide-mithril'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
+import table from './table.yaml'
+import { tableToRows } from '../../components/table-rows'
 
 
 const usageCodeJsx = `import m from 'mithril'
@@ -40,13 +42,6 @@ export const MyPage = {
     ])
   }
 }`
-
-const classRows = [
-  { className: 'fab', prop: '<FAB>', type: 'Component', description: 'Container, fixed to the bottom-right corner of the viewport' },
-  { className: '(trigger)', prop: '<FABMain>', type: 'Part', description: 'Focusable/clickable trigger — clicking or focusing it reveals the actions' },
-  { className: '(action)', prop: '<FABAction label="...">', type: 'Part', description: 'An action button revealed when the FAB is open' },
-  { className: 'fab-flower', type: 'Modifier', description: 'Opens actions in a quarter-circle arrangement instead of vertically — not supported by this component' },
-]
 
 export default {
   name: 'FAB',
@@ -85,7 +80,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
-          <ClassTable rows={classRows} />
+          <ClassTable rows={tableToRows(table)} />
         </Block>
       </Stack>
     )

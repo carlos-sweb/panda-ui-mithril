@@ -4,6 +4,8 @@ import { t, loadPageI18n } from '../../i18n/index.js'
 import { Stack, Title, Tabs, Tab, TabContent, Text, Block } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
+import table from './table.yaml'
+import { tableToRows } from '../../components/table-rows'
 
 const usageCodeJsx = `import m from 'mithril'
 import { Tabs, Tab, TabContent } from 'panda-ui-mithril'
@@ -40,22 +42,6 @@ export const MyPage = {
     ])
   }
 }`
-
-const classRows = [
-  { className: 'tabs', prop: '<Tabs boxed|bordered|lifted>', type: 'Component', description: 'Tabs container' },
-  { className: 'tabs-tab', prop: '<Tab ref="...">', type: 'Component', description: 'A single tab — linked to TabContent via ref' },
-  { className: 'tabs-content', prop: '<TabContent ref="...">', type: 'Part', description: 'Panel shown for the active tab' },
-  { className: 'tab-active', prop: 'auto-applied', type: 'State', description: 'Applied to active tab automatically' },
-  { className: 'tab-disabled', prop: '<Tab disabled>', type: 'Modifier', description: 'Disables a tab' },
-  { className: 'tabs-box', prop: 'boxed', type: 'Style', description: 'Tabs styled as a pill-shaped button group' },
-  { className: 'tabs-border', prop: 'bordered', type: 'Style', description: 'Tabs with a bottom border indicator' },
-  { className: 'tabs-lift', prop: 'lifted', type: 'Style', description: 'Tabs that visually connect to their content panel below' },
-  { className: 'tabs-xs', prop: 'size="xs"', type: 'Size', description: 'Extra small size' },
-  { className: 'tabs-sm', prop: 'size="sm"', type: 'Size', description: 'Small size' },
-  { className: 'tabs-md', prop: 'size="md" (default)', type: 'Size', description: 'Medium size', isDefault: true },
-  { className: 'tabs-lg', prop: 'size="lg"', type: 'Size', description: 'Large size' },
-  { className: 'tabs-xl', prop: 'size="xl"', type: 'Size', description: 'Extra large size' },
-]
 
 export default {
   oninit(vnode) {
@@ -247,7 +233,7 @@ export default {
         {/* Class Reference */}
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
-          <ClassTable rows={classRows} />
+          <ClassTable rows={tableToRows(table)} />
         </Block>
       </Stack>
     )

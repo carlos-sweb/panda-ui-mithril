@@ -4,6 +4,8 @@ import { t, loadPageI18n } from '../../i18n/index.js'
 import { Stack, Title, Countdown, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
+import table from './table.yaml'
+import { tableToRows } from '../../components/table-rows'
 
 const big = css({ fontFamily: 'var(--fonts-mono, monospace)', fontSize: '3.5rem' })
 const clock = css({ display: 'flex', alignItems: 'center', gap: '0.5rem' })
@@ -51,11 +53,6 @@ export const MyPage = {
     ])
   }
 }`
-
-const classRows = [
-  { className: 'countdown', prop: '<Countdown value={...}>', type: 'Component', description: 'Countdown wrapper — value must be a number between 0 and 999' },
-  { className: 'countdown', prop: '<Countdown duration={10} autostart />', type: 'Timer', description: 'Starts a countdown from duration; fires oncomplete when it reaches 0' },
-]
 
 export default {
   oninit(vnode) {
@@ -133,7 +130,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
-          <ClassTable rows={classRows} />
+          <ClassTable rows={tableToRows(table)} />
         </Block>
       </Stack>
     )

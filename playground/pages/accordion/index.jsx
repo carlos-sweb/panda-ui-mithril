@@ -4,6 +4,8 @@ import { t, loadPageI18n } from '../../i18n/index.js'
 import { Stack, Title, Accordion, AccordionTitle, AccordionContent, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
+import table from './table.yaml'
+import { tableToRows } from '../../components/table-rows'
 
 const group = css({ display: 'flex', flexDirection: 'column', gap: '0.5rem' })
 
@@ -44,15 +46,6 @@ export const MyPage = {
     ])
   }
 }`
-
-const classRows = [
-  { className: 'collapse', prop: '<Accordion name="...">', type: 'Component', description: 'An accordion item — same underlying component as Collapse, but items sharing a `name` become a radio group where only one stays open' },
-  { className: 'collapse-title', prop: '<AccordionTitle>', type: 'Part', description: 'Title part' },
-  { className: 'collapse-content', prop: '<AccordionContent>', type: 'Part', description: 'Content part' },
-  { className: 'collapse-arrow', prop: 'arrow', type: 'Modifier', description: 'Adds arrow icon' },
-  { className: 'collapse-plus', prop: 'plus', type: 'Modifier', description: 'Adds plus/minus icon' },
-  { className: '—', prop: 'border', type: 'Modifier', description: 'base-100 background + base-300 border (the reference implementation applies this via plain utility classes, not a component class)' },
-]
 
 export default {
   name: 'Accordion',
@@ -102,7 +95,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
-          <ClassTable rows={classRows} />
+          <ClassTable rows={tableToRows(table)} />
         </Block>
       </Stack>
     )

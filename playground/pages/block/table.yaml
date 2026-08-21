@@ -1,0 +1,18 @@
+rows:
+  - class: "block"
+    prop: "<Block>"
+    type: "Component"
+    description: "Vertical spacer between siblings"
+  - class: "block-sm"
+    prop: "spacing=\"sm\""
+    type: "Size"
+    description: "1rem spacing"
+  - class: "block-md"
+    prop: "spacing=\"md\" (default)"
+    type: "Size"
+    description: "1.5rem spacing"
+    default: true
+  - class: "block-lg"
+    prop: "spacing=\"lg\""
+    type: "Size"
+    description: "2rem spacing"

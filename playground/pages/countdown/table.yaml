@@ -1,0 +1,8 @@
+class: "countdown"
+rows:
+  - prop: "<Countdown>"
+    type: "Component"
+    description: "Countdown wrapper — value must be a number between 0 and 999"
+  - prop: "<Countdown duration={10} autostart />"
+    type: "Timer"
+    description: "Starts a countdown from duration; fires oncomplete when it reaches 0"

@@ -4,6 +4,8 @@ import { t, loadPageI18n } from '../../i18n/index.js'
 import { Stack, Title, Navbar, NavbarStart, NavbarCenter, NavbarEnd, Button, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
+import table from './table.yaml'
+import { tableToRows } from '../../components/table-rows'
 
 const surface = css({ background: 'token(colors.base-200)', borderRadius: 'var(--radius-box)' })
 
@@ -43,13 +45,6 @@ export const NavbarPage = {
   }
 }`
 
-const classRows = [
-  { className: 'navbar', prop: '<Navbar>', type: 'Component', description: 'Navbar container' },
-  { className: 'navbar-start', prop: '<NavbarStart>', type: 'Part', description: 'Left side of the navbar (50% width)' },
-  { className: 'navbar-center', prop: '<NavbarCenter>', type: 'Part', description: 'Middle of the navbar (shrink-to-fit)' },
-  { className: 'navbar-end', prop: '<NavbarEnd>', type: 'Part', description: 'Right side of the navbar (50% width)' },
-]
-
 export default {
   name: 'Navbar',
   category: 'Navigation',
@@ -86,7 +81,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
-          <ClassTable rows={classRows} />
+          <ClassTable rows={tableToRows(table)} />
         </Block>
       </Stack>
     )

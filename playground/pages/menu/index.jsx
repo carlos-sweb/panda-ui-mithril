@@ -4,6 +4,8 @@ import { t, loadPageI18n } from '../../i18n/index.js'
 import { Stack, Title, Menu, MenuItem, MenuTitle, Text, Block, Badge, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
+import table from './table.yaml'
+import { tableToRows } from '../../components/table-rows'
 
 const surface = css({ background: 'token(colors.base-200)', borderRadius: 'var(--radius-box)' })
 const callbackResult = css({
@@ -66,25 +68,6 @@ m(Menu, {
   m(MenuItem, 'Dashboard'),
   m(MenuItem, 'Settings'),
 ])`
-
-const classRows = [
-  { className: 'menu', prop: '<Menu>', type: 'Component', description: 'Menu container' },
-  { className: 'menu-title', prop: '<MenuTitle>', type: 'Part', description: 'Section title inside a menu' },
-  { className: 'menu-dropdown', prop: '<MenuDropdown>', type: 'Part', description: 'Nested submenu list' },
-  { className: 'menu-dropdown-toggle', prop: '<MenuDropdownToggle>', type: 'Part', description: 'Toggle link for a submenu' },
-  { className: 'menu-active', prop: '<MenuItem active> / autoActive', type: 'Modifier', description: 'Highlights an item as active/selected' },
-  { className: 'menu-disabled', prop: '<MenuItem disabled>', type: 'Modifier', description: 'Disables an item' },
-  { className: 'menu-horizontal', prop: 'horizontal', type: 'Placement', description: 'Shows the menu horizontally' },
-  { className: 'menu-vertical', prop: '(default)', type: 'Placement', description: 'Shows the menu vertically', isDefault: true },
-  { className: 'menu-xs', prop: 'size="xs"', type: 'Size', description: 'Extra small size' },
-  { className: 'menu-sm', prop: 'size="sm"', type: 'Size', description: 'Small size' },
-  { className: 'menu-md', prop: 'size="md" (default)', type: 'Size', description: 'Medium size', isDefault: true },
-  { className: 'menu-lg', prop: 'size="lg"', type: 'Size', description: 'Large size' },
-  { className: 'menu-xl', prop: 'size="xl"', type: 'Size', description: 'Extra large size' },
-  { className: '—', prop: 'autoActive', type: 'Prop', description: 'Menu tracks active item automatically on click' },
-  { className: '—', prop: 'defaultActive', type: 'Prop', description: 'Index of initially active item (with autoActive)' },
-  { className: '—', prop: 'onActiveChange', type: 'Prop', description: 'Callback fired when active item changes (index: number)' },
-]
 
 export default {
   name: 'Menu',
@@ -184,7 +167,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
-          <ClassTable rows={classRows} />
+          <ClassTable rows={tableToRows(table)} />
         </Block>
       </Stack>
     )

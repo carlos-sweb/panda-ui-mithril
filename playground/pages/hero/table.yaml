@@ -1,0 +1,13 @@
+rows:
+  - class: "hero"
+    prop: "<Hero>"
+    type: "Component"
+    description: "Hero container"
+  - class: "hero-content"
+    prop: "<HeroContent>"
+    type: "Part"
+    description: "Content wrapper, centered and max-width constrained"
+  - class: "hero-overlay"
+    prop: "<HeroOverlay>"
+    type: "Part"
+    description: "Semi-transparent overlay, useful over a background image"

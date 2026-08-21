@@ -4,6 +4,8 @@ import { t, loadPageI18n } from '../../i18n/index.js'
 import { Stack, Title, ButtonClose, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
+import table from './table.yaml'
+import { tableToRows } from '../../components/table-rows'
 
 const usageCodeJsx = `import m from 'mithril'
 import { ButtonClose } from 'panda-ui-mithril'
@@ -36,18 +38,6 @@ export const MyPage = {
     ])
   }
 }`
-
-const classRows = [
-  { className: 'btn-close', prop: '<ButtonClose>', type: 'Component', description: 'Circular button with X icon — children are ignored' },
-  { className: 'btn-xs', prop: 'size="xs"', type: 'Size', description: 'Extra small size' },
-  { className: 'btn-sm', prop: 'size="sm"', type: 'Size', description: 'Small size' },
-  { className: 'btn-md', prop: 'size="md" (default)', type: 'Size', description: 'Medium size', isDefault: true },
-  { className: 'btn-lg', prop: 'size="lg"', type: 'Size', description: 'Large size' },
-  { className: 'btn-xl', prop: 'size="xl"', type: 'Size', description: 'Extra large size' },
-  { className: 'btn-circle', prop: 'shape="circle" (default)', type: 'Shape', description: 'Circle shape', isDefault: true },
-  { className: 'btn-square', prop: 'shape="square"', type: 'Shape', description: 'Square shape' },
-  { className: 'close-button', prop: 'strokeWidth={3} (default)', type: 'number', description: 'X icon stroke width (lucide prop). Default 3.' },
-]
 
 export default {
   name: 'ButtonClose',
@@ -178,7 +168,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
-          <ClassTable rows={classRows} />
+          <ClassTable rows={tableToRows(table)} />
         </Block>
       </Stack>
     )

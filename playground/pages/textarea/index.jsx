@@ -4,6 +4,8 @@ import { t, loadPageI18n } from '../../i18n/index.js'
 import { Stack, Title, Textarea, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
+import table from './table.yaml'
+import { tableToRows } from '../../components/table-rows'
 
 const usageCodeJsx = `import m from 'mithril'
 import { Textarea } from 'panda-ui-mithril'
@@ -30,24 +32,6 @@ export const TextareaPage = {
     ])
   }
 }`
-
-const classRows = [
-  { className: 'textarea', prop: '<Textarea>', type: 'Component', description: 'For <textarea> element' },
-  { className: 'textarea-ghost', prop: 'ghost', type: 'Style', description: 'ghost style' },
-  { className: 'textarea-neutral', prop: 'color="neutral"', type: 'Color', description: 'neutral color' },
-  { className: 'textarea-primary', prop: 'color="primary"', type: 'Color', description: 'primary color' },
-  { className: 'textarea-secondary', prop: 'color="secondary"', type: 'Color', description: 'secondary color' },
-  { className: 'textarea-accent', prop: 'color="accent"', type: 'Color', description: 'accent color' },
-  { className: 'textarea-info', prop: 'color="info"', type: 'Color', description: 'info color' },
-  { className: 'textarea-success', prop: 'color="success"', type: 'Color', description: 'success color' },
-  { className: 'textarea-warning', prop: 'color="warning"', type: 'Color', description: 'warning color' },
-  { className: 'textarea-error', prop: 'color="error"', type: 'Color', description: 'error color' },
-  { className: 'textarea-xs', prop: 'size="xs"', type: 'Size', description: 'Extra small size' },
-  { className: 'textarea-sm', prop: 'size="sm"', type: 'Size', description: 'Small size' },
-  { className: 'textarea-md', prop: 'size="md" (default)', type: 'Size', description: 'Medium size', isDefault: true },
-  { className: 'textarea-lg', prop: 'size="lg"', type: 'Size', description: 'Large size' },
-  { className: 'textarea-xl', prop: 'size="xl"', type: 'Size', description: 'Extra large size' },
-]
 
 export default {
   name: 'Textarea',
@@ -82,7 +66,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
-          <ClassTable rows={classRows} />
+          <ClassTable rows={tableToRows(table)} />
         </Block>
       </Stack>
     )

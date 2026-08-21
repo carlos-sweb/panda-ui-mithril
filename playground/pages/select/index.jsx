@@ -4,6 +4,8 @@ import { t, loadPageI18n } from '../../i18n/index.js'
 import { Stack, Title, Select, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
+import table from './table.yaml'
+import { tableToRows } from '../../components/table-rows'
 
 
 const usageCodeJsx = `import m from 'mithril'
@@ -33,24 +35,6 @@ export const SelectPage = {
     ])
   }
 }`
-
-const classRows = [
-  { className: 'select', prop: '<Select>', type: 'Component', description: 'For <select> element' },
-  { className: 'select-ghost', prop: 'ghost', type: 'Style', description: 'ghost style' },
-  { className: 'select-neutral', prop: 'color="neutral"', type: 'Color', description: 'neutral color' },
-  { className: 'select-primary', prop: 'color="primary"', type: 'Color', description: 'primary color' },
-  { className: 'select-secondary', prop: 'color="secondary"', type: 'Color', description: 'secondary color' },
-  { className: 'select-accent', prop: 'color="accent"', type: 'Color', description: 'accent color' },
-  { className: 'select-info', prop: 'color="info"', type: 'Color', description: 'info color' },
-  { className: 'select-success', prop: 'color="success"', type: 'Color', description: 'success color' },
-  { className: 'select-warning', prop: 'color="warning"', type: 'Color', description: 'warning color' },
-  { className: 'select-error', prop: 'color="error"', type: 'Color', description: 'error color' },
-  { className: 'select-xs', prop: 'size="xs"', type: 'Size', description: 'Extra small size' },
-  { className: 'select-sm', prop: 'size="sm"', type: 'Size', description: 'Small size' },
-  { className: 'select-md', prop: 'size="md" (default)', type: 'Size', description: 'Medium size', isDefault: true },
-  { className: 'select-lg', prop: 'size="lg"', type: 'Size', description: 'Large size' },
-  { className: 'select-xl', prop: 'size="xl"', type: 'Size', description: 'Extra large size' },
-]
 
 export default {
   name: 'Select',
@@ -92,7 +76,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
-          <ClassTable rows={classRows} />
+          <ClassTable rows={tableToRows(table)} />
         </Block>
       </Stack>
     )

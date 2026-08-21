@@ -4,6 +4,8 @@ import { t, loadPageI18n } from '../../i18n/index.js'
 import { Stack, Title, Link, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
+import table from './table.yaml'
+import { tableToRows } from '../../components/table-rows'
 
 const usageCodeJsx = `import m from 'mithril'
 import { Link } from 'panda-ui-mithril'
@@ -32,19 +34,6 @@ export const MyPage = {
     ])
   }
 }`
-
-const classRows = [
-  { className: 'link', prop: 'hover={false}', type: 'Component', description: 'Adds underline — note: this component defaults to hover=true, so pass hover={false} to always show the underline' },
-  { className: 'link-hover', prop: 'hover (default)', type: 'Style', description: 'Only shows underline on hover — this is the default, no prop needed', isDefault: true },
-  { className: 'link-neutral', prop: 'color="neutral"', type: 'Color', description: 'neutral color' },
-  { className: 'link-primary', prop: 'color="primary"', type: 'Color', description: 'primary color' },
-  { className: 'link-secondary', prop: 'color="secondary"', type: 'Color', description: 'secondary color' },
-  { className: 'link-accent', prop: 'color="accent"', type: 'Color', description: 'accent color' },
-  { className: 'link-success', prop: 'color="success"', type: 'Color', description: 'success color' },
-  { className: 'link-info', prop: 'color="info"', type: 'Color', description: 'info color' },
-  { className: 'link-warning', prop: 'color="warning"', type: 'Color', description: 'warning color' },
-  { className: 'link-error', prop: 'color="error"', type: 'Color', description: 'error color' },
-]
 
 export default {
   name: 'Link',
@@ -83,7 +72,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
-          <ClassTable rows={classRows} />
+          <ClassTable rows={tableToRows(table)} />
         </Block>
       </Stack>
     )

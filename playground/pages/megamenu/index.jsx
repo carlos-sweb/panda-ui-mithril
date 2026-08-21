@@ -4,6 +4,8 @@ import { t, loadPageI18n } from '../../i18n/index.js'
 import { Stack, Title, Megamenu, MegamenuItem, MegamenuTrigger, MegamenuPanel, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
+import table from './table.yaml'
+import { tableToRows } from '../../components/table-rows'
 
 const surface = css({ background: 'token(colors.base-100)', border: '1px solid', borderColor: 'token(colors.base-300)', padding: '0.5rem', borderRadius: 'var(--radius-box)' })
 const grid = css({ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1.5rem' })
@@ -53,19 +55,6 @@ export const MyPage = {
     ])
   }
 }`
-
-const classRows = [
-  { className: 'megamenu', prop: '<Megamenu>', type: 'Component', description: 'Nav container' },
-  { className: '(item wrapper)', prop: '<MegamenuItem>', type: 'Part', description: 'Positions a trigger + its dropdown panel together' },
-  { className: '[popovertarget]', prop: '<MegamenuTrigger href? chevron?>', type: 'Part', description: 'The clickable/hoverable trigger — renders a link if `href` is given' },
-  { className: '[popover]', prop: '<MegamenuPanel>', type: 'Part', description: 'The dropdown panel, shown on hover/focus of its MegamenuItem' },
-  { className: 'megamenu-active', prop: '<MegamenuActive />', type: 'Modifier', description: 'Manual highlight overlay — the reference implementation animates this between triggers via CSS anchor positioning, not supported here' },
-  { className: 'megamenu-xs', prop: 'size="xs"', type: 'Size', description: 'Extra small size' },
-  { className: 'megamenu-sm', prop: 'size="sm"', type: 'Size', description: 'Small size' },
-  { className: 'megamenu-md', prop: 'size="md" (default)', type: 'Size', description: 'Medium size', isDefault: true },
-  { className: 'megamenu-lg', prop: 'size="lg"', type: 'Size', description: 'Large size' },
-  { className: 'megamenu-xl', prop: 'size="xl"', type: 'Size', description: 'Extra large size' },
-]
 
 export default {
   name: 'Megamenu',
@@ -132,7 +121,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
-          <ClassTable rows={classRows} />
+          <ClassTable rows={tableToRows(table)} />
         </Block>
       </Stack>
     )

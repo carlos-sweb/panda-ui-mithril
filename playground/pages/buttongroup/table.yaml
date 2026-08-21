@@ -1,0 +1,5 @@
+rows:
+  - class: "btn-group"
+    prop: "<ButtonGroup>"
+    type: "Component"
+    description: "Button group container (unifies borders)"

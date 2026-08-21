@@ -4,6 +4,8 @@ import { t, loadPageI18n } from '../../i18n/index.js'
 import { Stack, Title, Columns, Column, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
+import table from './table.yaml'
+import { tableToRows } from '../../components/table-rows'
 
 const usageCodeJsx = `import m from 'mithril'
 import { Columns, Column } from 'panda-ui-mithril'
@@ -32,15 +34,6 @@ export const MyPage = {
     ])
   }
 }`
-
-const classRows = [
-  { className: 'columns', prop: '<Columns>', type: 'Component', description: 'Flexbox row container, wraps on mobile' },
-  { className: 'columns-gap-sm|md|lg', prop: 'gap="sm|md|lg"', type: 'Size', description: 'Gap between columns' },
-  { className: 'columns-vertical', prop: 'vertical', type: 'Modifier', description: 'Stack vertically' },
-  { className: 'column', prop: '<Column>', type: 'Part', description: 'Flex child column' },
-  { className: 'column-1|2|3|4|6|8|9|12', prop: 'width="1..12"', type: 'Size', description: 'Fractional width / 12' },
-  { className: 'column-narrow', prop: 'narrow', type: 'Modifier', description: 'Flex: none (fit content)' },
-]
 
 const cell = css({ bg: 'token(colors.base-200)', p: '1rem', borderRadius: '0.25rem', textAlign: 'center' })
 
@@ -81,7 +74,7 @@ export default {
           <Column><div className={cell}>Fills rest</div></Column>
         </Columns>
       </Block>
-      <Block spacing="lg"><Title as="h2" size="3">{t('common.classReference')}</Title><ClassTable rows={classRows} /></Block>
+      <Block spacing="lg"><Title as="h2" size="3">{t('common.classReference')}</Title><ClassTable rows={tableToRows(table)} /></Block>
     </Stack>)
   }
 }

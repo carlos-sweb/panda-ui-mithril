@@ -4,6 +4,8 @@ import { t, loadPageI18n } from '../../i18n/index.js'
 import { Stack, Title, Radio, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
+import table from './table.yaml'
+import { tableToRows } from '../../components/table-rows'
 
 const usageCodeJsx = `import m from 'mithril'
 import { Radio } from 'panda-ui-mithril'
@@ -30,23 +32,6 @@ export const RadioPage = {
     ])
   }
 }`
-
-const classRows = [
-  { className: 'radio', prop: '<Radio>', type: 'Component', description: 'For radio input' },
-  { className: 'radio-neutral', prop: 'color="neutral"', type: 'Color', description: 'neutral color' },
-  { className: 'radio-primary', prop: 'color="primary"', type: 'Color', description: 'primary color' },
-  { className: 'radio-secondary', prop: 'color="secondary"', type: 'Color', description: 'secondary color' },
-  { className: 'radio-accent', prop: 'color="accent"', type: 'Color', description: 'accent color' },
-  { className: 'radio-success', prop: 'color="success"', type: 'Color', description: 'success color' },
-  { className: 'radio-warning', prop: 'color="warning"', type: 'Color', description: 'warning color' },
-  { className: 'radio-info', prop: 'color="info"', type: 'Color', description: 'info color' },
-  { className: 'radio-error', prop: 'color="error"', type: 'Color', description: 'error color' },
-  { className: 'radio-xs', prop: 'size="xs"', type: 'Size', description: 'Extra small size' },
-  { className: 'radio-sm', prop: 'size="sm"', type: 'Size', description: 'Small size' },
-  { className: 'radio-md', prop: 'size="md" (default)', type: 'Size', description: 'Medium size', isDefault: true },
-  { className: 'radio-lg', prop: 'size="lg"', type: 'Size', description: 'Large size' },
-  { className: 'radio-xl', prop: 'size="xl"', type: 'Size', description: 'Extra large size' },
-]
 
 export default {
   name: 'Radio',
@@ -99,7 +84,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
-          <ClassTable rows={classRows} />
+          <ClassTable rows={tableToRows(table)} />
         </Block>
       </Stack>
     )

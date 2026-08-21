@@ -4,6 +4,8 @@ import { t, loadPageI18n } from '../../i18n/index.js'
 import { Stack, Title, Rating, Text, Block, RatingGroup, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
+import table from './table.yaml'
+import { tableToRows } from '../../components/table-rows'
 
 const heading = css({ fontSize: '0.875rem', fontWeight: '600', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em', opacity: 0.5 })
 const note = css({ fontSize: '0.875rem', opacity: 0.6, marginTop: '0.5rem' })
@@ -53,16 +55,6 @@ export const RatingPage = {
     ])
   }
 }`
-
-const classRows = [
-  { className: 'rating', prop: '<Rating value={...} max={...}>', type: 'Component', description: 'Rating container (flex row of stars)' },
-  { className: 'rating-star', prop: '(internal)', type: 'Part', description: 'Each star is a lucide Star icon; filled/empty states via recipe' },
-  { className: 'rating-xs', prop: 'size="xs"', type: 'Size', description: 'Extra small size' },
-  { className: 'rating-sm', prop: 'size="sm"', type: 'Size', description: 'Small size' },
-  { className: 'rating-md', prop: 'size="md" (default)', type: 'Size', description: 'Medium size', isDefault: true },
-  { className: 'rating-lg', prop: 'size="lg"', type: 'Size', description: 'Large size' },
-  { className: 'rating-xl', prop: 'size="xl"', type: 'Size', description: 'Extra large size' },
-]
 
 export default {
   oninit(vnode) {
@@ -188,7 +180,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
-          <ClassTable rows={classRows} />
+          <ClassTable rows={tableToRows(table)} />
         </Block>
       </Stack>
     )

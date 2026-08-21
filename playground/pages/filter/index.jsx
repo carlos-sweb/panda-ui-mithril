@@ -4,6 +4,8 @@ import { t, loadPageI18n } from '../../i18n/index.js'
 import { Stack, Title, Filter, FilterOption, FilterReset, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
+import table from './table.yaml'
+import { tableToRows } from '../../components/table-rows'
 
 const usageCodeJsx = `import m from 'mithril'
 import { Filter, FilterOption, FilterReset } from 'panda-ui-mithril'
@@ -36,12 +38,6 @@ export const MyPage = {
     ])
   }
 }`
-
-const classRows = [
-  { className: 'filter', prop: '<Filter>', type: 'Component', description: 'Filter container' },
-  { className: 'btn', prop: '<FilterOption name="...">', type: 'Component', description: 'A filter option, rendered as a radio input styled like a button' },
-  { className: 'filter-reset', prop: '<FilterReset name="...">', type: 'Modifier', description: 'Resets the filter — only visible once an option is selected' },
-]
 
 export default {
   name: 'Filter',
@@ -80,7 +76,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
-          <ClassTable rows={classRows} />
+          <ClassTable rows={tableToRows(table)} />
         </Block>
       </Stack>
     )

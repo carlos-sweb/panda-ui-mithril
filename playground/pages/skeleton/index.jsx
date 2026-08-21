@@ -4,6 +4,8 @@ import { t, loadPageI18n } from '../../i18n/index.js'
 import { Stack, Title, Skeleton, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
+import table from './table.yaml'
+import { tableToRows } from '../../components/table-rows'
 
 const box = css({ width: '250px' })
 const line1 = css({ height: '8rem', width: '100%' })
@@ -35,11 +37,6 @@ export const SkeletonPage = {
     ])
   }
 }`
-
-const classRows = [
-  { className: 'skeleton', prop: '<Skeleton>', type: 'Component', description: 'A placeholder div with loading animation' },
-  { className: 'skeleton-text', prop: 'text', type: 'Modifier', description: 'Animates the text color instead of background color' },
-]
 
 export default {
   name: 'Skeleton',
@@ -77,7 +74,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
-          <ClassTable rows={classRows} />
+          <ClassTable rows={tableToRows(table)} />
         </Block>
       </Stack>
     )

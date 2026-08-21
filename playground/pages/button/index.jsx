@@ -5,6 +5,8 @@ import { Stack, Title, Button, Loading, Text, Block , Divider , Tabs , Tab , Tab
 import { Heart } from 'lucide-mithril'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
+import table from './table.yaml'
+import { tableToRows } from '../../components/table-rows'
 
 const whiteSurface = css({ background: 'white', padding: '1rem' })
 
@@ -59,37 +61,6 @@ export const MyPage = {
     ])
   }
 }`
-
-const classRows = [
-  { className: 'btn', prop: '<Button>', type: 'Component', description: 'Button' },
-  { className: 'btn-neutral', prop: 'color="neutral"', type: 'Color', description: 'neutral color' },
-  { className: 'btn-primary', prop: 'color="primary"', type: 'Color', description: 'primary color' },
-  { className: 'btn-secondary', prop: 'color="secondary"', type: 'Color', description: 'secondary color' },
-  { className: 'btn-accent', prop: 'color="accent"', type: 'Color', description: 'accent color' },
-  { className: 'btn-info', prop: 'color="info"', type: 'Color', description: 'info color' },
-  { className: 'btn-success', prop: 'color="success"', type: 'Color', description: 'success color' },
-  { className: 'btn-warning', prop: 'color="warning"', type: 'Color', description: 'warning color' },
-  { className: 'btn-error', prop: 'color="error"', type: 'Color', description: 'error color' },
-  { className: 'btn-outline', prop: 'variant="outline"', type: 'Style', description: 'outline style' },
-  { className: 'btn-dash', prop: 'variant="dash"', type: 'Style', description: 'dash style' },
-  { className: 'btn-soft', prop: 'variant="soft"', type: 'Style', description: 'soft style' },
-  { className: 'btn-ghost', prop: 'variant="ghost"', type: 'Style', description: 'ghost style' },
-  { className: 'btn-link', prop: 'variant="link"', type: 'Style', description: 'looks like a link' },
-  { className: 'btn-active', prop: 'active', type: 'Behavior', description: 'looks active' },
-  { className: 'btn-disabled', prop: 'disabled', type: 'Behavior', description: 'looks disabled — pass className="btn-disabled" instead if you need it to still be clickable' },
-  { className: 'btn-xs', prop: 'size="xs"', type: 'Size', description: 'Extra small size' },
-  { className: 'btn-sm', prop: 'size="sm"', type: 'Size', description: 'Small size' },
-  { className: 'btn-md', prop: 'size="md" (default)', type: 'Size', description: 'Medium size', isDefault: true },
-  { className: 'btn-lg', prop: 'size="lg"', type: 'Size', description: 'Large size' },
-  { className: 'btn-xl', prop: 'size="xl"', type: 'Size', description: 'Extra large size' },
-  { className: 'btn-wide', prop: 'wide', type: 'Modifier', description: 'more horizontal padding' },
-  { className: 'btn-block', prop: 'block', type: 'Modifier', description: 'Full width' },
-  { className: 'btn-square', prop: 'square', type: 'Modifier', description: '1:1 ratio' },
-  { className: 'btn-circle', prop: 'circle', type: 'Modifier', description: '1:1 ratio with rounded corners' },
-  { className: 'btn-border-1', prop: 'borderWidth={1} (default)', type: 'Modifier', description: '1px border', isDefault: true },
-  { className: 'btn-border-2', prop: 'borderWidth={2}', type: 'Modifier', description: '2px border' },
-  { className: 'btn-border-3', prop: 'borderWidth={3}', type: 'Modifier', description: '3px border' },
-]
 
 export default {
   name: 'Button',
@@ -267,7 +238,7 @@ export default {
         </Tabs>
         
         <Title as="h2" size="3">{t('common.classReference')}</Title>        
-        <ClassTable rows={classRows} />
+        <ClassTable rows={tableToRows(table)} />
         
       </Stack>
     )

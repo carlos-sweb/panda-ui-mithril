@@ -4,6 +4,8 @@ import { t, loadPageI18n } from '../../i18n/index.js'
 import { Stack, Title, Container, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
+import table from './table.yaml'
+import { tableToRows } from '../../components/table-rows'
 
 const usageCodeJsx = `import m from 'mithril'
 import { Container } from 'panda-ui-mithril'
@@ -30,15 +32,6 @@ export const MyPage = {
     ])
   }
 }`
-
-const classRows = [
-  { className: 'container', prop: '<Container>', type: 'Component', description: 'Responsive centered container with max-width' },
-  { className: 'container-fullhd', prop: 'maxWidth="fullhd" (default)', type: 'Size', description: 'Max 1344px', isDefault: true },
-  { className: 'container-widescreen', prop: 'maxWidth="widescreen"', type: 'Size', description: 'Max 1152px' },
-  { className: 'container-desktop', prop: 'maxWidth="desktop"', type: 'Size', description: 'Max 960px' },
-  { className: 'container-tablet', prop: 'maxWidth="tablet"', type: 'Size', description: 'Max 768px' },
-  { className: 'container-fluid', prop: 'fluid', type: 'Modifier', description: 'Full width with 2rem side padding' },
-]
 
 const demo = css({ bg: 'token(colors.base-200)', p: '1rem', borderRadius: '0.25rem', textAlign: 'center' })
 
@@ -67,7 +60,7 @@ export default {
         <br />
         <Container><div className={demo}>fullhd — 1344px (default)</div></Container>
       </Block>
-      <Block spacing="lg"><Title as="h2" size="3">{t('common.classReference')}</Title><ClassTable rows={classRows} /></Block>
+      <Block spacing="lg"><Title as="h2" size="3">{t('common.classReference')}</Title><ClassTable rows={tableToRows(table)} /></Block>
     </Stack>)
   }
 }

@@ -4,6 +4,8 @@ import { t, loadPageI18n } from '../../i18n/index.js'
 import { Stack, Title, Avatar, AvatarGroup, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
+import table from './table.yaml'
+import { tableToRows } from '../../components/table-rows'
 
 import avatar1 from '../../assets/avatar/avatar1.jpg'
 import avatar2 from '../../assets/avatar/avatar2.jpg'
@@ -48,16 +50,6 @@ export const MyPage = {
     ])
   }
 }`
-
-const classRows = [
-  { className: 'avatar', prop: '<Avatar src={...}>', type: 'Component', description: 'Avatar' },
-  { className: 'avatar-group', prop: '<AvatarGroup>', type: 'Component', description: 'Container for multiple avatars' },
-  { className: 'avatar-online', prop: 'status="online"', type: 'Modifier', description: 'shows a green dot as online indicator' },
-  { className: 'avatar-offline', prop: 'status="offline"', type: 'Modifier', description: 'shows a gray dot as offline indicator' },
-  { className: 'avatar-placeholder', prop: 'placeholder', type: 'Modifier', description: 'To show letters/initials as avatar placeholder' },
-  { className: 'w-* rounded-full', prop: 'shape="circle" (default)', type: 'Style', description: 'Circular avatar', isDefault: true },
-  { className: 'w-* rounded', prop: 'shape="square"', type: 'Style', description: 'Rounded-square avatar' },
-]
 
 export default {
   name: 'Avatar',
@@ -134,7 +126,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
-          <ClassTable rows={classRows} />
+          <ClassTable rows={tableToRows(table)} />
         </Block>
       </Stack>
     )

@@ -1,0 +1,9 @@
+rows:
+  - class: "skeleton"
+    prop: "<Skeleton>"
+    type: "Component"
+    description: "A placeholder div with loading animation"
+  - class: "skeleton-text"
+    prop: "text"
+    type: "Modifier"
+    description: "Animates the text color instead of background color"

@@ -5,6 +5,8 @@ import { Stack, Title, Button, Modal, ModalBox, ModalAction, ModalBackdrop, Text
 import { modal } from '../../../styled-system/recipes'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
+import table from './table.yaml'
+import { tableToRows } from '../../components/table-rows'
 
 const title = css({ fontSize: '1.125rem', fontWeight: '700' })
 const body = css({ paddingBlock: '1rem' })
@@ -55,23 +57,6 @@ export const MyPage = {
     ])
   }
 }`
-
-const classRows = [
-  { className: 'modal', prop: '<Modal open onclose={...}>', type: 'Component', description: 'Native <dialog>-backed modal — `open` drives real .showModal()/.close()' },
-  { className: 'modal-box', prop: '<ModalBox>', type: 'Part', description: 'The modal content box' },
-  { className: 'modal-action', prop: '<ModalAction>', type: 'Part', description: 'Container for actions, right-aligned' },
-  { className: 'modal-backdrop', prop: '<ModalBackdrop onclick={...}>', type: 'Part', description: 'Invisible button behind modal-box — click to close' },
-  { className: 'modal-xs', prop: 'size="xs"', type: 'Size', description: 'Panel max-width: 20rem (320px)' },
-  { className: 'modal-sm', prop: 'size="sm"', type: 'Size', description: 'Panel max-width: 24rem (384px)' },
-  { className: 'modal-md', prop: 'size="md" (default)', type: 'Size', description: 'Panel max-width: 32rem (512px)', isDefault: true },
-  { className: 'modal-lg', prop: 'size="lg"', type: 'Size', description: 'Panel max-width: 48rem (768px)' },
-  { className: 'modal-top', prop: 'position="top"', type: 'Placement', description: 'Modal box slides in from the top' },
-  { className: 'modal-middle', prop: 'position="middle" (default)', type: 'Placement', description: 'Modal box centered', isDefault: true },
-  { className: 'modal-bottom', prop: 'position="bottom"', type: 'Placement', description: 'Modal box slides in from the bottom' },
-  { className: 'modal-start', prop: 'position="start"', type: 'Placement', description: 'Modal box slides in from the start (left)' },
-  { className: 'modal-end', prop: 'position="end"', type: 'Placement', description: 'Modal box slides in from the end (right)' },
-  { className: '—', prop: 'buttonClose', type: 'Modifier', description: 'Auto-append ButtonClose in ModalAction (form method="dialog")' },
-]
 
 export default {
   oninit(vnode) {
@@ -213,7 +198,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
-          <ClassTable rows={classRows} />
+          <ClassTable rows={tableToRows(table)} />
         </Block>
       </Stack>
     )

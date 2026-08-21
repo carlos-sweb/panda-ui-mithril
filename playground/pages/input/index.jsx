@@ -4,6 +4,8 @@ import { t, loadPageI18n } from '../../i18n/index.js'
 import { Stack, Title, TextInput, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
+import table from './table.yaml'
+import { tableToRows } from '../../components/table-rows'
 
 const usageCodeJsx = `import m from 'mithril'
 import { TextInput } from 'panda-ui-mithril'
@@ -32,24 +34,6 @@ export const MyPage = {
     ])
   }
 }`
-
-const classRows = [
-  { className: 'input', prop: '<TextInput>', type: 'Component', description: 'For <input type="text"> tag or a wrapper of <input type="text"> tag' },
-  { className: 'input-ghost', prop: 'ghost', type: 'Style', description: 'ghost style' },
-  { className: 'input-neutral', prop: 'color="neutral"', type: 'Color', description: 'neutral color' },
-  { className: 'input-primary', prop: 'color="primary"', type: 'Color', description: 'primary color' },
-  { className: 'input-secondary', prop: 'color="secondary"', type: 'Color', description: 'secondary color' },
-  { className: 'input-accent', prop: 'color="accent"', type: 'Color', description: 'accent color' },
-  { className: 'input-info', prop: 'color="info"', type: 'Color', description: 'info color' },
-  { className: 'input-success', prop: 'color="success"', type: 'Color', description: 'success color' },
-  { className: 'input-warning', prop: 'color="warning"', type: 'Color', description: 'warning color' },
-  { className: 'input-error', prop: 'color="error"', type: 'Color', description: 'error color' },
-  { className: 'input-xs', prop: 'size="xs"', type: 'Size', description: 'Extra small size' },
-  { className: 'input-sm', prop: 'size="sm"', type: 'Size', description: 'Small size' },
-  { className: 'input-md', prop: 'size="md" (default)', type: 'Size', description: 'Medium size', isDefault: true },
-  { className: 'input-lg', prop: 'size="lg"', type: 'Size', description: 'Large size' },
-  { className: 'input-xl', prop: 'size="xl"', type: 'Size', description: 'Extra large size' },
-]
 
 export default {
   name: 'TextInput',
@@ -94,7 +78,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
-          <ClassTable rows={classRows} />
+          <ClassTable rows={tableToRows(table)} />
         </Block>
       </Stack>
     )

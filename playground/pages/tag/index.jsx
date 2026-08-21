@@ -4,6 +4,8 @@ import { t, loadPageI18n } from '../../i18n/index.js'
 import { Stack, Title, Tag, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
+import table from './table.yaml'
+import { tableToRows } from '../../components/table-rows'
 import { Sparkles, Hash } from 'lucide-mithril'
 
 const usageCodeJsx = `import m from 'mithril'
@@ -41,24 +43,6 @@ export const TagPage = {
     ])
   }
 }`
-
-const classRows = [
-  { className: 'tag', prop: '<Tag>', type: 'Component', description: 'Container element' },
-  { className: 'tag-info', prop: 'variant="info"', type: 'Color', description: 'Info variant' },
-  { className: 'tag-success', prop: 'variant="success"', type: 'Color', description: 'Success variant' },
-  { className: 'tag-warning', prop: 'variant="warning"', type: 'Color', description: 'Warning variant' },
-  { className: 'tag-error', prop: 'variant="error"', type: 'Color', description: 'Error variant' },
-  { className: 'tag-outline', prop: 'variant="outline"', type: 'Style', description: 'Outline variant' },
-  { className: 'tag-dash', prop: 'variant="dash"', type: 'Style', description: 'Dash variant' },
-  { className: 'tag-soft', prop: 'variant="soft"', type: 'Style', description: 'Soft variant' },
-  { className: 'tag-ghost', prop: 'variant="ghost"', type: 'Style', description: 'Ghost variant' },
-  { className: 'tag-md', prop: 'size="md" (default)', type: 'Size', description: 'Medium size', isDefault: true },
-  { className: 'tag-lg', prop: 'size="lg"', type: 'Size', description: 'Large size' },
-  { className: 'tag-icon', prop: 'icon={...}', type: 'Element', description: 'Lucide icon alongside text' },
-  { className: 'tag-remove', prop: 'onRemove={...}', type: 'Action', description: 'Shows an X button that calls onRemove' },
-  { className: 'tag-clickable', prop: 'clickable', type: 'Modifier', description: 'Renders as a button with hover state' },
-  { className: 'tag-disabled', prop: 'disabled', type: 'State', description: 'Disabled state' },
-]
 
 export default {
   name: 'Tag',
@@ -154,7 +138,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
-          <ClassTable rows={classRows} />
+          <ClassTable rows={tableToRows(table)} />
         </Block>
       </Stack>
     )

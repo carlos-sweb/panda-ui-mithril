@@ -1,0 +1,9 @@
+rows:
+  - class: "rating-group"
+    prop: "<RatingGroup>"
+    type: "Component"
+    description: "Rating wrapper with label and value display"
+  - class: "rating-group-label"
+    prop: "label"
+    type: "string"
+    description: "Label text displayed above/beside the stars"

@@ -5,6 +5,8 @@ import { Stack, Title, Stats, Stat, StatTitle, StatValue, StatDesc, StatFigure, 
 import { Wallet, Users, ThumbsUp } from 'lucide-mithril'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
+import table from './table.yaml'
+import { tableToRows } from '../../components/table-rows'
 
 const shadow = css({ boxShadow: '0 1px 3px color-mix(in oklab, black 15%, transparent)' })
 
@@ -45,18 +47,6 @@ export const StatsPage = {
     ])
   }
 }`
-
-const classRows = [
-  { className: 'stats', prop: '<Stats>', type: 'Component', description: 'Container for stat boxes' },
-  { className: 'stat', prop: '<Stat>', type: 'Component', description: 'Container for a single stat' },
-  { className: 'stat-title', prop: '<StatTitle>', type: 'Part', description: 'The title of the stat' },
-  { className: 'stat-value', prop: '<StatValue>', type: 'Part', description: 'The value of the stat' },
-  { className: 'stat-desc', prop: '<StatDesc>', type: 'Part', description: 'The description of the stat' },
-  { className: 'stat-figure', prop: '<StatFigure>', type: 'Part', description: 'Container for a figure/icon in the stat' },
-  { className: 'stat-actions', prop: '<StatActions>', type: 'Part', description: 'Container for buttons/actions in the stat' },
-  { className: 'stats-horizontal', prop: '(default)', type: 'Placement', description: 'Shows stats horizontally', isDefault: true },
-  { className: 'stats-vertical', prop: 'vertical', type: 'Placement', description: 'Shows stats vertically' },
-]
 
 export default {
   name: 'Stats',
@@ -130,7 +120,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
-          <ClassTable rows={classRows} />
+          <ClassTable rows={tableToRows(table)} />
         </Block>
       </Stack>
     )

@@ -4,6 +4,8 @@ import { t, loadPageI18n } from '../../i18n/index.js'
 import { Stack, Title, Box, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
+import table from './table.yaml'
+import { tableToRows } from '../../components/table-rows'
 
 const usageCodeJsx = `import m from 'mithril'
 import { Box } from 'panda-ui-mithril'
@@ -28,12 +30,6 @@ export const MyPage = {
     )
   }
 }`
-
-const classRows = [
-  { className: 'box', prop: '<Box>', type: 'Component', description: 'Bordered container with padding and shadow' },
-  { className: 'box-sm|md|lg', prop: 'padding="sm|md|lg"', type: 'Size', description: 'Small / medium / large padding' },
-  { className: 'box-shadow-sm|md|lg|none', prop: 'shadow="sm|md|lg|none"', type: 'Modifier', description: 'Shadow depth' },
-]
 
 export default {
   oninit() { loadPageI18n('box') },
@@ -70,7 +66,7 @@ export default {
           <Box shadow="lg">Large shadow</Box>
         </Stack>
       </Block>
-      <Block spacing="lg"><Title as="h2" size="3">{t('common.classReference')}</Title><ClassTable rows={classRows} /></Block>
+      <Block spacing="lg"><Title as="h2" size="3">{t('common.classReference')}</Title><ClassTable rows={tableToRows(table)} /></Block>
     </Stack>)
   }
 }

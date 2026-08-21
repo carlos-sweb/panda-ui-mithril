@@ -4,6 +4,8 @@ import { t, loadPageI18n } from '../../i18n/index.js'
 import { Stack, Title, Label, TextInput, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
+import table from './table.yaml'
+import { tableToRows } from '../../components/table-rows'
 
 
 const usageCodeJsx = `import m from 'mithril'
@@ -38,11 +40,6 @@ export const MyPage = {
     ])
   }
 }`
-
-const classRows = [
-  { className: 'label', prop: '<Label>', type: 'Component', description: 'For styling the text next to an input field (or select)' },
-  { className: 'floating-label', prop: 'floating', type: 'Component', description: 'For the parent of an input field (or select) and a span that floats above the input field when the field is focused' },
-]
 
 export default {
   name: 'Label',
@@ -80,7 +77,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
-          <ClassTable rows={classRows} />
+          <ClassTable rows={tableToRows(table)} />
         </Block>
       </Stack>
     )

@@ -4,6 +4,8 @@ import { t, loadPageI18n } from '../../i18n/index.js'
 import { Stack, Title, Join, JoinItem, PaginationButton, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
+import table from './table.yaml'
+import { tableToRows } from '../../components/table-rows'
 
 const usageCodeJsx = `import m from 'mithril'
 import { Join, PaginationButton } from 'panda-ui-mithril'
@@ -34,13 +36,6 @@ export const MyPage = {
     ])
   }
 }`
-
-const classRows = [
-  { className: 'join', prop: '<Join>', type: 'Component', description: 'For grouping multiple items' },
-  { className: 'join-item', prop: '<JoinItem>', type: 'Part', description: 'Item inside join. Can be a button, input, etc.' },
-  { className: 'join-horizontal', prop: '(default)', type: 'Placement', description: 'Shows items horizontally', isDefault: true },
-  { className: 'join-vertical', prop: 'vertical', type: 'Placement', description: 'Shows items vertically' },
-]
 
 export default {
   name: 'Join',
@@ -99,7 +94,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
-          <ClassTable rows={classRows} />
+          <ClassTable rows={tableToRows(table)} />
         </Block>
       </Stack>
     )

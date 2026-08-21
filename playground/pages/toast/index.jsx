@@ -4,6 +4,8 @@ import { t, loadPageI18n } from '../../i18n/index.js'
 import { Stack, Title, Toast, Alert, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
+import table from './table.yaml'
+import { tableToRows } from '../../components/table-rows'
 
 const placementBox = css({
   position: 'relative',
@@ -55,16 +57,6 @@ export const ToastPage = {
     ])
   }
 }`
-
-const classRows = [
-  { className: 'toast', prop: '<Toast position="...">', type: 'Component', description: 'Container element, fixed to the viewport' },
-  { className: 'toast-start', prop: 'position="... start"', type: 'Placement', description: 'Aligns to the start (left in LTR)' },
-  { className: 'toast-center', prop: 'position="... center"', type: 'Placement', description: 'Aligns to the horizontal center' },
-  { className: 'toast-end', prop: 'position="... end" (default)', type: 'Placement', description: 'Aligns to the end (right in LTR)', isDefault: true },
-  { className: 'toast-top', prop: 'position="top ..."', type: 'Placement', description: 'Aligns to the top' },
-  { className: 'toast-middle', prop: 'position="middle ..."', type: 'Placement', description: 'Aligns to the vertical middle' },
-  { className: 'toast-bottom', prop: 'position="bottom ..." (default)', type: 'Placement', description: 'Aligns to the bottom', isDefault: true },
-]
 
 export default {
   name: 'Toast',
@@ -118,7 +110,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
-          <ClassTable rows={classRows} />
+          <ClassTable rows={tableToRows(table)} />
         </Block>
       </Stack>
     )

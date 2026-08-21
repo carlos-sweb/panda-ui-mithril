@@ -4,6 +4,8 @@ import { t, loadPageI18n } from '../../i18n/index.js'
 import { Stack, Title, Block, Text, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
+import table from './table.yaml'
+import { tableToRows } from '../../components/table-rows'
 
 const usageCodeJsx = `import m from 'mithril'
 import { Block } from 'panda-ui-mithril'
@@ -32,13 +34,6 @@ export const MyPage = {
     ])
   }
 }`
-
-const classRows = [
-  { className: 'block', prop: '<Block>', type: 'Component', description: 'Vertical spacer between siblings' },
-  { className: 'block-sm', prop: 'spacing="sm"', type: 'Size', description: '1rem spacing' },
-  { className: 'block-md', prop: 'spacing="md" (default)', type: 'Size', description: '1.5rem spacing', isDefault: true },
-  { className: 'block-lg', prop: 'spacing="lg"', type: 'Size', description: '2rem spacing' },
-]
 
 export default {
   oninit() { loadPageI18n('block') },
@@ -69,7 +64,7 @@ export default {
       </Block>
       <Block spacing="lg">
         <Title as="h2" size="3">{t('common.classReference')}</Title>
-        <ClassTable rows={classRows} />
+        <ClassTable rows={tableToRows(table)} />
       </Block>
     </Stack>)
   }

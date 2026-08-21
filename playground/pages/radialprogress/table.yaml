@@ -1,0 +1,5 @@
+rows:
+  - class: "radial-progress"
+    prop: "<RadialProgress value={...}>"
+    type: "Component"
+    description: "Shows a radial progress"

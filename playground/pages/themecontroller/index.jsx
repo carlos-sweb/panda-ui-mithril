@@ -5,6 +5,8 @@ import { Stack, Title, ThemeController, Swap, Text, Block, Tabs, Tab, TabContent
 import { Sun, Moon } from 'lucide-mithril'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
+import table from './table.yaml'
+import { tableToRows } from '../../components/table-rows'
 
 const label = css({ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' })
 
@@ -43,10 +45,6 @@ export const ThemeControllerPage = {
     })
   }
 }`
-
-const classRows = [
-  { className: 'theme-controller', prop: '<ThemeController theme="...">', type: 'Component', description: 'A checkbox/radio that reports its checked state — wire onchange to set data-theme yourself (this project switches themes via JS, not the CSS-only :has() trick from the reference implementation)' },
-]
 
 export default {
   oninit(vnode) {
@@ -121,7 +119,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
-          <ClassTable rows={classRows} />
+          <ClassTable rows={tableToRows(table)} />
         </Block>
       </Stack>
     )

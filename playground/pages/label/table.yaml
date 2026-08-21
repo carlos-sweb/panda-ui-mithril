@@ -1,0 +1,9 @@
+rows:
+  - class: "label"
+    prop: "<Label>"
+    type: "Component"
+    description: "For styling the text next to an input field (or select)"
+  - class: "floating-label"
+    prop: "floating"
+    type: "Component"
+    description: "For the parent of an input field (or select) and a span that floats above the input field when the field is focused"

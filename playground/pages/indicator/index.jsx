@@ -4,6 +4,8 @@ import { t, loadPageI18n } from '../../i18n/index.js'
 import { Stack, Title, Indicator, Badge, Button, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
+import table from './table.yaml'
+import { tableToRows } from '../../components/table-rows'
 
 const usageCodeJsx = `import m from 'mithril'
 import { Indicator, Badge, Button } from 'panda-ui-mithril'
@@ -32,17 +34,6 @@ export const MyPage = {
     ])
   }
 }`
-
-const classRows = [
-  { className: 'indicator', prop: '<Indicator>', type: 'Component', description: 'Container element' },
-  { className: 'indicator-item', prop: 'item={...} or className="indicator-item"', type: 'Part', description: 'will be placed on the corner of sibling' },
-  { className: 'indicator-start', prop: 'position="start"', type: 'Placement', description: 'align horizontally to the start' },
-  { className: 'indicator-center', prop: 'position="center"', type: 'Placement', description: 'align horizontally to the center' },
-  { className: 'indicator-end', prop: 'position="end" (default)', type: 'Placement', description: 'align horizontally to the end', isDefault: true },
-  { className: 'indicator-top', prop: 'position="top" (default)', type: 'Placement', description: 'align vertically to top', isDefault: true },
-  { className: 'indicator-middle', prop: 'position="middle"', type: 'Placement', description: 'align vertically to middle' },
-  { className: 'indicator-bottom', prop: 'position="bottom"', type: 'Placement', description: 'align vertically to bottom' },
-]
 
 export default {
   name: 'Indicator',
@@ -81,7 +72,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
-          <ClassTable rows={classRows} />
+          <ClassTable rows={tableToRows(table)} />
         </Block>
       </Stack>
     )

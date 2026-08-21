@@ -5,6 +5,8 @@ import { Stack, Title, Hero, HeroContent, HeroOverlay, Button, Text, Block, Tabs
 
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
+import table from './table.yaml'
+import { tableToRows } from '../../components/table-rows'
 
 const surface = css({ background: 'token(colors.base-200)', minHeight: '16rem', borderRadius: 'var(--radius-box)' })
 const withImage = css({
@@ -56,12 +58,6 @@ export const MyPage = {
     ])
   }
 }`
-
-const classRows = [
-  { className: 'hero', prop: '<Hero>', type: 'Component', description: 'Hero container' },
-  { className: 'hero-content', prop: '<HeroContent>', type: 'Part', description: 'Content wrapper, centered and max-width constrained' },
-  { className: 'hero-overlay', prop: '<HeroOverlay>', type: 'Part', description: 'Semi-transparent overlay, useful over a background image' },
-]
 
 export default {
   name: 'Hero',
@@ -120,7 +116,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
-          <ClassTable rows={classRows} />
+          <ClassTable rows={tableToRows(table)} />
         </Block>
       </Stack>
     )

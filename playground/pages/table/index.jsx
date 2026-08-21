@@ -4,6 +4,8 @@ import { t, loadPageI18n } from '../../i18n/index.js'
 import { Stack, Title, Table, TableContainer, TableRow, TableCell, TableHead, TableThead, TableTbody, TableTfoot, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
+import table from './table.yaml'
+import { tableToRows } from '../../components/table-rows'
 
 const rows = [
   ['Cy Ganderton', 'Lead Developer', 'Blue'],
@@ -62,20 +64,6 @@ export const TablePage = {
     ])
   }
 }`
-
-const classRows = [
-  { className: 'table', prop: '<Table>', type: 'Component', description: 'Table element' },
-  { className: '(wrapper)', prop: '<TableContainer>', type: 'Part', description: 'Optional wrapper with horizontal scroll, useful for small screens' },
-  { className: 'table-zebra', prop: 'zebra', type: 'Modifier', description: 'Adds zebra-stripe to even rows' },
-  { className: 'table-pin-rows', prop: 'pinRows', type: 'Modifier', description: 'Makes thead and tfoot rows sticky' },
-  { className: 'table-pin-cols', prop: 'pinCols', type: 'Modifier', description: 'Makes the first column of each row sticky' },
-  { className: 'row-hover', prop: '<TableRow hover>', type: 'Modifier', description: 'Highlights a row on hover' },
-  { className: 'table-xs', prop: 'size="xs"', type: 'Size', description: 'Extra small size' },
-  { className: 'table-sm', prop: 'size="sm"', type: 'Size', description: 'Small size' },
-  { className: 'table-md', prop: 'size="md" (default)', type: 'Size', description: 'Medium size', isDefault: true },
-  { className: 'table-lg', prop: 'size="lg"', type: 'Size', description: 'Large size' },
-  { className: 'table-xl', prop: 'size="xl"', type: 'Size', description: 'Extra large size' },
-]
 
 export default {
   name: 'Table',
@@ -152,7 +140,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
-          <ClassTable rows={classRows} />
+          <ClassTable rows={tableToRows(table)} />
         </Block>
       </Stack>
     )

@@ -1,0 +1,13 @@
+rows:
+  - class: "filter"
+    prop: "<Filter>"
+    type: "Component"
+    description: "Filter container"
+  - class: "btn"
+    prop: "<FilterOption name=\"...\">"
+    type: "Component"
+    description: "A filter option, rendered as a radio input styled like a button"
+  - class: "filter-reset"
+    prop: "<FilterReset name=\"...\">"
+    type: "Modifier"
+    description: "Resets the filter — only visible once an option is selected"

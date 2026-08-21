@@ -4,6 +4,8 @@ import { t, loadPageI18n } from '../../i18n/index.js'
 import { Title, Stack, Button, Box, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
+import table from './table.yaml'
+import { tableToRows } from '../../components/table-rows'
 
 const item = css({ bg: 'token(colors.base-200)', p: '1rem', borderRadius: '0.25rem', textAlign: 'center' })
 
@@ -45,15 +47,6 @@ export const StackPage = {
     ])
   }
 }`
-
-const classRows = [
-  { className: 'stack', prop: '<Stack>', type: 'Component', description: 'Flex container that stacks children with gap' },
-  { className: 'stack-column', prop: 'direction="column" (default)', type: 'Direction', description: 'Stack vertically', isDefault: true },
-  { className: 'stack-row', prop: 'direction="row"', type: 'Direction', description: 'Stack horizontally' },
-  { className: 'stack-xs|sm|md|lg|xl', prop: 'gap="xs|sm|md|lg|xl"', type: 'Size', description: 'Gap between children. Scales with viewport.' },
-  { className: 'stack-align-*', prop: 'align="start|center|end|stretch"', type: 'Alignment', description: 'Cross-axis alignment' },
-  { className: 'stack-justify-*', prop: 'justify="start|center|end|between|around"', type: 'Alignment', description: 'Main-axis justification' },
-]
 
 export default {
   oninit() { loadPageI18n('stack') },
@@ -118,7 +111,7 @@ export default {
         </Box>
       </Block>
 
-      <Block spacing="lg"><Title as="h2" size="3">{t('common.classReference')}</Title><ClassTable rows={classRows} /></Block>
+      <Block spacing="lg"><Title as="h2" size="3">{t('common.classReference')}</Title><ClassTable rows={tableToRows(table)} /></Block>
     </Stack>)
   }
 }

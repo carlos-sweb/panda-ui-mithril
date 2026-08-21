@@ -1,0 +1,13 @@
+rows:
+  - class: "fieldset"
+    prop: "<Fieldset>"
+    type: "Component"
+    description: "for the fieldset container"
+  - class: "label"
+    prop: "<Label>"
+    type: "Component"
+    description: "label for inputs — use the separate Label component"
+  - class: "fieldset-legend"
+    prop: "legend=\"...\""
+    type: "Part"
+    description: "for the title of the fieldset"

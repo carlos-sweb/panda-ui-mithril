@@ -4,6 +4,8 @@ import { t, loadPageI18n } from '../../i18n/index.js'
 import { Stack, Title, Carousel, CarouselItem, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
+import table from './table.yaml'
+import { tableToRows } from '../../components/table-rows'
 
 const gap = css({ gap: '1rem' })
 const img = css({ borderRadius: 'var(--radius-box)', height: '12rem', objectFit: 'cover' })
@@ -68,16 +70,6 @@ export const MyPage = {
     ])
   }
 }`
-
-const classRows = [
-  { className: 'carousel', prop: '<Carousel align="..." vertical>', type: 'Component', description: 'Carousel container' },
-  { className: 'carousel-item', prop: '<CarouselItem>', type: 'Part', description: 'A single slide' },
-  { className: 'carousel-start', prop: 'align="start" (default)', type: 'Modifier', description: 'Snap elements to start', isDefault: true },
-  { className: 'carousel-center', prop: 'align="center"', type: 'Modifier', description: 'Snap elements to center' },
-  { className: 'carousel-end', prop: 'align="end"', type: 'Modifier', description: 'Snap elements to end' },
-  { className: 'carousel-horizontal', prop: '(default)', type: 'Placement', description: 'Horizontal layout', isDefault: true },
-  { className: 'carousel-vertical', prop: 'vertical', type: 'Placement', description: 'Vertical layout' },
-]
 
 export default {
   name: 'Carousel',
@@ -150,7 +142,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.classReference')}</Title>
-          <ClassTable rows={classRows} />
+          <ClassTable rows={tableToRows(table)} />
         </Block>
       </Stack>
     )

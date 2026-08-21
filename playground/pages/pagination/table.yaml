@@ -1,0 +1,13 @@
+rows:
+  - class: "join"
+    prop: "<Pagination>"
+    type: "Component"
+    description: "Container — built on top of Join + Button, matching the common pagination pattern"
+  - class: "btn join-item"
+    prop: "<PaginationButton>"
+    type: "Component"
+    description: "A page button"
+  - class: "btn-active"
+    prop: "<PaginationButton active>"
+    type: "Modifier"
+    description: "Marks the current page"
