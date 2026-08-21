@@ -23,6 +23,8 @@ import pagebreadcrumbsEn from '../pages/breadcrumbs/i18n/en.yml'
 import pagebreadcrumbsEs from '../pages/breadcrumbs/i18n/es.yml'
 import pagebuttoncloseEn from '../pages/buttonclose/i18n/en.yml'
 import pagebuttoncloseEs from '../pages/buttonclose/i18n/es.yml'
+import pagebuttoncopyEn from '../pages/buttoncopy/i18n/en.yml'
+import pagebuttoncopyEs from '../pages/buttoncopy/i18n/es.yml'
 import pagebuttongroupEn from '../pages/buttongroup/i18n/en.yml'
 import pagebuttongroupEs from '../pages/buttongroup/i18n/es.yml'
 import pagebuttonEn from '../pages/button/i18n/en.yml'
@@ -165,6 +167,8 @@ pageI18n.en['breadcrumbs'] = pagebreadcrumbsEn
 pageI18n.es['breadcrumbs'] = pagebreadcrumbsEs
 pageI18n.en['buttonclose'] = pagebuttoncloseEn
 pageI18n.es['buttonclose'] = pagebuttoncloseEs
+pageI18n.en['buttoncopy'] = pagebuttoncopyEn
+pageI18n.es['buttoncopy'] = pagebuttoncopyEs
 pageI18n.en['buttongroup'] = pagebuttongroupEn
 pageI18n.es['buttongroup'] = pagebuttongroupEs
 pageI18n.en['button'] = pagebuttonEn

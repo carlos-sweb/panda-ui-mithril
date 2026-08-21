@@ -24,6 +24,7 @@ export {
 } from './components/ChatBubble'
 export { Checkbox } from './components/Checkbox'
 export { ButtonClose } from './components/ButtonClose'
+export { ButtonCopy } from './components/ButtonCopy'
 export { Countdown } from './components/Countdown'
 export { Diff, DiffItem1, DiffItem2, DiffResizer } from './components/Diff'
 export { Divider } from './components/Divider'

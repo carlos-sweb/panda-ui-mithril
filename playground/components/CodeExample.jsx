@@ -5,6 +5,8 @@ import javascript from 'highlight.js/lib/languages/javascript'
 import jsx from './../jsx-language.js'
 import { css } from '../../styled-system/css'
 
+import { ButtonCopy , Stack } from '../../src/index.js'
+
 // Register languages
 hljs.registerLanguage('xml', xml)
 hljs.registerLanguage('javascript', javascript)
@@ -15,8 +17,8 @@ const wrapper = css({ position: 'relative' })
 const pre = css({
   backgroundColor: '#282c34',
   borderRadius: 'var(--radius-box, 0.5rem)',
-  padding: '1rem',
-  paddingTop: '2.25rem',
+  padding: '1rem',  
+  paddingBottom: '0',
   overflowX: 'auto',
   fontSize: '0.8125rem',
   lineHeight: '1.6',
@@ -39,13 +41,26 @@ const languageTag = css({
 
 export const CodeExample = {
   view(vnode) {
-    const { code ,type } = vnode.attrs
+    const { code ,type , copyId } = vnode.attrs
+
+
     const highlighted = hljs.highlight(code.trim(), { language: type ? type : "xml" }).value
 
     return m('div', { className: wrapper }, [
       m('span', { className: languageTag }, type ),
-      m('pre', { className: pre },
-        m('code', { className: `hljs language-${type || 'xml'}` }, m.trust(highlighted))
+      m('pre', { className: pre },        
+        m('code', { id: copyId == undefined ? "": copyId , className: `hljs language-${type || 'xml'}` }, m.trust(highlighted)),
+        m(Stack,{          
+          align : 'end',
+          gap:'xs'
+        },m(ButtonCopy,{
+          circle : true , 
+          variant: 'ghost',
+          color:'success',
+          size:'xl',
+          animation:'scale',          
+          for:copyId
+        }) ),        
       ),
     ])
   }

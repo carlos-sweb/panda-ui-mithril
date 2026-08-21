@@ -21,6 +21,7 @@ import BoxPage from './pages/box/index.jsx'
 import Breadcrumbs from './pages/breadcrumbs/index.jsx'
 import ButtonGroup from './pages/buttongroup/index.jsx'
 import ButtonClose from './pages/buttonclose/index.jsx'
+import ButtonCopy from './pages/buttoncopy/index.jsx'
 import Button from './pages/button/index.jsx'
 import Calendar from './pages/calendar/index.jsx'
 import Card from './pages/card/index.jsx'
@@ -95,6 +96,7 @@ const routes = {
   '/breadcrumbs':Breadcrumbs,
   '/button':Button,
   '/buttonclose':ButtonClose,
+  '/buttoncopy':ButtonCopy,
   '/buttongroup':ButtonGroup,
   '/calendar':Calendar,
   '/card':Card,
@@ -228,6 +230,7 @@ const Layout = {
         '/avatar': 'Avatar — PUM', '/badge': 'Badge — PUM', '/block': 'Block — PUM',
         '/box': 'Box — PUM', '/breadcrumbs': 'Breadcrumbs — PUM', '/button': 'Button — PUM',
         '/buttonclose': 'ButtonClose — PUM', '/buttongroup': 'ButtonGroup — PUM',
+        '/buttoncopy': 'ButtonCopy — PUM',
         '/calendar': 'Calendar — PUM', '/card': 'Card — PUM', '/carousel': 'Carousel — PUM',
         '/chat': 'Chat — PUM', '/checkbox': 'Checkbox — PUM', '/collapse': 'Collapse — PUM',
         '/columns': 'Columns — PUM', '/container': 'Container — PUM',

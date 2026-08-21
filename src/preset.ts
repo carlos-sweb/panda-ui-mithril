@@ -319,6 +319,25 @@ export const pumPreset = definePreset({
           from: { transform: 'scaleX(0)' },
           to: { transform: 'scaleX(1)' },
         },
+        // ButtonCopy icon-transition keyframes
+        'btn-copy-fade': {
+          from: { opacity: '0' },
+          to: { opacity: '1' },
+        },
+        'btn-copy-scale': {
+          from: { opacity: '0', transform: 'scale(0.4)' },
+          to: { opacity: '1', transform: 'scale(1)' },
+        },
+        'btn-copy-rotate': {
+          from: { opacity: '0', transform: 'rotate(-90deg) scale(0.6)' },
+          to: { opacity: '1', transform: 'rotate(0deg) scale(1)' },
+        },
+        'btn-copy-bounce': {
+          '0%':   { opacity: '0', transform: 'scale(0.3)' },
+          '60%':  { opacity: '1', transform: 'scale(1.2)' },
+          '80%':  { transform: 'scale(0.9)' },
+          '100%': { transform: 'scale(1)' },
+        },
       },
     },
   },

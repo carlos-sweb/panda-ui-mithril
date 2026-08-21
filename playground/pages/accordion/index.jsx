@@ -85,10 +85,10 @@ export default {
             <Tab ref="jsx">Jsx</Tab>
             <Tab ref="js">Js</Tab>
             <TabContent ref="jsx">
-              <CodeExample type="jsx" code={usageCodeJsx} />
+              <CodeExample copyId="accordion-jsx-copy" type="jsx" code={usageCodeJsx} />
             </TabContent>
             <TabContent ref="js">
-              <CodeExample type="javascript" code={usageCodeJavascript} />
+              <CodeExample copyId="accordion-js-copy" type="javascript" code={usageCodeJavascript} />
             </TabContent>
           </Tabs>
         </Block>

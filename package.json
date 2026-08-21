@@ -55,6 +55,10 @@
       "types": "./src/components/ButtonClose/index.d.ts",
       "import": "./src/components/ButtonClose/index.js"
     },
+    "./button-copy": {
+      "types": "./src/components/ButtonCopy/index.d.ts",
+      "import": "./src/components/ButtonCopy/index.js"
+    },
     "./button-group": {
       "types": "./src/components/ButtonGroup/index.d.ts",
       "import": "./src/components/ButtonGroup/index.js"
