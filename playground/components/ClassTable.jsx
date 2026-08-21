@@ -1,7 +1,7 @@
 import m from 'mithril'
 import { css, cx } from '../../styled-system/css'
 import { Badge } from '../../src/index.js'
-import { PaintBucket, Shapes, RulerDimensionLine, Settings, Wrench, Puzzle, Weight, AlignJustify, CaseSensitive } from 'lucide-mithril'
+import { PaintBucket, Shapes, RulerDimensionLine, Settings, Wrench, Puzzle, Weight, AlignJustify, CaseSensitive, Zap } from 'lucide-mithril'
 import { t, tClassRow } from '../i18n/index.js'
 
 const note = css({
@@ -44,6 +44,7 @@ const TYPE_CONFIG = {
   Weight: { icon: Weight, color: 'var(--colors-error)' },
   Alignment: { icon: AlignJustify, color: 'var(--colors-primary)' },
   Transform: { icon: CaseSensitive, color: 'var(--colors-secondary)' },
+  Event: { icon: Zap, color: 'var(--colors-info)' },
 }
 
 // Types rendered as a ghost Badge instead of colored icon+text.
