@@ -27,6 +27,8 @@ export interface ButtonCopyAttrs extends ComponentAttrs {
   animation?: ButtonCopyAnimation
   /** Duration in ms the "copied" state persists. Default: 2000. */
   duration?: number
+  /** Shape of the button. Default: 'circle' — ButtonCopy is round by default, like ButtonClose. */
+  shape?: 'circle' | 'square'
   color?: PumColor
   variant?: PumStyle
   size?: PumSize

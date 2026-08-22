@@ -75,10 +75,6 @@
       "types": "./src/components/Carousel/index.d.ts",
       "import": "./src/components/Carousel/index.js"
     },
-    "./cell": {
-      "types": "./src/components/Cell/index.d.ts",
-      "import": "./src/components/Cell/index.js"
-    },
     "./chat-bubble": {
       "types": "./src/components/ChatBubble/index.d.ts",
       "import": "./src/components/ChatBubble/index.js"
@@ -303,6 +299,7 @@
   "scripts": {
     "prepare": "panda codegen",
     "codegen": "panda codegen",
+    "count": "bun run scripts/count-components.ts",
     "dev": "bun playground/index.html",
     "build": "bun run scripts/build.ts",
     "esbuild": "bun run scripts/esbuild.ts",
@@ -320,6 +317,7 @@
   "dependencies": {
     "@fontsource/ubuntu": "^5.3.0",
     "@fontsource/ubuntu-mono": "^5.3.0",
+    "devicon-mithril": "^1.0.0",
     "highlight.js": "^11.12.0",
     "lucide-mithril": "^1.0.6",
     "normalize.css": "^8.0.1",

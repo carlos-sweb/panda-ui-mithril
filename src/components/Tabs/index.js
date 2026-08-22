@@ -35,9 +35,19 @@ export const Tabs = {
     
     // Modo controlado vs no controlado
     const activeRef = active !== undefined ? active : vnode.state.activeRef
-    
+
+    // Los hijos pueden venir envueltos en fragmentos (`tag: '['`) cuando se
+    // generan con `.map()`. Aplastarlos primero para que el clonado de abajo
+    // los vea como vnodes directos de Tab/TabContent.
+    const flatten = (nodes) => nodes.reduce((acc, node) => {
+      if (node == null) return acc
+      if (Array.isArray(node)) return acc.concat(flatten(node))
+      if (node.tag === '[') return acc.concat(flatten(node.children))
+      return acc.concat(node)
+    }, [])
+
     // Clonar hijos e inyectar active basado en ref
-    const children = vnode.children.map(child => {
+    const children = flatten(vnode.children).map(child => {
       if (child.tag === Tab || child.tag === TabContent) {
         return m(child.tag, {
           ...child.attrs,

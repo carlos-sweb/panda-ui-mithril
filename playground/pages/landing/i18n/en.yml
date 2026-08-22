@@ -1,13 +1,15 @@
   hero: A Mithril.js component library styled with Panda CSS. Production-ready components with familiar design patterns.
-  componentsCount: 57 components
-  componentsDesc: 57 components ready for production
+  componentsLabel: components
+  componentsDesc: ready for production
+  statsComponents: Components
+  statsCore: Core size
   kbSize: 7KB
-  kbSizeDesc: Tree-shakeable JS bundle with single stylesheet
+  kbSizeDesc: Mithril.js runtime
+  statsDeps: Runtime deps
   dependencies: 0
-  dependenciesDesc: No runtime dependencies beyond Mithril
-  orgByCategory: Organized by category
-  orgDesc: 57 components organized by category. Click any to see the full demo.
-  alert: 'New: 57 components, consistently styled.'
+  dependenciesDesc: zero-runtime CSS
+  orgDesc: Organized by category. Click any component to see its full demo.
+  alert: 'Every component shares the same design language.'
   featureNaming:
     title: Class naming
     desc: 'Familiar class naming convention: btn-primary, card-body, alert-soft.'

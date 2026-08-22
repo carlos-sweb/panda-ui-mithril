@@ -7,6 +7,7 @@
       "dependencies": {
         "@fontsource/ubuntu": "^5.3.0",
         "@fontsource/ubuntu-mono": "^5.3.0",
+        "devicon-mithril": "^1.0.0",
         "highlight.js": "^11.12.0",
         "lucide-mithril": "^1.0.6",
         "normalize.css": "^8.0.1",
@@ -305,6 +306,10 @@
     "dependency-graph": ["dependency-graph@1.0.0", "", {}, "sha512-cW3gggJ28HZ/LExwxP2B++aiKxhJXMSIt9K48FOXQkm+vuG5gyatXnLsONRJdzO/7VfjDIiaOOa/bs4l464Lwg=="],
 
     "detect-libc": ["detect-libc@2.1.2", "", {}, "sha512-Btj2BOOO83o3WyH59e8MgXsxEQVcarkUOpEYrubB0urwnN10yQ364rsiByU11nZlqWYZm05i/of7io4mzihBtQ=="],
+
+    "devicon": ["devicon@2.17.0", "", {}, "sha512-2nKUdjobJlmRSaCHa50PGsVq0VDURnq9gVzQoJggsM/NKN0tLhC/Uq2zmy2pH36Q/1q3gvYwp/GjTgv/R0Ysbg=="],
+
+    "devicon-mithril": ["devicon-mithril@1.0.0", "", { "dependencies": { "devicon": "^2.17.0", "mithril": "^2.3.8" } }, "sha512-MSbbX/t285NR041zLBIpiDRbNz1mjVnruNy/24Nn/RjqGMCoGlx7ee6T20DqidjHBFGLW2Vp3stDEshZ3gH15w=="],
 
     "dom-serializer": ["dom-serializer@2.0.0", "", { "dependencies": { "domelementtype": "^2.3.0", "domhandler": "^5.0.2", "entities": "^4.2.0" } }, "sha512-wIkAryiqt/nV5EQKqQpo3SToSOV9J0DnbJqwK7Wv/Trc92zIAYZ4FlMu+JPFW1DfGFt81ZTCGgDEabffXeLyJg=="],
 

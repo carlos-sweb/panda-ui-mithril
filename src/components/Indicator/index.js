@@ -20,15 +20,14 @@ export const Indicator = {
     const vertical = words.find((w) => VERTICAL.includes(w))
 
     return m('div', {
-      className: cx(
-        'indicator',
+      className: cx(        
         indicator({ horizontal, vertical }),
         words.map((w) => `indicator-${w}`),
         className
       ),
       ...rest
     }, [
-      item && m('span', { className: cx('indicator-item', indicatorItem(), item.className) }, item),
+      item && m('span', { className: cx('indicator-item', indicatorItem(), item.attrs?.className) }, item),
       vnode.children,
     ])
   }

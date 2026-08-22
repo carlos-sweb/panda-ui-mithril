@@ -80,6 +80,7 @@ export const ButtonCopy = {
       animation = 'scale',
       duration = 2000,
       size,
+      shape,
       className,
       ...rest
     } = vnode.attrs
@@ -118,6 +119,11 @@ export const ButtonCopy = {
           m(Copy, { size: iconSize, 'stroke-width': 2 }))
 
     const button = m(Button, {
+      // ButtonCopy is a wrapper of Button with the SVG already set — like
+      // ButtonClose, it defaults to a circular (round) button. Pass
+      // `shape="square"` (or an explicit `circle`/`square` prop) to override.
+      circle: shape !== 'square',
+      square: shape === 'square',
       size,
       className: cx('btn-copy', className),
       onclick: handleClick,

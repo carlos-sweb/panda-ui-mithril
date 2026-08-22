@@ -1,10 +1,10 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
+import { DevNpmOriginal, DevPnpmOriginal, DevYarnOriginal, DevBunOriginal } from 'devicon-mithril'
 import {
   Button, Badge, Card, CardBody, CardTitle, Alert, TextInput, Toggle, Checkbox, Radio,
   Progress, Loading, Hero, HeroContent, Stats, Stat, StatTitle, StatValue, StatDesc,
-  Tabs, Tab, TabContent, Title, Block, Box, Stack, Container, Grid, Cell, Columns, Column,
-  Text,
+  Tabs, Tab, TabContent, Title, Block, Stack, Container, Grid, Cell, Text,
 } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { t, loadPageI18n } from '../../i18n/index.js'
@@ -17,17 +17,6 @@ const heroSection = css({
   marginBottom: '2.5rem',
 })
 
-const installCommand = css({
-  background: 'token(colors.neutral)',
-  color: 'token(colors.neutral-content)',
-  borderRadius: '0.75rem',
-  padding: '1rem 1.25rem',
-  fontFamily: 'var(--fonts-mono, monospace)',
-  fontSize: '0.8125rem',
-  overflowX: 'auto',
-  whiteSpace: 'pre',
-})
-
 const features = [
   { title: 'Mithril.js', desc: 'Built on the ultra-lightweight 7KB virtual DOM framework with no runtime dependencies.' },
   { title: 'Panda CSS', desc: 'Zero-runtime CSS-in-JS with static analysis. Only the styles you use are generated.' },
@@ -37,12 +26,12 @@ const features = [
   { title: 'Icons', desc: 'Integrates with lucide-mithril for a consistent icon system.' },
 ]
 
-const installCommands = {
-  npm: 'npm install panda-ui-mithril mithril lucide-mithril',
-  pnpm: 'pnpm add panda-ui-mithril mithril lucide-mithril',
-  yarn: 'yarn add panda-ui-mithril mithril lucide-mithril',
-  bun: 'bun add panda-ui-mithril mithril lucide-mithril',
-}
+const packageManagers = [
+  { id: 'npm', label: 'npm', command: 'npm install panda-ui-mithril mithril lucide-mithril', icon: DevNpmOriginal },
+  { id: 'pnpm', label: 'pnpm', command: 'pnpm add panda-ui-mithril mithril lucide-mithril', icon: DevPnpmOriginal },
+  { id: 'yarn', label: 'yarn', command: 'yarn add panda-ui-mithril mithril lucide-mithril', icon: DevYarnOriginal },
+  { id: 'bun', label: 'bun', command: 'bun add panda-ui-mithril mithril lucide-mithril', icon: DevBunOriginal },
+]
 
 const quickStartCode = `<Alert color="info">Welcome to panda-ui-mithril!</Alert>
 
@@ -53,15 +42,129 @@ const quickStartCode = `<Alert color="info">Welcome to panda-ui-mithril!</Alert>
   </CardBody>
 </Card>`
 
+// Canonical component list. Mirrors the sidebar navigation so the landing
+// page can never drift from the routes that actually exist. `route` is the
+// playground route for each component's demo page.
 const categories = [
-  { title: 'Actions', desc: 'Buttons, links, and interactive triggers', items: ['Button', 'ButtonClose', 'ButtonGroup', 'FAB', 'Link', 'Swap', 'Filter', 'ThemeController'] },
-  { title: 'Data Display', desc: 'Show information, lists, and media', items: ['Badge', 'Avatar', 'Card', 'Tag', 'List', 'Table', 'Stats', 'Timeline', 'Countdown', 'Chat', 'Mask', 'Kbd', 'Aura'] },
-  { title: 'Navigation', desc: 'Menus, tabs, and page structure', items: ['Navbar', 'Breadcrumbs', 'Menu', 'Tabs', 'Pagination', 'Steps', 'Megamenu', 'Footer'] },
-  { title: 'Feedback', desc: 'Alerts, modals, and loading states', items: ['Alert', 'Toast', 'Modal', 'Tooltip', 'Loading', 'Skeleton', 'Progress', 'RadialProgress', 'Status', 'Indicator'] },
-  { title: 'Data Input', desc: 'Forms, selects, and input controls', items: ['TextInput', 'Textarea', 'Select', 'Checkbox', 'Radio', 'Toggle', 'Range', 'FileInput', 'OTP', 'Rating', 'RatingGroup', 'Calendar', 'Fieldset', 'Label'] },
-  { title: 'Layout', desc: 'Structure, spacing, and visual hierarchy', items: ['Block', 'Box', 'Container', 'Grid', 'Columns', 'Stack', 'Hero', 'Divider', 'Join', 'Accordion', 'Collapse', 'Carousel', 'Diff'] },
-  { title: 'Typography', desc: 'Text styling and semantic headings', items: ['Title','Text'] },
+  {
+    title: 'sidebar.categories.actions',
+    desc: 'Buttons, links, and interactive triggers',
+    items: [
+      { name: 'Button', route: 'button' },
+      { name: 'ButtonClose', route: 'buttonclose' },
+      { name: 'ButtonCopy', route: 'buttoncopy' },
+      { name: 'ButtonGroup', route: 'buttongroup' },
+      { name: 'FAB', route: 'fab' },
+      { name: 'Filter', route: 'filter' },
+      { name: 'Link', route: 'link' },
+      { name: 'Swap', route: 'swap' },
+      { name: 'ThemeController', route: 'themectrl' },
+    ],
+  },
+  {
+    title: 'sidebar.categories.dataDisplay',
+    desc: 'Show information, lists, and media',
+    items: [
+      { name: 'Avatar', route: 'avatar' },
+      { name: 'Badge', route: 'badge' },
+      { name: 'Card', route: 'card' },
+      { name: 'ChatBubble', route: 'chat' },
+      { name: 'Countdown', route: 'countdown' },
+      { name: 'Kbd', route: 'kbd' },
+      { name: 'List', route: 'list' },
+      { name: 'Mask', route: 'mask' },
+      { name: 'Stat', route: 'stat' },
+      { name: 'Table', route: 'table' },
+      { name: 'Tag', route: 'tag' },
+      { name: 'Timeline', route: 'timeline' },
+    ],
+  },
+  {
+    title: 'sidebar.categories.navigation',
+    desc: 'Menus, tabs, and page structure',
+    items: [
+      { name: 'Breadcrumbs', route: 'breadcrumbs' },
+      { name: 'Footer', route: 'footer' },
+      { name: 'Megamenu', route: 'megamenu' },
+      { name: 'Menu', route: 'menu' },
+      { name: 'Navbar', route: 'navbar' },
+      { name: 'Pagination', route: 'pagination' },
+      { name: 'Steps', route: 'steps' },
+      { name: 'Tabs', route: 'tabs' },
+    ],
+  },
+  {
+    title: 'sidebar.categories.feedback',
+    desc: 'Alerts, modals, and loading states',
+    items: [
+      { name: 'Alert', route: 'alert' },
+      { name: 'Aura', route: 'aura' },
+      { name: 'Indicator', route: 'indicator' },
+      { name: 'Loading', route: 'loading' },
+      { name: 'Modal', route: 'modal' },
+      { name: 'Progress', route: 'progress' },
+      { name: 'RadialProgress', route: 'radialprogress' },
+      { name: 'Skeleton', route: 'skeleton' },
+      { name: 'Status', route: 'status' },
+      { name: 'Toast', route: 'toast' },
+      { name: 'Tooltip', route: 'tooltip' },
+    ],
+  },
+  {
+    title: 'sidebar.categories.dataInput',
+    desc: 'Forms, selects, and input controls',
+    items: [
+      { name: 'Calendar', route: 'calendar' },
+      { name: 'Checkbox', route: 'checkbox' },
+      { name: 'Fieldset', route: 'fieldset' },
+      { name: 'FileInput', route: 'fileinput' },
+      { name: 'TextInput', route: 'input' },
+      { name: 'Label', route: 'label' },
+      { name: 'OTP', route: 'otp' },
+      { name: 'Radio', route: 'radio' },
+      { name: 'Range', route: 'range' },
+      { name: 'Rating', route: 'rating' },
+      { name: 'RatingGroup', route: 'ratinggroup' },
+      { name: 'Select', route: 'select' },
+      { name: 'Textarea', route: 'textarea' },
+      { name: 'Toggle', route: 'toggle' },
+    ],
+  },
+  {
+    title: 'sidebar.categories.layout',
+    desc: 'Structure, spacing, and visual hierarchy',
+    items: [
+      { name: 'Accordion', route: 'accordion' },
+      { name: 'Block', route: 'block' },
+      { name: 'Box', route: 'box' },
+      { name: 'Carousel', route: 'carousel' },
+      { name: 'Collapse', route: 'collapse' },
+      { name: 'Columns', route: 'columns' },
+      { name: 'Container', route: 'container' },
+      { name: 'Diff', route: 'diff' },
+      { name: 'Divider', route: 'divider' },
+      { name: 'Grid', route: 'grid' },
+      { name: 'Hero', route: 'hero' },
+      { name: 'Join', route: 'join' },
+      { name: 'Stack', route: 'stack' },
+    ],
+  },
+  {
+    title: 'sidebar.categories.typography',
+    desc: 'Text styling and semantic headings',
+    items: [
+      { name: 'Text', route: 'text' },
+      { name: 'Title', route: 'title' },
+    ],
+  },
 ]
+
+// Component count: one folder in src/components = one component (the same
+// rule as `bun run count` → scripts/count-components.ts). Subcomponents such
+// as <MenuItem> or <CardBody> live inside their parent's folder and don't
+// count. The value comes from the generated components-count.js module, which
+// `bun run count` regenerates from the real folders, so it can never drift.
+import { COMPONENTS_COUNT } from './components-count.js'
 
 export const Landing = {
   oninit(vnode) {
@@ -75,7 +178,9 @@ export const Landing = {
         {/* ── Hero ── */}
         <Hero className={heroSection}>
           <HeroContent className={css({ flexDirection: 'column', textAlign: 'center', padding: '4rem 2rem' })}>
-            <Badge color="primary" variant="soft" className={css({ marginBottom: '1rem' })}>{t('componentsCount')}</Badge>
+            <Badge color="primary" variant="soft" className={css({ marginBottom: '1rem' })}>
+              {COMPONENTS_COUNT} {t('componentsLabel')}
+            </Badge>
             <img src={logo} alt="PUM logo" />
             <Title size="1">PUM</Title>
             <Title as="p" size="5" className={css({ opacity: 0.6, maxWidth: '600px', margin: '0 auto 2rem' })}>
@@ -91,19 +196,19 @@ export const Landing = {
         {/* ── Stats ── */}
         <Stats className={css({ width: '100%', marginBottom: '3rem', border: '1px solid', borderColor: 'token(colors.base-300)' })}>
           <Stat>
-            <StatTitle>Components</StatTitle>
-            <StatValue className={css({ color: 'token(colors.primary)' })}>68</StatValue>
-            <StatDesc>ready for production</StatDesc>
+            <StatTitle>{t('statsComponents')}</StatTitle>
+            <StatValue className={css({ color: 'token(colors.primary)' })}>{COMPONENTS_COUNT}</StatValue>
+            <StatDesc>{t('componentsDesc')}</StatDesc>
           </Stat>
           <Stat>
-            <StatTitle>Core size</StatTitle>
-            <StatValue className={css({ color: 'token(colors.secondary)' })}>7KB</StatValue>
-            <StatDesc>Mithril.js runtime</StatDesc>
+            <StatTitle>{t('statsCore')}</StatTitle>
+            <StatValue className={css({ color: 'token(colors.secondary)' })}>{t('kbSize')}</StatValue>
+            <StatDesc>{t('kbSizeDesc')}</StatDesc>
           </Stat>
           <Stat>
-            <StatTitle>Runtime deps</StatTitle>
-            <StatValue className={css({ color: 'token(colors.accent)' })}>0</StatValue>
-            <StatDesc>zero-runtime CSS</StatDesc>
+            <StatTitle>{t('statsDeps')}</StatTitle>
+            <StatValue className={css({ color: 'token(colors.accent)' })}>{t('dependencies')}</StatValue>
+            <StatDesc>{t('dependenciesDesc')}</StatDesc>
           </Stat>
         </Stats>
 
@@ -124,16 +229,24 @@ export const Landing = {
         {/* ── Install ── */}
         <Title as="h2" size="3">Install</Title>
         <Block spacing="sm" />
-        <Tabs boxed className={css({ marginBottom: '0.75rem' })}>
-          {Object.keys(installCommands).map((mgr) => (
-            <Tab key={mgr} active={vnode.state.pkgManager === mgr} onclick={() => { vnode.state.pkgManager = mgr }}>{mgr}</Tab>
+        <Tabs
+          boxed
+          active={vnode.state.pkgManager}
+          onActiveChange={(ref) => { vnode.state.pkgManager = ref }}
+          className={css({ marginBottom: '1.5rem' })}
+        >
+          {packageManagers.map((pm) => (
+            <Tab key={pm.id} ref={pm.id} className={css({ gap: '0.375rem' })}>
+              {pm.icon ? m(pm.icon, { size: 16, 'aria-hidden': 'true' }) : null}
+              {pm.label}
+            </Tab>
+          ))}
+          {packageManagers.map((pm) => (
+            <TabContent key={pm.id} ref={pm.id}>
+              <CodeExample code={pm.command} type="bash" copyId={`install-${pm.id}`} />
+            </TabContent>
           ))}
         </Tabs>
-        {Object.entries(installCommands).map(([mgr, cmd]) => (
-          <TabContent key={mgr} active={vnode.state.pkgManager === mgr} className={css({ marginBottom: '1rem' })}>
-            <div className={installCommand}>{cmd}</div>
-          </TabContent>
-        ))}
 
         {/* ── Quick Start ── */}
         <Title as="h2" size="3" id="quick-start" className={css({ marginTop: '2.5rem' })}>Quick Start</Title>
@@ -141,7 +254,7 @@ export const Landing = {
         <Alert color="info" className={css({ marginBottom: '1rem' })}>
           Every component is a plain Mithril component — compose them the same way you'd write any other <code>m(...)</code> vnode tree.
         </Alert>
-        <CodeExample code={quickStartCode} />
+        <CodeExample code={quickStartCode} type="jsx" copyId="quick-start-code" />
 
         {/* ── Component Preview ── */}
         <Title as="h2" size="3" className={css({ marginTop: '2.5rem' })}>Component Preview</Title>
@@ -182,7 +295,7 @@ export const Landing = {
           <Loading variant="infinity" />
         </Stack>
         <Stack direction="row" gap="sm" className={css({ marginBottom: '2rem' })}>
-          <TextInput placeholder="Enter text..." style={{ maxWidth: '300px' }} />
+          <TextInput placeholder="Enter text..." className={css({ maxWidth: '300px' })} />
           <Button color="primary">Submit</Button>
         </Stack>
 
@@ -196,19 +309,19 @@ export const Landing = {
             <Card key={cat.title} className={css({ background: 'token(colors.base-100)', border: '1px solid', borderColor: 'token(colors.base-300)' })}>
               <CardBody>
                 <Stack direction="row" gap="sm" align="center">
-                  <CardTitle className={css({ fontSize: '1rem' })}>{cat.title}</CardTitle>
+                  <CardTitle className={css({ fontSize: '1rem' })}>{t(cat.title)}</CardTitle>
                   <Badge size="sm" variant="soft">{cat.items.length}</Badge>
                 </Stack>
                 <p className={css({ fontSize: '0.8125rem', color: 'token(colors.base-content)', opacity: 0.5, margin: '0.5rem 0 0.75rem' })}>{cat.desc}</p>
                 <Stack direction="row" gap="sm">
-                  {cat.items.map((name) => (
+                  {cat.items.map((item) => (
                     <Button
-                      key={name}
+                      key={item.name}
                       variant="outline"
                       size="sm"
-                      onclick={() => m.route.set(`/${name.toLowerCase()}`)}
+                      onclick={() => m.route.set(`/${item.route}`)}
                     >
-                      {name}
+                      {item.name}
                     </Button>
                   ))}
                 </Stack>

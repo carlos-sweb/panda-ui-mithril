@@ -106,29 +106,32 @@ export default {
           </Stack>
         </Block>
 
-        {/* Circle shape */}
+        {/* Square shape (opt-out of the circle default) */}
         <Block spacing="lg">
-          <Title as="h3" size="5">Circle</Title>
+          <Title as="h3" size="5">Square</Title>
+          <Text color="neutral" className={css({ marginBottom: '1rem', fontSize: 'sm' })}>
+            ButtonCopy is round by default. Pass <code>shape="square"</code> for a square button.
+          </Text>
           <Stack direction="row" gap="sm" wrap="wrap" align="center">
-            <ButtonCopy text="circle xs" circle size="xs" tooltip="Copied!" />
-            <ButtonCopy text="circle sm" circle size="sm" tooltip="Copied!" />
-            <ButtonCopy text="circle md" circle size="md" tooltip="Copied!" />
-            <ButtonCopy text="circle lg" circle size="lg" tooltip="Copied!" />
-            <ButtonCopy text="circle xl" circle size="xl" tooltip="Copied!" />
+            <ButtonCopy text="square xs" shape="square" size="xs" tooltip="Copied!" />
+            <ButtonCopy text="square sm" shape="square" size="sm" tooltip="Copied!" />
+            <ButtonCopy text="square md" shape="square" size="md" tooltip="Copied!" />
+            <ButtonCopy text="square lg" shape="square" size="lg" tooltip="Copied!" />
+            <ButtonCopy text="square xl" shape="square" size="xl" tooltip="Copied!" />
           </Stack>
         </Block>
 
-        {/* Circle + colors */}
+        {/* Square + colors */}
         <Block spacing="lg">
-          <Title as="h3" size="5">Circle + Colors</Title>
+          <Title as="h3" size="5">Square + Colors</Title>
           <Stack direction="row" gap="sm" wrap="wrap" align="center">
-            <ButtonCopy text="circle" circle tooltip="Copied!" />
-            <ButtonCopy text="circle primary" circle color="primary" tooltip="Copied!" />
-            <ButtonCopy text="circle secondary" circle color="secondary" tooltip="Copied!" />
-            <ButtonCopy text="circle accent" circle color="accent" tooltip="Copied!" />
-            <ButtonCopy text="circle soft" circle variant="soft" color="primary" tooltip="Copied!" />
-            <ButtonCopy text="circle ghost" circle variant="ghost" color="primary" tooltip="Copied!" />
-            <ButtonCopy text="circle outline" circle variant="outline" color="primary" tooltip="Copied!" />
+            <ButtonCopy text="square" shape="square" tooltip="Copied!" />
+            <ButtonCopy text="square primary" shape="square" color="primary" tooltip="Copied!" />
+            <ButtonCopy text="square secondary" shape="square" color="secondary" tooltip="Copied!" />
+            <ButtonCopy text="square accent" shape="square" color="accent" tooltip="Copied!" />
+            <ButtonCopy text="square soft" shape="square" variant="soft" color="primary" tooltip="Copied!" />
+            <ButtonCopy text="square ghost" shape="square" variant="ghost" color="primary" tooltip="Copied!" />
+            <ButtonCopy text="square outline" shape="square" variant="outline" color="primary" tooltip="Copied!" />
           </Stack>
         </Block>
 

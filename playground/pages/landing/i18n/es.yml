@@ -1,13 +1,15 @@
   hero: Una librería de componentes Mithril.js estilizada con Panda CSS. Componentes listos para producción con patrones de diseño familiares.
-  componentsCount: 57 componentes
-  componentsDesc: 57 componentes listos para producción
+  componentsLabel: componentes
+  componentsDesc: listos para producción
+  statsComponents: Componentes
+  statsCore: Tamaño del núcleo
   kbSize: 7KB
-  kbSizeDesc: Bundle JS con tree-shaking y una sola hoja de estilos
+  kbSizeDesc: Runtime de Mithril.js
+  statsDeps: Dependencias de runtime
   dependencies: 0
-  dependenciesDesc: Sin dependencias de runtime más allá de Mithril
-  orgByCategory: Organizado por categoría
-  orgDesc: 57 componentes organizados por categoría. Haz clic en cualquiera para ver la demo completa.
-  alert: 'Nuevo: 57 componentes, estilizados consistentemente.'
+  dependenciesDesc: CSS sin runtime
+  orgDesc: Organizado por categoría. Haz clic en cualquier componente para ver su demo completa.
+  alert: 'Todos los componentes comparten el mismo lenguaje de diseño.'
   featureNaming:
     title: Nomenclatura de clases
     desc: 'Convención de clases familiar: btn-primary, card-body, alert-soft.'
