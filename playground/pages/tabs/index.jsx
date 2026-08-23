@@ -81,7 +81,7 @@ export default {
           </Tabs>
         </Block>
 
-        {/* Uncontrolled Mode - Border */}
+        
         <Block spacing="lg">
           <Title as="h3" size="5">Border (Uncontrolled)</Title>
           <Tabs bordered defaultActive="info" onActiveChange={(ref) => { vnode.state.border = ref }}>
