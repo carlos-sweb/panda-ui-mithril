@@ -38,6 +38,10 @@ export const tabsRecipe = defineRecipe({
       paddingInline: 'var(--tab-p)',
       color: 'inherit',
       fontFamily: 'inherit',
+      // Smooth color change between the dimmed (inactive) and full states
+      '@media (prefers-reduced-motion: no-preference)': {
+        transition: 'color 0.2s ease',
+      },
 
       [inactiveSelector]: {
         color: 'color-mix(in oklab, token(colors.base-content) 50%, transparent)',
@@ -66,7 +70,12 @@ export const tabsRecipe = defineRecipe({
     // Active content
     '& .tabs-content.active': {
       display: 'block',
-    }
+      // Fade the incoming panel in (the outgoing one leaves instantly via
+      // display:none — not transitionable without JS).
+      '@media (prefers-reduced-motion: no-preference)': {
+        animation: 'tab-fade-in 0.25s ease',
+      },
+    },
   },
   variants: {
     variant: {
@@ -76,6 +85,10 @@ export const tabsRecipe = defineRecipe({
         borderRadius: 'calc(min(var(--tab-height) / 2, var(--radius-field)) + 0.25rem)',
         '& .tabs-tab': {
           borderRadius: 'var(--radius-field)',
+          // Fade the highlight in on activation and out on deactivation
+          '@media (prefers-reduced-motion: no-preference)': {
+            transition: 'color 0.2s ease, background-color 0.25s ease, box-shadow 0.25s ease',
+          },
           [activeSelector]: {
             backgroundColor: 'base-100',
             boxShadow: '0 1px 3px color-mix(in oklab, black 15%, transparent)',
@@ -87,6 +100,9 @@ export const tabsRecipe = defineRecipe({
         borderBottomWidth: '1px',
         borderColor: 'base-300',
         '& .tabs-tab': {
+          '@media (prefers-reduced-motion: no-preference)': {
+            transition: 'color 0.2s ease',
+          },
           '&:before': {
             content: '""',
             position: 'absolute',
@@ -96,10 +112,17 @@ export const tabsRecipe = defineRecipe({
             height: '3px',
             borderRadius: 'var(--radius-field)',
             backgroundColor: 'transparent',
-            transition: 'background-color 0.2s ease',
+            transformOrigin: 'center',
+            '@media (prefers-reduced-motion: no-preference)': {
+              transition: 'background-color 0.2s ease',
+            },
           },
           [activeBeforeSelector]: {
             backgroundColor: 'currentColor',
+            // Underline grows from the center when the tab becomes active
+            '@media (prefers-reduced-motion: no-preference)': {
+              animation: 'tab-indicator 0.25s ease',
+            },
           },
         },
         '& .tabs-content': {},
@@ -107,15 +130,21 @@ export const tabsRecipe = defineRecipe({
       lift: {
         '& .tabs-tab': {
           borderStyle: 'solid',
-          borderWidth: '0 0 var(--border, 1px) 0',
+          // Constant 1px border on ALL sides for every state: the geometry
+          // (content box) never changes, so the label text doesn't shift when
+          // a tab becomes active. Only border-COLOR changes (transparent where
+          // there's no line), which snaps — no layout impact.
+          borderWidth: 'var(--border, 1px)',
           borderColor: 'transparent transparent token(colors.base-300) transparent',
           borderStartStartRadius: 'var(--radius-field)',
           borderStartEndRadius: 'var(--radius-field)',
-          paddingTop: 'var(--border, 1px)',
+          paddingTop: '0',
+          // Only the "lift" fill animates: background (and label color) fade
+          '@media (prefers-reduced-motion: no-preference)': {
+            transition: 'color 0.2s ease, background-color 0.25s ease',
+          },
           [activeSelector]: {
-            borderWidth: 'var(--border, 1px) var(--border, 1px) 0 var(--border, 1px)',
             borderColor: 'token(colors.base-300) token(colors.base-300) transparent token(colors.base-300)',
-            paddingTop: '0',
             backgroundColor: 'base-100',
           },
         },
@@ -126,6 +155,14 @@ export const tabsRecipe = defineRecipe({
           borderStartEndRadius: 'var(--radius-box)',
           borderEndStartRadius: 'var(--radius-box)',
           borderEndEndRadius: 'var(--radius-box)',
+          // This border is the visible bottom line of the active tab's frame
+          // (the active tab's own bottom border is transparent and the panel
+          // overlaps it via margin-top). The frame's top/left/right appear
+          // instantly, so this line must too — the panel does NOT fade in
+          // here, otherwise the bottom of the frame lags behind.
+          '&.active': {
+            animation: 'none',
+          },
         },
       },
     },

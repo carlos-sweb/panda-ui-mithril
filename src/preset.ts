@@ -311,9 +311,10 @@ export const pumPreset = definePreset({
           '0%': { opacity: '1' },
           '100%': { opacity: '0' },
         },
+        // Pure fade for tab content panels — no vertical slide
         'tab-fade-in': {
-          from: { opacity: '0', transform: 'translateY(-4px)' },
-          to: { opacity: '1', transform: 'translateY(0)' },
+          from: { opacity: '0' },
+          to: { opacity: '1' },
         },
         'tab-indicator': {
           from: { transform: 'scaleX(0)' },
