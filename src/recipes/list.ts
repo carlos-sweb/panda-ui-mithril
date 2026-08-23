@@ -28,9 +28,21 @@ export const listRecipe = defineSlotRecipe({
       gridTemplateColumns: 'var(--list-grid-cols)',
       gap: 'token(spacing.4)',
       padding: 'token(spacing.4)',
-      borderRadius: 'var(--radius-box)',
       wordBreak: 'break-word',
       '& > *': { gridRowStart: '1' },
+
+      // Fix del TODO: el radius va solo en los bordes visuales de la lista
+      // (primera y última fila), no en todas las filas — antes el hover de
+      // filas intermedias mostraba esquinas redondeadas flotando entre
+      // separadores rectos. `:only-child` recibe ambos (todas las esquinas).
+      '&:first-child': {
+        borderStartStartRadius: 'var(--radius-box)',
+        borderStartEndRadius: 'var(--radius-box)',
+      },
+      '&:last-child': {
+        borderEndStartRadius: 'var(--radius-box)',
+        borderEndEndRadius: 'var(--radius-box)',
+      },
 
       '&:has(.list-col-grow:nth-child(1))': { '--list-grid-cols': '1fr' },
       '&:has(.list-col-grow:nth-child(2))': { '--list-grid-cols': 'minmax(0, auto) 1fr' },
@@ -42,12 +54,6 @@ export const listRecipe = defineSlotRecipe({
     col: {},
   },
   variants: {
-    // TODO (reported 2026-08-02): borderRadius above applies to every row
-    // unconditionally, so on hover the fill color makes middle rows look odd
-    // (rounded corners floating between straight-edged neighbors). Real
-    // the original implementation has this same quirk. Requested fix: only round the hover fill
-    // on `:last-child` — or `:first-child` when the list has no title row —
-    // so only the visual edge of the list rounds, not every row.
     hover: {
       true: {
         row: {

@@ -1,8 +1,44 @@
 import { Component, Vnode } from 'mithril'
 import { ComponentAttrs } from '../../types'
 
-export interface ListAttrs extends ComponentAttrs {
-  children?: Vnode | Vnode[] | string | null
+export interface ListAttrs<T = unknown> extends ComponentAttrs {
+  /**
+   * Array de datos. Cuando se pasa, el template de fila se repite por item
+   * (modo data-driven). Sin `data`, se usan los children explícitos
+   * (`ListRow`/`ListCol`).
+   */
+  data?: readonly T[]
+  /**
+   * Template de fila: `(item, index) => vnode`. Se repite `data.length` veces.
+   * Obligatorio cuando se pasa `data` (alternativa: un único child función).
+   */
+  render?: (item: T, index: number) => Vnode | null
+  /**
+   * Accessor de key para el diffing de Mithril al redimensionar/reordenar:
+   * `(item, index) => string | number`. Default: índice.
+   */
+  key?: (item: T, index: number) => string | number
+  /** Fila estática al inicio de la lista (solo modo data-driven). */
+  header?: Vnode | null
+  /** Fila estática al final de la lista (solo modo data-driven). */
+  footer?: Vnode | null
+  /** Vnodes a mostrar cuando `data` está vacío. */
+  empty?: Vnode | Vnode[] | null
+  /** Mientras es `true`, muestra `loadingRows` filas Skeleton en vez de los datos. */
+  loading?: boolean
+  /** Cantidad de filas Skeleton con `loading`. Default: 3. */
+  loadingRows?: number
+  /** Aplica el resaltado `hover` a todas las filas `ListRow` en modo data-driven. */
+  hover?: boolean
+  /** Renderiza `<ol>` en vez de `<ul>`. */
+  ordered?: boolean
+  /**
+   * En modo data-driven los children pueden ser UNA función
+   * `(item, index) => vnode` — el template repetido por item (alternativa al
+   * prop `render`). Debe ser el único child. Con `data` sin template se lanza
+   * un error.
+   */
+  children?: Vnode | Vnode[] | string | ((item: T, index: number) => Vnode | null) | null
   [key: string]: unknown
 }
 

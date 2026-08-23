@@ -1,1 +1,27 @@
 paragraph: List es un diseño vertical para mostrar información en filas.
+buenUsoTitle: Buen uso — inbox estilo Gmail / Proton Mail
+buenUsoDesc: >-
+  Patrón de fila inspirado en Gmail/Proton Mail: una <strong>estrella</strong>
+  como acción, un <code>Avatar</code> con la <strong>inicial y un color por
+  remitente</strong>, el <strong>remitente con el asunto debajo</strong> y la
+  <strong>hora a la derecha</strong>. Todo compone componentes de la librería
+  (<code>Avatar</code>, <code>Button</code>, <code>ListCol</code>) dentro del
+  <code>render</code> data-driven — eventos, layout y estados por fila sin
+  salirse del componente.
+dataFnTitle: Data-driven (children como función)
+dataFnDesc: >-
+  <code>data</code> + children como función: el template se repite por item.
+  Añade/elimina filas para ver el redimensionado (keys por <code>id</code>).
+dataRenderTitle: Data-driven (render prop)
+dataRenderDesc: >-
+  <code>data</code> + <code>render</code> con <code>header</code>,
+  <code>footer</code>, <code>hover</code> (a nivel de List), <code>loading</code>
+  (filas Skeleton) y <code>empty</code>.
+dataUsageTitle: Uso data-driven
+interactiveTitle: Interactivo — agregar / quitar items
+interactiveDesc: >-
+  Mantén el array en <code>vnode.state</code> y mutalo desde los handlers
+  (<code>push</code> para agregar, <code>splice</code> para quitar) — Mithril
+  redibuja automáticamente tras cada evento y el <code>key</code> por
+  <code>id</code> mantiene el diffing correcto. Es el mismo patrón que usan
+  los demos de arriba.

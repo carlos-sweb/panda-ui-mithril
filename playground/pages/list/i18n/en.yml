@@ -1,1 +1,26 @@
 paragraph: List is a vertical layout to display information in rows.
+buenUsoTitle: Good usage — Gmail / Proton Mail inbox
+buenUsoDesc: >-
+  Row pattern inspired by Gmail/Proton Mail: a <strong>star</strong> as the
+  action, an <code>Avatar</code> with the sender's <strong>initial and a color
+  per sender</strong>, the <strong>sender with the subject below</strong>, and
+  the <strong>time on the right</strong>. Everything composes library components
+  (<code>Avatar</code>, <code>Button</code>, <code>ListCol</code>) inside the
+  data-driven <code>render</code> — events, layout and per-row state without
+  leaving the component.
+dataFnTitle: Data-driven (children function)
+dataFnDesc: >-
+  <code>data</code> + children as a function: the template repeats per item.
+  Add/remove rows to see the resizing (keys by <code>id</code>).
+dataRenderTitle: Data-driven (render prop)
+dataRenderDesc: >-
+  <code>data</code> + <code>render</code> with <code>header</code>,
+  <code>footer</code>, <code>hover</code> (List-level), <code>loading</code>
+  (Skeleton rows) and <code>empty</code>.
+dataUsageTitle: Data-driven usage
+interactiveTitle: Interactive — add / remove items
+interactiveDesc: >-
+  Keep the array in <code>vnode.state</code> and mutate it from handlers
+  (<code>push</code> to add, <code>splice</code> to remove) — Mithril redraws
+  automatically after each event and the <code>key</code> by <code>id</code>
+  keeps the diffing correct. Same pattern as the demos above.
