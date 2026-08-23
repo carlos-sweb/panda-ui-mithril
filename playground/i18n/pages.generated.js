@@ -48,7 +48,9 @@ import pagecountdownEs from '../pages/countdown/i18n/es.yml'
 import pagediffEn from '../pages/diff/i18n/en.yml'
 import pagediffEs from '../pages/diff/i18n/es.yml'
 import pagedividerEn from '../pages/divider/i18n/en.yml'
+import pagedropdownEn from '../pages/dropdown/i18n/en.yml'
 import pagedividerEs from '../pages/divider/i18n/es.yml'
+import pagedropdownEs from '../pages/dropdown/i18n/es.yml'
 import pagefabEn from '../pages/fab/i18n/en.yml'
 import pagefabEs from '../pages/fab/i18n/es.yml'
 import pagefieldsetEn from '../pages/fieldset/i18n/en.yml'
@@ -192,7 +194,9 @@ pageI18n.es['countdown'] = pagecountdownEs
 pageI18n.en['diff'] = pagediffEn
 pageI18n.es['diff'] = pagediffEs
 pageI18n.en['divider'] = pagedividerEn
+pageI18n.en['dropdown'] = pagedropdownEn
 pageI18n.es['divider'] = pagedividerEs
+pageI18n.es['dropdown'] = pagedropdownEs
 pageI18n.en['fab'] = pagefabEn
 pageI18n.es['fab'] = pagefabEs
 pageI18n.en['fieldset'] = pagefieldsetEn

@@ -44,6 +44,7 @@ const allComponents = [
   { name: 'loading', category: 'Feedback', route: '/loading' },
   { name: 'mask', category: 'Data Display', route: '/mask' },
   { name: 'megamenu', category: 'Navigation', route: '/megamenu' },
+  { name: 'dropdown', category: 'Navigation', route: '/dropdown' },
   { name: 'menu', category: 'Navigation', route: '/menu' },
   { name: 'modal', category: 'Feedback', route: '/modal' },
   { name: 'navbar', category: 'Navigation', route: '/navbar' },

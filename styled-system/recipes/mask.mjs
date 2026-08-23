@@ -24,6 +24,13 @@ const maskVariantMap = {
   "half": [
     "1",
     "2"
+  ],
+  "size": [
+    "xs",
+    "sm",
+    "md",
+    "lg",
+    "xl"
   ]
 }
 

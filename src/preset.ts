@@ -20,6 +20,7 @@ import { containerRecipe } from './../src/recipes/container'
 import { countdownDigitRecipe, countdownRecipe } from './../src/recipes/countdown'
 import { diffRecipe } from './../src/recipes/diff'
 import { dividerRecipe } from './../src/recipes/divider'
+import { dropdownRecipe } from './../src/recipes/dropdown'
 import { fabRecipe , fabLabelRecipe } from './../src/recipes/fab'
 import { fieldsetRecipe , fieldsetLegendRecipe } from './../src/recipes/fieldset'
 import { fileInputRecipe } from './../src/recipes/fileInput'
@@ -128,6 +129,7 @@ export const pumPreset = definePreset({
         link : linkRecipe ,        
         loading : loadingRecipe ,
         mask : maskRecipe ,        
+        dropdown : dropdownRecipe ,
         menu : menuRecipe ,        
         otp : otpRecipe ,
         progress : progressRecipe ,

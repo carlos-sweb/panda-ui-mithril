@@ -1,0 +1,5 @@
+paragraph: Dropdown menu for actions and navigation, opened by click or hover.
+placementsTitle: Placements
+realTitle: Real examples
+realDesc: "Real-world usage: a language selector with rounded flags (circle-flags-mithril) and a user menu with Avatar."
+langLabel: Language

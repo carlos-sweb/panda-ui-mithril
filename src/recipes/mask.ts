@@ -10,8 +10,7 @@ export const maskRecipe = defineRecipe({
     maskPosition: 'center',
   },
   variants: {
-    shape: {
-      square: { maskImage: `url("data:image/svg+xml,%3csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='200' height='200' fill='black'/%3e%3c/svg%3e")` },
+    shape: {      square: { maskImage: `url("data:image/svg+xml,%3csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='200' height='200' fill='black'/%3e%3c/svg%3e")` },
       squircle: { maskImage: `url("data:image/svg+xml,%3csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M100 0C20 0 0 20 0 100s20 100 100 100 100-20 100-100S180 0 100 0Z'/%3e%3c/svg%3e")` },
       decagon: { maskImage: `url("data:image/svg+xml,%3csvg width='192' height='200' xmlns='http://www.w3.org/2000/svg'%3e%3cpath fill='black' d='m96 0 58.779 19.098 36.327 50v61.804l-36.327 50L96 200l-58.779-19.098-36.327-50V69.098l36.327-50z' fill-rule='evenodd'/%3e%3c/svg%3e")` },
       diamond: { maskImage: `url("data:image/svg+xml,%3csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3e%3cpath fill='black' d='m100 0 100 100-100 100L0 100z' fill-rule='evenodd'/%3e%3c/svg%3e")` },
@@ -30,6 +29,13 @@ export const maskRecipe = defineRecipe({
     half: {
       1: { maskSize: '200%', maskPosition: 'left' },
       2: { maskSize: '200%', maskPosition: 'right' },
+    },
+    size: {
+      xs: { width: 'token(spacing.6)', height: 'token(spacing.6)' },
+      sm: { width: 'token(spacing.8)', height: 'token(spacing.8)' },
+      md: { width: 'token(spacing.12)', height: 'token(spacing.12)' },
+      lg: { width: 'token(spacing.16)', height: 'token(spacing.16)' },
+      xl: { width: 'token(spacing.24)', height: 'token(spacing.24)' },
     },
   },
 })

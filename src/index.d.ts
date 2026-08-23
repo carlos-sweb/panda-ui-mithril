@@ -24,6 +24,7 @@ export type { ButtonCopyAttrs, ButtonCopyAnimation } from './components/ButtonCo
 export { Countdown } from './components/Countdown'
 export { Diff, DiffItem1, DiffItem2, DiffResizer } from './components/Diff'
 export { Divider } from './components/Divider'
+export { Dropdown, DropdownTrigger, DropdownContent } from './components/Dropdown'
 export { FAB, FABMain, FABAction } from './components/FAB'
 export { Fieldset } from './components/Fieldset'
 export { FileInput } from './components/FileInput'

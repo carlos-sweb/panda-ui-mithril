@@ -30,6 +30,7 @@ export * from './label';
 export * from './link';
 export * from './loading';
 export * from './mask';
+export * from './dropdown';
 export * from './menu';
 export * from './otp';
 export * from './progress';

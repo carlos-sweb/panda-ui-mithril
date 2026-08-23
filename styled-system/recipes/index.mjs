@@ -29,6 +29,7 @@ export * from './label.mjs';
 export * from './link.mjs';
 export * from './loading.mjs';
 export * from './mask.mjs';
+export * from './dropdown.mjs';
 export * from './menu.mjs';
 export * from './otp.mjs';
 export * from './progress.mjs';

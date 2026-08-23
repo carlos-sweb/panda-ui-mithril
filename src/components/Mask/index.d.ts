@@ -1,5 +1,5 @@
 import { Component } from 'mithril'
-import { ComponentAttrs } from '../../types'
+import { ComponentAttrs, PumSize } from '../../types'
 
 export type MaskShape =
   | 'square'
@@ -22,6 +22,8 @@ export interface MaskAttrs extends ComponentAttrs {
   shape?: MaskShape
   /** Reveals only one half of the mask: 1 = left half, 2 = right half */
   half?: 1 | 2
+  /** Fixed image dimensions, PumSize scale (xs..xl) */
+  size?: PumSize
   src?: string
   alt?: string
   [key: string]: unknown

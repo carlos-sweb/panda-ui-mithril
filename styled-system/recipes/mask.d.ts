@@ -5,6 +5,7 @@ import type { DistributiveOmit, Pretty } from '../types/system-types';
 interface MaskVariant {
   shape: "square" | "squircle" | "decagon" | "diamond" | "heart" | "hexagon" | "hexagon-2" | "circle" | "pentagon" | "star" | "star-2" | "triangle" | "triangle-2" | "triangle-3" | "triangle-4"
 half: "1" | "2"
+size: "xs" | "sm" | "md" | "lg" | "xl"
 }
 
 type MaskVariantMap = {
