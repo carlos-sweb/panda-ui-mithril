@@ -50,6 +50,21 @@ export const listRecipe = defineSlotRecipe({
       '&:has(.list-col-grow:nth-child(4))': { '--list-grid-cols': 'minmax(0, auto) minmax(0, auto) minmax(0, auto) 1fr' },
       '&:has(.list-col-grow:nth-child(5))': { '--list-grid-cols': 'minmax(0, auto) minmax(0, auto) minmax(0, auto) minmax(0, auto) 1fr' },
       '&:has(.list-col-grow:nth-child(6))': { '--list-grid-cols': 'minmax(0, auto) minmax(0, auto) minmax(0, auto) minmax(0, auto) minmax(0, auto) 1fr' },
+
+      // Filas skeleton (loading): el Skeleton base es un bloque sin dimensión;
+      // la fila de carga lo dimensiona como línea de texto (1em de alto,
+      // redondeo sutil) para que el placeholder sea visible. El grid se fija
+      // aquí (1fr + 4.5rem) y cada skeleton llena su columna; las filas de
+      // carga no usan `grow` para no disparar las reglas `:has(...)` de
+      // mayor especificidad que redefinirían --list-grid-cols.
+      '&.list-row-loading': {
+        '--list-grid-cols': 'minmax(0, 1fr) minmax(0, 4.5rem)',
+        '& .skeleton': {
+          height: '1em',
+          width: '100%',
+          borderRadius: '0.25em',
+        },
+      },
     },
     col: {},
   },

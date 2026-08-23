@@ -49,11 +49,16 @@ export const List = {
     let rows
     if (Array.isArray(data)) {
       if (loading) {
-        // Fila skeleton por cada placeholder; todas con key (regla de Mithril)
+        // Fila skeleton por cada placeholder; todas con key (regla de Mithril).
+        // La clase `list-row-loading` es el hook del recipe (list.ts) para
+        // dimensionar los skeletons como líneas de texto.
         rows = Array.from({ length: loadingRows || 3 }, (_, i) =>
-          m(ListRow, { key: `__loading-${i}__`, hover }, [
-            m(ListCol, { grow: true }, m(Skeleton, { text: true })),
-            m(ListCol, null, m(Skeleton, { text: true })),
+          m(ListRow, { key: `__loading-${i}__`, hover, className: 'list-row-loading' }, [
+            // Sin `grow`: la regla `.list-row-loading` del recipe define el grid
+            // (1fr + 4.5rem); un `grow` dispararía la regla `:has(...)` de mayor
+            // especificidad y rompería la segunda columna.
+            m(ListCol, null, m(Skeleton)),
+            m(ListCol, null, m(Skeleton)),
           ])
         )
       } else if (data.length === 0) {
