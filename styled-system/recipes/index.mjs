@@ -32,6 +32,7 @@ export * from './mask.mjs';
 export * from './dropdown.mjs';
 export * from './menu.mjs';
 export * from './otp.mjs';
+export * from './pagination.mjs';
 export * from './progress.mjs';
 export * from './radial-progress.mjs';
 export * from './radio.mjs';

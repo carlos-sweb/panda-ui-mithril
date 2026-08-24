@@ -33,6 +33,7 @@ export * from './mask';
 export * from './dropdown';
 export * from './menu';
 export * from './otp';
+export * from './pagination';
 export * from './progress';
 export * from './radial-progress';
 export * from './radio';

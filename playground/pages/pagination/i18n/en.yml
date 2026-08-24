@@ -1,1 +1,10 @@
 paragraph: Pagination component for navigating between pages of content.
+joinedTitle: Joined (default)
+separatedTitle: Separated + circle
+separatedDesc: "The welcome-ui style: round buttons with a small gap, optional first/last edges."
+tableTitle: Real example — paginated table
+tableDesc: "Pagination wired to a Table: <code>onchange(page)</code> slices the rows per page. The same contract will drive the future data-driven Table."
+tableName: Name
+tableRole: Role
+tableShowing: Showing
+sizesTitle: Sizes

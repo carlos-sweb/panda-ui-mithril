@@ -41,6 +41,7 @@ import { menuRecipe } from './../src/recipes/menu'
 import { modalRecipe , modalCloseButtonRecipe } from './../src/recipes/modal'
 import { navbarRecipe } from './../src/recipes/navbar'
 import { otpRecipe } from './../src/recipes/otp'
+import { paginationRecipe } from './../src/recipes/pagination'
 import { progressRecipe } from './../src/recipes/progress'
 import { radialProgressRecipe } from './../src/recipes/radialProgress'
 import { radioRecipe } from './../src/recipes/radio'
@@ -132,6 +133,7 @@ export const pumPreset = definePreset({
         dropdown : dropdownRecipe ,
         menu : menuRecipe ,        
         otp : otpRecipe ,
+        pagination : paginationRecipe ,
         progress : progressRecipe ,
         radialProgress : radialProgressRecipe ,
         radio : radioRecipe ,

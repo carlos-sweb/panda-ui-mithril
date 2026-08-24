@@ -1,1 +1,10 @@
 paragraph: Componente de paginación para navegar entre páginas de contenido.
+joinedTitle: Juntos (por defecto)
+separatedTitle: Separados + círculo
+separatedDesc: "El estilo de welcome-ui: botones redondos con una pequeña separación y opción de extremos (primera/última)."
+tableTitle: Ejemplo real — tabla paginada
+tableDesc: "Paginación conectada a una Table: <code>onchange(page)</code> recorta las filas por página. El mismo contrato guiará la futura Table data-driven."
+tableName: Nombre
+tableRole: Rol
+tableShowing: Mostrando
+sizesTitle: Tamaños

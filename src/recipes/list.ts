@@ -14,7 +14,10 @@ export const listRecipe = defineSlotRecipe({
         '&:after': {
           content: '""',
           position: 'absolute',
-          insetInline: 'var(--radius-box)',
+          // Separador a lo ancho completo de la lista. Antes usaba
+          // insetInline: var(--radius-box), que dejaba 8px sin borde a cada
+          // lado y hacía que cada fila se viera como una pastilla separada.
+          insetInline: '0',
           bottom: '0',
           borderBottom: 'var(--border, 1px) solid color-mix(in oklab, token(colors.base-content) 5%, transparent)',
         },
