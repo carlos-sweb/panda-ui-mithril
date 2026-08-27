@@ -17,6 +17,7 @@ export const MyPage = {
         <Link href="#">Default</Link>
         <Link href="#" color="primary">Primary</Link>
         <Link href="#" hover>Hover only</Link>
+        <Link href="#" noUnderline>No underline</Link>
       </div>
     )
   }
@@ -30,7 +31,8 @@ export const MyPage = {
     return m('div', null, [
       m(Link, { href: '#' }, 'Default'),
       m(Link, { href: '#', color: 'primary' }, 'Primary'),
-      m(Link, { href: '#', hover: true }, 'Hover only')
+      m(Link, { href: '#', hover: true }, 'Hover only'),
+      m(Link, { href: '#', noUnderline: true }, 'No underline')
     ])
   }
 }`
@@ -55,6 +57,19 @@ export default {
           <Link href="#!/link" color="secondary">Secondary</Link>
           <Link href="#!/link" color="accent">Accent</Link>
         </Stack>
+
+        <Block spacing="lg">
+          <Title as="h2" size="3">Underline</Title>
+          <Text color="neutral">
+            El default solo subraya al pasar el cursor; <code>hover={false}</code> subraya siempre;
+            <code> noUnderline</code> nunca subraya (usado por el contexto del Navbar).
+          </Text>
+          <Stack direction="row" gap="md" wrap="wrap">
+            <Link href="#!/link">Default (hover)</Link>
+            <Link href="#!/link" hover={false}>Always underline</Link>
+            <Link href="#!/link" noUnderline>No underline</Link>
+          </Stack>
+        </Block>
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>

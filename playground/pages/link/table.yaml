@@ -8,6 +8,10 @@ rows:
     type: "Style"
     description: "Only shows underline on hover — this is the default, no prop needed"
     default: true
+  - class: "link--noUnderline_true"
+    prop: "noUnderline"
+    type: "Style"
+    description: "Never underline (not even on hover) — used by NavbarLink as a navbar default"
   - class: "link-neutral"
     prop: "color=\"neutral\""
     type: "Color"
