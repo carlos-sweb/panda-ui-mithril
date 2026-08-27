@@ -3,14 +3,45 @@ import type { ConditionalValue } from '../types/index';
 import type { DistributiveOmit, Pretty } from '../types/system-types';
 
 interface NavbarVariant {
-  
+  /**
+ * @default "static"
+ */
+position: "static" | "sticky" | "fixed"
+/**
+ * @default "base"
+ */
+color: "base" | "neutral" | "primary" | "secondary" | "accent" | "info" | "success" | "warning" | "error"
+/**
+ * @default "md"
+ */
+size: "sm" | "md" | "lg"
+/**
+ * @default false
+ */
+border: boolean
+/**
+ * @default "none"
+ */
+shadow: "none" | "sm" | "md" | "lg"
+/**
+ * @default false
+ */
+glass: boolean
+/**
+ * @default false
+ */
+active: boolean
+/**
+ * @default false
+ */
+disabled: boolean
 }
 
 type NavbarVariantMap = {
   [key in keyof NavbarVariant]: Array<NavbarVariant[key]>
 }
 
-type NavbarSlot = "navbar" | "start" | "center" | "end"
+type NavbarSlot = "navbar" | "container" | "start" | "center" | "end" | "brand" | "menu" | "link" | "toggle"
 
 export type NavbarVariantProps = {
   [key in keyof NavbarVariant]?: ConditionalValue<NavbarVariant[key]> | undefined

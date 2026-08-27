@@ -1,27 +1,43 @@
 import m from 'mithril'
+import { Menu as MenuIcon, X } from 'lucide-mithril'
 import { navbar } from '../../../styled-system/recipes'
 import { cx } from '../../../styled-system/css'
+import { Button } from '../Button/index.jsx'
 
 /**
- * Componente Navbar. Barra de navegación de tres zonas; los subcomponentes
- * NavbarStart/NavbarCenter/NavbarEnd se distribuyen con el slot correspondiente.
+ * Componente Navbar. Barra de navegación de tres zonas con variantes
+ * profesionales (posición sticky/fixed, color semántico, tamaño, borde,
+ * sombra, glass) y sub-componentes estratégicos: NavbarBrand (logo/título),
+ * NavbarMenu + NavbarLink (grupo de links con estado activo) y NavbarToggle
+ * (hamburguesa móvil, se empareja con el Drawer de la librería).
  *
  * @type {import('mithril').Component<import('./index').NavbarAttrs>}
  */
 export const Navbar = {
   view(vnode) {
-    const { className, ...rest } = vnode.attrs
+    const {
+      position, color, size, border, shadow, glass, container,
+      className, ...rest
+    } = vnode.attrs
+
+    const styles = navbar({ position, color, size, border, shadow, glass })
+
+    // container: patrón Bootstrap — el contenido se centra con max-width
+    // (--navbar-max-w, default 80rem). Las zonas quedan dentro del wrapper.
+    const children = container
+      ? m('div', { className: cx('navbar-container', styles.container) }, vnode.children)
+      : vnode.children
 
     return m('div', {
-      className: cx('navbar', defaultStyles.navbar, className),
+      className: cx('navbar', styles.navbar, className),
       ...rest
-    }, vnode.children)
+    }, children)
   }
 }
 
 /**
- * Resultado cacheado de `navbar({})` — los subcomponentes no pasan variantes,
- * así que las clases son determinísticas. Evita llamar al sva en cada render.
+ * Resultado cacheado de `navbar({})` — subcomponentes sin variantes usan las
+ * clases default. Evita llamar al sva en cada render.
  * @type {ReturnType<typeof navbar>}
  */
 const defaultStyles = navbar({})
@@ -59,5 +75,77 @@ export const NavbarEnd = {
   view(vnode) {
     const { className, ...rest } = vnode.attrs
     return m('div', { className: cx('navbar-end', defaultStyles.end, className), ...rest }, vnode.children)
+  }
+}
+
+/**
+ * Componente NavbarBrand. Logo + título del sitio (patrón Bootstrap
+ * `.navbar-brand` / daisyUI). Renderiza un `<a>`; `href` y `onclick` se
+ * pasan por attrs.
+ *
+ * @type {import('mithril').Component<import('./index').NavbarBrandAttrs>}
+ */
+export const NavbarBrand = {
+  view(vnode) {
+    const { className, ...rest } = vnode.attrs
+    return m('a', {
+      className: cx('navbar-brand', defaultStyles.brand, className),
+      ...rest
+    }, vnode.children)
+  }
+}
+
+/**
+ * Componente NavbarLink. Ítem de navegación (`<a>`) con estado `active`
+ * (píldora + aria-current) y `disabled` (atenuado, sin puntero). Estilo
+ * Bootstrap `.nav-link` / Flowbite NavbarLink.
+ *
+ * @type {import('mithril').Component<import('./index').NavbarLinkAttrs>}
+ */
+export const NavbarLink = {
+  view(vnode) {
+    const { active, disabled, className, ...rest } = vnode.attrs
+    const styles = navbar({ active, disabled })
+    return m('a', {
+      className: cx('navbar-link', styles.link, className),
+      'aria-current': active ? 'page' : undefined,
+      'aria-disabled': disabled ? 'true' : undefined,
+      ...rest
+    }, vnode.children)
+  }
+}
+
+/**
+ * Componente NavbarMenu. Grupo horizontal de NavbarLinks (slot `menu`),
+ * visible en desktop y oculto <768px — el patrón móvil de la librería es el
+ * Drawer + NavbarToggle (JS-first).
+ *
+ * @type {import('mithril').Component<import('./index').NavbarMenuAttrs>}
+ */
+export const NavbarMenu = {
+  view(vnode) {
+    const { className, ...rest } = vnode.attrs
+    return m('div', { className: cx('navbar-menu', defaultStyles.menu, className), ...rest }, vnode.children)
+  }
+}
+
+/**
+ * Componente NavbarToggle. Hamburguesa de la navbar (solo móvil): botón ghost
+ * cuadrado cuyo icono alterna Menu/X según `open`. Stateless — el consumidor
+ * controla `open` y `onclick` (p. ej. para abrir un Drawer).
+ *
+ * @type {import('mithril').Component<import('./index').NavbarToggleAttrs>}
+ */
+export const NavbarToggle = {
+  view(vnode) {
+    const { open, className, ...rest } = vnode.attrs
+    return m(Button, {
+      variant: 'ghost',
+      square: true,
+      className: cx('navbar-toggle', defaultStyles.toggle, className),
+      'aria-expanded': open ? 'true' : 'false',
+      'aria-label': 'Toggle navigation',
+      ...rest
+    }, m(open ? X : MenuIcon, { size: 20 }))
   }
 }

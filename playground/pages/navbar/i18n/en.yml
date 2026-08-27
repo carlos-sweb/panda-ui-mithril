@@ -1,1 +1,1 @@
-paragraph: Navbar component for site navigation headers.
+paragraph: Navbar with three zones and strategic sub-components (NavbarBrand, NavbarMenu, NavbarLink, NavbarToggle) plus position, color, size, border, shadow and glass variants.

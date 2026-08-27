@@ -6,18 +6,14 @@ import { t, currentLang, setLang } from '../i18n/index.js'
 import { Sun, Moon } from 'lucide-mithril'
 
 
+// El position fixed, z-index, tamaño y borde vienen de las variantes del
+// recipe (`position="fixed" size="md" border`); aquí solo queda el look
+// específico del shell (grid de 3 zonas, altura fija y fondo base-200).
 const navbarFixed = css({
-  position: 'fixed',
-  top: 0,
-  left: 0,
-  right: 0,
   height: '64px',
   minHeight: '64px',
   background: 'token(colors.base-200)',
-  borderBottom: '1px solid',
-  borderColor: 'token(colors.base-300)',
   padding: '0 1rem',
-  zIndex: 50,
 })
 
 const brand = css({
@@ -39,7 +35,7 @@ export const Navbar = {
     const { onSearchOpen, onToggleSidebar, isDark, onToggleTheme } = vnode.attrs
 
     return (
-      <NavbarBase className={navbarFixed} style={{ display: 'grid', gridTemplateColumns: 'auto 1fr auto', alignItems: 'center' }}>
+      <NavbarBase className={navbarFixed} position="fixed" size="md" border style={{ display: 'grid', gridTemplateColumns: 'auto 1fr auto', alignItems: 'center' }}>
         <NavbarStart className={css({ gap: '0.5rem' })} style={{ width: 'auto' }}>
           <Button
             variant="ghost"
