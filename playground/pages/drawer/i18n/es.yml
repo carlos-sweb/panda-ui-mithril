@@ -1,0 +1,1 @@
+paragraph: Componente Drawer para paneles deslizantes anclados a un borde de la pantalla, basado en Modal. Respaldado por un elemento <dialog> real con eventos de ciclo de vida open/close (onopen, onclose, onclosed, onchange).

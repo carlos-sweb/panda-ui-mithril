@@ -27,6 +27,7 @@ const allComponents = [
   { name: 'countdown', category: 'Data Display', route: '/countdown' },
   { name: 'diff', category: 'Layout', route: '/diff' },
   { name: 'divider', category: 'Layout', route: '/divider' },
+  { name: 'drawer', category: 'Navigation', route: '/drawer' },
   { name: 'fab', category: 'Actions', route: '/fab' },
   { name: 'fieldset', category: 'Data Input', route: '/fieldset' },
   { name: 'fileinput', category: 'Data Input', route: '/fileinput' },

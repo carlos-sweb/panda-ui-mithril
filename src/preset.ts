@@ -20,6 +20,7 @@ import { containerRecipe } from './../src/recipes/container'
 import { countdownDigitRecipe, countdownRecipe } from './../src/recipes/countdown'
 import { diffRecipe } from './../src/recipes/diff'
 import { dividerRecipe } from './../src/recipes/divider'
+import { drawerRecipe , drawerCloseButtonRecipe } from './../src/recipes/drawer'
 import { dropdownRecipe } from './../src/recipes/dropdown'
 import { fabRecipe , fabLabelRecipe } from './../src/recipes/fab'
 import { fieldsetRecipe , fieldsetLegendRecipe } from './../src/recipes/fieldset'
@@ -84,6 +85,7 @@ export const pumPreset = definePreset({
         ChatBubblePUM : chatBubbleRecipe ,
         columns : columnsRecipe ,
         diff : diffRecipe ,
+        drawer : drawerRecipe ,
         footer : footerRecipe ,
         gridPUM : gridRecipe ,
         hero : heroRecipe ,
@@ -115,6 +117,7 @@ export const pumPreset = definePreset({
         countdown : countdownRecipe,
         countdownDigit : countdownDigitRecipe,
         dividerPUM : dividerRecipe,
+        drawerCloseButton : drawerCloseButtonRecipe,
         fab : fabRecipe,
         fabLabel : fabLabelRecipe,
         fieldset : fieldsetRecipe,
@@ -178,6 +181,7 @@ export const pumPreset = definePreset({
         // the top level — extending it would replace the whole category.
         spacing: {
           '128': { value: '32rem' },
+          '160': { value: '40rem' },
           '192': { value: '48rem' },
           '320': { value: '80rem' },
         },
@@ -326,6 +330,25 @@ export const pumPreset = definePreset({
           '100%': { opacity: '0', transform: 'translateX(-100%)' },
         },
         'modal-exit-end': {
+          '0%': { opacity: '1', transform: 'translateX(0)' },
+          '100%': { opacity: '0', transform: 'translateX(100%)' },
+        },
+        // Salida por posición del Drawer: el panel se desliza de vuelta hacia el
+        // borde del que entró (mismos valores que modal-exit-*, independientes
+        // para no acoplar componentes).
+        'drawer-exit-top': {
+          '0%': { opacity: '1', transform: 'translateY(0)' },
+          '100%': { opacity: '0', transform: 'translateY(-100%)' },
+        },
+        'drawer-exit-bottom': {
+          '0%': { opacity: '1', transform: 'translateY(0)' },
+          '100%': { opacity: '0', transform: 'translateY(100%)' },
+        },
+        'drawer-exit-start': {
+          '0%': { opacity: '1', transform: 'translateX(0)' },
+          '100%': { opacity: '0', transform: 'translateX(-100%)' },
+        },
+        'drawer-exit-end': {
           '0%': { opacity: '1', transform: 'translateX(0)' },
           '100%': { opacity: '0', transform: 'translateX(100%)' },
         },

@@ -107,6 +107,10 @@
       "types": "./src/components/Divider/index.d.ts",
       "import": "./src/components/Divider/index.js"
     },
+    "./drawer": {
+      "types": "./src/components/Drawer/index.d.ts",
+      "import": "./src/components/Drawer/index.js"
+    },
     "./fab": {
       "types": "./src/components/FAB/index.d.ts",
       "import": "./src/components/FAB/index.js"

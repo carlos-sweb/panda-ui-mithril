@@ -1691,6 +1691,10 @@ const tokens = {
     "value": "32rem",
     "variable": "var(--spacing-128)"
   },
+  "spacing.160": {
+    "value": "40rem",
+    "variable": "var(--spacing-160)"
+  },
   "spacing.192": {
     "value": "48rem",
     "variable": "var(--spacing-192)"
@@ -1942,6 +1946,10 @@ const tokens = {
   "spacing.-128": {
     "value": "calc(var(--spacing-128) * -1)",
     "variable": "var(--spacing-128)"
+  },
+  "spacing.-160": {
+    "value": "calc(var(--spacing-160) * -1)",
+    "variable": "var(--spacing-160)"
   },
   "spacing.-192": {
     "value": "calc(var(--spacing-192) * -1)",

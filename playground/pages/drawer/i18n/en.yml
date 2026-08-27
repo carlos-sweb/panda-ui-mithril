@@ -1,0 +1,1 @@
+paragraph: Drawer component for sliding panels docked to an edge of the screen, based on Modal. Backed by a real <dialog> element with open/close lifecycle events (onopen, onclose, onclosed, onchange).

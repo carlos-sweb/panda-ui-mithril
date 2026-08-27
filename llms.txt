@@ -1,6 +1,6 @@
 # panda-ui-mithril
 
-> Mithril.js UI component library styled with Panda CSS (atomic, type-safe CSS-in-JS). Design patterns and class naming inspired by daisyUI, Bulma, MUI, Chakra UI, and Primer. 70 components, published as `panda-ui-mithril` on npm as a Panda preset (`panda-ui-mithril/preset`) plus the recipe source (`src/recipes/*.ts`). The consuming app must use Panda CSS + Mithril.js — its own Panda install compiles only the CSS for the components it imports.
+> Mithril.js UI component library styled with Panda CSS (atomic, type-safe CSS-in-JS). Design patterns and class naming inspired by daisyUI, Bulma, MUI, Chakra UI, and Primer. 71 components, published as `panda-ui-mithril` on npm as a Panda preset (`panda-ui-mithril/preset`) plus the recipe source (`src/recipes/*.ts`). The consuming app must use Panda CSS + Mithril.js — its own Panda install compiles only the CSS for the components it imports.
 
 Install: `npm install panda-ui-mithril mithril`. Import the components you need from `panda-ui-mithril`, or from a per-component subpath in lowercase kebab (`panda-ui-mithril/button`, `panda-ui-mithril/alert`, `panda-ui-mithril/button-group`, ...). The consuming app configures its own `panda.config.ts` with `presets: [pandaPreset, pumPreset]`, an `include` that lists `node_modules/panda-ui-mithril/src/recipes/*.ts` (relative to the app's cwd), and `outdir: 'styled-system'` — its own Panda run (codegen/cssgen) then generates the CSS for exactly the components the app imports.
 
@@ -20,8 +20,8 @@ Button, ButtonClose, ButtonCopy, ButtonGroup, FAB, Filter, Link, Swap, ThemeCont
 ### Data Display (12)
 Avatar, Badge, Card, ChatBubble, Countdown, Kbd, List, Mask, Stat, Table, Tag, Timeline
 
-### Navigation (9)
-Breadcrumbs, Dropdown, Footer, Megamenu, Menu, Navbar, Pagination, Steps, Tabs
+### Navigation (10)
+Breadcrumbs, Dropdown, Drawer, Footer, Megamenu, Menu, Navbar, Pagination, Steps, Tabs
 
 ### Feedback (11)
 Alert, Aura, Indicator, Loading, Modal, Progress, RadialProgress, Skeleton, Status, Toast, Tooltip
@@ -59,7 +59,7 @@ Defined in `panda.config.ts` conditions: `sm` (640px), `md` (768px), `lg` (1024p
 Playground has full EN/ES internationalization. Shared translations (`common`, `sidebar`, `classRowDescs`) in `playground/i18n/shared.yml`. Per-page translations (paragraph descriptions) in `playground/pages/{name}/i18n/{en,es}.yml`. Static import map in `playground/i18n/pages.generated.js`. The `t()` function searches page translations first, then shared, then English fallback.
 
 ### Playground
-72 demo pages at `playground/pages/{name}/index.jsx`. Each page imports from `../../../src/index.js`, uses `ClassTable` for variant reference, `CodeExample` for usage snippets. Sidebar categories sorted A-Z. Search modal via Ctrl+K. Font: Ubuntu via `@fontsource/ubuntu` (400/500/700 weights).
+73 demo pages at `playground/pages/{name}/index.jsx`. Each page imports from `../../../src/index.js`, uses `ClassTable` for variant reference, `CodeExample` for usage snippets. Sidebar categories sorted A-Z. Search modal via Ctrl+K. Font: Ubuntu via `@fontsource/ubuntu` (400/500/700 weights).
 
 ## Docs
 
@@ -68,7 +68,7 @@ Playground has full EN/ES internationalization. Shared translations (`common`, `
 
 ## Examples
 
-- [Live demo / playground](https://carlos-sweb.github.io/panda-ui-mithril/): All 70 components rendered with every variant, plus copy-pasteable usage code for each.
+- [Live demo / playground](https://carlos-sweb.github.io/panda-ui-mithril/): All 71 components rendered with every variant, plus copy-pasteable usage code for each.
 
 ## Optional
 

@@ -35,6 +35,7 @@ import Countdown from './pages/countdown/index.jsx'
 import Diff from './pages/diff/index.jsx'
 import Divider from './pages/divider/index.jsx'
 import Dropdown from './pages/dropdown/index.jsx'
+import Drawer from './pages/drawer/index.jsx'
 import FAB from './pages/fab/index.jsx'
 import Fieldset from './pages/fieldset/index.jsx'
 import FileInput from './pages/fileinput/index.jsx'
@@ -112,6 +113,7 @@ const routes = {
   '/diff':Diff,
   '/divider':Divider,
   '/dropdown':Dropdown,
+  '/drawer':Drawer,
   '/fab':FAB,
   '/fieldset':Fieldset,
   '/fileinput':FileInput,
@@ -236,7 +238,7 @@ const Layout = {
         '/calendar': 'Calendar — PUM', '/card': 'Card — PUM', '/carousel': 'Carousel — PUM',
         '/chat': 'Chat — PUM', '/checkbox': 'Checkbox — PUM', '/collapse': 'Collapse — PUM',
         '/columns': 'Columns — PUM', '/container': 'Container — PUM',
-        '/countdown': 'Countdown — PUM', '/diff': 'Diff — PUM', '/divider': 'Divider — PUM', '/dropdown': 'Dropdown — PUM',
+        '/countdown': 'Countdown — PUM', '/diff': 'Diff — PUM', '/divider': 'Divider — PUM', '/dropdown': 'Dropdown — PUM', '/drawer': 'Drawer — PUM',
         '/fab': 'FAB — PUM', '/fieldset': 'Fieldset — PUM', '/fileinput': 'FileInput — PUM',
         '/filter': 'Filter — PUM', '/footer': 'Footer — PUM', '/grid': 'Grid — PUM',
         '/hero': 'Hero — PUM', '/indicator': 'Indicator — PUM', '/input': 'Input — PUM',

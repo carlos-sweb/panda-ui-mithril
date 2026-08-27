@@ -152,7 +152,7 @@ export interface UtilityValues {
 	transitionProperty: "common" | "colors" | "size" | "position" | "background";
 	transition: "all" | "common" | "size" | "position" | "background" | "colors" | "opacity" | "shadow" | "transform";
 	animation: Tokens["animations"];
-	animationName: "pulse" | "spin" | "ping" | "bounce" | "progress-bar" | "fade-in" | "fade-out" | "slide-in" | "skeleton" | "radio" | "toast" | "aura" | "aura-glow" | "aura-glow-after" | "modal-exit" | "modal-exit-top" | "modal-exit-bottom" | "modal-exit-start" | "modal-exit-end" | "modal-backdrop-exit" | "tab-fade-in" | "tab-indicator" | "btn-copy-fade" | "btn-copy-scale" | "btn-copy-rotate" | "btn-copy-bounce";
+	animationName: "pulse" | "spin" | "ping" | "bounce" | "progress-bar" | "fade-in" | "fade-out" | "slide-in" | "skeleton" | "radio" | "toast" | "aura" | "aura-glow" | "aura-glow-after" | "modal-exit" | "modal-exit-top" | "modal-exit-bottom" | "modal-exit-start" | "modal-exit-end" | "drawer-exit-top" | "drawer-exit-bottom" | "drawer-exit-start" | "drawer-exit-end" | "modal-backdrop-exit" | "tab-fade-in" | "tab-indicator" | "btn-copy-fade" | "btn-copy-scale" | "btn-copy-rotate" | "btn-copy-bounce";
 	animationTimingFunction: Tokens["easings"];
 	animationDuration: Tokens["durations"];
 	animationDelay: Tokens["durations"];
