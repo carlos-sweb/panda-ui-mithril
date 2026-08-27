@@ -311,6 +311,24 @@ export const pumPreset = definePreset({
           '0%': { opacity: '1', transform: 'scale(1)' },
           '100%': { opacity: '0', transform: 'scale(0.95)' },
         },
+        // Salida por posición: el modal se desliza de vuelta hacia el borde del
+        // que entró (reverso de la entrada slide-in por posición).
+        'modal-exit-top': {
+          '0%': { opacity: '1', transform: 'translateY(0)' },
+          '100%': { opacity: '0', transform: 'translateY(-100%)' },
+        },
+        'modal-exit-bottom': {
+          '0%': { opacity: '1', transform: 'translateY(0)' },
+          '100%': { opacity: '0', transform: 'translateY(100%)' },
+        },
+        'modal-exit-start': {
+          '0%': { opacity: '1', transform: 'translateX(0)' },
+          '100%': { opacity: '0', transform: 'translateX(-100%)' },
+        },
+        'modal-exit-end': {
+          '0%': { opacity: '1', transform: 'translateX(0)' },
+          '100%': { opacity: '0', transform: 'translateX(100%)' },
+        },
         'modal-backdrop-exit': {
           '0%': { opacity: '1' },
           '100%': { opacity: '0' },
