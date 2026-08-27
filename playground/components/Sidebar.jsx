@@ -1,8 +1,7 @@
 import m from 'mithril'
 import { css } from '../../styled-system/css'
 import { MousePointerClick, AppWindow, Link, MessageCircleMore, PenLine, PanelsTopLeft, X, Type } from 'lucide-mithril'
-import { Menu, MenuItem, MenuTitle, Button } from '../../src/index.js'
-import { DrawerSide } from './Drawer.jsx'
+import { Menu, MenuItem, MenuTitle, Button, Drawer, DrawerBox, DrawerBackdrop } from '../../src/index.js'
 import { t } from '../i18n/index.js'
 
 const categories = [
@@ -31,6 +30,17 @@ const sidebarBase = css({
   overflowY: 'auto',
   display: 'flex',
   flexDirection: 'column',
+})
+
+// El Drawer de la librería trae un ::backdrop nativo (negro 40% + blur).
+// El drawer móvil custom anterior usaba negro 50% sin blur — lo replicamos
+// para que la migración no cambie el aspecto del overlay. Los utilities
+// (capa utilities) ganan al recipe (capa recipes), así que el override aplica.
+const mobileDrawerBackdrop = css({
+  '&::backdrop': {
+    backgroundColor: 'oklch(0% 0 0 / 50%)',
+    backdropFilter: 'none',
+  },
 })
 
 const sidebarDesktop = css({
@@ -114,9 +124,19 @@ export const Sidebar = {
           <SidebarContent onclose={() => {}} />
         </aside>
 
-        <DrawerSide open={isMobileOpen} onclose={onMobileClose} className={sidebarBase}>
-          <SidebarContent onclose={onMobileClose} />
-        </DrawerSide>
+        <Drawer
+          position="start"
+          size="260px"
+          aria-label="Navigation"
+          open={isMobileOpen}
+          onclose={onMobileClose}
+          className={mobileDrawerBackdrop}
+        >
+          <DrawerBox className={sidebarBase}>
+            <SidebarContent onclose={onMobileClose} />
+          </DrawerBox>
+          <DrawerBackdrop onclick={onMobileClose} />
+        </Drawer>
       </>
     )
   }
