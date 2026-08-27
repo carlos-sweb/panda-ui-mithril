@@ -1,1 +1,1 @@
-paragraph: One-time password input component for verification codes.
+paragraph: One-time password input for verification codes — one real input per cell with auto-advance, paste support, keyboard navigation, mask, and onchange/oncomplete events.

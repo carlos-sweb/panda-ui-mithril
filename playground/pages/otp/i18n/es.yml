@@ -1,1 +1,1 @@
-paragraph: Componente de entrada de contraseña de un solo uso para códigos de verificación.
+paragraph: Entrada de contraseña de un solo uso para códigos de verificación — un input real por celda con avance automático, soporte de pegado, navegación por teclado, máscara y eventos onchange/oncomplete.
