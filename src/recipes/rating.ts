@@ -47,9 +47,10 @@ export const ratingRecipe = defineSlotRecipe({
       error: { root: { '--rating-color': 'token(colors.error)' } },
     },
     state: {
-      empty: {
-        star: { '& svg': { opacity: '0.25' } },
-      },
+      // La estrella vacía NO reduce opacidad: se dibuja como contorno (stroke 2,
+      // fill none) con el MISMO color del fill (currentColor = --rating-color),
+      // para que se distinga claramente que está disponible para click/evaluar.
+      empty: {},
       full: {},
     },
     readonly: {
