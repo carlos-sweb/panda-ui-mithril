@@ -2,10 +2,15 @@ import m from 'mithril'
 import { css } from '../styled-system/css'
 import './style.css'
 
-import { Navbar } from './components/Navbar.jsx'
 import { Sidebar } from './components/Sidebar.jsx'
 import { SearchModal } from './components/SearchModal.jsx'
 import { t, currentLang, setLang } from './i18n/index.js'
+import { Search, ExternalLink, Sun, Moon } from 'lucide-mithril'
+// Alias Pum*: Button/Kbd/Swap colisionan con los imports de páginas de abajo.
+import {
+  Navbar, NavbarStart, NavbarCenter, NavbarEnd, NavbarBrand, NavbarToggle,
+  Button as PumButton, Kbd as PumKbd, Swap as PumSwap
+} from '../src/index.js'
 // Named exports (these pages use export const, not export default)
 import { Landing } from './pages/landing/index.jsx'
 import { ComponentPage } from './pages/componentpage/index.jsx'
@@ -199,6 +204,28 @@ const contentStyles = css({
   },
 })
 
+// Navbar del shell — composición 100% con componentes de la librería
+// (src/components/Navbar). El position fixed, z-index, tamaño y borde vienen
+// de las variantes del recipe; aquí solo queda el look específico del shell
+// (grid de 3 zonas, altura fija y fondo base-200).
+const navbarFixed = css({
+  height: '64px',
+  minHeight: '64px',
+  background: 'token(colors.base-200)',
+  padding: '0 1rem',
+})
+
+const navbarGrid = { display: 'grid', gridTemplateColumns: 'auto 1fr auto', alignItems: 'center' }
+
+const themeLabel = css({
+  display: 'flex',
+  alignItems: 'center',
+  gap: '0.375rem',
+  padding: '0 0.375rem',
+})
+
+const searchButtonLabel = css({ fontFamily: 'monospace', fontWeight: '700', fontSize: '0.7rem' })
+
 // Layout component - mounted once on body, persists across route changes
 const Layout = {
   oninit(vnode) {
@@ -283,17 +310,61 @@ const Layout = {
         />
 
         <div className={css({ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 })}>
-          <Navbar
-            onSearchOpen={() => { vnode.state.isSearchOpen = true }}
-            onToggleSidebar={() => { vnode.state.isMobileOpen = !vnode.state.isMobileOpen }}
-            isDark={vnode.state.isDark}
-            onToggleTheme={(theme) => {
-              const next = theme || 'light'
-              vnode.state.isDark = next === 'dark'
-              document.documentElement.setAttribute('data-theme', next)
-              setSavedTheme(next)
-            }}
-          />
+          <Navbar position="fixed" size="md" border className={navbarFixed} style={navbarGrid}>
+            <NavbarStart className={css({ gap: '0.5rem' })} style={{ width: 'auto' }}>
+              <NavbarToggle
+                open={vnode.state.isMobileOpen}
+                onclick={() => { vnode.state.isMobileOpen = !vnode.state.isMobileOpen }}
+              />
+              <NavbarBrand
+                href="#/"
+                onclick={(e) => { e.preventDefault(); m.route.set('/') }}
+              >
+                PUM
+              </NavbarBrand>
+            </NavbarStart>
+
+            <NavbarCenter className={css({ display: 'flex', justifyContent: 'center' })} style={{ width: 'auto' }}>
+              <PumButton onclick={() => { vnode.state.isSearchOpen = true }}>
+                <Search size={16} className={css({ opacity: 0.5 })} />
+                <span>{t('common.searchPlaceholder')}&nbsp;&nbsp;&nbsp;</span>
+                <PumKbd size="sm" className={css({ marginLeft: 'auto' })}>⌘K</PumKbd>
+              </PumButton>
+            </NavbarCenter>
+
+            <NavbarEnd className={css({ gap: '0.25rem' })} style={{ width: 'auto' }}>
+              <PumButton variant="ghost" size="sm" href="https://www.npmjs.com/package/panda-ui-mithril" target="_blank" className={css({ display: { base: 'none', md: 'inline-flex' } })}>
+                npm <ExternalLink size={14} className={css({ opacity: 0.5 })} />
+              </PumButton>
+
+              <PumButton variant="ghost" size="sm" href="https://github.com/carlos-sweb/panda-ui-mithril" target="_blank" className={css({ display: { base: 'none', md: 'inline-flex' } })}>
+                GitHub <ExternalLink size={14} className={css({ opacity: 0.5 })} />
+              </PumButton>
+
+              <label className={themeLabel} title={vnode.state.isDark ? 'Switch to light mode' : 'Switch to dark mode'}>
+                      <PumSwap
+                  checked={vnode.state.isDark}
+                  onchange={(checked) => {
+                    const next = checked ? 'dark' : 'light'
+                    vnode.state.isDark = checked
+                    document.documentElement.setAttribute('data-theme', next)
+                    setSavedTheme(next)
+                  }}
+                  on={<Sun size={24} />}
+                  off={<Moon size={24} />}
+                />
+              </label>
+
+                  <PumButton
+                variant="ghost"
+                size="sm"
+                onclick={() => setLang(currentLang() === 'es' ? 'en' : 'es')}
+                className={searchButtonLabel}
+              >
+                {currentLang() === 'es' ? 'EN' : 'ES'}
+              </PumButton>
+            </NavbarEnd>
+          </Navbar>
 
           <main id="view-dynamic" className={mainStyles}>
             <div id="view-dynamic-content" className={contentStyles} />
