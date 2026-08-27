@@ -152,7 +152,7 @@ export default {
                     {l.label}
                   </NavbarLink>
                 ))}
-                <NavbarLink disabled href="#!">Disabled</NavbarLink>
+                <NavbarLink disabled>Disabled</NavbarLink>
               </NavbarMenu>
             </NavbarCenter>
             <NavbarEnd>
@@ -175,8 +175,8 @@ export default {
               <NavbarStart><NavbarBrand onclick={(e) => e.preventDefault()}>static</NavbarBrand></NavbarStart>
               <NavbarCenter>
                 <NavbarMenu>
-                  <NavbarLink href="#!">Home</NavbarLink>
-                  <NavbarLink href="#!">Docs</NavbarLink>
+                  <NavbarLink>Home</NavbarLink>
+                  <NavbarLink>Docs</NavbarLink>
                 </NavbarMenu>
               </NavbarCenter>
             </Navbar>
@@ -210,7 +210,7 @@ export default {
               <Navbar key={c} color={c} size="sm" className={c === 'base' ? surface : undefined}>
                 <NavbarStart><NavbarBrand onclick={(e) => e.preventDefault()}>{c}</NavbarBrand></NavbarStart>
                 <NavbarEnd>
-                  <NavbarLink href="#!" active>Home</NavbarLink>
+                  <NavbarLink active>Home</NavbarLink>
                 </NavbarEnd>
               </Navbar>
             ))}
@@ -255,7 +255,7 @@ export default {
             <Navbar glass className={css({ position: 'absolute', top: 0, left: 0, right: 0 })}>
               <NavbarStart><NavbarBrand onclick={(e) => e.preventDefault()}>glass</NavbarBrand></NavbarStart>
               <NavbarEnd>
-                <NavbarLink href="#!" active>Home</NavbarLink>
+                <NavbarLink active>Home</NavbarLink>
                 <Button color="primary" size="sm">Action</Button>
               </NavbarEnd>
             </Navbar>
@@ -295,9 +295,9 @@ export default {
             </NavbarStart>
             <NavbarCenter>
               <NavbarMenu>
-                <NavbarLink href="#!" active>Home</NavbarLink>
-                <NavbarLink href="#!">Docs</NavbarLink>
-                <NavbarLink href="#!">Blog</NavbarLink>
+                <NavbarLink active>Home</NavbarLink>
+                <NavbarLink>Docs</NavbarLink>
+                <NavbarLink>Blog</NavbarLink>
               </NavbarMenu>
             </NavbarCenter>
             <NavbarEnd>
