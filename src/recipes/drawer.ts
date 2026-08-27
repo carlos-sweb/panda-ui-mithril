@@ -69,6 +69,9 @@ export const drawerRecipe = defineSlotRecipe({
       },
     },
     box: {
+      // El panel es intencionalmente cuadrado: un drawer va pegado al borde de la
+      // pantalla (patrón estándar en daisyUI/MUI/Ant/Chakra/Mantine) — sin radio
+      // interior. Si un consumidor quiere radio, lo añade vía className.
       position: 'relative',
       gridColumnStart: '1',
       gridRowStart: '1',
@@ -129,7 +132,6 @@ export const drawerRecipe = defineSlotRecipe({
           '& > .drawer-box': {
             width: '100%',
             height: 'var(--drawer-size, token(spacing.96))',
-            borderRadius: '0 0 var(--radius-box) var(--radius-box)',
           },
           // El transform de [open] DEBE ser la identidad: si solo cambiáramos el
           // @starting-style, la transición interpolaría translateY(-100%) → scale(1).
@@ -150,7 +152,6 @@ export const drawerRecipe = defineSlotRecipe({
           '& > .drawer-box': {
             width: '100%',
             height: 'var(--drawer-size, token(spacing.96))',
-            borderRadius: 'var(--radius-box) var(--radius-box) 0 0',
           },
           '&[open] > .drawer-box': { transform: 'translateY(0)' },
           '@starting-style': {
@@ -169,7 +170,6 @@ export const drawerRecipe = defineSlotRecipe({
           '& > .drawer-box': {
             height: '100%',
             width: 'var(--drawer-size, token(spacing.96))',
-            borderRadius: '0 var(--radius-box) var(--radius-box) 0',
           },
           '&[open] > .drawer-box': { transform: 'translateX(0)' },
           '@starting-style': {
@@ -188,7 +188,6 @@ export const drawerRecipe = defineSlotRecipe({
           '& > .drawer-box': {
             height: '100%',
             width: 'var(--drawer-size, token(spacing.96))',
-            borderRadius: 'var(--radius-box) 0 0 var(--radius-box)',
           },
           '&[open] > .drawer-box': { transform: 'translateX(0)' },
           '@starting-style': {
