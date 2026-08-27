@@ -12,8 +12,7 @@ import { ClassTable } from '../../components/ClassTable.jsx'
 import table from './table.yaml'
 import { tableToRows } from '../../components/table-rows'
 
-const surface = css({ background: 'token(colors.base-200)', borderRadius: 'var(--radius-box)' })
-const sample = css({ borderRadius: 'var(--radius-box)' })
+const surface = css({ background: 'token(colors.base-200)' })
 const scrollArea = css({
   height: '220px',
   overflow: 'auto',
@@ -205,7 +204,7 @@ export default {
             <code> currentColor</code>.
           </Text>
           {['base', 'primary', 'neutral', 'secondary', 'accent'].map((c) => (
-            <Navbar key={c} color={c} size="sm" className={c === 'base' ? surface : sample}>
+            <Navbar key={c} color={c} size="sm" className={c === 'base' ? surface : undefined}>
               <NavbarStart><NavbarBrand onclick={(e) => e.preventDefault()}>{c}</NavbarBrand></NavbarStart>
               <NavbarEnd>
                 <NavbarLink href="#!" active>Home</NavbarLink>
