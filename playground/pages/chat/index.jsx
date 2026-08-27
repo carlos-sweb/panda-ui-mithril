@@ -14,6 +14,11 @@ import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 import table from './table.yaml'
 import { tableToRows } from '../../components/table-rows'
+// Avatares locales — sin URLs externas (patrón del demo Mask).
+import avatar1 from '../../assets/avatar/avatar1.jpg'
+import avatar2 from '../../assets/avatar/avatar2.jpg'
+import avatar3 from '../../assets/avatar/avatar3.jpg'
+import avatar4 from '../../assets/avatar/avatar4.jpg'
 
 
 const usageCodeJsx = `import m from 'mithril'
@@ -162,7 +167,7 @@ export default {
         <Block spacing="lg">
           <Title as="h2" size="3">Basic Chat</Title>
           <Chat placement="start">
-            <ChatImage><Avatar src="https://i.pravatar.cc/150?u=1" /></ChatImage>
+            <ChatImage><Avatar src={avatar1} /></ChatImage>
             <ChatHeader>John</ChatHeader>
             <ChatBubble>Hey! How are you?</ChatBubble>
             <ChatFooter>Just now</ChatFooter>
@@ -182,7 +187,7 @@ export default {
             Complete message component with name, time, status, reply, and reactions.
           </Text>
           <Chat placement="start">
-            <ChatImage><Avatar src="https://i.pravatar.cc/150?u=2" /></ChatImage>
+            <ChatImage><Avatar src={avatar2} /></ChatImage>
             <ChatMessage
               placement="start"
               name="Alice"
@@ -218,7 +223,7 @@ export default {
           </Text>
 
           <Chat placement="start">
-            <ChatImage><Avatar src="https://i.pravatar.cc/150?u=3" /></ChatImage>
+            <ChatImage><Avatar src={avatar3} /></ChatImage>
             <ChatMessage placement="start" name="Charlie" time="11:00 AM" status="read">
               <ChatAudio src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" duration="0:45" />
             </ChatMessage>
@@ -235,7 +240,7 @@ export default {
           </Chat>
 
           <Chat placement="start">
-            <ChatImage><Avatar src="https://i.pravatar.cc/150?u=4" /></ChatImage>
+            <ChatImage><Avatar src={avatar4} /></ChatImage>
             <ChatMessage placement="start" name="Dave" time="11:10 AM" status="sent">
               <ChatFile
                 filename="project-proposal.pdf"
@@ -273,7 +278,7 @@ export default {
           <ChatSystem type="info">Alice joined the chat</ChatSystem>
 
           <Chat placement="start">
-            <ChatImage><Avatar src="https://i.pravatar.cc/150?u=1" /></ChatImage>
+            <ChatImage><Avatar src={avatar1} /></ChatImage>
             <ChatMessage placement="start" name="Alice" time="11:30 AM" status="read">
               Hey everyone!
             </ChatMessage>
@@ -307,7 +312,7 @@ export default {
             <ChatWindow>
               <ChatHeader>
                 <div className={css({ display: 'flex', alignItems: 'center', gap: 'token(spacing.3)' })}>
-                  <Avatar src="https://i.pravatar.cc/150?u=1" size="sm" />
+                  <Avatar src={avatar1} size="sm" />
                   <div>
                     <Text bold size="sm">Alice</Text>
                     <Text size="xs" color="success">Online</Text>
@@ -317,14 +322,14 @@ export default {
               <div className={css({ flex: '1', overflowY: 'auto', padding: 'token(spacing.4)', display: 'flex', flexDirection: 'column', gap: 'token(spacing.2)' })}>
                 <ChatSystem type="date">Today</ChatSystem>
                 <Chat placement="start">
-                  <ChatImage><Avatar src="https://i.pravatar.cc/150?u=1" /></ChatImage>
+                  <ChatImage><Avatar src={avatar1} /></ChatImage>
                   <ChatBubble>Hey! How's it going?</ChatBubble>
                 </Chat>
                 <Chat placement="end">
                   <ChatBubble color="primary">Pretty good! Working on the chat components.</ChatBubble>
                 </Chat>
                 <Chat placement="start">
-                  <ChatImage><Avatar src="https://i.pravatar.cc/150?u=1" /></ChatImage>
+                  <ChatImage><Avatar src={avatar1} /></ChatImage>
                   <ChatMessage placement="start" name="Alice" time="2:30 PM" status="read" reactions={[{ emoji: "👍", count: 1, reacted: true }]}>
                     Nice! Let me know if you need help.
                   </ChatMessage>

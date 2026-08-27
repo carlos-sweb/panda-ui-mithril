@@ -19,16 +19,18 @@ import avatar9 from '../../assets/avatar/avatar9.jpg'
 
 const usageCodeJsx = `import m from 'mithril'
 import { Avatar, AvatarGroup } from 'panda-ui-mithril'
+import avatar1 from './assets/avatar/avatar1.jpg'
+import avatar2 from './assets/avatar/avatar2.jpg'
 
 export const MyPage = {
   view() {
     return (
       <div>
-        <Avatar src="https://i.pravatar.cc/150?u=1" size="lg" status="online" />
+        <Avatar src={avatar1} size="lg" status="online" />
         <Avatar placeholder>AB</Avatar>
         <AvatarGroup>
-          <Avatar src="https://i.pravatar.cc/150?u=1" />
-          <Avatar src="https://i.pravatar.cc/150?u=2" />
+          <Avatar src={avatar1} />
+          <Avatar src={avatar2} />
         </AvatarGroup>
       </div>
     )
@@ -37,15 +39,17 @@ export const MyPage = {
 
 const usageCodeJavascript = `import m from 'mithril'
 import { Avatar, AvatarGroup } from 'panda-ui-mithril'
+import avatar1 from './assets/avatar/avatar1.jpg'
+import avatar2 from './assets/avatar/avatar2.jpg'
 
 export const MyPage = {
   view() {
     return m('div', null, [
-      m(Avatar, { src: 'https://i.pravatar.cc/150?u=1', size: 'lg', status: 'online' }),
+      m(Avatar, { src: avatar1, size: 'lg', status: 'online' }),
       m(Avatar, { placeholder: true }, 'AB'),
       m(AvatarGroup, null, [
-        m(Avatar, { src: 'https://i.pravatar.cc/150?u=1' }),
-        m(Avatar, { src: 'https://i.pravatar.cc/150?u=2' })
+        m(Avatar, { src: avatar1 }),
+        m(Avatar, { src: avatar2 })
       ])
     ])
   }
