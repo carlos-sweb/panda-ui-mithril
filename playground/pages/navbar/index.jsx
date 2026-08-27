@@ -170,31 +170,33 @@ export default {
             transform — la navbar del shell de este playground es el ejemplo real).
           </Text>
 
-          <Navbar className={surface}>
-            <NavbarStart><NavbarBrand onclick={(e) => e.preventDefault()}>static</NavbarBrand></NavbarStart>
-            <NavbarCenter>
-              <NavbarMenu>
-                <NavbarLink href="#!">Home</NavbarLink>
-                <NavbarLink href="#!">Docs</NavbarLink>
-              </NavbarMenu>
-            </NavbarCenter>
-          </Navbar>
-
-          <Box className={scrollArea}>
-            <Navbar position="sticky" className={surface} border shadow="sm">
-              <NavbarStart><NavbarBrand onclick={(e) => e.preventDefault()}>sticky</NavbarBrand></NavbarStart>
-              <NavbarEnd><Button color="primary" size="sm">Action</Button></NavbarEnd>
+          <Stack gap="md">
+            <Navbar className={surface}>
+              <NavbarStart><NavbarBrand onclick={(e) => e.preventDefault()}>static</NavbarBrand></NavbarStart>
+              <NavbarCenter>
+                <NavbarMenu>
+                  <NavbarLink href="#!">Home</NavbarLink>
+                  <NavbarLink href="#!">Docs</NavbarLink>
+                </NavbarMenu>
+              </NavbarCenter>
             </Navbar>
-            <Stack gap="xs">{scrollFill}</Stack>
-          </Box>
 
-          <Box className={fixedArea}>
-            <Navbar position="fixed" className={surface} border shadow="sm">
-              <NavbarStart><NavbarBrand onclick={(e) => e.preventDefault()}>fixed</NavbarBrand></NavbarStart>
-              <NavbarEnd><Button color="primary" size="sm">Action</Button></NavbarEnd>
-            </Navbar>
-            <Stack gap="xs">{scrollFill}</Stack>
-          </Box>
+            <Box className={scrollArea}>
+              <Navbar position="sticky" className={surface} border shadow="sm">
+                <NavbarStart><NavbarBrand onclick={(e) => e.preventDefault()}>sticky</NavbarBrand></NavbarStart>
+                <NavbarEnd><Button color="primary" size="sm">Action</Button></NavbarEnd>
+              </Navbar>
+              <Stack gap="xs">{scrollFill}</Stack>
+            </Box>
+
+            <Box className={fixedArea}>
+              <Navbar position="fixed" className={surface} border shadow="sm">
+                <NavbarStart><NavbarBrand onclick={(e) => e.preventDefault()}>fixed</NavbarBrand></NavbarStart>
+                <NavbarEnd><Button color="primary" size="sm">Action</Button></NavbarEnd>
+              </Navbar>
+              <Stack gap="xs">{scrollFill}</Stack>
+            </Box>
+          </Stack>
         </Block>
 
         <Block spacing="lg">
@@ -203,24 +205,28 @@ export default {
             El color semántico define <code>--navbar-bg</code> / <code>--navbar-fg</code>; los slots heredan
             <code> currentColor</code>.
           </Text>
-          {['base', 'primary', 'neutral', 'secondary', 'accent'].map((c) => (
-            <Navbar key={c} color={c} size="sm" className={c === 'base' ? surface : undefined}>
-              <NavbarStart><NavbarBrand onclick={(e) => e.preventDefault()}>{c}</NavbarBrand></NavbarStart>
-              <NavbarEnd>
-                <NavbarLink href="#!" active>Home</NavbarLink>
-              </NavbarEnd>
-            </Navbar>
-          ))}
+          <Stack gap="md">
+            {['base', 'primary', 'neutral', 'secondary', 'accent'].map((c) => (
+              <Navbar key={c} color={c} size="sm" className={c === 'base' ? surface : undefined}>
+                <NavbarStart><NavbarBrand onclick={(e) => e.preventDefault()}>{c}</NavbarBrand></NavbarStart>
+                <NavbarEnd>
+                  <NavbarLink href="#!" active>Home</NavbarLink>
+                </NavbarEnd>
+              </Navbar>
+            ))}
+          </Stack>
         </Block>
 
         <Block spacing="lg">
           <Title as="h2" size="3">Sizes</Title>
-          {['sm', 'md', 'lg'].map((s) => (
-            <Navbar key={s} size={s} className={surface}>
-              <NavbarStart><NavbarBrand onclick={(e) => e.preventDefault()}>size {s}</NavbarBrand></NavbarStart>
-              <NavbarEnd><Button color="primary" size="sm">Action</Button></NavbarEnd>
-            </Navbar>
-          ))}
+          <Stack gap="md">
+            {['sm', 'md', 'lg'].map((s) => (
+              <Navbar key={s} size={s} className={surface}>
+                <NavbarStart><NavbarBrand onclick={(e) => e.preventDefault()}>size {s}</NavbarBrand></NavbarStart>
+                <NavbarEnd><Button color="primary" size="sm">Action</Button></NavbarEnd>
+              </Navbar>
+            ))}
+          </Stack>
         </Block>
 
         <Block spacing="lg">
