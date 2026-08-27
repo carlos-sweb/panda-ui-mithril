@@ -7,6 +7,41 @@ import { ButtonClose } from '../ButtonClose/index.js'
 // stays open if `animationend` never fires (no CSS engine, missing keyframes).
 const CLOSE_FALLBACK_MS = 240
 
+/**
+ * Cierra el drawer CON la animación de salida: añade .drawer-closing, espera
+ * animationend (fallback 240ms) y entonces dialog.close(). Es el mismo camino
+ * para el cierre por prop (open=false) y para el botón X de buttonClose —
+ * interacción 100% JS, sin trucos CSS/form.
+ * @param {Object} vnode */
+function animateClose(vnode) {
+  const dialog = vnode.dom
+  if (!dialog.open || vnode.state._closing) return
+  // prefers-reduced-motion: la media query CSS desactiva la animación, así
+  // que animationend nunca llega — cerrar inmediatamente.
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    dialog.close()
+    if (vnode.attrs.onclosed) vnode.attrs.onclosed()
+    if (vnode.attrs.onchange) vnode.attrs.onchange(false)
+    return
+  }
+  vnode.state._closing = true
+  dialog.classList.add('drawer-closing')
+  const finish = () => {
+    dialog.classList.remove('drawer-closing')
+    vnode.state._closing = false
+    dialog.close()
+    if (vnode.attrs.onclosed) vnode.attrs.onclosed()
+    if (vnode.attrs.onchange) vnode.attrs.onchange(false)
+  }
+  // Safety net: si animationend nunca llega (sin CSS engine en tests,
+  // keyframes faltantes), igualmente cerrar.
+  const timeoutId = setTimeout(finish, CLOSE_FALLBACK_MS)
+  dialog.addEventListener('animationend', () => {
+    clearTimeout(timeoutId)
+    finish()
+  }, { once: true })
+}
+
 // Preset sizes handled by the recipe's `size` variant. Any other value (e.g.
 // "55%" or 200) is passed through as the `--drawer-size` custom property.
 const SIZE_PRESETS = ['xs', 'sm', 'md', 'lg', 'xl', 'full']
@@ -49,7 +84,7 @@ export const Drawer = {
    * Sincroniza el <dialog> nativo con la prop `open`.
    * - open → true: showModal() si no está abierto y dispara onopen/onchange(true)
    *   SOLO en la transición cerrado→abierto (guardado con `!dialog.open`).
-   * - open → false: añade la clase drawer-closing, espera animationend, luego cierra.
+   * - open → false: cierra con la animación (animateClose).
    * @param {Object} vnode */
   onupdate(vnode) {
     const dialog = vnode.dom
@@ -62,30 +97,7 @@ export const Drawer = {
       return
     }
     if (dialog.open && !vnode.state._closing) {
-      // prefers-reduced-motion: la media query CSS desactiva la animación, así
-      // que animationend nunca llega — cerrar inmediatamente.
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        dialog.close()
-        if (vnode.attrs.onclosed) vnode.attrs.onclosed()
-        if (vnode.attrs.onchange) vnode.attrs.onchange(false)
-        return
-      }
-      vnode.state._closing = true
-      dialog.classList.add('drawer-closing')
-      const finish = () => {
-        dialog.classList.remove('drawer-closing')
-        vnode.state._closing = false
-        dialog.close()
-        if (vnode.attrs.onclosed) vnode.attrs.onclosed()
-        if (vnode.attrs.onchange) vnode.attrs.onchange(false)
-      }
-      // Safety net: si animationend nunca llega (sin CSS engine en tests,
-      // keyframes faltantes), igualmente cerrar.
-      const timeoutId = setTimeout(finish, CLOSE_FALLBACK_MS)
-      dialog.addEventListener('animationend', () => {
-        clearTimeout(timeoutId)
-        finish()
-      }, { once: true })
+      animateClose(vnode)
     }
   },
 
@@ -132,14 +144,17 @@ export const Drawer = {
 
     const children = buttonClose
       ? (Array.isArray(vnode.children) ? vnode.children : [vnode.children]).map((child) => {
-          // Inject ButtonClose form into the first DrawerBox child
+          // Inject ButtonClose into the first DrawerBox child
           if (child && child.tag === DrawerBox && !child._buttonCloseInjected) {
             child._buttonCloseInjected = true
             const boxChildren = Array.isArray(child.children) ? [...child.children] : [child.children]
             boxChildren.push(
-              m('form', { method: 'dialog', className: drawerCloseButton() },
-                m(ButtonClose)
-              )
+              // El X es un botón JS puro: onclick dispara el bridge animado
+              // (animateClose) — mismo camino que el cierre por prop.
+              m(ButtonClose, {
+                className: drawerCloseButton(),
+                onclick: () => animateClose(vnode),
+              })
             )
             return m(DrawerBox, child.attrs, boxChildren)
           }
@@ -198,5 +213,38 @@ export const DrawerBackdrop = {
       onclick,
       ...rest
     })
+  }
+}
+
+/**
+ * Cabecera del drawer (slot `header`): título + zona del botón de cierre.
+ * @type {import('mithril').Component<import('./index').DrawerHeaderAttrs>} */
+export const DrawerHeader = {
+  view(vnode) {
+    const { className, ...rest } = vnode.attrs
+    return m('div', { className: cx('drawer-header', defaultStyles.header, className), ...rest }, vnode.children)
+  }
+}
+
+/**
+ * Contenido del drawer (slot `body`) — es el SCROLLER: flex:1 + minHeight:0 +
+ * overflowY:auto dentro del panel flex. Encapsulado aquí para que el scroll
+ * correcto sea el default (el patrón flex-scroll falla silenciosamente si se
+ * aplica al elemento equivocado).
+ * @type {import('mithril').Component<import('./index').DrawerBodyAttrs>} */
+export const DrawerBody = {
+  view(vnode) {
+    const { className, ...rest } = vnode.attrs
+    return m('div', { className: cx('drawer-body', defaultStyles.body, className), ...rest }, vnode.children)
+  }
+}
+
+/**
+ * Pie del drawer (slot `footer`): borde superior + acciones alineadas a la derecha.
+ * @type {import('mithril').Component<import('./index').DrawerFooterAttrs>} */
+export const DrawerFooter = {
+  view(vnode) {
+    const { className, ...rest } = vnode.attrs
+    return m('div', { className: cx('drawer-footer', defaultStyles.footer, className), ...rest }, vnode.children)
   }
 }

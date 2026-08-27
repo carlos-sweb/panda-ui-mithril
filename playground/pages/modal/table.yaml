@@ -55,4 +55,4 @@ rows:
     description: "Modal box slides in from the end/right edge (slide-in-right)"
   - prop: "buttonClose"
     type: "Modifier"
-    description: "Auto-append ButtonClose in ModalAction (form method=\"dialog\")"
+    description: "Auto-append ButtonClose (top-right of the box) — closes with the exit animation"

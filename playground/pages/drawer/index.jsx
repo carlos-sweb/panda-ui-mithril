@@ -3,16 +3,16 @@ import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
 import {
   Stack, Title, Button, Text, Block, Box, Tabs, Tab, TabContent,
-  Drawer, DrawerBox, DrawerBackdrop, DrawerAction, Menu, MenuItem, MenuTitle
+  Drawer, DrawerBox, DrawerBackdrop,
+  DrawerHeader, DrawerBody, DrawerFooter, Menu, MenuItem, MenuTitle
 } from '../../../src/index.js'
-import { drawer } from '../../../styled-system/recipes'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 import table from './table.yaml'
 import { tableToRows } from '../../components/table-rows'
 
 const usageCodeJsx = `import m from 'mithril'
-import { Button, Drawer, DrawerBox, DrawerBackdrop } from 'panda-ui-mithril'
+import { Button, Drawer, DrawerBox, DrawerBackdrop, DrawerHeader, DrawerBody, DrawerFooter } from 'panda-ui-mithril'
 
 export const MyPage = {
   view() {
@@ -27,15 +27,15 @@ export const MyPage = {
                 onclosed={() => console.log('closed')}
                 onchange={(next) => console.log('change:', next)}>
           <DrawerBox>
-            <div className={drawer({}).header}>
+            <DrawerHeader>
               <h3 id="drawer-title">Settings</h3>
-            </div>
-            <div className={drawer({}).body}>
-              <p>Drawer content — slides in from the chosen edge.</p>
-            </div>
-            <DrawerAction className={drawer({}).footer}>
+            </DrawerHeader>
+            <DrawerBody>
+              <p>Drawer content — DrawerBody is the scroller.</p>
+            </DrawerBody>
+            <DrawerFooter>
               <Button onclick={() => { open = false }}>Close</Button>
-            </DrawerAction>
+            </DrawerFooter>
           </DrawerBox>
           <DrawerBackdrop onclick={() => { open = false }} />
         </Drawer>
@@ -45,8 +45,7 @@ export const MyPage = {
 }`
 
 const usageCodeJavascript = `import m from 'mithril'
-import { Button, Drawer, DrawerBox, DrawerBackdrop, DrawerAction } from 'panda-ui-mithril'
-import { drawer } from 'panda-ui-mithril/styled-system/recipes'
+import { Button, Drawer, DrawerBox, DrawerBackdrop, DrawerHeader, DrawerBody, DrawerFooter } from 'panda-ui-mithril'
 
 export const MyPage = {
   view() {
@@ -63,13 +62,13 @@ export const MyPage = {
         onchange: (next) => console.log('change:', next),
       }, [
         m(DrawerBox, null, [
-          m('div', { className: drawer({}).header }, [
+          m(DrawerHeader, null, [
             m('h3', { id: 'drawer-title' }, 'Settings'),
           ]),
-          m('div', { className: drawer({}).body }, [
-            m('p', null, 'Drawer content — slides in from the chosen edge.'),
+          m(DrawerBody, null, [
+            m('p', null, 'Drawer content — DrawerBody is the scroller.'),
           ]),
-          m(DrawerAction, { className: drawer({}).footer }, [
+          m(DrawerFooter, null, [
             m(Button, { onclick: () => { open = false } }, 'Close'),
           ]),
         ]),
@@ -131,18 +130,18 @@ export default {
         {positions.map((p) => (
           <Drawer key={p} position={p} open={vnode.state.openFor === p} onclose={close}>
             <DrawerBox>
-              <Box className={drawer({}).header}>
+              <DrawerHeader>
                 <h3>Hello! ({p})</h3>
-              </Box>
-              <Box className={drawer({}).body}>
+              </DrawerHeader>
+              <DrawerBody>
                 <p>
                   This drawer is docked to the <code>{p}</code> edge and slides
                   in from it. Press ESC, click outside, or the button below to close.
                 </p>
-              </Box>
-              <Box className={drawer({}).footer}>
+              </DrawerBody>
+              <DrawerFooter>
                 <Button onclick={close}>Close</Button>
-              </Box>
+              </DrawerFooter>
             </DrawerBox>
             <DrawerBackdrop onclick={close} />
           </Drawer>
@@ -170,18 +169,18 @@ export default {
           onclosed={() => { vnode.state.sizeFor = null }}
         >
           <DrawerBox>
-            <Box className={drawer({}).header}>
+            <DrawerHeader>
               <h3 id="size-drawer-title">Size: {vnode.state.sizeFor ? vnode.state.sizeFor.toUpperCase() : ''}</h3>
-            </Box>
-            <Box className={drawer({}).body}>
+            </DrawerHeader>
+            <DrawerBody>
               <p>
                 The same Drawer instance is reused — only the <code>size</code> prop
                 changes the <code>--drawer-size</code> custom property.
               </p>
-            </Box>
-            <Box className={drawer({}).footer}>
+            </DrawerBody>
+            <DrawerFooter>
               <Button onclick={closeSize}>Close</Button>
-            </Box>
+            </DrawerFooter>
           </DrawerBox>
           <DrawerBackdrop onclick={closeSize} />
         </Drawer>
@@ -194,14 +193,14 @@ export default {
 
         <Drawer position="end" size="55%" open={vnode.state.customOpen} onclose={() => { vnode.state.customOpen = false }}>
           <DrawerBox>
-            <Box className={drawer({}).header}>
+            <DrawerHeader>
               <h3>Custom size</h3>
-            </Box>
-            <Box className={drawer({}).body}>
+            </DrawerHeader>
+            <DrawerBody>
               <p>
                 Any CSS width/height works — this drawer uses <code>size="55%"</code>.
               </p>
-            </Box>
+            </DrawerBody>
           </DrawerBox>
           <DrawerBackdrop onclick={() => { vnode.state.customOpen = false }} />
         </Drawer>
@@ -246,15 +245,15 @@ export default {
           onchange={(next) => log('onchange: ' + next)}
         >
           <DrawerBox>
-            <Box className={drawer({}).header}>
+            <DrawerHeader>
               <h3>Events drawer</h3>
-            </Box>
-            <Box className={drawer({}).body}>
+            </DrawerHeader>
+            <DrawerBody>
               <p>Close it with ESC, the backdrop, or the button — each path fires a different sequence.</p>
-            </Box>
-            <Box className={drawer({}).footer}>
+            </DrawerBody>
+            <DrawerFooter>
               <Button onclick={() => { vnode.state.eventsOpen = false }}>Close</Button>
-            </Box>
+            </DrawerFooter>
           </DrawerBox>
           <DrawerBackdrop onclick={() => { vnode.state.eventsOpen = false }} />
         </Drawer>
@@ -271,24 +270,24 @@ export default {
 
         <Drawer persistent position="start" open={vnode.state.persistentOpen}>
           <DrawerBox>
-            <Box className={drawer({}).header}>
+            <DrawerHeader>
               <h3>Persistent drawer</h3>
-            </Box>
-            <Box className={drawer({}).body}>
+            </DrawerHeader>
+            <DrawerBody>
               <p>
                 You cannot close this drawer with ESC or by clicking outside. The only
                 way to dismiss it is the button below.
               </p>
-            </Box>
-            <Box className={drawer({}).footer}>
+            </DrawerBody>
+            <DrawerFooter>
               <Button onclick={closePersistent}>Close</Button>
-            </Box>
+            </DrawerFooter>
           </DrawerBox>
         </Drawer>
 
         <Title as="h2" size="3">Auto Close Button</Title>
         <Text color="neutral">
-          With <code>buttonClose</code>, an X button is appended automatically (form method="dialog").
+          With <code>buttonClose</code>, an X button is appended automatically — it closes with the exit animation.
         </Text>
         <Stack direction="row" gap="sm">
           <Button onclick={() => { vnode.state.autoCloseOpen = true }}>
@@ -298,12 +297,12 @@ export default {
 
         <Drawer position="end" buttonClose open={vnode.state.autoCloseOpen} onclose={() => { vnode.state.autoCloseOpen = false }}>
           <DrawerBox>
-            <Box className={drawer({}).header}>
+            <DrawerHeader>
               <h3>Auto Close</h3>
-            </Box>
-            <Box className={drawer({}).body}>
+            </DrawerHeader>
+            <DrawerBody>
               <p>This drawer has <code>buttonClose</code>. The X button is added automatically.</p>
-            </Box>
+            </DrawerBody>
           </DrawerBox>
           <DrawerBackdrop onclick={() => { vnode.state.autoCloseOpen = false }} />
         </Drawer>
@@ -320,10 +319,10 @@ export default {
 
           <Drawer position="start" size="sm" buttonClose open={vnode.state.navOpen} labelledby="nav-drawer-title" onclose={closeNav}>
             <DrawerBox>
-              <Box className={drawer({}).header}>
+              <DrawerHeader>
                 <h3 id="nav-drawer-title">Navigation</h3>
-              </Box>
-              <Box className={drawer({}).body}>
+              </DrawerHeader>
+              <DrawerBody>
                 <Menu>
                   <MenuTitle>General</MenuTitle>
                   <MenuItem onclick={closeNav}>Dashboard</MenuItem>
@@ -332,10 +331,10 @@ export default {
                   <MenuItem onclick={closeNav}>Profile</MenuItem>
                   <MenuItem onclick={closeNav}>Logout</MenuItem>
                 </Menu>
-              </Box>
-              <Box className={drawer({}).footer}>
+              </DrawerBody>
+              <DrawerFooter>
                 <Button variant="soft" onclick={closeNav}>Close</Button>
-              </Box>
+              </DrawerFooter>
             </DrawerBox>
             <DrawerBackdrop onclick={closeNav} />
           </Drawer>

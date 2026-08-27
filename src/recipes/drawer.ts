@@ -39,6 +39,13 @@ export const drawerRecipe = defineSlotRecipe({
       '&[open]': {
         display: 'grid',
         placeItems: 'center',
+        // La fila/columna implícitas SIEMPRE igualan el dialog (minmax(0,1fr) =
+        // alto/ancho definidos del viewport, mínimo 0): con `1fr` a secas el
+        // mínimo es `auto` y la fila crece con el contenido — el panel seguiría
+        // al contenido y el DrawerBody (flex:1 + minHeight:0 + overflowY:auto)
+        // nunca llegaría a scrollear.
+        gridAutoRows: 'minmax(0, 1fr)',
+        gridAutoColumns: 'minmax(0, 1fr)',
         '& > .drawer-box': { opacity: '1' },
         '&::backdrop': { opacity: '1', transition: 'opacity 0.2s ease-out' },
       },

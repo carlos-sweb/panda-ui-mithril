@@ -10,7 +10,7 @@ export interface DrawerAttrs extends ComponentAttrs {
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'full' | string | number
   /** When true, ESC and backdrop clicks do not close the drawer */
   persistent?: boolean
-  /** When true, automatically appends a ButtonClose inside DrawerBox (form method="dialog") */
+  /** When true, automatically appends a ButtonClose inside DrawerBox — closes with the exit animation */
   buttonClose?: boolean
   /** id of the element that labels the drawer */
   labelledby?: string
@@ -43,7 +43,25 @@ export interface DrawerBackdropAttrs extends ComponentAttrs {
   [key: string]: unknown
 }
 
+export interface DrawerHeaderAttrs extends ComponentAttrs {
+  children?: Vnode | Vnode[] | string | null
+  [key: string]: unknown
+}
+
+export interface DrawerBodyAttrs extends ComponentAttrs {
+  children?: Vnode | Vnode[] | string | null
+  [key: string]: unknown
+}
+
+export interface DrawerFooterAttrs extends ComponentAttrs {
+  children?: Vnode | Vnode[] | string | null
+  [key: string]: unknown
+}
+
 export const Drawer: Component<DrawerAttrs>
 export const DrawerBox: Component<DrawerBoxAttrs>
 export const DrawerAction: Component<DrawerActionAttrs>
 export const DrawerBackdrop: Component<DrawerBackdropAttrs>
+export const DrawerHeader: Component<DrawerHeaderAttrs>
+export const DrawerBody: Component<DrawerBodyAttrs>
+export const DrawerFooter: Component<DrawerFooterAttrs>

@@ -59,6 +59,11 @@ transform: `jsx: "react"`, `jsxFactory: "m"`, `jsxFragmentFactory: "m.Fragment"`
 
 - Mithril components use the object literal pattern: `{ view(vnode) { ... } }`
 - Never use `m()` without importing `m` from 'mithril'
+- **Interaction is always driven by JS** (Mithril handlers + `vnode.state`) — never
+  CSS-only tricks for behavior: hidden-checkbox toggles (daisyUI `drawer-toggle`),
+  `:target` hacks, or `form method="dialog"` as a close mechanism. Close buttons
+  are plain JS `onclick` handlers that run the component's close bridge, so the
+  exit animation always plays (a native form close bypasses it).
 - Styles always via className — never inline style objects (exception: dynamic
   CSS custom properties like `style={{ '--mail-color': color }}`)
 - Use `cva()` for single-element components, `sva()` for multi-slot components

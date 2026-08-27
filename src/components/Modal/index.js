@@ -8,6 +8,39 @@ import { ButtonClose } from '../ButtonClose/index.js'
 const CLOSE_FALLBACK_MS = 240
 
 /**
+ * Cierra el modal CON la animación de salida: añade .modal-closing, espera
+ * animationend (fallback 240ms) y entonces dialog.close(). Es el mismo camino
+ * para el cierre por prop (open=false) y para el botón X de buttonClose —
+ * interacción 100% JS, sin trucos CSS/form.
+ * @param {Object} vnode */
+function animateClose(vnode) {
+  const dialog = vnode.dom
+  if (!dialog.open || vnode.state._closing) return
+  // prefers-reduced-motion: the CSS media query disables the animation,
+  // so animationend never fires — close immediately instead.
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    dialog.close()
+    if (vnode.attrs.onclosed) vnode.attrs.onclosed()
+    return
+  }
+  vnode.state._closing = true
+  dialog.classList.add('modal-closing')
+  const finish = () => {
+    dialog.classList.remove('modal-closing')
+    vnode.state._closing = false
+    dialog.close()
+    if (vnode.attrs.onclosed) vnode.attrs.onclosed()
+  }
+  // Safety net: if animationend never fires (no CSS engine in tests,
+  // missing keyframes, display issues), still close the dialog.
+  const timeoutId = setTimeout(finish, CLOSE_FALLBACK_MS)
+  dialog.addEventListener('animationend', () => {
+    clearTimeout(timeoutId)
+    finish()
+  }, { once: true })
+}
+
+/**
  * Componente Modal. Usa `<dialog>` nativo con `.showModal()`/`.close()`.
  * Las animaciones de entrada/salida y el bloqueo de scroll del body los maneja
  * CSS moderno (:has(), @starting-style, transition-behavior: allow-discrete).
@@ -40,7 +73,7 @@ export const Modal = {
   /**
    * Sincroniza el <dialog> nativo con la prop `open`.
    * - open → true: showModal() si no está abierto.
-   * - open → false: añade la clase modal-closing, espera animationend, luego cierra el dialog.
+   * - open → false: cierra con la animación (animateClose).
    * @param {Object} vnode */
   onupdate(vnode) {
     const dialog = vnode.dom
@@ -49,28 +82,7 @@ export const Modal = {
       return
     }
     if (dialog.open && !vnode.state._closing) {
-      // prefers-reduced-motion: the CSS media query disables the animation,
-      // so animationend never fires — close immediately instead.
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        dialog.close()
-        if (vnode.attrs.onclosed) vnode.attrs.onclosed()
-        return
-      }
-      vnode.state._closing = true
-      dialog.classList.add('modal-closing')
-      const finish = () => {
-        dialog.classList.remove('modal-closing')
-        vnode.state._closing = false
-        dialog.close()
-        if (vnode.attrs.onclosed) vnode.attrs.onclosed()
-      }
-      // Safety net: if animationend never fires (no CSS engine in tests,
-      // missing keyframes, display issues), still close the dialog.
-      const timeoutId = setTimeout(finish, CLOSE_FALLBACK_MS)
-      dialog.addEventListener('animationend', () => {
-        clearTimeout(timeoutId)
-        finish()
-      }, { once: true })
+      animateClose(vnode)
     }
   },
 
@@ -112,14 +124,17 @@ export const Modal = {
 
     const children = buttonClose
       ? (Array.isArray(vnode.children) ? vnode.children : [vnode.children]).map((child) => {
-          // Inject ButtonClose form into the first ModalBox child
+          // Inject ButtonClose into the first ModalBox child
           if (child && child.tag === ModalBox && !child._buttonCloseInjected) {
             child._buttonCloseInjected = true
             const boxChildren = Array.isArray(child.children) ? [...child.children] : [child.children]
             boxChildren.push(
-              m('form', { method: 'dialog', className: modalCloseButton() },
-                m(ButtonClose)
-              )
+              // El X es un botón JS puro: onclick dispara el bridge animado
+              // (animateClose) — mismo camino que el cierre por prop.
+              m(ButtonClose, {
+                className: modalCloseButton(),
+                onclick: () => animateClose(vnode),
+              })
             )
             return m(ModalBox, child.attrs, boxChildren)
           }
