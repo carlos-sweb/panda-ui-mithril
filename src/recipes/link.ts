@@ -24,5 +24,15 @@ export const linkRecipe = defineRecipe({
       true: { textDecoration: 'none', _hover: { textDecoration: 'underline' } },
       false: {},
     },
+    // Never underline (not even on hover). Useful in contexts where the
+    // underline doesn't belong — e.g. inside a Navbar (NavbarLink applies it
+    // as a default, same way Drawer conditions Modal).
+    noUnderline: {
+      true: {
+        textDecoration: 'none',
+        _hover: { textDecoration: 'none' },
+      },
+      false: {},
+    },
   },
 })

@@ -3,6 +3,7 @@ import { Menu as MenuIcon, X } from 'lucide-mithril'
 import { navbar } from '../../../styled-system/recipes'
 import { cx } from '../../../styled-system/css'
 import { Button } from '../Button/index.jsx'
+import { Link } from '../Link/index.js'
 
 /**
  * Componente Navbar. Barra de navegación de tres zonas con variantes
@@ -96,17 +97,23 @@ export const NavbarBrand = {
 }
 
 /**
- * Componente NavbarLink. Ítem de navegación (`<a>`) con estado `active`
- * (píldora + aria-current) y `disabled` (atenuado, sin puntero). Estilo
- * Bootstrap `.nav-link` / Flowbite NavbarLink.
+ * Componente NavbarLink. Ítem de navegación con estado `active` (píldora +
+ * aria-current) y `disabled` (atenuado, sin puntero).
+ *
+ * Mismo concepto que Drawer condiciona Modal: NavbarLink es `Link` con
+ * propiedades por defecto del contexto navbar — `noUnderline` forzado (el
+ * navbar nunca subraya) y la forma de píldora del slot `link`. `color` y
+ * `hover` se bloquean: dentro del navbar el look lo decide el navbar, no el
+ * link (usar `Link` crudo dentro del navbar es fuera de recomendación).
  *
  * @type {import('mithril').Component<import('./index').NavbarLinkAttrs>}
  */
 export const NavbarLink = {
   view(vnode) {
-    const { active, disabled, className, ...rest } = vnode.attrs
+    const { active, disabled, color, hover, noUnderline, className, ...rest } = vnode.attrs
     const styles = navbar({ active, disabled })
-    return m('a', {
+    return m(Link, {
+      noUnderline: true,
       className: cx('navbar-link', styles.link, className),
       'aria-current': active ? 'page' : undefined,
       'aria-disabled': disabled ? 'true' : undefined,

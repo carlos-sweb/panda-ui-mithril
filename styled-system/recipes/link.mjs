@@ -17,6 +17,10 @@ const linkVariantMap = {
   "hover": [
     "true",
     "false"
+  ],
+  "noUnderline": [
+    "true",
+    "false"
   ]
 }
 

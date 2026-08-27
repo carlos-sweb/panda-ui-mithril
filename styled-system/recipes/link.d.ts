@@ -5,6 +5,7 @@ import type { DistributiveOmit, Pretty } from '../types/system-types';
 interface LinkVariant {
   color: "neutral" | "primary" | "secondary" | "accent" | "info" | "success" | "warning" | "error"
 hover: boolean
+noUnderline: boolean
 }
 
 type LinkVariantMap = {

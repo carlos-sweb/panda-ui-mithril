@@ -48,6 +48,11 @@ export interface NavbarBrandAttrs extends ComponentAttrs {
 }
 
 export interface NavbarLinkAttrs extends ComponentAttrs {
+  /**
+   * NavbarLink reuses `Link` with navbar defaults: `noUnderline` is forced
+   * (the navbar never underlines) and `color`/`hover` are intentionally not
+   * exposed — inside a navbar the look is decided by the navbar, not the link.
+   */
   /** Link target. */
   href?: string
   /** Highlight as the current page (pill + aria-current="page"). */
