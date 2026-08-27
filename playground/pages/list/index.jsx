@@ -7,15 +7,19 @@ import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 import table from './table.yaml'
 import { tableToRows } from '../../components/table-rows'
+// Avatares locales — sin URLs externas (patrón del demo Mask).
+import avatar1 from '../../assets/avatar/avatar1.jpg'
+import avatar2 from '../../assets/avatar/avatar2.jpg'
+import avatar3 from '../../assets/avatar/avatar3.jpg'
 
 const wrapper = css({ maxWidth: '32rem', background: 'token(colors.base-100)', borderRadius: 'var(--radius-box)', boxShadow: '0 1px 3px color-mix(in oklab, black 15%, transparent)' })
 const kicker = css({ padding: '1rem 1rem 0.5rem', fontSize: '0.75rem', opacity: 0.6, letterSpacing: '0.02em' })
 const subtitle = css({ fontSize: '0.75rem', textTransform: 'uppercase', fontWeight: '600', opacity: 0.6 })
 
 const songs = [
-  { title: 'Dio Lupa', subtitle: 'Remaining Reason', seed: 1 },
-  { title: 'Ellie Beilish', subtitle: 'Bears of a fever', seed: 4 },
-  { title: 'Sabrino Gardener', subtitle: 'Cappuccino', seed: 3 },
+  { title: 'Dio Lupa', subtitle: 'Remaining Reason', img: avatar1 },
+  { title: 'Ellie Beilish', subtitle: 'Bears of a fever', img: avatar2 },
+  { title: 'Sabrino Gardener', subtitle: 'Cappuccino', img: avatar3 },
 ]
 
 const usageCodeJsx = `import m from 'mithril'
@@ -298,8 +302,8 @@ export default {
           <div className={kicker}>Most played songs this week</div>
           <List>
             {songs.map((song) => (
-              <ListRow key={song.seed} hover>
-                <Avatar src={`https://i.pravatar.cc/80?u=${song.seed}`} size="sm" shape="square" />
+              <ListRow key={song.title} hover>
+                <Avatar src={song.img} size="sm" shape="square" />
                 <ListCol>
                   <div>{song.title}</div>
                   <div className={subtitle}>{song.subtitle}</div>
