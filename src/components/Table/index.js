@@ -8,15 +8,17 @@ import { Select } from '../Select/index.js'
 import { t } from '../../i18n.js'
 
 /**
- * Componente TableContainer. Wrapper con scroll horizontal para que la tabla
- * no desborde en pantallas estrechas.
+ * Componente TableContainer. Wrapper con scroll horizontal (y vertical si se
+ * pasa `maxHeight`) para que la tabla no desborde en pantallas estrechas.
+ * `maxHeight` crea la región scrollable que el Sticky header necesita.
  *
  * @type {import('mithril').Component<import('./index').TableContainerAttrs>}
  */
 export const TableContainer = {
   view(vnode) {
-    const { className, ...rest } = vnode.attrs
-    return m('div', { className: cx(tableOverflow(), className), ...rest }, vnode.children)
+    const { maxHeight, className, ...rest } = vnode.attrs
+    const style = maxHeight !== undefined ? { maxHeight } : undefined
+    return m('div', { className: cx(tableOverflow(), className), style, ...rest }, vnode.children)
   }
 }
 
@@ -104,7 +106,7 @@ export const Table = {
 
   view(vnode) {
     const {
-      size, zebra, pinRows, pinCols, hover, bordered, className,
+      size, zebra, pinRows, pinCols, hover, bordered, stickyHeader, maxHeight, className,
       data, columns = [], rowKey,
       pageSize: pageSizeProp, defaultPageSize, pageSizeOptions, perPageLabel, onPageSizeChange,
       page: pageProp, defaultPage, onchange, pagination: paginationProp,
@@ -113,7 +115,7 @@ export const Table = {
       ...rest
     } = vnode.attrs
 
-    const styles = table({ size, zebra, pinRows, pinCols, hover, bordered })
+    const styles = table({ size, zebra, pinRows, pinCols, hover, bordered, stickyHeader })
 
     // ── Modo compositivo (retrocompatibilidad) ──
     if (data === undefined) {
@@ -266,7 +268,7 @@ export const Table = {
       : paginationEl
 
     const children = [
-      m(TableContainer, {}, m('table', { className: cx('table', styles.table) }, [
+      m(TableContainer, { maxHeight }, m('table', { className: cx('table', styles.table) }, [
         columns.length > 0 && m('thead', m('tr', theadCells)),
         m('tbody', body),
       ])),

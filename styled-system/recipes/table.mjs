@@ -31,6 +31,7 @@ const tableVariantKeys = [
   "zebra",
   "bordered",
   "pinRows",
+  "stickyHeader",
   "pinCols",
   "hover"
 ]
@@ -57,6 +58,9 @@ export const table = /* @__PURE__ */ Object.assign(tableFn, {
     "true"
   ],
   "pinRows": [
+    "true"
+  ],
+  "stickyHeader": [
     "true"
   ],
   "pinCols": [

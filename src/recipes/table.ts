@@ -140,6 +140,21 @@ export const tableRecipe = defineSlotRecipe({
         },
       },
     },
+    // Sticky header: solo el thead se fija arriba dentro del contenedor
+    // scrollable (emparejar con TableContainer/Table `maxHeight`). Sticky a
+    // nivel de celda (th) — patrón MUI, más compatible que en `thead`.
+    stickyHeader: {
+      true: {
+        table: {
+          '& :where(thead th)': {
+            position: 'sticky',
+            top: '0',
+            zIndex: '1',
+            backgroundColor: 'base-100',
+          },
+        },
+      },
+    },
     pinCols: {
       true: {
         table: {
@@ -164,5 +179,7 @@ export const tableRecipe = defineSlotRecipe({
 
 export const tableOverflowRecipe = defineRecipe({
   className : 'table-overflow',
-  base: { overflowX: 'auto' },
+  // Ambos ejes: sin `maxHeight` el vertical no scrollea (el contenido cabe);
+  // con `maxHeight` (prop de TableContainer) aparece el scroll vertical.
+  base: { overflow: 'auto' },
 })

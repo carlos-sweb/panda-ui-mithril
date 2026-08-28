@@ -31,6 +31,8 @@ export interface TableColumn<T = Record<string, unknown>> {
 }
 
 export interface TableContainerAttrs extends ComponentAttrs {
+  /** Max height — creates the vertical scroll region (pairs with Table `stickyHeader`). */
+  maxHeight?: string | number
   children?: Vnode | Vnode[] | string | null
   [key: string]: unknown
 }
@@ -41,6 +43,10 @@ export interface TableAttrs<T = Record<string, unknown>> extends ComponentAttrs 
   /** Full grid: outer border + vertical dividers between columns. */
   bordered?: boolean
   pinRows?: boolean
+  /** Sticky header: the thead stays fixed while the body scrolls (pair with `maxHeight`). */
+  stickyHeader?: boolean
+  /** Max height of the internal scroll region (data-driven mode; pairs with `stickyHeader`). */
+  maxHeight?: string | number
   pinCols?: boolean
   hover?: boolean
   /**

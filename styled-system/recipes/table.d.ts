@@ -10,6 +10,7 @@ size: "xs" | "sm" | "md" | "lg" | "xl"
 zebra: boolean
 bordered: boolean
 pinRows: boolean
+stickyHeader: boolean
 pinCols: boolean
 hover: boolean
 }
