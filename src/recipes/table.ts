@@ -60,6 +60,23 @@ export const tableRecipe = defineSlotRecipe({
         marginTop: 'token(spacing.4)',
         justifyContent: 'flex-end',
       },
+      // Barra inferior con selector de filas por página (pageSizeOptions) +
+      // Pagination: selector a la izquierda, paginación a la derecha.
+      '& > .table-pagination-bar': {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        gap: 'token(spacing.3)',
+        marginTop: 'token(spacing.4)',
+        flexWrap: 'wrap',
+      },
+      '& .table-page-size': {
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: 'token(spacing.2)',
+        fontSize: 'token(fontSizes.sm)',
+        color: 'color-mix(in oklab, token(colors.base-content) 60%, transparent)',
+      },
     },
   },
   variants: {

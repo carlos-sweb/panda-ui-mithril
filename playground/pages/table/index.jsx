@@ -269,6 +269,26 @@ export default {
           />
         </Block>
 
+        {/* ── Rows per page ── */}
+        <Block spacing="lg">
+          <Title as="h2" size="3">{t('rowsPerPageTitle')}</Title>
+          <Text color="neutral">{m.trust(t('rowsPerPageDesc'))}</Text>
+          <Table
+            data={people}
+            columns={peopleColumns}
+            pageSizeOptions={[5, 10, 25, 50]}
+            rowKey={(p) => p.id}
+            zebra
+          />
+          <Table
+            data={people}
+            columns={peopleColumns}
+            pageSizeOptions={[5, 10]}
+            perPageLabel="Filas por Página"
+            rowKey={(p) => p.id}
+          />
+        </Block>
+
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.usage')}</Title>
           <Tabs defaultActive="jsx" lifted size="lg">

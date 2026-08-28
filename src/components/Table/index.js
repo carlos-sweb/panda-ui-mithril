@@ -4,6 +4,7 @@ import { cx } from '../../../styled-system/css'
 import { ArrowUp, ArrowDown, ArrowUpDown } from 'lucide-mithril'
 import { Skeleton } from '../Skeleton/index.js'
 import { Pagination } from '../Pagination/index.js'
+import { Select } from '../Select/index.js'
 import { t } from '../../i18n.js'
 
 /**
@@ -97,13 +98,15 @@ function compareItems(a, b, col, direction, data) {
 export const Table = {
   oninit(vnode) {
     vnode.state.page = vnode.attrs.defaultPage ?? 1
+    vnode.state.pageSize = vnode.attrs.defaultPageSize ?? 10
     vnode.state.sort = vnode.attrs.defaultSort ?? null
   },
 
   view(vnode) {
     const {
       size, zebra, pinRows, pinCols, hover, bordered, className,
-      data, columns = [], rowKey, pageSize = 10,
+      data, columns = [], rowKey,
+      pageSize: pageSizeProp, defaultPageSize, pageSizeOptions, perPageLabel, onPageSizeChange,
       page: pageProp, defaultPage, onchange, pagination: paginationProp,
       empty, loading, loadingRows = 3,
       sort: sortProp, defaultSort, onSortChange,
@@ -142,7 +145,10 @@ export const Table = {
 
     // Paginación (contract Pagination): controlada con `page` o interna.
     const paginationEnabled = paginationProp !== false
-    const effPageSize = paginationEnabled ? pageSize : Infinity
+    // pageSize controlado (`pageSize` prop) o interno (`defaultPageSize` / 10).
+    const isPageSizeControlled = pageSizeProp !== undefined
+    const effectivePageSize = isPageSizeControlled ? pageSizeProp : vnode.state.pageSize
+    const effPageSize = paginationEnabled ? effectivePageSize : Infinity
     const pageCount = Math.max(1, Math.ceil(rows.length / effPageSize))
     const isPageControlled = pageProp !== undefined
     const rawPage = isPageControlled ? pageProp : vnode.state.page
@@ -154,6 +160,17 @@ export const Table = {
         vnode.state.page = clamped
         m.redraw()
       }
+    }
+    // Cambio de filas por página: notifica, actualiza el estado interno si es
+    // no-controlado y vuelve a la página 1 (comportamiento Ant/MUI).
+    const setPageSize = (next) => {
+      const clamped = Math.max(1, next || 1)
+      if (onPageSizeChange) onPageSizeChange(clamped)
+      if (!isPageSizeControlled) {
+        vnode.state.pageSize = clamped
+        m.redraw()
+      }
+      setPage(1)
     }
     const start = (safePage - 1) * effPageSize
     const pageRows = rows.slice(start, start + effPageSize)
@@ -228,12 +245,32 @@ export const Table = {
         })
       : null
 
+    // Selector de filas por página (pageSizeOptions): etiqueta i18n por
+    // defecto (Rows per page / Filas por página) o `perPageLabel` custom.
+    const pageSizeEl = Array.isArray(pageSizeOptions) && pageSizeOptions.length > 0
+      ? m('label', { className: 'table-page-size' }, [
+          m('span', perPageLabel != null ? perPageLabel : t('table.rowsPerPage')),
+          m(Select, {
+            size: 'sm',
+            value: String(effectivePageSize),
+            'aria-label': perPageLabel != null ? perPageLabel : t('table.rowsPerPage'),
+            onchange: (e) => setPageSize(Number(e.target.value)),
+          }, pageSizeOptions.map((opt) => m('option', { value: String(opt) }, String(opt)))),
+        ])
+      : null
+
+    // Con selector: barra con el selector a la izquierda y la paginación a la
+    // derecha. Sin selector: la paginación va directa (regla `> .pagination`).
+    const footerEl = pageSizeEl
+      ? m('div', { className: 'table-pagination-bar' }, [pageSizeEl, paginationEl].filter(Boolean))
+      : paginationEl
+
     const children = [
       m(TableContainer, {}, m('table', { className: cx('table', styles.table) }, [
         columns.length > 0 && m('thead', m('tr', theadCells)),
         m('tbody', body),
       ])),
-      paginationEl,
+      footerEl,
     ].filter(Boolean)
 
     return m('div', {

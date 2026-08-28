@@ -55,6 +55,14 @@ export interface TableAttrs<T = Record<string, unknown>> extends ComponentAttrs 
   rowKey?: (item: T, index: number) => string | number
   /** Rows per page. Default: 10. */
   pageSize?: number
+  /** Uncontrolled initial rows per page (default: 10). */
+  defaultPageSize?: number
+  /** Show a "rows per page" selector with these options (e.g. [5, 10, 25, 50]). */
+  pageSizeOptions?: number[]
+  /** Custom "rows per page" label (default: i18n — "Rows per page" / "Filas por página"). */
+  perPageLabel?: string
+  /** Notifies rows-per-page changes (page resets to 1). */
+  onPageSizeChange?: (pageSize: number) => void
   /** Controlled current page (Pagination contract). */
   page?: number
   /** Uncontrolled initial page. */

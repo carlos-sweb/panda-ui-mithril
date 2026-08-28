@@ -31,10 +31,12 @@ let currentLocale = readStoredLocale()
 const messages = {
   en: {
     'table.empty': 'No data',
+    'table.rowsPerPage': 'Rows per page',
     'pagination.ariaLabel': 'Pagination',
   },
   es: {
     'table.empty': 'Sin datos',
+    'table.rowsPerPage': 'Filas por página',
     'pagination.ariaLabel': 'Paginación',
   },
 }
