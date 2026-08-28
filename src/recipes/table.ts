@@ -43,6 +43,13 @@ export const tableRecipe = defineSlotRecipe({
       '& :where(thead tr :is(td, th), tbody tr:not(:last-child) :is(td, th))': {
         borderBottom: 'var(--border, 1px) solid color-mix(in oklab, token(colors.base-content) 5%, transparent)',
       },
+      // Celdas de carga (loading): el Skeleton base es un bloque sin dimensión;
+      // la celda lo dimensiona como línea de texto (1em) para que sea visible.
+      '& .table-cell-loading .skeleton': {
+        height: '1em',
+        width: '100%',
+        borderRadius: '0.25em',
+      },
     },
     row: {},
     // Wrapper del modo data-driven: la paginación vive dentro, espaciada y

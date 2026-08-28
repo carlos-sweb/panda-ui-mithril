@@ -191,7 +191,7 @@ export const Table = {
     if (loading) {
       body = Array.from({ length: loadingRows }, (_, i) =>
         m('tr', { key: `__loading-${i}__` },
-          columns.map((col, j) => m('td', { key: `${col.key}-${j}` }, m(Skeleton)))
+          columns.map((col, j) => m('td', { key: `${col.key}-${j}`, className: 'table-cell-loading' }, m(Skeleton)))
         )
       )
     } else if (rows.length === 0) {
