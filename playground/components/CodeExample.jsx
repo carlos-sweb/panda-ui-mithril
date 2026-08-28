@@ -22,7 +22,13 @@ const pre = css({
   overflowX: 'auto',
   fontSize: '1rem',
   lineHeight: '1.6',
-  fontFamily: 'var(--fonts-mono, monospace)',
+  // The UA stylesheet gives <code> its own font-family: monospace, which does
+  // not inherit from <pre> — so the rendered code text must be targeted
+  // directly, not just the block.
+  fontFamily: "'JetBrains Mono', monospace",
+  '& code': {
+    fontFamily: "'JetBrains Mono', monospace",
+  },
 })
 
 // Language badge shown with the library's Indicator at the top-start corner.
@@ -40,7 +46,7 @@ const langBadge = css({
   fontWeight: '600',
   letterSpacing: '0.05em',
   textTransform: 'uppercase',
-  fontFamily: 'var(--fonts-mono, monospace)',
+  fontFamily: "'JetBrains Mono', monospace",
   userSelect: 'none',
 })
 
