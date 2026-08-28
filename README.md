@@ -270,6 +270,8 @@ npm run codegen
 npm run typecheck
 ```
 
+> **Nota (fresh clone)**: `styled-system/styles.css` es un artefacto generado y está en `.gitignore` (CI lo regenera en cada deploy con `bun run build`). En un clon fresco, corre `npm run codegen` + `bun run scripts/build-css.ts` antes del primer `npm run dev` (o directamente `npm run build`, que genera el CSS en su paso 1).
+
 > **Publicar en npm**: el paquete se publica como source (`src/` + `styled-system/`), sin build previo. `npm publish` ejecuta automáticamente `panda codegen && panda cssgen` (script `prepublishOnly`). No existe `build:lib`.
 
 ## Estructura

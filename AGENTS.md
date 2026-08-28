@@ -12,12 +12,12 @@ For a consumer-facing overview see [llms.txt](./llms.txt) and the [README](./REA
 
 | Command | What it does |
 |---|---|
-| `bun run dev` | Dev server (`bun playground/index.html`), serves on **port 3000**. Not Vite. |
+| `bun run dev` | Dev server (`bun playground/index.html`), serves on **port 3000**. Not Vite. Requires `styled-system/styles.css` to exist — run `bun run codegen && bun run scripts/build-css.ts` first on a fresh clone. |
 | `bun run codegen` | Regenerates `styled-system/` JS/TS helpers (`css()`, tokens, recipes, patterns). |
-| `bun run scripts/build-css.ts` | Regenerates the **minified** `styled-system/styles.css` (the committed artifact). |
+| `bun run scripts/build-css.ts` | Regenerates the **minified** `styled-system/styles.css` (a **generated artifact — gitignored**; CI's `bun run build` regenerates it on every deploy). |
 | `npm run typecheck` | `tsc --noEmit --project tsconfig.lib.json` (src + styled-system, excludes playground). |
 | `bun run count` | Prints the live component count (1 folder = 1 component). |
-| `bun run build` | Builds the static playground (`scripts/build.ts` → `dist-playground/`, never committed). |
+| `bun run build` | Builds the static playground (`scripts/build.ts` → `dist-playground/`, never committed; step 1 regenerates `styles.css`). |
 | `bun run verify:consumer` | Compiles a minimal consumer project against the published package (`scripts/verify-consumer-compile.ts`). |
 | `bun run test` | `bun test`. |
 | `bun run push` | `bun run build && git push` (convenience, not a publish). |
@@ -28,9 +28,10 @@ For a consumer-facing overview see [llms.txt](./llms.txt) and the [README](./REA
 > these regenerations **restart the dev server** — Bun serves a bundled/hashed
 > copy that can lag behind a plain page reload.
 >
-> `npx panda cssgen` produces an UNMINIFIED stylesheet; the committed form is
-> the minified output of `scripts/build-css.ts`. Never commit an unminified
-> stylesheet.
+> `npx panda cssgen` produces an UNMINIFIED stylesheet; the tracked form is
+> the minified output of `scripts/build-css.ts`. `styled-system/styles.css` is
+> **gitignored** (generated artifact — CI regenerates it in `bun run build`);
+> never commit it, and never commit an unminified stylesheet.
 
 ## Architecture
 

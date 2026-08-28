@@ -3,3 +3,6 @@ dist/
 .omo/
 *.log
 .DS_Store
+
+# Generated CSS (ci + local build regenerate it via build-css.ts)
+styled-system/styles.css
