@@ -9,7 +9,7 @@ import { Search, ExternalLink, Sun, Moon } from 'lucide-mithril'
 // Alias Pum*: Button/Kbd/Swap colisionan con los imports de páginas de abajo.
 import {
   Navbar, NavbarStart, NavbarCenter, NavbarEnd, NavbarBrand, NavbarToggle,
-  Button as PumButton, Kbd as PumKbd, Swap as PumSwap
+  Button as PumButton, Kbd as PumKbd, Swap as PumSwap, setLocale as PumSetLocale
 } from '../src/index.js'
 // Named exports (these pages use export const, not export default)
 import { Landing } from './pages/landing/index.jsx'
@@ -358,7 +358,7 @@ const Layout = {
                   <PumButton
                 variant="ghost"
                 size="sm"
-                onclick={() => setLang(currentLang() === 'es' ? 'en' : 'es')}
+                onclick={() => { const next = currentLang() === 'es' ? 'en' : 'es'; PumSetLocale(next); setLang(next) }}
                 className={searchButtonLabel}
               >
                 {currentLang() === 'es' ? 'EN' : 'ES'}

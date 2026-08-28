@@ -1,7 +1,7 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
-import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Table, TableContainer, TableRow, TableCell, TableHead, TableThead, TableTbody, TableTfoot, Text, Block, Tabs, Tab, TabContent, Button, setLocale, getLocale } from '../../../src/index.js'
+import { t, loadPageI18n, setLang, currentLang } from '../../i18n/index.js'
+import { Stack, Title, Table, TableContainer, TableRow, TableCell, TableHead, TableThead, TableTbody, TableTfoot, Text, Block, Tabs, Tab, TabContent, Button, setLocale } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 import table from './table.yaml'
@@ -88,7 +88,6 @@ export default {
     loadPageI18n('table')
     vnode.state.ctrlPage = 2
     vnode.state.ctrlSort = null
-    vnode.state.locale = getLocale()
   },
 
   view(vnode) {
@@ -101,7 +100,7 @@ export default {
 
         {/* ── Compositivo (retrocompatibilidad) ── */}
         <Block spacing="lg">
-          <Title as="h2" size="3">Zebra + hoverable rows</Title>
+          <Title as="h2" size="3">{t('zebraTitle')}</Title>
           <TableContainer>
             <Table zebra>
               <TableThead>
@@ -133,11 +132,8 @@ export default {
 
         {/* ── Bordered ── */}
         <Block spacing="lg">
-          <Title as="h2" size="3">Bordered</Title>
-          <Text color="neutral">
-            <code>bordered</code> agrega la rejilla completa: borde exterior + divisores
-            verticales entre columnas. Funciona en ambos modos (compositivo y data-driven).
-          </Text>
+          <Title as="h2" size="3">{t('borderedTitle')}</Title>
+<Text color="neutral">{m.trust(t('borderedDesc'))}</Text>
           <TableContainer>
             <Table bordered zebra>
               <TableThead>
@@ -162,12 +158,8 @@ export default {
 
         {/* ── Data-driven + paginación automática ── */}
         <Block spacing="lg">
-          <Title as="h2" size="3">Data-driven — paginación automática</Title>
-          <Text color="neutral">
-            40 filas con <code>pageSize={5}</code> → se muestran 5 por página y la
-            <code> Pagination</code> aparece sola (con 3 filas no aparecería). Click en los
-            encabezados para ordenar: texto A-Z/Z-A, sueldo mayor a menor / menor a mayor.
-          </Text>
+          <Title as="h2" size="3">{t('dataTitle')}</Title>
+<Text color="neutral">{m.trust(t('dataDesc'))}</Text>
           <Table
             data={people}
             columns={peopleColumns}
@@ -179,12 +171,8 @@ export default {
 
         {/* ── Ordenamiento dedicado ── */}
         <Block spacing="lg">
-          <Title as="h2" size="3">Sorting</Title>
-          <Text color="neutral">
-            Ciclo por click: <code>asc → desc → sin orden</code>. La detección de tipo es
-            automática (numérico vs texto); <code>sortType</code> la fuerza y <code>sort</code>
-            permite un comparador custom.
-          </Text>
+          <Title as="h2" size="3">{t('sortingTitle')}</Title>
+<Text color="neutral">{m.trust(t('sortingDesc'))}</Text>
           <Table
             data={people.slice(0, 8)}
             columns={[
@@ -199,11 +187,8 @@ export default {
 
         {/* ── Controlado ── */}
         <Block spacing="lg">
-          <Title as="h2" size="3">Controlado — page + sort</Title>
-          <Text color="neutral">
-            <code>page</code>/<code>onchange</code> y <code>sort</code>/<code>onSortChange</code>
-            siguen el contrato controlado de la librería: el estado vive fuera.
-          </Text>
+          <Title as="h2" size="3">{t('controlledTitle')}</Title>
+<Text color="neutral">{m.trust(t('controlledDesc'))}</Text>
           <Table
             data={people}
             columns={peopleColumns}
@@ -223,11 +208,8 @@ export default {
 
         {/* ── Columnas: align / width / render ── */}
         <Block spacing="lg">
-          <Title as="h2" size="3">Columnas — align, width, render</Title>
-          <Text color="neutral">
-            <code>align</code> y <code>width</code> por columna; <code>render</code> para celdas
-            custom (acciones, formato).
-          </Text>
+          <Title as="h2" size="3">{t('columnsTitle')}</Title>
+<Text color="neutral">{m.trust(t('columnsDesc'))}</Text>
           <Table
             data={people.slice(0, 5)}
             columns={[
@@ -245,35 +227,28 @@ export default {
 
         {/* ── Estados: empty + loading ── */}
         <Block spacing="lg">
-          <Title as="h2" size="3">Estados — empty y loading</Title>
-          <Text color="neutral">
-            <code>empty</code> (fila con colSpan) y <code>loading</code> (filas Skeleton keyed).
-          </Text>
+          <Title as="h2" size="3">{t('statesTitle')}</Title>
+<Text color="neutral">{m.trust(t('statesDesc'))}</Text>
           <Table data={[]} columns={peopleColumns} empty="No people found" />
           <Table data={people} columns={peopleColumns} loading loadingRows={4} />
         </Block>
 
         {/* ── i18n: español / inglés ── */}
         <Block spacing="lg">
-          <Title as="h2" size="3">i18n — español / inglés</Title>
-          <Text color="neutral">
-            <code>setLocale('es' | 'en')</code> cambia los strings internos de la librería
-            (estado vacío por defecto, aria-label de la paginación) y la elección se persiste en
-            <code> localStorage</code> (<code>pum-lang</code>). Este demo muestra el estado
-            vacío <em>por defecto</em> (sin prop <code>empty</code>).
-          </Text>
+          <Title as="h2" size="3">{t('i18nTitle')}</Title>
+<Text color="neutral">{m.trust(t('i18nDesc'))}</Text>
           <Stack direction="row" gap="sm">
             <Button
               size="sm"
-              variant={vnode.state.locale === 'en' ? 'soft' : 'ghost'}
-              onclick={() => { setLocale('en'); vnode.state.locale = 'en' }}
+              variant={currentLang() === 'en' ? 'soft' : 'ghost'}
+              onclick={() => { setLocale('en'); setLang('en') }}
             >
               English
             </Button>
             <Button
               size="sm"
-              variant={vnode.state.locale === 'es' ? 'soft' : 'ghost'}
-              onclick={() => { setLocale('es'); vnode.state.locale = 'es' }}
+              variant={currentLang() === 'es' ? 'soft' : 'ghost'}
+              onclick={() => { setLocale('es'); setLang('es') }}
             >
               Español
             </Button>
@@ -283,12 +258,8 @@ export default {
 
         {/* ── Props del Pagination interno ── */}
         <Block spacing="lg">
-          <Title as="h2" size="3">Props del Pagination interno</Title>
-          <Text color="neutral">
-            <code>{'pagination={{ ... }}'}</code> pasa props al <code>Pagination</code> interno
-            (variant, shape, size, siblings, boundaries, ...); <code>pagination={false}</code>
-            desactiva la paginación (muestra todas las filas).
-          </Text>
+          <Title as="h2" size="3">{t('paginationPropsTitle')}</Title>
+<Text color="neutral">{m.trust(t('paginationPropsDesc'))}</Text>
           <Table
             data={people}
             columns={peopleColumns}
