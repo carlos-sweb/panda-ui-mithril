@@ -1,7 +1,7 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
-import { t, loadPageI18n, setLang, currentLang } from '../../i18n/index.js'
-import { Stack, Title, Table, TableContainer, TableRow, TableCell, TableHead, TableThead, TableTbody, TableTfoot, Text, Block, Tabs, Tab, TabContent, Button, setLocale } from '../../../src/index.js'
+import { t, loadPageI18n } from '../../i18n/index.js'
+import { Stack, Title, Table, TableContainer, TableRow, TableCell, TableHead, TableThead, TableTbody, TableTfoot, Text, Block, Tabs, Tab, TabContent, Button } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 import table from './table.yaml'
@@ -231,29 +231,6 @@ export default {
 <Text color="neutral">{m.trust(t('statesDesc'))}</Text>
           <Table data={[]} columns={peopleColumns} empty="No people found" />
           <Table data={people} columns={peopleColumns} loading loadingRows={4} />
-        </Block>
-
-        {/* ── i18n: español / inglés ── */}
-        <Block spacing="lg">
-          <Title as="h2" size="3">{t('i18nTitle')}</Title>
-<Text color="neutral">{m.trust(t('i18nDesc'))}</Text>
-          <Stack direction="row" gap="sm">
-            <Button
-              size="sm"
-              variant={currentLang() === 'en' ? 'soft' : 'ghost'}
-              onclick={() => { setLocale('en'); setLang('en') }}
-            >
-              English
-            </Button>
-            <Button
-              size="sm"
-              variant={currentLang() === 'es' ? 'soft' : 'ghost'}
-              onclick={() => { setLocale('es'); setLang('es') }}
-            >
-              Español
-            </Button>
-          </Stack>
-          <Table data={[]} columns={peopleColumns} />
         </Block>
 
         {/* ── Props del Pagination interno ── */}
