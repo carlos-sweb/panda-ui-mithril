@@ -1,15 +1,18 @@
 import m from 'mithril'
-import { css } from '../styled-system/css'
+import { css, cx } from '../styled-system/css'
 import './style.css'
 
 import { Sidebar } from './components/Sidebar.jsx'
 import { SearchModal } from './components/SearchModal.jsx'
 import { t, currentLang, setLang } from './i18n/index.js'
-import { Search, ExternalLink, Sun, Moon } from 'lucide-mithril'
+import { Search, ExternalLink, Sun, Moon, ChevronDown } from 'lucide-mithril'
+import { FlagEs, FlagUs } from 'circle-flags-mithril'
 // Alias Pum*: Button/Kbd/Swap colisionan con los imports de páginas de abajo.
 import {
   Navbar, NavbarStart, NavbarCenter, NavbarEnd, NavbarBrand, NavbarToggle,
-  Button as PumButton, Kbd as PumKbd, Swap as PumSwap, setLocale as PumSetLocale
+  Button as PumButton, Kbd as PumKbd, Swap as PumSwap, setLocale as PumSetLocale,
+  Dropdown as PumDropdown, DropdownTrigger as PumDropdownTrigger,
+  DropdownContent as PumDropdownContent, Menu as PumMenu, MenuItem as PumMenuItem
 } from '../src/index.js'
 // Named exports (these pages use export const, not export default)
 import { Landing } from './pages/landing/index.jsx'
@@ -226,6 +229,17 @@ const themeLabel = css({
 
 const searchButtonLabel = css({ fontFamily: 'monospace', fontWeight: '700', fontSize: '0.7rem' })
 
+// Idiomas disponibles en el playground (en/es). El trigger muestra la bandera
+// del idioma actual + su abreviatura + ChevronDown; el menú lista cada idioma
+// con su nombre largo (patrón de la página dropdown).
+const langs = [
+  { code: 'es', name: 'Español', abbr: 'Es', flag: FlagEs },
+  { code: 'en', name: 'English', abbr: 'En', flag: FlagUs },
+]
+
+const langTrigger = css({ gap: '0.375rem', alignItems: 'center' })
+const langChevron = css({ opacity: 0.6 })
+
 // Layout component - mounted once on body, persists across route changes
 const Layout = {
   oninit(vnode) {
@@ -302,6 +316,7 @@ const Layout = {
 
   view(vnode) {
     vnode.state._scrollOnRoute?.()
+    const current = langs.find(l => l.code === currentLang()) || langs[0]
     return (
       <div className={css({ display: 'flex', height: '100vh', overflow: 'hidden' })}>
         <Sidebar
@@ -355,14 +370,32 @@ const Layout = {
                 />
               </label>
 
-                  <PumButton
-                variant="ghost"
-                size="sm"
-                onclick={() => { const next = currentLang() === 'es' ? 'en' : 'es'; PumSetLocale(next); setLang(next) }}
-                className={searchButtonLabel}
-              >
-                {currentLang() === 'es' ? 'EN' : 'ES'}
-              </PumButton>
+                  <PumDropdown placement="bottom-end" offset={8}>
+                    <PumDropdownTrigger>
+                      <PumButton
+                        variant="ghost"
+                        size="sm"
+                        className={cx(searchButtonLabel, langTrigger)}
+                      >
+                        {m(current.flag, { size: 18 })}
+                        {current.abbr}
+                        <ChevronDown size={14} className={langChevron} />
+                      </PumButton>
+                    </PumDropdownTrigger>
+                    <PumDropdownContent>
+                      <PumMenu>
+                        {langs.map((l) => (
+                          <PumMenuItem
+                            key={l.code}
+                            onclick={() => { PumSetLocale(l.code); setLang(l.code) }}
+                          >
+                            {m(l.flag, { size: 18 })}
+                            {l.name}
+                          </PumMenuItem>
+                        ))}
+                      </PumMenu>
+                    </PumDropdownContent>
+                  </PumDropdown>
             </NavbarEnd>
           </Navbar>
 
