@@ -2,7 +2,7 @@ import { defineSlotRecipe  , defineRecipe } from '@pandacss/dev'
 
 export const tableRecipe = defineSlotRecipe({
   className : 'table',
-  slots: ['table', 'row'],
+  slots: ['table', 'row', 'data'],
   base: {
     table: {
       fontSize: 'token(fontSizes.md)',
@@ -12,6 +12,19 @@ export const tableRecipe = defineSlotRecipe({
       borderSpacing: '0',
       textAlign: 'left',
       borderRadius: 'var(--radius-box)',
+
+      // Columna ordenable (modo data-driven): cursor + icono espaciado.
+      '& :where(th.sortable)': {
+        cursor: 'pointer',
+        userSelect: 'none',
+        '& svg': { marginInlineStart: 'token(spacing.1)', opacity: '0.5' },
+        '&:hover svg': { opacity: '1' },
+      },
+      // Columna con orden activo: encabezado destacado.
+      '& :where(th[aria-sort])': {
+        color: 'base-content',
+        '& svg': { opacity: '1' },
+      },
 
       '& :where(th, td)': {
         paddingInline: 'token(spacing.4)',
@@ -32,6 +45,15 @@ export const tableRecipe = defineSlotRecipe({
       },
     },
     row: {},
+    // Wrapper del modo data-driven: la paginación vive dentro, espaciada y
+    // alineada a la derecha (aparece sola cuando hay más de una página).
+    data: {
+      width: '100%',
+      '& > .pagination': {
+        marginTop: 'token(spacing.4)',
+        justifyContent: 'flex-end',
+      },
+    },
   },
   variants: {
     size: {

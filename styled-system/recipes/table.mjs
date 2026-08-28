@@ -14,6 +14,10 @@ const tableSlotNames = [
   [
     "row",
     "table__row"
+  ],
+  [
+    "data",
+    "table__data"
   ]
 ]
 const tableSlotFns = /* @__PURE__ */ tableSlotNames.map(([slotName, slotKey]) => [slotName, createRecipe(slotKey, tableDefaultVariants, getSlotCompoundVariant(tableCompoundVariants, slotName))])

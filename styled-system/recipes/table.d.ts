@@ -17,7 +17,7 @@ type TableVariantMap = {
   [key in keyof TableVariant]: Array<TableVariant[key]>
 }
 
-type TableSlot = "table" | "row"
+type TableSlot = "table" | "row" | "data"
 
 export type TableVariantProps = {
   [key in keyof TableVariant]?: ConditionalValue<TableVariant[key]> | undefined
