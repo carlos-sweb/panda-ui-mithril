@@ -4,6 +4,7 @@ import { cx } from '../../../styled-system/css'
 import { ArrowUp, ArrowDown, ArrowUpDown } from 'lucide-mithril'
 import { Skeleton } from '../Skeleton/index.js'
 import { Pagination } from '../Pagination/index.js'
+import { t } from '../../i18n.js'
 
 /**
  * Componente TableContainer. Wrapper con scroll horizontal para que la tabla
@@ -197,7 +198,7 @@ export const Table = {
       body = m('tr', m('td', {
         colSpan: Math.max(1, columns.length),
         className: 'table-empty',
-      }, empty != null ? empty : 'No data'))
+      }, empty != null ? empty : t('table.empty')))
     } else {
       body = pageRows.map((item, index) => {
         const globalIndex = start + index
@@ -222,6 +223,7 @@ export const Table = {
           pageCount,
           onchange: setPage,
           hideWithOnePage: true,
+          'aria-label': t('pagination.ariaLabel'),
           ...paginationProps,
         })
       : null

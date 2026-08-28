@@ -77,3 +77,5 @@ export { Tag } from './components/Tag'
 export { Tooltip } from './components/Tooltip'
 
 
+
+export { setLocale, getLocale } from "./i18n"

@@ -72,3 +72,5 @@ export { Toggle } from './components/Toggle'
 export { Tag } from './components/Tag'
 export { Tooltip } from './components/Tooltip'
 export { cx } from './utils/cx'
+
+export { setLocale, getLocale } from "./i18n"

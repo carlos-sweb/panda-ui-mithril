@@ -3,6 +3,7 @@ import { pagination } from '../../../styled-system/recipes'
 import { button } from '../../../styled-system/recipes'
 import { cx } from '../../../styled-system/css'
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-mithril'
+import { t } from '../../i18n.js'
 
 // Calcula la lista de páginas a mostrar (números y '...'): boundaries en los
 // extremos, siblings alrededor de la página actual, con elipsis donde haga
@@ -67,7 +68,7 @@ export const Pagination = {
       nextLabel,
       firstLabel,
       lastLabel,
-      'aria-label': ariaLabel = 'Pagination',
+      'aria-label': ariaLabel = t('pagination.ariaLabel'),
       className,
       ...rest
     } = vnode.attrs

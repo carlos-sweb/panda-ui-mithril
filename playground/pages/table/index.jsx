@@ -1,7 +1,7 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, Table, TableContainer, TableRow, TableCell, TableHead, TableThead, TableTbody, TableTfoot, Text, Block, Tabs, Tab, TabContent, Button } from '../../../src/index.js'
+import { Stack, Title, Table, TableContainer, TableRow, TableCell, TableHead, TableThead, TableTbody, TableTfoot, Text, Block, Tabs, Tab, TabContent, Button, setLocale, getLocale } from '../../../src/index.js'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
 import table from './table.yaml'
@@ -88,6 +88,7 @@ export default {
     loadPageI18n('table')
     vnode.state.ctrlPage = 2
     vnode.state.ctrlSort = null
+    vnode.state.locale = getLocale()
   },
 
   view(vnode) {
@@ -250,6 +251,34 @@ export default {
           </Text>
           <Table data={[]} columns={peopleColumns} empty="No people found" />
           <Table data={people} columns={peopleColumns} loading loadingRows={4} />
+        </Block>
+
+        {/* ── i18n: español / inglés ── */}
+        <Block spacing="lg">
+          <Title as="h2" size="3">i18n — español / inglés</Title>
+          <Text color="neutral">
+            <code>setLocale('es' | 'en')</code> cambia los strings internos de la librería
+            (estado vacío por defecto, aria-label de la paginación) y la elección se persiste en
+            <code> localStorage</code> (<code>pum-lang</code>). Este demo muestra el estado
+            vacío <em>por defecto</em> (sin prop <code>empty</code>).
+          </Text>
+          <Stack direction="row" gap="sm">
+            <Button
+              size="sm"
+              variant={vnode.state.locale === 'en' ? 'soft' : 'ghost'}
+              onclick={() => { setLocale('en'); vnode.state.locale = 'en' }}
+            >
+              English
+            </Button>
+            <Button
+              size="sm"
+              variant={vnode.state.locale === 'es' ? 'soft' : 'ghost'}
+              onclick={() => { setLocale('es'); vnode.state.locale = 'es' }}
+            >
+              Español
+            </Button>
+          </Stack>
+          <Table data={[]} columns={peopleColumns} />
         </Block>
 
         {/* ── Props del Pagination interno ── */}
