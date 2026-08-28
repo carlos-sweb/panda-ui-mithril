@@ -8,6 +8,7 @@ interface TableVariant {
  */
 size: "xs" | "sm" | "md" | "lg" | "xl"
 zebra: boolean
+bordered: boolean
 pinRows: boolean
 pinCols: boolean
 hover: boolean

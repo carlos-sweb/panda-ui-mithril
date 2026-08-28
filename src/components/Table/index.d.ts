@@ -38,6 +38,8 @@ export interface TableContainerAttrs extends ComponentAttrs {
 export interface TableAttrs<T = Record<string, unknown>> extends ComponentAttrs {
   size?: PumSize
   zebra?: boolean
+  /** Full grid: outer border + vertical dividers between columns. */
+  bordered?: boolean
   pinRows?: boolean
   pinCols?: boolean
   hover?: boolean

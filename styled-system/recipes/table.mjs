@@ -29,6 +29,7 @@ const tableFn = memo((props = {}) => {
 const tableVariantKeys = [
   "size",
   "zebra",
+  "bordered",
   "pinRows",
   "pinCols",
   "hover"
@@ -50,6 +51,9 @@ export const table = /* @__PURE__ */ Object.assign(tableFn, {
     "xl"
   ],
   "zebra": [
+    "true"
+  ],
+  "bordered": [
     "true"
   ],
   "pinRows": [

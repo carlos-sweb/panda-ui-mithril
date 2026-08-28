@@ -101,7 +101,7 @@ export const Table = {
 
   view(vnode) {
     const {
-      size, zebra, pinRows, pinCols, hover, className,
+      size, zebra, pinRows, pinCols, hover, bordered, className,
       data, columns = [], rowKey, pageSize = 10,
       page: pageProp, defaultPage, onchange, pagination: paginationProp,
       empty, loading, loadingRows = 3,
@@ -109,7 +109,7 @@ export const Table = {
       ...rest
     } = vnode.attrs
 
-    const styles = table({ size, zebra, pinRows, pinCols, hover })
+    const styles = table({ size, zebra, pinRows, pinCols, hover, bordered })
 
     // ── Modo compositivo (retrocompatibilidad) ──
     if (data === undefined) {

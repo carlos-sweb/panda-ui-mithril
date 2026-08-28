@@ -95,6 +95,18 @@ export const tableRecipe = defineSlotRecipe({
         },
       },
     },
+    // Tabla con rejilla completa: borde exterior + divisores verticales entre
+    // columnas (los separadores horizontales ya están en el base).
+    bordered: {
+      true: {
+        table: {
+          border: '1px solid color-mix(in oklab, token(colors.base-content) 8%, transparent)',
+          '& :where(th, td) + :where(th, td)': {
+            borderInlineStart: '1px solid color-mix(in oklab, token(colors.base-content) 5%, transparent)',
+          },
+        },
+      },
+    },
     pinRows: {
       true: {
         table: {

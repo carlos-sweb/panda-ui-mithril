@@ -130,6 +130,35 @@ export default {
           </TableContainer>
         </Block>
 
+        {/* ── Bordered ── */}
+        <Block spacing="lg">
+          <Title as="h2" size="3">Bordered</Title>
+          <Text color="neutral">
+            <code>bordered</code> agrega la rejilla completa: borde exterior + divisores
+            verticales entre columnas. Funciona en ambos modos (compositivo y data-driven).
+          </Text>
+          <TableContainer>
+            <Table bordered zebra>
+              <TableThead>
+                <TableRow>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Job</TableHead>
+                  <TableHead>Favorite Color</TableHead>
+                </TableRow>
+              </TableThead>
+              <TableTbody>
+                {rows.map((r) => (
+                  <TableRow key={r[0]}>
+                    <TableCell>{r[0]}</TableCell>
+                    <TableCell>{r[1]}</TableCell>
+                    <TableCell>{r[2]}</TableCell>
+                  </TableRow>
+                ))}
+              </TableTbody>
+            </Table>
+          </TableContainer>
+        </Block>
+
         {/* ── Data-driven + paginación automática ── */}
         <Block spacing="lg">
           <Title as="h2" size="3">Data-driven — paginación automática</Title>
@@ -209,6 +238,7 @@ export default {
             ]}
             rowKey={(p) => p.id}
             zebra
+            bordered
           />
         </Block>
 
