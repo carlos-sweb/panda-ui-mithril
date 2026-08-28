@@ -242,6 +242,50 @@ cx('alert', alertStyles({ variant, color, direction }), className)
 - Use the library's own components in demos (dual JSX/JS snippets via
   `CodeExample`), and prefer `Button` over raw `<button>`.
 
+## Language / i18n (read this before touching anything language-related)
+
+There are **TWO independent i18n systems** that share the SAME localStorage
+key `pum-lang`. Changing language must call **both** — that is why the navbar
+button does `PumSetLocale(next)` **and** `setLang(next)`:
+
+1. **Playground UI strings** — `playground/i18n/index.js`:
+   - `currentLang()` → `'en' | 'es'`. Priority: `m.route.param('lang')` FIRST,
+     then localStorage `pum-lang`, then `'en'`.
+   - `setLang(l)` → persists `pum-lang` + `m.route.set(...)` + `m.redraw()`.
+   - `t(path)` → page i18n → shared → English fallback.
+   - `loadPageI18n(pageName)` → called from a page's `oninit`.
+2. **Library component strings** (empty state, aria-labels) — `src/i18n.js`:
+   - `setLocale('en'|'es')`, `getLocale()`, `t(key)` (flat keys with en
+     fallback). Exported from the barrel as `setLocale`/`getLocale`.
+
+**Critical gotcha — `m.route.set` query params go in the SECOND argument, not
+the third.** The signature is `m.route.set(path, data, options)` where
+`options` only accepts `{state, title, replace}`. The pattern used in the
+playground (`m.route.set(m.route.get(), {}, { lang: l })`) does NOT update the
+URL — verified: `buildPathname('/button', {})` → `/button`, while
+`buildPathname('/button', { lang: 'es' })` → `/button?lang=es`.
+
+Consequence for testing: if you open the playground with `?lang=en` in the URL
+(e.g. `http://127.0.0.1:3000/#!/button?lang=en`), `currentLang()` reads the
+route param and **ignores localStorage**, so switching language "appears
+broken" (trigger stays `En`, page stays English) even though `pum-lang` was
+written. In normal navigation (no `?lang` in the URL) the param is null and
+language works purely via localStorage. To test language switching: navigate
+via the sidebar (no manual `?lang`), reset `localStorage.setItem('pum-lang',
+'en')`, reload, then switch and assert the trigger text AND a shared string
+(e.g. navbar search placeholder `Search...` ↔ `Buscar...`) changed.
+
+**Navbar language dropdown** (`playground/main.jsx`): a `PumDropdown`
+(`Dropdown` aliased) with `PumDropdownTrigger` wrapping a ghost `PumButton`
+showing `[flag circle size 18] [abbr] [ChevronDown size 14]`, and
+`PumDropdownContent > PumMenu > PumMenuItem` per language with
+`[flag circle 18] [long name]`. Language data lives in the `langs` array
+(`{code, name, abbr, flag}` with `FlagEs`/`FlagUs` from `circle-flags-mithril`).
+Item `onclick` = `() => { PumSetLocale(l.code); setLang(l.code) }` — the
+dropdown auto-closes via `closeOnSelect` (default true). Keep `abbr` short
+(`Es`/`En`) and `name` long (`Español`/`English`). The trigger shows the
+CURRENT language (not the target).
+
 ## Verifying Component Changes
 
 `npm run typecheck` does not verify that a component actually renders content
