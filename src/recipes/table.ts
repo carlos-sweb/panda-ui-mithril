@@ -61,11 +61,12 @@ export const tableRecipe = defineSlotRecipe({
         justifyContent: 'flex-end',
       },
       // Barra inferior con selector de filas por página (pageSizeOptions) +
-      // Pagination: selector a la izquierda, paginación a la derecha.
+      // Pagination: agrupados a la derecha, el selector flota a la izquierda
+      // de la paginación.
       '& > .table-pagination-bar': {
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'space-between',
+        justifyContent: 'flex-end',
         gap: 'token(spacing.3)',
         marginTop: 'token(spacing.4)',
         flexWrap: 'wrap',
