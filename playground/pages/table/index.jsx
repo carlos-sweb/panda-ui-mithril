@@ -160,29 +160,10 @@ export default {
         <Block spacing="lg">
           <Title as="h2" size="3">{t('stickyHeaderTitle')}</Title>
           <Text color="neutral">{m.trust(t('stickyHeaderDesc'))}</Text>
-          <TableContainer maxHeight="280px">
-            <Table stickyHeader zebra>
-              <TableThead>
-                <TableRow>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Role</TableHead>
-                  <TableHead>Salary</TableHead>
-                </TableRow>
-              </TableThead>
-              <TableTbody>
-                {people.slice(0, 12).map((p) => (
-                  <TableRow key={p.id}>
-                    <TableCell>{p.name}</TableCell>
-                    <TableCell>{p.role}</TableCell>
-                    <TableCell>${p.salary.toLocaleString()}</TableCell>
-                  </TableRow>
-                ))}
-              </TableTbody>
-            </Table>
-          </TableContainer>
           <Table
             data={people}
             columns={peopleColumns}
+            pageSize={40}
             stickyHeader
             maxHeight="280px"
             rowKey={(p) => p.id}
