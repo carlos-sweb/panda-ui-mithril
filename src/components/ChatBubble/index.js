@@ -147,7 +147,7 @@ export const ChatReactions = {
  */
 export const ChatMessage = {
   view(vnode) {
-    const { placement, name, time, status, reply, reactions, color, size, className, children, ...rest } = vnode.attrs
+    const { placement, name, time, status, reply, reactions, color, size, className, ...rest } = vnode.attrs
 
     const dataAttrs = {}
     if (placement) dataAttrs['data-placement'] = placement
@@ -158,7 +158,10 @@ export const ChatMessage = {
       ...rest
     }, [
       reply && m(ChatReply, { name: reply.name, text: reply.text }),
-      m(ChatBubble, { color, size }, children),
+      // Los hijos viven en vnode.children (nunca en vnode.attrs.children):
+      // texto del mensaje o sub-componentes (ChatAudio, ChatImageMessage,
+      // ChatLink, ...) se renderizan dentro de la burbuja.
+      m(ChatBubble, { color, size }, vnode.children),
       reactions && m(ChatReactions, { reactions }),
       (time || status) && m('div', { className: 'chat-message-meta' }, [
         time && m('span', { className: 'chat-message-time' }, time),
