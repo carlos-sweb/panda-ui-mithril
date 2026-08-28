@@ -19,6 +19,10 @@ import avatar1 from '../../assets/avatar/avatar1.jpg'
 import avatar2 from '../../assets/avatar/avatar2.jpg'
 import avatar3 from '../../assets/avatar/avatar3.jpg'
 import avatar4 from '../../assets/avatar/avatar4.jpg'
+// Media local del demo multimedia (audio, imagen, logo mithril en SVG).
+import helloWorld from '../../assets/chat/hello-world.mp3'
+import samplePhoto from '../../assets/chat/sample-photo.jpg'
+import mithrilLogo from '../../assets/chat/mithril-logo.svg'
 
 
 const usageCodeJsx = `import m from 'mithril'
@@ -225,14 +229,14 @@ export default {
           <Chat placement="start">
             <ChatImage><Avatar src={avatar3} /></ChatImage>
             <ChatMessage placement="start" name="Charlie" time="11:00 AM" status="read">
-              <ChatAudio src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" duration="0:45" />
+              <ChatAudio src={helloWorld} duration="0:01" />
             </ChatMessage>
           </Chat>
 
           <Chat placement="end">
             <ChatMessage placement="end" name="Bob" time="11:05 AM" status="delivered">
               <ChatImageMessage
-                src="https://picsum.photos/400/200"
+                src={samplePhoto}
                 alt="Sample photo"
                 caption="Check out this view!"
               />
@@ -257,7 +261,7 @@ export default {
                 href="https://mithril.js.org"
                 title="Mithril.js"
                 description="A framework for building brilliant applications"
-                image="https://mithril.js.org/img/mithril.js"
+                image={mithrilLogo}
               />
             </ChatMessage>
           </Chat>
