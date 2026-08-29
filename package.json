@@ -298,8 +298,12 @@
   },
   "files": [
     "src",
-    "styled-system"
+    "styled-system",
+    "scripts/cli.ts"
   ],
+  "bin": {
+    "panda-ui-mithril": "./scripts/cli.ts"
+  },
   "scripts": {
     "prepare": "panda codegen",
     "codegen": "panda codegen",
