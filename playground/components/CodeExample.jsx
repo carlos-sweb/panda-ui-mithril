@@ -2,6 +2,7 @@ import m from 'mithril'
 import hljs from 'highlight.js/lib/core'
 import xml from 'highlight.js/lib/languages/xml'
 import javascript from 'highlight.js/lib/languages/javascript'
+import typescript from 'highlight.js/lib/languages/typescript'
 import bash from 'highlight.js/lib/languages/bash'
 import jsx from './../jsx-language.js'
 import { css, cx } from '../../styled-system/css'
@@ -12,6 +13,7 @@ import { ButtonCopy, Indicator } from '../../src/index.js'
 // Register languages
 hljs.registerLanguage('xml', xml)
 hljs.registerLanguage('javascript', javascript)
+hljs.registerLanguage('typescript', typescript)
 hljs.registerLanguage('bash', bash)
 hljs.registerLanguage('jsx', jsx)
 

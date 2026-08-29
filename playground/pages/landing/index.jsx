@@ -27,20 +27,47 @@ const features = [
 ]
 
 const packageManagers = [
-  { id: 'npm', label: 'npm', command: 'npm install panda-ui-mithril mithril lucide-mithril', icon: DevNpmOriginal },
-  { id: 'pnpm', label: 'pnpm', command: 'pnpm add panda-ui-mithril mithril lucide-mithril', icon: DevPnpmOriginal },
-  { id: 'yarn', label: 'yarn', command: 'yarn add panda-ui-mithril mithril lucide-mithril', icon: DevYarnOriginal },
-  { id: 'bun', label: 'bun', command: 'bun add panda-ui-mithril mithril lucide-mithril', icon: DevBunOriginal },
+  { id: 'npm', label: 'npm', command: 'npm install https://github.com/carlos-sweb/panda-ui-mithril.git mithril', icon: DevNpmOriginal },
+  { id: 'pnpm', label: 'pnpm', command: 'pnpm add https://github.com/carlos-sweb/panda-ui-mithril.git mithril', icon: DevPnpmOriginal },
+  { id: 'yarn', label: 'yarn', command: 'yarn add https://github.com/carlos-sweb/panda-ui-mithril.git mithril', icon: DevYarnOriginal },
+  { id: 'bun', label: 'bun', command: 'bun add https://github.com/carlos-sweb/panda-ui-mithril.git mithril', icon: DevBunOriginal },
 ]
 
-const quickStartCode = `<Alert color="info">Welcome to panda-ui-mithril!</Alert>
+// Quick Start — proceso de consumo verificado (ver install.md). Instala Panda
+// primero (el paquete corre `panda codegen` al instalarse desde git), configura
+// tu panda.config.ts con el preset, genera el CSS y escribe el hello world.
+const quickStartInstall = `bun add -d @pandacss/dev @pandacss/preset-panda
+bun add https://github.com/carlos-sweb/panda-ui-mithril.git mithril`
 
-<Card border>
-  <CardBody>
-    <CardTitle>Hello World</CardTitle>
-    <Button color="primary">Click me</Button>
-  </CardBody>
-</Card>`
+const quickStartConfig = `// panda.config.ts
+import { defineConfig } from '@pandacss/dev'
+import pandaPreset from '@pandacss/preset-panda'
+import { pumPreset } from 'panda-ui-mithril/preset'
+
+export default defineConfig({
+  presets: [pandaPreset, pumPreset],
+  include: ['./src/**/*.{js,jsx,ts,tsx}'],
+  staticCss: { recipes: '*' },
+  outdir: 'styled-system',
+})`
+
+const quickStartCss = `bunx panda codegen && bunx panda cssgen`
+
+const quickStartBunfig = `// bunfig.toml — JSX clásico con factory de Mithril
+jsx = "react"
+jsxFactory = "m"
+jsxFragmentFactory = "m.Fragment"`
+
+const quickStartApp = `// src/main.js
+import m from 'mithril'
+import { Button } from 'panda-ui-mithril/button'
+
+m.mount(document.body, {
+  view: () => [
+    m('h1', 'Try me out'),
+    m(Button, { color: 'primary', size: 'md' }, 'try me'),
+  ],
+})`
 
 // Canonical component list. Mirrors the sidebar navigation so the landing
 // page can never drift from the routes that actually exist. `route` is the
@@ -251,10 +278,41 @@ export const Landing = {
         {/* ── Quick Start ── */}
         <Title as="h2" size="3" id="quick-start" className={css({ marginTop: '2.5rem' })}>Quick Start</Title>
         <Block spacing="sm" />
-        <Alert color="info" className={css({ marginBottom: '1rem' })}>
-          Every component is a plain Mithril component — compose them the same way you'd write any other <code>m(...)</code> vnode tree.
-        </Alert>
-        <CodeExample code={quickStartCode} type="jsx" copyId="quick-start-code" />
+        <Text color="neutral" className={css({ marginBottom: '1.5rem' })}>
+          {m.trust(t('quickStartIntro'))}
+        </Text>
+
+        <Stack gap="lg">
+          <Stack gap="sm">
+            <Text weight="bold">{t('quickStartStep1Title')}</Text>
+            <Text color="neutral">{m.trust(t('quickStartStep1Desc'))}</Text>
+            <CodeExample code={quickStartInstall} type="bash" copyId="quick-start-install" />
+          </Stack>
+
+          <Stack gap="sm">
+            <Text weight="bold">{t('quickStartStep2Title')}</Text>
+            <Text color="neutral">{m.trust(t('quickStartStep2Desc'))}</Text>
+            <CodeExample code={quickStartConfig} type="typescript" copyId="quick-start-config" />
+          </Stack>
+
+          <Stack gap="sm">
+            <Text weight="bold">{t('quickStartStep3Title')}</Text>
+            <CodeExample code={quickStartCss} type="bash" copyId="quick-start-css" />
+          </Stack>
+
+          <Stack gap="sm">
+            <Text weight="bold">{t('quickStartStep4Title')}</Text>
+            <Text color="neutral">{m.trust(t('quickStartStep4Desc'))}</Text>
+            <CodeExample code={quickStartBunfig} type="bash" copyId="quick-start-bunfig" />
+          </Stack>
+
+          <Stack gap="sm">
+            <Text weight="bold">{t('quickStartStep5Title')}</Text>
+            <Text color="neutral">{m.trust(t('quickStartStep5Desc'))}</Text>
+            <CodeExample code={quickStartApp} type="jsx" copyId="quick-start-app" />
+            <Text color="neutral">{m.trust(t('quickStartStep5Run'))}</Text>
+          </Stack>
+        </Stack>
 
         {/* ── Component Preview ── */}
         <Title as="h2" size="3" className={css({ marginTop: '2.5rem' })}>Component Preview</Title>

@@ -22,3 +22,25 @@
   featureIcons:
     title: Lucide Icons
     desc: Beautiful, consistent icon set via lucide-mithril. SVG-based, tree-shakeable.
+  quickStartIntro: >-
+    From an empty project to your first styled Button — verified end to end.
+    The npm package can lag behind; this guide installs from GitHub.
+  quickStartStep1Title: 1 · Install the dependencies
+  quickStartStep1Desc: >-
+    Install Panda first (the package runs <code>panda codegen</code> when
+    installed from git), then the library and Mithril.
+  quickStartStep2Title: 2 · Configure your Panda with the preset
+  quickStartStep2Desc: >-
+    Recipes ship inside <code>pumPreset</code>;
+    <code>staticCss: { recipes: '*' }</code> makes <code>cssgen</code> emit
+    them all.
+  quickStartStep3Title: 3 · Generate the helpers and the CSS
+  quickStartStep4Title: 4 · Mithril JSX
+  quickStartStep4Desc: >-
+    <code>Button</code> and <code>Alert</code> are the only <code>.jsx</code>
+    components; they need the JSX transform with Mithril's factory.
+  quickStartStep5Title: 5 · Hello world
+  quickStartStep5Desc: >-
+    The import uses the lowercase kebab subpath (<code>panda-ui-mithril/button</code>).
+  quickStartStep5Run: >-
+    Run with <code>bun index.html</code> and open <code>http://localhost:3000</code>.
