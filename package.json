@@ -308,7 +308,6 @@
     "build": "bun run scripts/build.ts",
     "esbuild": "bun run scripts/esbuild.ts",
     "typecheck": "tsc --noEmit --project tsconfig.lib.json",
-    "verify:consumer": "bun run scripts/verify-consumer-compile.ts",
     "test": "bun test",
     "prepublishOnly": "bunx panda codegen && bunx panda cssgen",
     "push": "bun run build && git push"

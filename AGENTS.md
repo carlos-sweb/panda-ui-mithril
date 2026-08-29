@@ -18,7 +18,6 @@ For a consumer-facing overview see [llms.txt](./llms.txt) and the [README](./REA
 | `npm run typecheck` | `tsc --noEmit --project tsconfig.lib.json` (src + styled-system, excludes playground). |
 | `bun run count` | Prints the live component count (1 folder = 1 component). |
 | `bun run build` | Builds the static playground (`scripts/build.ts` → `dist-playground/`, **gitignored**; step 1 regenerates `styles.css`). |
-| `bun run verify:consumer` | Compiles a minimal consumer project against the published package (`scripts/verify-consumer-compile.ts`). |
 | `bun run test` | `bun test`. |
 | `bun run push` | `bun run build && git push` (convenience, not a publish). |
 
@@ -356,23 +355,37 @@ example; adapt the repo path to whichever reference the component draws from):
 ## Consumer preset/source model
 
 The package ships **source only** (`files: ["src", "styled-system"]` — no
-`dist` build; `build:lib` was removed and `prepublishOnly` runs
-`panda codegen && panda cssgen`). `styled-system/` **is published**, so the
-recipes' `'../../styled-system/css'` imports resolve inside the consumer's
-`node_modules/panda-ui-mithril/`. A Panda consumer compiles only the CSS for
-the components it imports. Three misconfigurations fail silently (no build
-error, styles just never appear):
+`dist` build; `prepublishOnly` runs `panda codegen && panda cssgen`).
+`styled-system/` **is published**, so the recipes' `'../../styled-system/css'`
+imports resolve inside the consumer's `node_modules/panda-ui-mithril/`. The
+consumer's own Panda run generates the CSS from **`pumPreset`** — the preset
+registers every recipe in `theme.recipes`/`theme.slotRecipes` (see
+`src/preset.ts`), so the consumer does NOT add the package's recipe files to
+its `include`. The consumer config is:
 
-(a) **Consumer `outdir` must be `styled-system`.** The `cva()` matcher derives
-its needle from the consumer's `outdir` via `getOutdir()` and matches by
-substring `styled-system/css` against the raw specifier in the recipes.
+```ts
+presets: [pandaPreset, pumPreset],
+include: ['./src/**/*.{js,jsx,ts,tsx}'],  // only the consumer's own code
+staticCss: { recipes: '*' },              // emits all preset recipes
+outdir: 'styled-system',
+```
 
-(b) **`include` resolves relative to the consumer's `cwd`.** Consumers must
-write `node_modules/panda-ui-mithril/src/recipes/*.ts` relative, not as an
-absolute path (absolute yields 0 extracted files — styles silently dropped).
+Three misconfigurations fail silently (no build error, styles just never
+appear):
 
-(c) **The preset is mandatory.** Without `pumPreset`, `token(...)` /
+(a) **The preset is mandatory.** Without `pumPreset`, `token(...)` /
 `var(--colors-*)` emit broken literals the browser ignores.
+
+(b) **`staticCss: { recipes: '*' }` is mandatory.** It is what makes `cssgen`
+emit the recipes' CSS; without it, `styles.css` has only tokens/base and
+components render unstyled. (Older docs told consumers to add
+`node_modules/panda-ui-mithril/src/recipes/*.ts` to `include` — that is
+obsolete; the recipes now ship inside the preset.)
+
+(c) **Consumer `outdir` must be `styled-system`.** That is where the consumer's
+helpers and `styles.css` are generated and where `index.html` links
+(`./styled-system/styles.css`); a different outdir means the stylesheet is
+never loaded.
 
 Consumer JSX for the `.jsx` components: only `Button` and `Alert` are `.jsx`;
 importing them requires Mithril's classic JSX transform in the consumer's
