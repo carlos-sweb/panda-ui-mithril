@@ -19,6 +19,10 @@
       "types": "./src/theme.d.ts",
       "import": "./src/theme.ts"
     },
+    "./recipes": {
+      "types": "./src/recipes/index.d.ts",
+      "import": "./src/recipes/index.ts"
+    },
     "./accordion": {
       "types": "./src/components/Accordion/index.d.ts",
       "import": "./src/components/Accordion/index.js"
