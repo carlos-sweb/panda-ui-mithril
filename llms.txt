@@ -6,7 +6,7 @@ Install (npm can lag behind — prefer the GitHub repo): `bun add -d @pandacss/d
 
 Facts worth knowing before helping someone integrate this library:
 - Dark mode is controlled by `[data-theme="dark"]` on any ancestor element — not a `.dark` class, and not `prefers-color-scheme`. The consuming app must set this attribute itself for dark-mode styling to apply.
-- Brand colors (`primary`, `secondary`, `accent`, `neutral`, plus their `-content` pairs) are meant to be customized per consuming app: set `--pum-primary`, `--pum-secondary`, `--pum-accent`, `--pum-neutral` (and the matching `-content` variables) as CSS custom properties on `:root` to override them. Semantic status colors (`info`, `success`, `warning`, `error`) are fixed by design and have no override hook — they should look the same in every consuming app.
+- Brand colors (`primary`, `secondary`, `accent`, `neutral`, plus their `-content` pairs) are meant to be customized per consuming app: override them via `theme.extend.semanticTokens.colors.primary = { value: { base, _dark } }` in the app's `panda.config.ts`, or import/copy `panda-ui-mithril/theme` (`pumTheme`) as the base. Semantic status colors (`info`, `success`, `warning`, `error`) are fixed by design and have no override hook — they should look the same in every consuming app. (Older `--pum-*` CSS custom properties were removed; brand colors are now plain tokens in `src/theme.ts`.)
 - The consuming app MUST set `staticCss: { recipes: '*' }` in its `panda.config.ts` (plus `presets: [pandaPreset, pumPreset]` and `outdir: 'styled-system'`) so its Panda emits the recipes shipped in `pumPreset`. Do NOT add the package's recipe files to `include` — the recipes come through the preset.
 - Components use prop-based APIs, not CSS class composition. Variants like `color`, `size`, `variant`, `align`, `transform`, `weight`, `borderWidth` are passed as props — the component maps them to Panda-generated CSS classes internally.
 - All CSS lives in `src/recipes/*.ts` as Panda `cva`/`sva` recipes. Components never contain inline `css()` calls. Recipe files are the single source of truth for every visual variant.
@@ -64,7 +64,7 @@ Playground has full EN/ES internationalization. Shared translations (`common`, `
 ## Docs
 
 - [README](https://raw.githubusercontent.com/carlos-sweb/panda-ui-mithril/master/README.md): Full usage guide — installation, theming, dark mode, integrating into a project that also uses Panda CSS, component category list.
-- [panda.config.ts](https://raw.githubusercontent.com/carlos-sweb/panda-ui-mithril/master/panda.config.ts): Source of truth for every design token (colors, fonts, radii, spacing, fontSizes, keyframes) and the `--pum-*` override hooks.
+- [src/theme.ts](https://raw.githubusercontent.com/carlos-sweb/panda-ui-mithril/master/src/theme.ts): Source of truth for the identity values — tokens (colors, fonts, radii, spacing), semanticTokens (brand + status colors, light/dark) and keyframes. Exported as `panda-ui-mithril/theme` (`pumTheme`); the preset consumes it.
 
 ## Examples
 

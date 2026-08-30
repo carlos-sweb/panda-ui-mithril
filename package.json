@@ -15,6 +15,10 @@
       "types": "./src/preset.d.ts",
       "import": "./src/preset.ts"
     },
+    "./theme": {
+      "types": "./src/theme.d.ts",
+      "import": "./src/theme.ts"
+    },
     "./accordion": {
       "types": "./src/components/Accordion/index.d.ts",
       "import": "./src/components/Accordion/index.js"

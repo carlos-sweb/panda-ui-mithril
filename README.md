@@ -96,28 +96,47 @@ Para que funcione, tres detalles:
 - **`staticCss: { recipes: '*' }` es obligatorio.** Es lo que hace que `cssgen` emita el CSS de las recipes del preset; sin él, `styles.css` queda solo con tokens/base y los componentes se ven sin estilo.
 - **`outdir: 'styled-system'` es obligatorio.** Ahí se generan los helpers y el `styles.css` que linkea tu `index.html`; si usas otro `outdir`, ajusta el `<link>` (y los imports de `styled-system/` en tu código).
 
-#### Personalizar los colores de marca (`--pum-*`)
+#### Personalizar los colores de marca (vía `theme`)
 
-`primary`, `secondary`, `accent` y `neutral` (y sus `-content`) son colores de **marca** — se espera que cada proyecto los redefina, a diferencia de `info`/`success`/`warning`/`error`, que son colores **semánticos de estado** y se mantienen fijos sin importar el tema. Para sobreescribir los de marca, no necesitas tocar Panda ni conocer el nombre interno del token — cada uno tiene un hook con fallback (`var(--pum-primary, <valor por defecto>)`), así que basta con declarar la custom property en el `:root` de tu app: en tu propio `globalCss`, en tu propia hoja de estilos, o generado dinámicamente por un selector de color en runtime.
+`primary`, `secondary`, `accent` y `neutral` (y sus `-content`) son colores de **marca** — se espera que cada proyecto los redefina, a diferencia de `info`/`success`/`warning`/`error`, que son colores **semánticos de estado** y se mantienen fijos sin importar el tema.
 
-```css
-:root {
-  --pum-primary: oklch(55% 0.2 250);
-  --pum-primary-content: white;
-  --pum-secondary: #d946ef;
-  --pum-secondary-content: white;
-  --pum-accent: ...;
-  --pum-neutral: ...;
-}
+La librería expone su identidad visual en **`panda-ui-mithril/theme`** (`pumTheme`): tokens crudos + semanticTokens (con valores light/dark) + keyframes. El preset la consume internamente, así que el consumidor hereda el look por defecto sin hacer nada. Para personalizarlo, dos vías:
+
+**1. Extender el theme desde tu `panda.config.ts`** (recomendado — no pierdes actualizaciones):
+
+```ts
+// panda.config.ts (proyecto padre)
+import { defineConfig } from '@pandacss/dev'
+import pandaPreset from '@pandacss/preset-panda'
+import { pumPreset } from 'panda-ui-mithril/preset'
+
+export default defineConfig({
+  presets: [pandaPreset, pumPreset],
+  theme: {
+    extend: {
+      semanticTokens: {
+        colors: {
+          primary: { value: { base: 'oklch(55% 0.2 250)', _dark: '#a78bfa' } },
+          secondary: { value: { base: '#d946ef', _dark: '#f472b6' } },
+          // ...el resto que quieras redefinir
+        },
+      },
+    },
+  },
+  // include + staticCss + outdir como siempre
+})
 ```
 
-No hace falta declarar los cuatro — cualquiera que dejes sin definir usa el valor por defecto de la librería. Si tu app ya tiene un selector de color en runtime (ej. clases `.primary-{color}` que cambian una custom property propia), simplemente enlázalo:
+**2. Importar `pumTheme` y usarlo como base** — para heredar y extender de forma explícita, o copiarlo a tu proyecto y editarlo (patrón Tailwind):
 
-```css
-:root {
-  --pum-primary: var(--primary-500); /* tu propia escala reactiva */
-}
+```ts
+import { pumTheme } from 'panda-ui-mithril/theme'
+// en tu defineConfig: theme: { extend: { ...pumTheme, semanticTokens: { colors: { primary: {...} } } } }
 ```
+
+No hace falta redefinir todos los colores — cualquiera que dejes sin tocar usa el valor por defecto de la librería.
+
+> **Nota (breaking)**: versiones anteriores usaban custom properties `--pum-primary`/`--pum-secondary`/`--pum-accent`/`--pum-neutral` declaradas en `:root` para personalizar. Ese mecanismo se eliminó: los colores ahora viven como tokens en `pumTheme` y se personalizan vía `theme.extend.semanticTokens` (arriba).
 
 #### Colisión de tokens semánticos
 
