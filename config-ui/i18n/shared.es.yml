@@ -1,0 +1,32 @@
+common:
+  classReference: Referencia de clases
+  usage: Uso
+  classTableTooltip: La columna Class name es la clase CSS que esta variante genera internamente — nunca la uses como className. Usa la columna Prop para aplicarla en la API Mithril de esta librería.
+  thClassName: Nombre de clase
+  thProp: Prop
+  thType: Tipo
+  thDescription: Descripción
+  prop: Prop
+  type: Tipo
+  description: Descripción
+  isDefault: (por defecto)
+  copy: Copiar
+  copied: ¡Copiado!
+  noResults: Sin resultados.
+  searchPlaceholder: Buscar ...
+  searchNavigate: ↑↓ Navegar
+  searchOpen: ↵ Abrir
+  searchClose: esc Cerrar
+  demoComingSoon: Demo próximamente.
+  home: Inicio
+sidebar:
+  categories:
+    colors: Colores
+    typography: Tipografía
+    spacing: Espaciado
+    radii: Radios
+navbar:
+  themeLabels:
+    light: 🌞 Claro
+    dark: 🌚 Oscuro
+    cupcake: 🧁 Cupcake

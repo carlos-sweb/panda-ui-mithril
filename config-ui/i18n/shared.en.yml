@@ -1,0 +1,32 @@
+common:
+  classReference: Class Reference
+  usage: Usage
+  classTableTooltip: The Class name column is the CSS class this variant generates internally — you never pass it as className. Use the Prop column to apply it in this library's Mithril API.
+  thClassName: Class name
+  thProp: Prop
+  thType: Type
+  thDescription: Description
+  prop: Prop
+  type: Type
+  description: Description
+  isDefault: (default)
+  copy: Copy
+  copied: Copied!
+  noResults: No results found.
+  searchPlaceholder: Search ...
+  searchNavigate: ↑↓ Navigate
+  searchOpen: ↵ Open
+  searchClose: esc Close
+  demoComingSoon: Demo coming soon.
+  home: Home
+sidebar:
+  categories:
+    colors: Colors
+    typography: Typography
+    spacing: Spacing
+    radii: Radii
+navbar:
+  themeLabels:
+    light: 🌞 Light
+    dark: 🌚 Dark
+    cupcake: 🧁 Cupcake

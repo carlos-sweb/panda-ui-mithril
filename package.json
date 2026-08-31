@@ -307,6 +307,7 @@
   "files": [
     "src",
     "styled-system",
+    "config-ui",
     "scripts/cli.ts"
   ],
   "bin": {
@@ -333,6 +334,7 @@
     "@fontsource/jetbrains-mono": "^5.3.0",
     "@fontsource/ubuntu": "^5.3.0",
     "@fontsource/ubuntu-mono": "^5.3.0",
+    "baojs": "^0.2.1",
     "circle-flags-mithril": "^1.0.0",
     "devicon-mithril": "^1.0.0",
     "highlight.js": "^11.12.0",

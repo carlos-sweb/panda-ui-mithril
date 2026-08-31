@@ -1,0 +1,48 @@
+@layer reset, base, tokens, recipes, utilities;
+@import 'highlight.js/styles/atom-one-dark-reasonable.css';
+@import '@fontsource/ubuntu/400.css';
+@import '@fontsource/ubuntu/500.css';
+@import '@fontsource/ubuntu/700.css';
+@import '@fontsource/ubuntu/400-italic.css';
+@import '@fontsource/ubuntu-mono/400.css';
+@import '@fontsource/jetbrains-mono/400.css';
+@import '@fontsource/jetbrains-mono/500.css';
+@import '@fontsource/jetbrains-mono/600.css';
+@import '@fontsource/jetbrains-mono/700.css';
+
+body {
+  font-family: 'Ubuntu', system-ui, -apple-system, sans-serif;
+  line-height: 1.6;
+  color: var(--colors-base-content);
+  background-color: var(--colors-base-100);
+}
+
+aside{
+  border-width:0px;
+}
+
+::selection {
+  background-color: var(--colors-primary);
+  color: var(--colors-primary-content);
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  /*background: #eaeaea;*/
+  background: transparent;
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--colors-base-300);
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--colors-base-content);
+  opacity: 0.3;
+}
+

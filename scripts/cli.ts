@@ -64,6 +64,8 @@ Usage:
                                          the Mithril JSX fields into tsconfig.json.
   bunx panda-ui-mithril init --force    Overwrites if pum/ or panda.config.ts
                                          already exist.
+  bunx panda-ui-mithril config          Opens the interactive theme editor
+                                         (Bao.js server) at http://localhost:1234.
   bunx panda-ui-mithril --help          Shows this help.
 
 The editable theme lives in pum/theme.ts — change colors/scales there and
@@ -151,8 +153,20 @@ function copyPum(cwd: string, force: boolean) {
   console.log(`✔ ${PUM_DIR}/ copied (preset.ts + theme.ts + theme/*.ts — recipes via package)`)
 }
 
-function main() {
+async function main() {
   const args = process.argv.slice(2)
+
+  // `config` — abre el editor visual del theme (Bao.js server en :1234)
+  if (args[0] === 'config') {
+    const serverPath = join(PKG_DIR, 'config-ui', 'server.ts')
+    if (!existsSync(serverPath)) {
+      console.error('Could not find config-ui/server.ts in the installed package.')
+      process.exit(1)
+    }
+    // Importa el servidor (Bao.js escucha y mantiene el proceso vivo)
+    await import(serverPath)
+    return
+  }
 
   if (args.includes('--help') || args.includes('-h') || args[0] !== 'init') {
     console.log(HELP)
@@ -181,4 +195,4 @@ function main() {
   console.log('  bun index.html            # opens http://localhost:3000')
 }
 
-main()
+await main()
