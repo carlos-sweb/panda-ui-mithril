@@ -404,6 +404,46 @@ in `bunfig.toml` top-level keys or tsconfig `compilerOptions`). Import
 subpaths in the exports map are lowercase kebab: `panda-ui-mithril/button`,
 `panda-ui-mithril/alert` — not the PascalCase folder names.
 
+## Config UI (theme editor) — `bunx panda-ui-mithril config`
+
+`config-ui/` is a **client of the core like the playground** (NOT inside
+`src/`): it reuses the playground shell (navbar + sidebar + routes + i18n) and
+consumes only `panda-ui-mithril` components. The editor is a Bao.js server on
+**:1234** (`config-ui/server.ts`) that bundles the SPA with `Bun.build` in
+runtime and serves its own generated CSS (`config-ui/config-ui.css`, built by
+`bun run build:config-ui` / `scripts/build-config-ui.ts` with a **dedicated
+Panda config** — `panda-config-ui.config.ts`, outdir `styled-system-config-ui`,
+so it never clobbers the playground's `styled-system/`).
+
+**Theme target resolution** (`config-ui/server.ts` → `resolveTheme`):
+- `--dir <ruta>` / `-d <ruta>` (read from `process.argv`): explicit base.
+  Accepts a project root (`pum/theme` → `src/theme` → `theme` subdirs are
+  tried inside it), or a theme dir directly (has `colors.ts`).
+- Without a flag: **upward search** from `process.cwd()` (up to 10 levels),
+  trying `pum/theme` (consumer) then `src/theme` (this repo).
+- Returns `{ themeDir, projectRoot, legacy }`; `projectRoot` = dir containing
+  `panda.config.ts` (found by walking up) — `POST /api/rebuild` runs
+  `bunx panda codegen && cssgen` in **`projectRoot`**, never in `process.cwd()`.
+- `GET /api/theme` also returns `themeRel` (e.g. `pum/theme` or `src/theme`)
+  so the pages show the real edited path instead of a hardcoded one.
+
+**Legacy layout migration** (critical): consumers initialized with an OLD
+`init` have `pum/theme.ts` as a single file (no `pum/theme/` folder). The
+editor cannot edit that layout: `GET/POST /api/theme` respond
+`{ ok: false, legacy: true, hint: 'bunx panda-ui-mithril init' }`. The CLI
+`init` detects `isLegacyTheme` (theme.ts file exists, no `theme/` dir) and
+**migrates automatically**: it parses the legacy values with
+`config-ui/theme-io.ts` (`extractBalanced`/`extractCategory` +
+`parseColors`/`parseFlat`), copies the new layout, then re-applies the values
+via `writeColorsSrc`/`writeFlatSrc` (no-op for tokens the legacy lacks, so
+package defaults stay). Verified: 29 values preserved (20 colors + 2 raw +
+2 fonts + 4 spacing + 1 radii). `init` skips the "already exists" check for
+legacy layouts because migration is exactly what the user needs. `--force`
+keeps its full-regeneration semantics. `theme-io.ts` regex rules: `parseFlat`
+must NOT require a second closing brace (that bug silently dropped all but the
+last token per category); `extractBalanced` must match `marker` followed by
+`(` or `=` so `import { defineTokens }` is ignored.
+
 ## Commit Conventions
 
 - Stage everything (`dist-playground/` and `styled-system/styles.css` are

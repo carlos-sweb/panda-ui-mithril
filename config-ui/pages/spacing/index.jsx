@@ -29,6 +29,13 @@ const page = {
     fetch('/api/theme')
       .then((r) => r.json())
       .then((data) => {
+        if (data && data.ok === false) {
+          vnode.state.loading = false
+          vnode.state.error = data.error || 'Theme not found'
+          m.redraw()
+          return
+        }
+        vnode.state.themeRel = data.themeRel || 'pum/theme'
         vnode.state.spacing = JSON.parse(JSON.stringify(data.spacing || {}))
         vnode.state.loading = false
         m.redraw()
@@ -66,7 +73,7 @@ const page = {
     return (
       <Stack gap="lg">
         <Title as="h1" size="2">Spacing</Title>
-        <Text color="neutral">Extra spacing scale beyond Panda's native 0.5–96 — written to <code>pum/theme/spacing.ts</code>.</Text>
+        <Text color="neutral">Extra spacing scale beyond Panda's native 0.5–96 — written to <code>{s.themeRel}/spacing.ts</code>.</Text>
 
         {s.loading && <Alert color="info">Loading theme…</Alert>}
         {s.error && <Alert color="error">Error: {s.error}</Alert>}

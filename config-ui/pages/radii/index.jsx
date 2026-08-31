@@ -29,6 +29,13 @@ const page = {
     fetch('/api/theme')
       .then((r) => r.json())
       .then((data) => {
+        if (data && data.ok === false) {
+          vnode.state.loading = false
+          vnode.state.error = data.error || 'Theme not found'
+          m.redraw()
+          return
+        }
+        vnode.state.themeRel = data.themeRel || 'pum/theme'
         vnode.state.radii = JSON.parse(JSON.stringify(data.radii || {}))
         vnode.state.loading = false
         m.redraw()
@@ -66,7 +73,7 @@ const page = {
     return (
       <Stack gap="lg">
         <Title as="h1" size="2">Radii</Title>
-        <Text color="neutral">Border radii of the theme — written to <code>pum/theme/radii.ts</code>.</Text>
+        <Text color="neutral">Border radii of the theme — written to <code>{s.themeRel}/radii.ts</code>.</Text>
 
         {s.loading && <Alert color="info">Loading theme…</Alert>}
         {s.error && <Alert color="error">Error: {s.error}</Alert>}

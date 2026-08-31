@@ -2,25 +2,44 @@
 /**
  * panda-ui-mithril CLI
  *
- * `bunx panda-ui-mithril init` — generates the consumer configuration:
- *   1. `pum/` — local copy of `preset.ts` + `theme.ts` (+ d.ts). The copied
- *      preset imports the recipes from the package (`panda-ui-mithril/recipes`,
- *      public barrel) — recipes are NOT copied. The theme (`pum/theme.ts`)
- *      is the consumer's local, editable source of truth.
- *   2. `panda.config.ts` — points to `./pum/preset` (not node_modules).
- *   3. Mithril JSX fields in `tsconfig.json` (jsx: react + factory m).
- *      The dev server (`bun index.html`) compiles the package's `.jsx` files
- *      with the JSX config from `tsconfig.json` (the `bunfig.toml` is only
- *      respected by `bun build`, not the dev server — verified empirically).
+ * `bunx panda-ui-mithril init` — genera/actualiza la configuración del
+ * consumidor:
+ *   1. `pum/` — copia local de `preset.ts` + `theme.ts` (+ d.ts) + la carpeta
+ *      `theme/` con `{colors,fonts,spacing,radii,keyframes}.ts`. El preset
+ *      copiado importa las recipes del paquete (`panda-ui-mithril/recipes`,
+ *      barrel público) — las recipes NO se copian. El theme (`pum/theme/*.ts`)
+ *      es la fuente editable local del consumidor.
+ *   2. `panda.config.ts` — apunta a `./pum/preset` (no node_modules).
+ *   3. Mithril JSX fields en `tsconfig.json` (jsx: react + factory m).
+ *      El dev server (`bun index.html`) compila los `.jsx` del paquete con la
+ *      config JSX de `tsconfig.json` (el `bunfig.toml` solo lo respeta
+ *      `bun build`, no el dev server — verificado empíricamente).
+ *
+ * Layout legacy: si el proyecto se inicializó con una versión vieja del CLI,
+ * `pum/` tiene un `theme.ts` de archivo único (sin carpeta `theme/`). `init`
+ * lo detecta y MIGRA automáticamente a `pum/theme/*.ts`, preservando los
+ * valores personalizados (colores/fonts/spacing/radii/keyframes) que pudieran
+ * haberse editado en el archivo legacy. El editor `config` no puede operar
+ * sobre el layout legacy y devuelve un hint de migración.
  *
  * Usage:
- *   bunx panda-ui-mithril init           # creates pum/ + config (no overwrite)
+ *   bunx panda-ui-mithril init           # crea pum/ + config (no overwrite)
  *   bunx panda-ui-mithril init --force   # force overwrite
+ *   bunx panda-ui-mithril config         # editor visual (Bao.js) en :1234
+ *   bunx panda-ui-mithril config --dir <ruta>  # apunta el editor a otra raíz
  *   bunx panda-ui-mithril --help
  */
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import {
+  extractBalanced,
+  extractCategory,
+  parseColors,
+  parseFlat,
+  writeColorsSrc,
+  writeFlatSrc,
+} from '../config-ui/theme-io'
 
 const CLI_DIR = dirname(fileURLToPath(import.meta.url))
 // The CLI lives in scripts/ of the installed package → the package root is ../.
@@ -58,17 +77,25 @@ const JSX_FIELDS = {
 const HELP = `panda-ui-mithril — initialization CLI
 
 Usage:
-  bunx panda-ui-mithril init            Copies pum/preset.ts + pum/theme.ts into
-                                         your project, creates panda.config.ts
-                                         (pointing to ./pum/preset) and merges
-                                         the Mithril JSX fields into tsconfig.json.
+  bunx panda-ui-mithril init            Copies pum/preset.ts + pum/theme.ts +
+                                         pum/theme/*.ts into your project,
+                                         creates panda.config.ts (pointing to
+                                         ./pum/preset) and merges the Mithril
+                                         JSX fields into tsconfig.json.
+                                         Migrates an old single-file pum/theme.ts
+                                         layout automatically (values preserved).
   bunx panda-ui-mithril init --force    Overwrites if pum/ or panda.config.ts
                                          already exist.
   bunx panda-ui-mithril config          Opens the interactive theme editor
                                          (Bao.js server) at http://localhost:1234.
+  bunx panda-ui-mithril config --dir <ruta>   Points the editor at another
+                                         project root (or a theme dir directly);
+                                         without it, it searches upward from
+                                         the current directory (pum/theme, then
+                                         src/theme).
   bunx panda-ui-mithril --help          Shows this help.
 
-The editable theme lives in pum/theme.ts — change colors/scales there and
+The editable theme lives in pum/theme/*.ts — change colors/scales there and
 recompile (bunx panda codegen && bunx panda cssgen). Recipes are NOT copied:
 they come from the package via panda-ui-mithril/recipes.
 
@@ -101,9 +128,9 @@ function ensureJsxConfig(cwd: string) {
 }
 
 /**
- * Copies preset.ts + theme.ts (+ d.ts) into pum/ and rewrites the copied
- * preset's recipe imports: from relative paths ('./../src/recipes/X') to the
- * package's public barrel ('panda-ui-mithril/recipes').
+ * Copies preset.ts + theme.ts (+ d.ts) + theme/*.ts into pum/ and rewrites
+ * the copied preset's recipe imports: from relative paths ('./../src/recipes/X')
+ * to the package's public barrel ('panda-ui-mithril/recipes').
  */
 function copyPum(cwd: string, force: boolean) {
   const pumPath = join(cwd, PUM_DIR)
@@ -153,6 +180,76 @@ function copyPum(cwd: string, force: boolean) {
   console.log(`✔ ${PUM_DIR}/ copied (preset.ts + theme.ts + theme/*.ts — recipes via package)`)
 }
 
+/** true si pum/ tiene el layout legacy: theme.ts archivo único sin carpeta theme/. */
+function isLegacyTheme(cwd: string): boolean {
+  const pumPath = join(cwd, PUM_DIR)
+  return existsSync(join(pumPath, 'theme.ts')) && !existsSync(join(pumPath, 'theme'))
+}
+
+/**
+ * Migra un pum/ legacy (theme.ts de archivo único) al layout nuevo
+ * (pum/theme/*.ts), preservando los valores personalizados del archivo
+ * legacy. Pasos:
+ *   1. Parsear el theme.ts legacy ANTES de sobrescribirlo.
+ *   2. Copiar el layout nuevo (copyPum interno con force).
+ *   3. Re-aplicar los valores parseados sobre los archivos nuevos
+ *      (writeColorsSrc/writeFlatSrc son no-op si un token no existe, así que
+ *      los defaults del paquete quedan para tokens no presentes en legacy).
+ */
+function migrateLegacyTheme(cwd: string) {
+  const pumPath = join(cwd, PUM_DIR)
+  const legacySrc = readFileSync(join(pumPath, 'theme.ts'), 'utf8')
+
+  const tokensBlock = extractBalanced(legacySrc, 'defineTokens')
+  const semanticBlock = extractBalanced(legacySrc, 'defineSemanticTokens')
+  const rawColors = tokensBlock ? parseFlat(extractCategory(tokensBlock, 'colors') ?? '') : {}
+  const fonts = tokensBlock ? parseFlat(extractCategory(tokensBlock, 'fonts') ?? '') : {}
+  const spacing = tokensBlock ? parseFlat(extractCategory(tokensBlock, 'spacing') ?? '') : {}
+  const radii = tokensBlock ? parseFlat(extractCategory(tokensBlock, 'radii') ?? '') : {}
+  const semanticColors = semanticBlock
+    ? parseColors(extractCategory(semanticBlock, 'colors') ?? '')
+    : {}
+  const keyframesBlock = extractBalanced(legacySrc, 'keyframes')
+
+  const parsedCount =
+    Object.keys(rawColors).length +
+    Object.keys(fonts).length +
+    Object.keys(spacing).length +
+    Object.keys(radii).length +
+    Object.keys(semanticColors).length
+
+  // Copia el layout nuevo (sobrescribe pum/ completo).
+  copyPum(cwd, true)
+
+  // Re-aplica los valores del legacy sobre los archivos recién copiados.
+  const themeDir = join(pumPath, 'theme')
+  const colorsPath = join(themeDir, 'colors.ts')
+  writeFileSync(
+    colorsPath,
+    writeColorsSrc(writeFlatSrc(readFileSync(colorsPath, 'utf8'), rawColors), semanticColors),
+  )
+  writeFlatSrcTo(themeDir, 'fonts', fonts)
+  writeFlatSrcTo(themeDir, 'spacing', spacing)
+  writeFlatSrcTo(themeDir, 'radii', radii)
+  if (keyframesBlock) {
+    writeFileSync(
+      join(themeDir, 'keyframes.ts'),
+      `/**\n * Keyframes de panda-ui-mithril (migrados del layout legacy).\n */\n\nexport const themeKeyframes = ${keyframesBlock}\n`,
+    )
+  }
+
+  if (parsedCount > 0) {
+    console.log(`✔ ${PUM_DIR}/ migrated from legacy single-file theme.ts → theme/*.ts (${parsedCount} values preserved)`)
+  } else {
+    console.warn(`⚠ ${PUM_DIR}/ legacy theme.ts could not be parsed (${parsedCount} values) — using the package defaults. Review pum/theme/*.ts.`)
+  }
+}
+
+function writeFlatSrcTo(themeDir: string, file: string, values: Record<string, string>) {
+  const path = join(themeDir, file + '.ts')
+  writeFileSync(path, writeFlatSrc(readFileSync(path, 'utf8'), values))
+}
+
 async function main() {
   const args = process.argv.slice(2)
 
@@ -163,7 +260,8 @@ async function main() {
       console.error('Could not find config-ui/server.ts in the installed package.')
       process.exit(1)
     }
-    // Importa el servidor (Bao.js escucha y mantiene el proceso vivo)
+    // Importa el servidor (Bao.js escucha y mantiene el proceso vivo). El
+    // server lee --dir/-d de process.argv para resolver la ruta del theme.
     await import(serverPath)
     return
   }
@@ -176,20 +274,28 @@ async function main() {
   const cwd = process.cwd()
   const force = args.includes('--force')
   const target = join(cwd, CONFIG_NAME)
+  const legacy = isLegacyTheme(cwd)
 
-  if (existsSync(target) && !force) {
+  // El check de "ya existe" se salta si es layout legacy: la migración es
+  // exactamente la operación que el usuario necesita (y panda.config.ts se
+  // regenera con el template canónico, idéntico al que ya tiene).
+  if (existsSync(target) && !force && !legacy) {
     console.error(
       `${CONFIG_NAME} already exists in ${cwd}. Use --force to overwrite it.`,
     )
     process.exit(1)
   }
 
-  copyPum(cwd, force)
+  if (legacy) {
+    migrateLegacyTheme(cwd)
+  } else {
+    copyPum(cwd, force)
+  }
   writeFileSync(target, CONFIG_TEMPLATE)
   console.log(`✔ Created ${CONFIG_NAME}`)
   ensureJsxConfig(cwd)
   console.log('')
-  console.log('The editable theme is in pum/theme.ts.')
+  console.log('The editable theme is in pum/theme/*.ts (colors/fonts/spacing/radii/keyframes).')
   console.log('Next steps:')
   console.log('  bunx panda codegen && bunx panda cssgen')
   console.log('  bun index.html            # opens http://localhost:3000')

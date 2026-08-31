@@ -42,7 +42,14 @@ const page = {
     fetch('/api/theme')
       .then((r) => r.json())
       .then((data) => {
+        if (data && data.ok === false) {
+          vnode.state.loading = false
+          vnode.state.error = data.error || 'Theme not found'
+          m.redraw()
+          return
+        }
         vnode.state.themeData = data
+        vnode.state.themeRel = data.themeRel || 'pum/theme'
         // colors: { name: { base, dark } } — copia editable
         vnode.state.colors = JSON.parse(JSON.stringify(data.colors || {}))
         vnode.state.loading = false
@@ -93,7 +100,7 @@ const page = {
     return (
       <Stack gap="lg">
         <Title as="h1" size="2">Colors</Title>
-        <Text color="neutral">Edit the theme colors — changes are written to <code>pum/theme/colors.ts</code>.</Text>
+        <Text color="neutral">Edit the theme colors — changes are written to <code>{s.themeRel}/colors.ts</code>.</Text>
 
         {s.loading && <Alert color="info">Loading theme…</Alert>}
         {s.error && <Alert color="error">Error: {s.error}</Alert>}

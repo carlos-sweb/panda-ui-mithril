@@ -29,6 +29,13 @@ const page = {
     fetch('/api/theme')
       .then((r) => r.json())
       .then((data) => {
+        if (data && data.ok === false) {
+          vnode.state.loading = false
+          vnode.state.error = data.error || 'Theme not found'
+          m.redraw()
+          return
+        }
+        vnode.state.themeRel = data.themeRel || 'pum/theme'
         vnode.state.fonts = JSON.parse(JSON.stringify(data.fonts || {}))
         vnode.state.loading = false
         m.redraw()
@@ -66,7 +73,7 @@ const page = {
     return (
       <Stack gap="lg">
         <Title as="h1" size="2">Fonts</Title>
-        <Text color="neutral">Edit the theme fonts — changes are written to <code>pum/theme/fonts.ts</code>.</Text>
+        <Text color="neutral">Edit the theme fonts — changes are written to <code>{s.themeRel}/fonts.ts</code>.</Text>
 
         {s.loading && <Alert color="info">Loading theme…</Alert>}
         {s.error && <Alert color="error">Error: {s.error}</Alert>}
