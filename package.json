@@ -363,8 +363,7 @@
     "postcss-url": "^10.1.4",
     "stylelint": "^17.14.1",
     "stylelint-config-standard": "^40.0.0",
-    "typescript": "^5.9.3",
-    "yaml": "^2.6.0"
+    "typescript": "^5.9.3"
   },
   "keywords": [
     "mithril",

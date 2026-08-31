@@ -2,20 +2,20 @@
 /**
  * panda-ui-mithril CLI
  *
- * `bunx panda-ui-mithril init` — genera la configuración del consumidor:
- *   1. `pum/` — copia local de `preset.ts` + `theme.ts` (+ d.ts). El preset
- *      copiado importa las recipes desde el paquete (`panda-ui-mithril/recipes`,
- *      barrel público) — las recipes NO se copian. El tema (`pum/theme.ts`)
- *      es la fuente local editable del consumidor.
- *   2. `panda.config.ts` — apunta a `./pum/preset` (no a node_modules).
- *   3. Los campos JSX de Mithril en `tsconfig.json` (jsx: react + factory m).
- *      El dev server (`bun index.html`) compila los `.jsx` del paquete con la
- *      config JSX del `tsconfig.json` (el `bunfig.toml` solo la respeta
- *      `bun build`, no el dev server — verificado empíricamente).
+ * `bunx panda-ui-mithril init` — generates the consumer configuration:
+ *   1. `pum/` — local copy of `preset.ts` + `theme.ts` (+ d.ts). The copied
+ *      preset imports the recipes from the package (`panda-ui-mithril/recipes`,
+ *      public barrel) — recipes are NOT copied. The theme (`pum/theme.ts`)
+ *      is the consumer's local, editable source of truth.
+ *   2. `panda.config.ts` — points to `./pum/preset` (not node_modules).
+ *   3. Mithril JSX fields in `tsconfig.json` (jsx: react + factory m).
+ *      The dev server (`bun index.html`) compiles the package's `.jsx` files
+ *      with the JSX config from `tsconfig.json` (the `bunfig.toml` is only
+ *      respected by `bun build`, not the dev server — verified empirically).
  *
- * Uso:
- *   bunx panda-ui-mithril init           # crea pum/ + config (no pisa)
- *   bunx panda-ui-mithril init --force   # fuerza sobreescritura
+ * Usage:
+ *   bunx panda-ui-mithril init           # creates pum/ + config (no overwrite)
+ *   bunx panda-ui-mithril init --force   # force overwrite
  *   bunx panda-ui-mithril --help
  */
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
@@ -23,7 +23,7 @@ import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const CLI_DIR = dirname(fileURLToPath(import.meta.url))
-// El CLI vive en scripts/ del paquete instalado → la raíz del paquete es ../.
+// The CLI lives in scripts/ of the installed package → the package root is ../.
 // node_modules/panda-ui-mithril/scripts/cli.ts → node_modules/panda-ui-mithril/
 const PKG_DIR = join(CLI_DIR, '..')
 
@@ -47,39 +47,39 @@ export default defineConfig({
 })
 `
 
-// Los campos JSX de Mithril que el dev server necesita para compilar los
-// componentes .jsx del paquete (Button/Alert).
+// Mithril JSX fields the dev server needs to compile the package's .jsx
+// components (Button/Alert).
 const JSX_FIELDS = {
   jsx: 'react',
   jsxFactory: 'm',
   jsxFragmentFactory: 'm.Fragment',
 }
 
-const HELP = `panda-ui-mithril — CLI de inicialización
+const HELP = `panda-ui-mithril — initialization CLI
 
-Uso:
-  bunx panda-ui-mithril init            Copia pum/preset.ts + pum/theme.ts a tu
-                                         proyecto, crea panda.config.ts (apunta a
-                                         ./pum/preset) y mergea el JSX de Mithril
-                                         en tsconfig.json.
-  bunx panda-ui-mithril init --force    Sobreescribe si pum/ o panda.config.ts
-                                         ya existen.
-  bunx panda-ui-mithril --help          Muestra esta ayuda.
+Usage:
+  bunx panda-ui-mithril init            Copies pum/preset.ts + pum/theme.ts into
+                                         your project, creates panda.config.ts
+                                         (pointing to ./pum/preset) and merges
+                                         the Mithril JSX fields into tsconfig.json.
+  bunx panda-ui-mithril init --force    Overwrites if pum/ or panda.config.ts
+                                         already exist.
+  bunx panda-ui-mithril --help          Shows this help.
 
-El tema editable vive en pum/theme.ts — cambia colores/escalas ahí y
-recompila (bunx panda codegen && bunx panda cssgen). Las recipes NO se
-copian: vienen del paquete vía panda-ui-mithril/recipes.
+The editable theme lives in pum/theme.ts — change colors/scales there and
+recompile (bunx panda codegen && bunx panda cssgen). Recipes are NOT copied:
+they come from the package via panda-ui-mithril/recipes.
 
-Requisitos previos (pasos del Quick Start):
+Prerequisites (Quick Start steps):
   bun add -d @pandacss/dev @pandacss/preset-panda
   bun add https://github.com/carlos-sweb/panda-ui-mithril.git mithril
 
-Después de init:
+After init:
   bunx panda codegen && bunx panda cssgen
-  bun index.html            # abre http://localhost:3000
+  bun index.html            # opens http://localhost:3000
 `
 
-/** Mergea los campos JSX de Mithril en tsconfig.json (crea uno si falta). */
+/** Merges the Mithril JSX fields into tsconfig.json (creates one if missing). */
 function ensureJsxConfig(cwd: string) {
   const tsconfigPath = join(cwd, TSCONFIG_NAME)
   let tsconfig: { compilerOptions?: Record<string, unknown> } = {}
@@ -88,20 +88,20 @@ function ensureJsxConfig(cwd: string) {
     try {
       tsconfig = JSON.parse(readFileSync(tsconfigPath, 'utf8'))
     } catch {
-      // tsconfig inválido (p.ej. con comentarios) — lo regeneramos completo.
+      // Invalid tsconfig (e.g. with comments) — regenerate it fully.
       tsconfig = {}
     }
   }
 
   tsconfig.compilerOptions = { ...tsconfig.compilerOptions, ...JSX_FIELDS }
   writeFileSync(tsconfigPath, JSON.stringify(tsconfig, null, 2) + '\n')
-  console.log(`✔ ${TSCONFIG_NAME} actualizado (JSX de Mithril)`)
+  console.log(`✔ ${TSCONFIG_NAME} updated (Mithril JSX)`)
 }
 
 /**
- * Copia preset.ts + theme.ts (+ d.ts) a pum/ y reescribe los imports de
- * recipes del preset copiado: de rutas relativas ('./../src/recipes/X') al
- * barrel público del paquete ('panda-ui-mithril/recipes').
+ * Copies preset.ts + theme.ts (+ d.ts) into pum/ and rewrites the copied
+ * preset's recipe imports: from relative paths ('./../src/recipes/X') to the
+ * package's public barrel ('panda-ui-mithril/recipes').
  */
 function copyPum(cwd: string, force: boolean) {
   const pumPath = join(cwd, PUM_DIR)
@@ -109,11 +109,18 @@ function copyPum(cwd: string, force: boolean) {
     ['src/preset.ts', 'preset.ts'],
     ['src/theme.ts', 'theme.ts'],
     ['src/theme.d.ts', 'theme.d.ts'],
+    // Archivos TS del theme (colors/fonts/spacing/radii/keyframes) — la
+    // fuente editable de valores del consumidor.
+    ['src/theme/colors.ts', 'theme/colors.ts'],
+    ['src/theme/fonts.ts', 'theme/fonts.ts'],
+    ['src/theme/spacing.ts', 'theme/spacing.ts'],
+    ['src/theme/radii.ts', 'theme/radii.ts'],
+    ['src/theme/keyframes.ts', 'theme/keyframes.ts'],
   ]
 
   if (existsSync(pumPath) && !force) {
     console.error(
-      `${PUM_DIR}/ ya existe en ${cwd}. Usa --force para regenerarlo.`,
+      `${PUM_DIR}/ already exists in ${cwd}. Use --force to regenerate it.`,
     )
     process.exit(1)
   }
@@ -123,12 +130,12 @@ function copyPum(cwd: string, force: boolean) {
   for (const [from, to] of sources) {
     const src = join(PKG_DIR, from)
     if (!existsSync(src)) {
-      console.error(`No se encontró ${from} en el paquete instalado.`)
+      console.error(`Could not find ${from} in the installed package.`)
       process.exit(1)
     }
     let content = readFileSync(src, 'utf8')
 
-    // Reescribir imports de recipes: './../src/recipes/X' → barrel público.
+    // Rewrite recipe imports: './../src/recipes/X' → public barrel.
     if (to === 'preset.ts') {
       content = content.replace(
         /from '\.\/\.\.\/src\/recipes\/[a-zA-Z0-9]+'/g,
@@ -136,10 +143,12 @@ function copyPum(cwd: string, force: boolean) {
       )
     }
 
-    writeFileSync(join(pumPath, to), content)
+    const out = join(pumPath, to)
+    mkdirSync(dirname(out), { recursive: true })
+    writeFileSync(out, content)
   }
 
-  console.log(`✔ ${PUM_DIR}/ copiado (preset.ts + theme.ts — recipes vía paquete)`)
+  console.log(`✔ ${PUM_DIR}/ copied (preset.ts + theme.ts + theme/*.ts — recipes via package)`)
 }
 
 function main() {
@@ -156,20 +165,20 @@ function main() {
 
   if (existsSync(target) && !force) {
     console.error(
-      `${CONFIG_NAME} ya existe en ${cwd}. Usa --force para sobreescribirlo.`,
+      `${CONFIG_NAME} already exists in ${cwd}. Use --force to overwrite it.`,
     )
     process.exit(1)
   }
 
   copyPum(cwd, force)
   writeFileSync(target, CONFIG_TEMPLATE)
-  console.log(`✔ Creado ${CONFIG_NAME}`)
+  console.log(`✔ Created ${CONFIG_NAME}`)
   ensureJsxConfig(cwd)
   console.log('')
-  console.log('El tema editable está en pum/theme.ts.')
-  console.log('Siguientes pasos:')
+  console.log('The editable theme is in pum/theme.ts.')
+  console.log('Next steps:')
   console.log('  bunx panda codegen && bunx panda cssgen')
-  console.log('  bun index.html            # abre http://localhost:3000')
+  console.log('  bun index.html            # opens http://localhost:3000')
 }
 
 main()
