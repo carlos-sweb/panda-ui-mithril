@@ -29,6 +29,10 @@ const UI_DIR = join(PKG_DIR, 'config-ui')
 const app = new Bao()
 
 // ── Bundle de la SPA (Bun.build en runtime) ───────────────────────────────
+// El JS se bundlea (resuelve bare imports). El CSS NO se toma del bundle:
+// el editor usa su propio CSS generado con Panda postcss
+// (config-ui/config-ui.css, producido por scripts/build-config-ui.ts), que
+// incluye tokens + recipes + estilos de las páginas.
 let editorJs = ''
 let editorCss = ''
 try {
@@ -41,7 +45,12 @@ try {
   })
   for (const artifact of out.outputs) {
     if (artifact.kind === 'entry-point') editorJs = await artifact.text()
-    else if (artifact.kind === 'css' || artifact.path.endsWith('.css')) editorCss = await artifact.text()
+  }
+  const generatedCss = join(UI_DIR, 'config-ui.css')
+  if (existsSync(generatedCss)) {
+    editorCss = readFileSync(generatedCss, 'utf8')
+  } else {
+    console.error('config-ui: config-ui.css no existe — corre bun run scripts/build-config-ui.ts')
   }
 } catch (e) {
   console.error('config-ui: Bun.build falló:', String(e))

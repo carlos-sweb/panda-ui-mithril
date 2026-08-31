@@ -319,6 +319,7 @@
     "count": "bun run scripts/count-components.ts",
     "dev": "bun playground/index.html",
     "build": "bun run scripts/build.ts",
+    "build:config-ui": "bun run scripts/build-config-ui.ts",
     "esbuild": "bun run scripts/esbuild.ts",
     "typecheck": "tsc --noEmit --project tsconfig.lib.json",
     "test": "bun test",
