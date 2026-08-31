@@ -63,7 +63,7 @@ Playground has full EN/ES internationalization. Shared translations (`common`, `
 
 ## Docs
 
-- [README](https://raw.githubusercontent.com/carlos-sweb/panda-ui-mithril/master/README.md): Full usage guide — installation, theming, dark mode, integrating into a project that also uses Panda CSS, component category list.
+- [Official site](https://carlos-sweb.github.io/panda-ui-mithril/): Single source of user-facing documentation — install, Quick Start, component reference and demos. The README is just a minimal pointer to it.
 - [src/theme.ts](https://raw.githubusercontent.com/carlos-sweb/panda-ui-mithril/master/src/theme.ts): Source of truth for the identity values — tokens (colors, fonts, radii, spacing), semanticTokens (brand + status colors, light/dark) and keyframes. Exported as `panda-ui-mithril/theme` (`pumTheme`); the preset consumes it.
 
 ## Examples

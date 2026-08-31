@@ -6,7 +6,9 @@ libraries; icons via lucide-mithril. Published on npm as `panda-ui-mithril`
 (source + Panda preset — see [Consumer model](#consumer-presetsource-model)).
 
 This file is the working guide for any AI/LLM (or human) modifying this repo.
-For a consumer-facing overview see [llms.txt](./llms.txt) and the [README](./README.md).
+For a consumer-facing overview see [llms.txt](./llms.txt) and the [official
+site](https://carlos-sweb.github.io/panda-ui-mithril/) (the README is just a
+minimal pointer to the site).
 
 > **Runtime preference**: the user always prefers **Bun.js** (Bun is the
 > runtime, package manager, bundler, and test runner). Never reach for Node.js
