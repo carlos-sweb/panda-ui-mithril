@@ -419,6 +419,11 @@ so it never clobbers the playground's `styled-system/`).
 - `--dir <ruta>` / `-d <ruta>` (read from `process.argv`): explicit base.
   Accepts a project root (`pum/theme` → `src/theme` → `theme` subdirs are
   tried inside it), or a theme dir directly (has `colors.ts`).
+- `--port <n>` / `--port=<n>` / `-p <n>` (read from `process.argv`): server
+  port (default **1234**).
+- On start the server **opens the URL in the system browser** (best-effort:
+  `xdg-open`/`open`/`start`, spawned detached + unref'd — a failure never
+  kills the server; the URL is always printed to stdout).
 - Without a flag: **upward search** from `process.cwd()` (up to 10 levels),
   trying `pum/theme` (consumer) then `src/theme` (this repo).
 - Returns `{ themeDir, projectRoot, legacy }`; `projectRoot` = dir containing

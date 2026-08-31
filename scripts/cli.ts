@@ -25,8 +25,10 @@
  * Usage:
  *   bunx panda-ui-mithril init           # crea pum/ + config (no overwrite)
  *   bunx panda-ui-mithril init --force   # force overwrite
- *   bunx panda-ui-mithril config         # editor visual (Bao.js) en :1234
- *   bunx panda-ui-mithril config --dir <ruta>  # apunta el editor a otra raíz
+ *   bunx panda-ui-mithril config         # editor visual (Bao.js) en :1234,
+ *                                          abre el navegador automáticamente
+ *   bunx panda-ui-mithril config --port 5000    # puerto custom (--port=5000 ok)
+ *   bunx panda-ui-mithril config --dir <ruta>   # apunta el editor a otra raíz
  *   bunx panda-ui-mithril --help
  */
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
@@ -87,7 +89,10 @@ Usage:
   bunx panda-ui-mithril init --force    Overwrites if pum/ or panda.config.ts
                                          already exist.
   bunx panda-ui-mithril config          Opens the interactive theme editor
-                                         (Bao.js server) at http://localhost:1234.
+                                         (Bao.js server) at http://localhost:1234
+                                         and opens it in the browser.
+  bunx panda-ui-mithril config --port 5000    Serves the editor on :5000
+                                         (also --port=5000 or -p 5000).
   bunx panda-ui-mithril config --dir <ruta>   Points the editor at another
                                          project root (or a theme dir directly);
                                          without it, it searches upward from
@@ -261,7 +266,8 @@ async function main() {
       process.exit(1)
     }
     // Importa el servidor (Bao.js escucha y mantiene el proceso vivo). El
-    // server lee --dir/-d de process.argv para resolver la ruta del theme.
+    // server lee --dir/-d y --port/-p de process.argv (puerto, ruta del theme,
+    // y abre el navegador).
     await import(serverPath)
     return
   }

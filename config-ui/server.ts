@@ -2,11 +2,15 @@
 /**
  * config-ui server — API del editor del theme (Bao.js).
  *
- * `bunx panda-ui-mithril config` sirve este servidor en :1234:
+ * `bunx panda-ui-mithril config` sirve este servidor (por defecto en :1234):
  *   GET  /              → SPA del editor (bundleada con Bun.build)
  *   GET  /api/theme     → valores actuales del theme (JSON por categoría)
  *   POST /api/theme     → recibe edits y reescribe pum/theme/*.ts
  *   POST /api/rebuild   → ejecuta codegen + cssgen
+ *
+ * Flags (leídos de process.argv — el bin ya los recibió):
+ *   --port <n> | --port=<n> | -p <n>   puerto del servidor (default 1234)
+ *   --dir <ruta> | -d <ruta>           base explícita para el theme (ver abajo)
  *
  * El target son los archivos del theme del consumidor. Resolución de ruta:
  *   - `--dir <ruta>` (o `-d`): usa `<ruta>` como base explícita (acepta un
@@ -17,6 +21,9 @@
  *     carpeta `pum/theme/`, el editor no puede editar → responde con hint de
  *     migración (`bunx panda-ui-mithril init`, que preserva los valores).
  *
+ * Al arrancar abre la URL en el navegador del sistema (xdg-open / open /
+ * start según plataforma).
+ *
  * La SPA (config-ui/) se bundlea con Bun.build en runtime — resuelve los bare
  * imports (mithril, lucide-mithril, ...) que el navegador no entiende.
  */
@@ -24,10 +31,10 @@ import Bao from 'baojs'
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join, relative, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { spawnSync } from 'node:child_process'
+import { spawn, spawnSync } from 'node:child_process'
 import { parseColors, parseFlat, writeColorsSrc, writeFlatSrc } from './theme-io'
 
-const PORT = 1234
+const PORT = portFromArgv() ?? 1234
 const CLI_DIR = dirname(fileURLToPath(import.meta.url))
 // config-ui/server.ts → la raíz del paquete es ../ (node_modules/panda-ui-mithril/)
 const PKG_DIR = join(CLI_DIR, '..')
@@ -158,10 +165,34 @@ app.post('/api/rebuild', (ctx) => {
   return ctx.sendJson({ ok, codegen: codegen.stderr?.slice(-200), cssgen: cssgen.stderr?.slice(-200) })
 })
 
-app.notFoundHandler = (ctx) => ctx.sendText('Not found', { status: 404 })
+// El CSS inline (config-ui.css) referencia las fuentes como rutas relativas
+// (fonts/xxx.woff2, copiadas por postcss-url) — el navegador las pide al
+// server, así que hay que servirlas desde config-ui/fonts/.
+app.get('/fonts/*path', (ctx) => {
+  const rel = ctx.params.path
+  const file = join(UI_DIR, 'fonts', rel)
+  if (!existsSync(file)) return ctx.sendRaw(new Response('Not found', { status: 404 }))
+  const ext = file.split('.').pop() || ''
+  const types = {
+    woff2: 'font/woff2', woff: 'font/woff', ttf: 'font/ttf', otf: 'font/otf',
+    svg: 'image/svg+xml', png: 'image/png', ico: 'image/x-icon',
+  }
+  return ctx.sendRaw(new Response(readFileSync(file), {
+    headers: { 'Content-Type': types[ext] || 'application/octet-stream' },
+  }))
+})
+
+// Bao exige un Response real del notFoundHandler (ctx.sendText devuelve el
+// Context y crashea con "Expected a Response object").
+app.notFoundHandler = () => new Response('Not found', { status: 404 })
 
 const server = app.listen({ port: PORT })
-console.log(`PUM Config — theme editor: http://localhost:${PORT}`)
+const url = `http://localhost:${PORT}`
+console.log(`PUM Config — theme editor: ${url}`)
+
+// Abre la URL en el navegador del sistema (best-effort: si falla o no hay
+// navegador, el servidor sigue funcionando y la URL se imprimió arriba).
+setTimeout(() => openBrowser(url), 150)
 
 // ── Helpers: resolución de ruta del theme ─────────────────────────────────
 /**
@@ -208,6 +239,41 @@ function themeDirFromArgv(): string | null {
     }
   }
   return null
+}
+
+/** Lee `--port <n>` / `--port=<n>` / `-p <n>` de process.argv. */
+function portFromArgv(): number | null {
+  const argv = process.argv
+  for (let i = 2; i < argv.length; i++) {
+    const a = argv[i]
+    let raw: string | undefined
+    if (a.startsWith('--port=')) raw = a.slice('--port='.length)
+    else if (a === '--port' || a === '-p') raw = argv[i + 1]
+    if (raw !== undefined) {
+      const n = Number(raw)
+      if (Number.isInteger(n) && n > 0 && n < 65536) return n
+      console.warn(`config-ui: puerto inválido '${raw}' — usando 1234`)
+      return null
+    }
+  }
+  return null
+}
+
+/** Abre la URL en el navegador del sistema (best-effort, no bloquea). */
+function openBrowser(url: string) {
+  try {
+    const cmd =
+      process.platform === 'darwin'
+        ? ['open', url]
+        : process.platform === 'win32'
+          ? ['cmd', '/c', 'start', '', url]
+          : ['xdg-open', url]
+    const child = spawn(cmd[0], cmd.slice(1), { detached: true, stdio: 'ignore' })
+    child.on('error', (e) => console.error(`config-ui: no se pudo abrir el navegador (${cmd[0]}):`, e.message))
+    child.unref()
+  } catch (e) {
+    console.error('config-ui: no se pudo abrir el navegador:', String(e))
+  }
 }
 
 /** Niveles desde cwd hasta la raíz (máx. 10), para búsqueda ascendente. */
