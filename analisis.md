@@ -2,7 +2,7 @@
 
 ## 📊 Resumen Ejecutivo
 
-**panda-ui-mithril** es una biblioteca de componentes UI para Mithril.js estilizados con Panda CSS, tomando lo mejor de varias librerías de componentes UI (convención de nombres inspirada en daisyUI, entre otras). El proyecto está en versión **0.1.0** y cuenta con **56 componentes** implementados.
+**panda-ui-mithril** es una biblioteca de componentes UI para Mithril.js estilizados con Panda CSS, tomando lo mejor de varias librerías de componentes UI (convención de nombres inspirada en el ecosistema de componentes UI). El proyecto está en versión **0.1.0** y cuenta con **56 componentes** implementados.
 
 ---
 
@@ -50,7 +50,7 @@ panda-ui-mithril/
 
 ### Panda CSS Configuration
 
-**Tokens Semánticos** (inspirados en el modelo de colores semánticos de daisyUI):
+**Tokens Semánticos** (modelo de colores semánticos por rol):
 - **Colores base**: base-100, base-200, base-300, base-content
 - **Colores temáticos**: primary, secondary, accent, neutral
 - **Colores de estado**: info, success, warning, error

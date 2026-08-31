@@ -15,7 +15,7 @@ Fecha: 2026-08-02 · Fase 1 del plan de mejora.
 | Componentes multi-slot con `cva` separados (candidatos `sva`) | 26 | ⚠️ convención interna (AGENTS.md) |
 | Recipes con `var(--colors-*)` crudo (en vez de `token()`) | 39/55 | ⚠️ mejora |
 | Recipes con `defaultVariants` | 16/55 | ⚠️ mejora |
-| Recipes con variante `color` (bloque daisy de 8) | 20 | 🔁 duplicación |
+| Recipes con variante `color` (bloque de 8 colores) | 20 | 🔁 duplicación |
 | Recipes con variante `size` (xs..xl) | 22 | 🔁 duplicación |
 | Colisión con variable global `:root` | 2 (`button`, `radialProgress`) | 🚨 riesgo |
 | Escala de tokens spacing/sizes | 0 | 🚧 decisión tomada: crear |
@@ -33,7 +33,7 @@ Fecha: 2026-08-02 · Fase 1 del plan de mejora.
 4. **defaultVariants**: los valores por defecto declarados como variante, no solo en `base`.
 5. **Valores mágicos**: preferir tokens de spacing/sizes a `rem`/`px` literales.
 6. **Variantes vacías** (`foo: {}`): solo como estado intencional documentado; si no aportan, se eliminan.
-7. **Duplicación**: el bloque de 8 colores daisy y la escala xs..xl repetidos entre recipes
+7. **Duplicación**: el bloque de 8 colores y la escala xs..xl repetidos entre recipes
    (candidatos a compartirse vía tokens semánticos o un grupo común).
 
 ## Hallazgos por severidad
@@ -78,7 +78,7 @@ Accordion, Fieldset, Join, Indicator, Carousel, Countdown, Filter, ThemeControll
 
 ### 🔁 Duplicación — bloques de variantes repetidos
 
-- Bloque `color` daisy (8 colores → `--x-color: var(--colors-y)`) en 20 recipes
+- Bloque `color` de 8 colores (`--x-color: var(--colors-y)`) en 20 recipes
   (al menos 6 con el bloque completo: badge, button, divider, otp, radio, tooltip).
 - Escala `size` xs..xl en 22 recipes.
 - Candidatos a: compartir vía un grupo de variantes común, o migrar a tokens
@@ -99,8 +99,8 @@ Accordion, Fieldset, Join, Indicator, Carousel, Countdown, Filter, ThemeControll
 - `Pagination` y `FAB` importan `buttonStyles`/`joinStyles` de otras recipes
   (composición inter-recipe) — patrón válido; tenerlo en cuenta al migrar a `sva`.
 - `Accordion` exporta alias `Collapse*` — mismo recipe, dos nombres públicos.
-- `tabs.ts` documenta el desvío deliberado de daisyUI (JS state en vez de
-  `input[radio]`/label CSS) — mismo enfoque que el rediseño de `Rating`.
+- `tabs.ts` documenta el desvío deliberado de la referencia clásica (JS state
+  en vez de `input[radio]`/label CSS) — mismo enfoque que el rediseño de `Rating`.
 
 ## Plan de mejora (fases aprobadas)
 

@@ -170,7 +170,7 @@ export const pumPreset = definePreset({
       fontFamily: '"Ubuntu", system-ui, sans-serif',
       '--size-field': '.25rem',
       '--size': 'calc(var(--size-field,.25rem) * 10)',
-      /* daisyUI border-radius tokens (light theme defaults) */
+      /* Border-radius tokens (light theme defaults) */
       '--radius-selector': '0.5rem',
       '--radius-field': '0.25rem',
       '--radius-box': '0.5rem',

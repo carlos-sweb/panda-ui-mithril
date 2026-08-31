@@ -77,7 +77,7 @@ export const drawerRecipe = defineSlotRecipe({
     },
     box: {
       // El panel es intencionalmente cuadrado: un drawer va pegado al borde de la
-      // pantalla (patrón estándar en daisyUI/MUI/Ant/Chakra/Mantine) — sin radio
+      // pantalla (patrón estándar en MUI/Ant/Chakra/Mantine) — sin radio
       // interior. Si un consumidor quiere radio, lo añade vía className.
       position: 'relative',
       gridColumnStart: '1',

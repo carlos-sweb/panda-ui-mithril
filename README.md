@@ -1,8 +1,7 @@
 # panda-ui-mithril
 
 Mithril.js UI component library styled with [Panda CSS](https://panda-css.com/) —
-atomic, type-safe CSS-in-JS. Class naming inspired by [daisyUI](https://daisyui.com/),
-icons via [lucide-mithril](https://github.com/your-repo/lucide-mithril).
+atomic, type-safe CSS-in-JS. Icons via [lucide-mithril](https://github.com/your-repo/lucide-mithril).
 
 **📚 Documentation, demos, component reference and the Quick Start guide live
 on the official site: [carlos-sweb.github.io/panda-ui-mithril](https://carlos-sweb.github.io/panda-ui-mithril/)**

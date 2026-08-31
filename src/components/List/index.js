@@ -18,7 +18,7 @@ import { Skeleton } from '../Skeleton/index.js'
  *    (único child) como alternativa legada a `render`.
  *
  * Nota: `header`/`footer` solo aplican en modo data-driven (en el modo
- * compositivo la cabecera se agrega como un `ListRow` normal, estilo daisyUI).
+ * compositivo la cabecera se agrega como un `ListRow` normal).
  *
  * @type {import('mithril').Component<import('./index').ListAttrs>}
  */

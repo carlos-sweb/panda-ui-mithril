@@ -81,7 +81,7 @@ export const NavbarEnd = {
 
 /**
  * Componente NavbarBrand. Logo + título del sitio (patrón Bootstrap
- * `.navbar-brand` / daisyUI). Renderiza un `<a>`; `href` y `onclick` se
+ * `.navbar-brand`). Renderiza un `<a>`; `href` y `onclick` se
  * pasan por attrs.
  *
  * @type {import('mithril').Component<import('./index').NavbarBrandAttrs>}

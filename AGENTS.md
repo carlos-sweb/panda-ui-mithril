@@ -1,7 +1,7 @@
 # panda-ui-mithril
 
 Mithril.js UI component library styled with Panda CSS (atomic, type-safe
-CSS-in-JS). Design and class naming inspired by daisyUI among other UI
+CSS-in-JS). Design patterns and class naming inspired by several UI component
 libraries; icons via lucide-mithril. Published on npm as `panda-ui-mithril`
 (source + Panda preset — see [Consumer model](#consumer-presetsource-model)).
 
@@ -72,7 +72,7 @@ transform: `jsx: "react"`, `jsxFactory: "m"`, `jsxFragmentFactory: "m.Fragment"`
 - Mithril components use the object literal pattern: `{ view(vnode) { ... } }`
 - Never use `m()` without importing `m` from 'mithril'
 - **Interaction is always driven by JS** (Mithril handlers + `vnode.state`) — never
-  CSS-only tricks for behavior: hidden-checkbox toggles (daisyUI `drawer-toggle`),
+  CSS-only tricks for behavior: hidden-checkbox toggles,
   `:target` hacks, or `form method="dialog"` as a close mechanism. Close buttons
   are plain JS `onclick` handlers that run the component's close bridge, so the
   exit animation always plays (a native form close bypasses it).
@@ -207,8 +207,7 @@ future data-driven `Table`:
 
 ## Naming Convention
 
-All CSS class names follow the library's convention (inspired by daisyUI among
-other component libraries):
+All CSS class names follow the library's convention:
 - Lowercase, hyphen-separated: `btn-primary`, `card-body`, `alert-soft`
 - Component base class first: `btn`, `card`, `alert`
 - Modifiers: `{component}-{modifier}` -> `btn-primary`, `card-border`
@@ -314,18 +313,18 @@ producing an empty DOM node. After changing any component's `view()` logic:
 
 ## Porting Styles from Reference Libraries
 
-This library takes the best of several UI component libraries (daisyUI,
+This library takes the best of several UI component libraries (MUI,
 shadcn/ui, Radix, Mantine, etc., depending on the component) — it is not a
 clone of any single one. When porting or fixing a component's visual styling,
 don't rely on the rendered docs site or memory — reference sites are JS-heavy
-and often fail to fetch cleanly. Pull the real source (daisyUI shown as an
+and often fail to fetch cleanly. Pull the real source (MUI shown as an
 example; adapt the repo path to whichever reference the component draws from):
 
-1. **Component CSS** — fetch the raw source from GitHub, not the docs page:
-   `https://raw.githubusercontent.com/saadeghi/daisyui/master/packages/daisyui/src/components/{component}.css`
+1. **Component source** — fetch the raw source from GitHub, not the docs page:
+   `https://raw.githubusercontent.com/mui/material-ui/master/packages/mui-material/src/{Component}/{Component}.js`
 2. **Example markup** — also fetch the component's docs markdown:
-   `https://raw.githubusercontent.com/saadeghi/daisyui/master/packages/docs/src/routes/(routes)/components/{component}/+page.md`
-   (e.g. alert icons are sized via Tailwind utilities in the HTML, not the CSS).
+   `https://raw.githubusercontent.com/mui/material-ui/master/docs/data/material/components/{components}/{components}.md`
+   (e.g. alert icons are sized via utility classes in the HTML, not the CSS).
 3. **Theme variable values** — reference components use CSS custom properties
    (`--radius-box`, `--alert-color`) defined in the theme layer; get real
    values from the reference's `{light,dark}.css` theme files. If a value
