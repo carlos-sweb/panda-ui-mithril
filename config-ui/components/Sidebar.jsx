@@ -58,7 +58,7 @@ const sidebarDesktop = css({
 // `location.hash` is set by the browser before any JS runs, so it's correct
 // from the first paint.
 function getCurrentPath() {
-  return location.hash.replace(/^#!/, '') || '/'
+  return location.hash.replace(/^#!/, '') || '/colors'
 }
 
 function navigate(route, onclose) {
@@ -83,8 +83,6 @@ const SidebarContent = {
         </div>
 
         <Menu className={menu} style={{ width: '100%' }}>
-          <MenuItem href="#/" active={current === '/'} onclick={navigate('/', onclose)}>Home</MenuItem>
-
           {categories.map((cat) => [
             <MenuTitle key={`${t(cat.i18n)}-title`}>
               <span className={categoryTitle}>

@@ -20,9 +20,11 @@ import FontsPage from './pages/fonts/index.jsx'
 import SpacingPage from './pages/spacing/index.jsx'
 import RadiiPage from './pages/radii/index.jsx'
 
-// Build routes - only page components, no layout wrapper
+// Build routes - only page components, no layout wrapper.
+// Sin landing propia: el hash por defecto es /colors (Home se eliminó del
+// sidebar). El catch-all redirige a /colors para que rutas desconocidas y la
+// raíz vacía terminen siempre en #!/colors.
 const routes = {
-  '/': ColorsPage,
   '/colors': ColorsPage,
   '/fonts': FontsPage,
   '/spacing': SpacingPage,
@@ -30,7 +32,10 @@ const routes = {
 }
 
 routes['/:component...'] = {
-  render: () => m(ColorsPage)
+  onmatch: () => {
+    if (m.route.get() !== '/colors') m.route.set('/colors')
+  },
+  render: () => m(ColorsPage),
 }
 
 // Theme persistence
@@ -109,7 +114,7 @@ const Layout = {
 
   oncreate(vnode) {
     m.route.prefix = '#!'
-    m.route(document.getElementById('view-dynamic-content'), '/', routes)
+    m.route(document.getElementById('view-dynamic-content'), '/colors', routes)
 
     // Ensure language param exists in the URL
     const lang = currentLang()
@@ -168,8 +173,8 @@ const Layout = {
                 onclick={() => { vnode.state.isMobileOpen = !vnode.state.isMobileOpen }}
               />
               <NavbarBrand
-                href="#/"
-                onclick={(e) => { e.preventDefault(); m.route.set('/') }}
+                href="#/colors"
+                onclick={(e) => { e.preventDefault(); m.route.set('/colors') }}
               >
                 PUM Config
               </NavbarBrand>
