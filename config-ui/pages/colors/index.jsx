@@ -1,46 +1,44 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import {
-  Stack, Title, Text, Button, Card, CardBody, CardTitle, TextInput, Select, Block, Alert, ColorPicker,
+  Stack, Title, Text, Button, Card, CardBody, Columns, Column, Block, Alert, ColorPicker,
 } from '../../../src/index.js'
 
 /**
  * Página Colors — editor de los colores del theme.
  *
  * Carga los valores actuales desde GET /api/theme, los muestra en un
- * formulario (color-picker + campo texto para oklch/hex) y al guardar
- * envía los edits vía POST /api/theme (el servidor reescribe
+ * formulario (ColorPicker por token, botón-trigger con swatch + valor) y al
+ * guardar envía los edits vía POST /api/theme (el servidor reescribe
  * pum/theme/colors.ts) y dispara el rebuild.
  */
 
-const colorRow = css({
-  display: 'grid',
-  gridTemplateColumns: '220px 1fr 1fr 120px',
-  gap: '0.75rem',
-  alignItems: 'center',
-  '@media (max-width: 768px)': { gridTemplateColumns: '1fr' },
+// Ancho fijo para el nombre del token en la fila (columnas alineadas).
+const tokenName = css({
+  fontFamily: 'monospace',
+  fontSize: '0.8125rem',
 })
 
-const swatch = css({
-  width: '2rem',
-  height: '2rem',
-  borderRadius: '0.5rem',
+// Cuadradito de color dentro del botón-trigger del ColorPicker: muestra el
+// color REAL del token (base o dark) — el preview vive dentro del botón.
+// 1rem como en el demo del playground (cabe dentro del Button size sm).
+// borderColor usa el color nombrado 'base-300' (el matcher lo resuelve a
+// var(--colors-base-300); el macro token() no se resuelve en este outdir).
+const pickerValueSwatch = css({
+  width: '1rem',
+  height: '1rem',
+  borderRadius: '0.25rem',
   border: '1px solid',
-  borderColor: 'token(colors.base-300)',
+  borderColor: 'base-300',
   flexShrink: '0',
 })
 
-// Trigger del ColorPicker: un botón-cuadrado que muestra el valor REAL del
-// token (oklch o hex) y abre el selector como dropdown al hacer click.
-const pickerTrigger = css({
-  width: '2rem',
-  height: '2rem',
-  borderRadius: '0.5rem',
-  border: '1px solid',
-  borderColor: 'token(colors.base-300)',
-  padding: '0',
-  cursor: 'pointer',
-  flexShrink: '0',
+// Botón-trigger: Button de la librería (outline = borde visible), compacto,
+// con el swatch del color + el valor.
+const pickerValueBtn = css({
+  gap: '0.375rem',
+  fontFamily: 'monospace',
+  fontSize: '0.75rem',
 })
 
 const page = {
@@ -123,61 +121,52 @@ const page = {
           <Card>
             <CardBody>
               <Stack gap="md">
-                <div className={colorRow}>
-                  <Text weight="bold">Token</Text>
-                  <Text weight="bold">Light (base)</Text>
-                  <Text weight="bold">Dark</Text>
-                  <Text weight="bold">Preview</Text>
-                </div>
+                <Columns gap="md">
+                  <Column width={2}><Text weight="bold">Token</Text></Column>
+                  <Column><Text weight="bold">Light (base)</Text></Column>
+                  <Column><Text weight="bold">Dark</Text></Column>
+                </Columns>
 
                 {names.map((name) => {
                   const c = s.colors[name] || { base: '', dark: '' }
                   return (
-                    <div key={name} className={colorRow}>
-                      <Text weight="bold" className={css({ fontFamily: 'monospace', fontSize: '0.8125rem' })}>{name}</Text>
-                      <Stack direction="row" gap="sm" align="center">
+                    <Columns key={name} gap="md">
+                      <Column width={2}>
+                        <Text weight="bold" className={tokenName}>{name}</Text>
+                      </Column>
+                      <Column>
                         <ColorPicker
                           value={toHex(c.base)}
                           onchange={(h) => setValue(name, 'base', h)}
                           copy={false}
-                          trigger={m('button', {
-                            type: 'button',
-                            className: pickerTrigger,
-                            style: { backgroundColor: c.base || 'transparent' },
+                          trigger={m(Button, {
+                            variant: 'outline',
+                            size: 'sm',
+                            className: pickerValueBtn,
                             'aria-label': `Pick base color for ${name}`,
-                          })}
+                          }, [
+                            m('span', { className: pickerValueSwatch, style: { backgroundColor: c.base || 'transparent' } }),
+                            c.base || '—',
+                          ])}
                         />
-                        <TextInput
-                          value={c.base || ''}
-                          placeholder="oklch(…) or #hex"
-                          oninput={(e) => setValue(name, 'base', e.target.value)}
-                          className={css({ flex: '1' })}
-                        />
-                      </Stack>
-                      <Stack direction="row" gap="sm" align="center">
+                      </Column>
+                      <Column>
                         <ColorPicker
                           value={toHex(c.dark)}
                           onchange={(h) => setValue(name, 'dark', h)}
                           copy={false}
-                          trigger={m('button', {
-                            type: 'button',
-                            className: pickerTrigger,
-                            style: { backgroundColor: c.dark || 'transparent' },
+                          trigger={m(Button, {
+                            variant: 'outline',
+                            size: 'sm',
+                            className: pickerValueBtn,
                             'aria-label': `Pick dark color for ${name}`,
-                          })}
+                          }, [
+                            m('span', { className: pickerValueSwatch, style: { backgroundColor: c.dark || 'transparent' } }),
+                            c.dark || '—',
+                          ])}
                         />
-                        <TextInput
-                          value={c.dark || ''}
-                          placeholder="oklch(…) or #hex"
-                          oninput={(e) => setValue(name, 'dark', e.target.value)}
-                          className={css({ flex: '1' })}
-                        />
-                      </Stack>
-                      <div
-                        className={swatch}
-                        style={{ backgroundColor: c.base || 'transparent' }}
-                      />
-                    </div>
+                      </Column>
+                    </Columns>
                   )
                 })}
 
