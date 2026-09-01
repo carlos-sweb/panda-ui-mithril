@@ -1,7 +1,7 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import {
-  Stack, Title, Text, Button, Card, CardBody, CardTitle, TextInput, Select, Block, Alert,
+  Stack, Title, Text, Button, Card, CardBody, CardTitle, TextInput, Select, Block, Alert, ColorPicker,
 } from '../../../src/index.js'
 
 /**
@@ -27,6 +27,19 @@ const swatch = css({
   borderRadius: '0.5rem',
   border: '1px solid',
   borderColor: 'token(colors.base-300)',
+  flexShrink: '0',
+})
+
+// Trigger del ColorPicker: un botón-cuadrado que muestra el valor REAL del
+// token (oklch o hex) y abre el selector como dropdown al hacer click.
+const pickerTrigger = css({
+  width: '2rem',
+  height: '2rem',
+  borderRadius: '0.5rem',
+  border: '1px solid',
+  borderColor: 'token(colors.base-300)',
+  padding: '0',
+  cursor: 'pointer',
   flexShrink: '0',
 })
 
@@ -123,11 +136,16 @@ const page = {
                     <div key={name} className={colorRow}>
                       <Text weight="bold" className={css({ fontFamily: 'monospace', fontSize: '0.8125rem' })}>{name}</Text>
                       <Stack direction="row" gap="sm" align="center">
-                        <input
-                          type="color"
+                        <ColorPicker
                           value={toHex(c.base)}
-                          oninput={(e) => setValue(name, 'base', e.target.value)}
-                          className={css({ width: '2rem', height: '2rem', border: 'none', background: 'none', cursor: 'pointer' })}
+                          onchange={(h) => setValue(name, 'base', h)}
+                          copy={false}
+                          trigger={m('button', {
+                            type: 'button',
+                            className: pickerTrigger,
+                            style: { backgroundColor: c.base || 'transparent' },
+                            'aria-label': `Pick base color for ${name}`,
+                          })}
                         />
                         <TextInput
                           value={c.base || ''}
@@ -137,11 +155,16 @@ const page = {
                         />
                       </Stack>
                       <Stack direction="row" gap="sm" align="center">
-                        <input
-                          type="color"
+                        <ColorPicker
                           value={toHex(c.dark)}
-                          oninput={(e) => setValue(name, 'dark', e.target.value)}
-                          className={css({ width: '2rem', height: '2rem', border: 'none', background: 'none', cursor: 'pointer' })}
+                          onchange={(h) => setValue(name, 'dark', h)}
+                          copy={false}
+                          trigger={m('button', {
+                            type: 'button',
+                            className: pickerTrigger,
+                            style: { backgroundColor: c.dark || 'transparent' },
+                            'aria-label': `Pick dark color for ${name}`,
+                          })}
                         />
                         <TextInput
                           value={c.dark || ''}
