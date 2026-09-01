@@ -1,1 +1,6 @@
-paragraph: ''
+paragraph: Small interactive UI element to label, categorize, or filter content. Supports icons, remove actions, and clickable states.
+styles: Styles
+withIcon: With icon
+oneCharacter: One character (square)
+clickable: Clickable
+onRemove: On remove

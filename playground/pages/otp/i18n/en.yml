@@ -1,1 +1,9 @@
 paragraph: One-time password input for verification codes — one real input per cell with auto-advance, paste support, keyboard navigation, mask, and onchange/oncomplete events.
+basic: Basic
+controlledEvents: Controlled + events
+types: Types
+mask: Mask
+validation: Validation
+states: States
+joinedSeparator: Joined + separator
+oneTimeCode: One time code

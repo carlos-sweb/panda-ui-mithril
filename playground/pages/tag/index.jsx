@@ -55,11 +55,11 @@ export default {
       <Stack gap="lg">
         <Title as="h1" size="2">Tag</Title>
         <Text color="neutral" className={css({ marginBottom: '2rem', maxWidth: '600px' })}>
-          Small interactive UI element to label, categorize, or filter content. Supports icons, remove actions, and clickable states.
+          {t('paragraph')}
         </Text>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Variants</Title>
+          <Title as="h3" size="5">{t('common.subtitles.variants')}</Title>
           <Stack direction="row" gap="sm" wrap="wrap">
             <Tag>Default</Tag>
             <Tag variant="info">Info</Tag>
@@ -70,7 +70,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Styles</Title>
+          <Title as="h3" size="5">{t('styles')}</Title>
           <Stack direction="row" gap="sm" wrap="wrap">
             <Tag variant="outline">Outline</Tag>
             <Tag variant="dash">Dash</Tag>
@@ -80,7 +80,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Sizes</Title>
+          <Title as="h3" size="5">{t('common.subtitles.sizes')}</Title>
           <Stack direction="row" gap="sm" wrap="wrap">
             <Tag size="md">Medium (md)</Tag>
             <Tag size="lg">Large (lg)</Tag>
@@ -88,7 +88,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">With icon</Title>
+          <Title as="h3" size="5">{t('withIcon')}</Title>
           <Stack direction="row" gap="sm" wrap="wrap">
             <Tag icon={Sparkles}>AI Generated</Tag>
             <Tag variant="info" icon={Hash}>Channel</Tag>
@@ -96,7 +96,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">One character (square)</Title>
+          <Title as="h3" size="5">{t('oneCharacter')}</Title>
           <Stack direction="row" gap="sm" wrap="wrap">
             <Tag>A</Tag>
             <Tag variant="success">S</Tag>
@@ -105,7 +105,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Clickable</Title>
+          <Title as="h3" size="5">{t('clickable')}</Title>
           <Stack direction="row" gap="sm" wrap="wrap">
             <Tag clickable>Click me</Tag>
             <Tag clickable variant="info">Info</Tag>
@@ -115,7 +115,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">On remove</Title>
+          <Title as="h3" size="5">{t('onRemove')}</Title>
           <Stack direction="row" gap="sm" wrap="wrap">
             <Tag onRemove={(e) => console.log('removed', e)}>Removable</Tag>
             <Tag variant="info" onRemove={(e) => console.log('removed', e)}>Info</Tag>

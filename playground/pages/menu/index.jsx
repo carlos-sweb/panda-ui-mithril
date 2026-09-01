@@ -87,7 +87,7 @@ export default {
         </Text>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Vertical (default)</Title>
+          <Title as="h3" size="5">{t('verticalDefault')}</Title>
           <Menu className={surface}>
             <MenuItem active>Dashboard</MenuItem>
             <MenuItem>Settings</MenuItem>
@@ -98,7 +98,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Horizontal</Title>
+          <Title as="h3" size="5">{t('horizontal')}</Title>
           <Menu horizontal className={surface}>
             <MenuItem active>Home</MenuItem>
             <MenuItem>Docs</MenuItem>
@@ -107,7 +107,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Auto Active</Title>
+          <Title as="h3" size="5">{t('autoActive')}</Title>
           <Text color="neutral" className={css({ marginBottom: '0.75rem' })}>
             {t('autoActiveDescription')}
           </Text>
@@ -120,7 +120,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Auto Active + Callback</Title>
+          <Title as="h3" size="5">{t('autoActiveCallback')}</Title>
           <Text color="neutral" className={css({ marginBottom: '0.75rem' })}>
             {t('callbackDescription')}
           </Text>
@@ -156,12 +156,12 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h2" size="3">autoActive</Title>
+          <Title as="h2" size="3">{t('autoActiveTitle')}</Title>
           <CodeExample code={autoActiveCode} />
         </Block>
 
         <Block spacing="lg">
-          <Title as="h2" size="3">onActiveChange</Title>
+          <Title as="h2" size="3">{t('onActiveChangeTitle')}</Title>
           <CodeExample code={callbackCode} />
         </Block>
 

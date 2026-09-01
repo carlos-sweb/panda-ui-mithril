@@ -63,8 +63,8 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h2" size="3">Sizes</Title>
-          <Text size="sm" color="neutral" className={heading}>7 size tiers — from hero to caption</Text>
+          <Title as="h2" size="3">{t('common.subtitles.sizes')}</Title>
+          <Text size="sm" color="neutral" className={heading}>{t('sizeTiers')}</Text>
           <Stack gap="xs">
             <Title size="1">Size 1</Title>
             <Title size="2">Size 2</Title>
@@ -77,12 +77,12 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h2" size="3">Semantic tags</Title>
-          <Text size="sm" color="neutral" className={heading}>Auto-size from tag (h1→1, h2→2, …)</Text>
+          <Title as="h2" size="3">{t('semanticTags')}</Title>
+          <Text size="sm" color="neutral" className={heading}>{t('autoSizeFromTag')}</Text>
           <Stack gap="xs">
             <Title as="h1">h1 heading</Title>
-            <Title as="h2">h2 heading</Title>
-            <Title as="h3">h3 heading</Title>
+            <Title as="h2">{t('h2Heading')}</Title>
+            <Title as="h3">{t('h3Heading')}</Title>
             <Title as="h4">h4 heading</Title>
             <Title as="h5">h5 heading</Title>
             <Title as="h6">h6 heading</Title>
@@ -91,7 +91,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h2" size="3">Colors</Title>
+          <Title as="h2" size="3">{t('common.subtitles.colors')}</Title>
           <Stack direction="row" gap="sm">
             <Title as="h3" color="primary">Primary</Title>
             <Title as="h3" color="secondary">Secondary</Title>
@@ -104,7 +104,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h2" size="3">Alignment</Title>
+          <Title as="h2" size="3">{t('alignment')}</Title>
           <Stack gap="xs" className={css({ maxWidth: '400px', padding: '1rem', border: '1px solid token(colors.base-300)', borderRadius: 'token(radii.md)' })}>
             <Title as="h4" align="left">Left aligned</Title>
             <Title as="h4" align="center">Center aligned</Title>
@@ -114,7 +114,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h2" size="3">Transform</Title>
+          <Title as="h2" size="3">{t('transform')}</Title>
           <Stack direction="row" gap="sm">
             <Title as="h4" transform="capitalize">capitalize me</Title>
             <Title as="h4" transform="uppercase">uppercase me</Title>
@@ -123,7 +123,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h2" size="3">Weight</Title>
+          <Title as="h2" size="3">{t('weight')}</Title>
           <Stack gap="xs">
             <Title size="4" weight="light">Light — 300</Title>
             <Title size="4" weight="normal">Normal — 400</Title>
@@ -135,7 +135,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h2" size="3">Truncate & Italic</Title>
+          <Title as="h2" size="3">{t('truncateItalic')}</Title>
           <Stack gap="xs" className={css({ maxWidth: '300px' })}>
             <Title size="5" truncate>This is a very long title that should truncate with an ellipsis when it overflows its container</Title>
             <Title size="5" italic>Italic text style</Title>

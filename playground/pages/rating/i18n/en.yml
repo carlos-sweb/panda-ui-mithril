@@ -1,1 +1,16 @@
 paragraph: Rating component for displaying star ratings. Integer scores only, with a configurable max (default 5) and a read-only static mode.
+editableUncontrolled: Editable (uncontrolled)
+editableControlled: Editable (controlled)
+configurableMaxScore: Configurable max score
+readonlyStatic: Readonly (static rating)
+configurableMaxNote1: "Set "
+configurableMaxNote2: " to any value: a 1-3 scale, 1-5 (default), even 1-10."
+readonlyNote: "Use this for ratings left by other users — no hover, no click."
+colorsNote: "Default color is warning (yellow); override with any DaisyColor."
+withRatingGroup: With RatingGroup
+withRatingGroupNote: "Adds a label above the Rating — ideal for forms and surveys"
+ratingGroupNote1: "Use "
+ratingGroupNote2: " for standalone stars. Use "
+ratingGroupNote3: " when you need a label. See the "
+ratingGroupPage: RatingGroup page
+ratingGroupNote4: " for full API."

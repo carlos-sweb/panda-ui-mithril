@@ -90,12 +90,10 @@ export default {
           </Swap>
         </Stack>
         <Text size="sm" color="neutral">
-          Click to toggle — the swap works with a hidden native checkbox (like the reference implementation), no
-          JS state required. Pass an icon component to <code>on</code>/<code>off</code> the same
-          way you'd pass text.
+          {t('swapNote1')}<code>on</code>/<code>off</code>{t('swapNote2')}
         </Text>
 
-        <Title as="h3" size="5">Sizes</Title>
+        <Title as="h3" size="5">{t('common.subtitles.sizes')}</Title>
         <Text size="sm" color="neutral" className={heading}>XS · SM · MD · LG · XL</Text>
         <Stack direction="row" gap="sm">
           <Swap size="xs" on="XS" off="XS" style="flip" />

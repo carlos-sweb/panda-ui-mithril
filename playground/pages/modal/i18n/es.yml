@@ -1,1 +1,4 @@
 paragraph: Componente modal para mostrar ventanas de diálogo y superposiciones. Respaldado por un elemento <dialog> real.
+persistent: Persistente
+persistentDescription: Este modal es persistente — ESC y hacer clic fuera no lo cerrarán; usa el botón Close.
+autoCloseButton: Botón de cierre automático

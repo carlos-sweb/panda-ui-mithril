@@ -71,7 +71,7 @@ export default {
         </Text>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">With figure + actions</Title>
+          <Title as="h3" size="5">{t('withFigureActions')}</Title>
           <Stack direction="row" gap="sm">
             <Card className={surface}>
               <CardFigure><img className={img200} src={image_card1} alt="Random" /></CardFigure>
@@ -104,7 +104,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Side layout</Title>
+          <Title as="h3" size="5">{t('sideLayout')}</Title>
           <Card side className={surfaceSide}>
             <CardFigure><img className={imgSide} src={image_card2} alt="Random" /></CardFigure>
             <CardBody>
@@ -118,7 +118,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Image full (background)</Title>
+          <Title as="h3" size="5">{t('imageFullBackground')}</Title>
           <Card imageFull className={css({ width: '20rem', height: '16rem' })}>
             <CardFigure><img className={css({ width: '100%', height: '100%', objectFit: 'cover' })} src={image_card3} alt="Random" /></CardFigure>
             <CardBody>
@@ -132,7 +132,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Sizes</Title>
+          <Title as="h3" size="5">{t('common.subtitles.sizes')}</Title>
           <Stack direction="row" gap="sm">
             <Card size="xs" border className={css({ width: '12rem', background: 'token(colors.base-100)' })}>
               <CardBody><CardTitle>XS</CardTitle><p>Extra small</p></CardBody>

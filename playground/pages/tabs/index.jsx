@@ -69,8 +69,8 @@ export default {
 
         {/* Uncontrolled Mode - Boxed */}
         <Block spacing="lg">
-          <Title as="h3" size="5">Boxed (Uncontrolled)</Title>
-          <Text size="sm" color="neutral">State managed internally via defaultActive</Text>
+          <Title as="h3" size="5">{t('boxedUncontrolled')}</Title>
+          <Text size="sm" color="neutral">{t('stateManagedInternally')}</Text>
           <Tabs boxed defaultActive="info" onActiveChange={(ref) => { vnode.state.boxed = ref }}>
             <Tab ref="info">Info</Tab>
             <Tab ref="details">Details</Tab>
@@ -83,7 +83,7 @@ export default {
 
         
         <Block spacing="lg">
-          <Title as="h3" size="5">Border (Uncontrolled)</Title>
+          <Title as="h3" size="5">{t('borderUncontrolled')}</Title>
           <Tabs bordered defaultActive="info" onActiveChange={(ref) => { vnode.state.border = ref }}>
             <Tab ref="info">Info</Tab>
             <Tab ref="details">Details</Tab>
@@ -96,7 +96,7 @@ export default {
 
         {/* Uncontrolled Mode - Lifted */}
         <Block spacing="lg">
-          <Title as="h3" size="5">Lifted (Uncontrolled)</Title>
+          <Title as="h3" size="5">{t('liftedUncontrolled')}</Title>
           <Tabs lifted defaultActive="info" onActiveChange={(ref) => { vnode.state.lifted = ref }}>
             <Tab ref="info">Info</Tab>
             <Tab ref="details">Details</Tab>
@@ -109,8 +109,8 @@ export default {
 
         {/* Controlled Mode */}
         <Block spacing="lg">
-          <Title as="h3" size="5">Controlled Mode</Title>
-          <Text size="sm" color="neutral">State managed externally via active prop</Text>
+          <Title as="h3" size="5">{t('controlledMode')}</Title>
+          <Text size="sm" color="neutral">{t('stateManagedExternally')}</Text>
           <Tabs active={vnode.state.currentTab} onActiveChange={(ref) => { vnode.state.currentTab = ref }}>
             <Tab ref="info">Info</Tab>
             <Tab ref="settings">Settings</Tab>
@@ -132,8 +132,8 @@ export default {
 
         {/* Keyboard Navigation */}
         <Block spacing="lg">
-          <Title as="h3" size="5">Keyboard Navigation</Title>
-          <Text size="sm" color="neutral">Full WCAG 2.1 AA support</Text>
+          <Title as="h3" size="5">{t('keyboardNavigation')}</Title>
+          <Text size="sm" color="neutral">{t('wcagSupport')}</Text>
           <Tabs lifted defaultActive="info">
             <Tab ref="arrows">Arrow Keys</Tab>
             <Tab ref="home">Home/End</Tab>
@@ -152,7 +152,7 @@ export default {
 
         {/* Disabled Tab */}
         <Block spacing="lg">
-          <Title as="h3" size="5">Disabled Tab</Title>
+          <Title as="h3" size="5">{t('disabledTab')}</Title>
           <Tabs lifted defaultActive="info">
             <Tab ref="info">Info</Tab>
             <Tab ref="disabled" disabled>Disabled</Tab>
@@ -165,7 +165,7 @@ export default {
 
         {/* Size Variants */}
         <Block spacing="lg">
-          <Title as="h3" size="5">Sizes</Title>
+          <Title as="h3" size="5">{t('common.subtitles.sizes')}</Title>
           <Stack gap="md">
             <div>
               <Text size="sm" color="neutral">Extra Small (xs)</Text>

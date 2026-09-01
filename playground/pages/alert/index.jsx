@@ -78,8 +78,8 @@ export default {
 
         {/* Neutral Alert (no color) */}
         <Block spacing="lg">
-          <Title as="h2" size="3">Neutral (No Color)</Title>
-          <Text color="neutral">Without a `color` prop, the alert falls back to a neutral base-200 background.</Text>
+          <Title as="h2" size="3">{t('neutralNoColor')}</Title>
+          <Text color="neutral">{t('withoutColorProp')}</Text>
           <Stack gap="xs">
             <Alert>
               <ChevronRight />
@@ -90,8 +90,8 @@ export default {
 
         {/* Base Alert */}
         <Block spacing="lg">
-          <Title as="h2" size="3">Base Alert</Title>
-          <Text color="neutral">Default alert with different colors.</Text>
+          <Title as="h2" size="3">{t('baseAlert')}</Title>
+          <Text color="neutral">{t('defaultAlertColors')}</Text>
           <Stack gap="xs">
             <Alert color="info">
               <Info />
@@ -114,8 +114,8 @@ export default {
 
         {/* Soft Style */}
         <Block spacing="lg">
-          <Title as="h2" size="3">Soft Style</Title>
-          <Text color="neutral">Soft background with no border.</Text>
+          <Title as="h2" size="3">{t('softStyle')}</Title>
+          <Text color="neutral">{t('softBackgroundNoBorder')}</Text>
           <Stack gap="xs">
             <Alert variant="soft" color="info">
               <Info />
@@ -138,8 +138,8 @@ export default {
 
         {/* Outline Style */}
         <Block spacing="lg">
-          <Title as="h2" size="3">Outline Style</Title>
-          <Text color="neutral">Transparent background with colored border.</Text>
+          <Title as="h2" size="3">{t('outlineStyle')}</Title>
+          <Text color="neutral">{t('transparentColoredBorder')}</Text>
           <Stack gap="xs">
             <Alert variant="outline" color="info">
               <Info />
@@ -162,8 +162,8 @@ export default {
 
         {/* Dash Style */}
         <Block spacing="lg">
-          <Title as="h2" size="3">Dash Style</Title>
-          <Text color="neutral">Transparent background with dashed border.</Text>
+          <Title as="h2" size="3">{t('dashStyle')}</Title>
+          <Text color="neutral">{t('transparentDashedBorder')}</Text>
           <Stack gap="xs">
             <Alert variant="dash" color="info">
               <Info />
@@ -186,8 +186,8 @@ export default {
 
         {/* With Buttons + Responsive */}
         <Block spacing="lg">
-          <Title as="h2" size="3">With Buttons + Responsive</Title>
-          <Text color="neutral">Vertical on mobile, horizontal on desktop. Includes action buttons.</Text>
+          <Title as="h2" size="3">{t('withButtonsResponsive')}</Title>
+          <Text color="neutral">{t('verticalMobileHorizontalDesktop')}</Text>
           <Alert direction="vertical" color="info">
             <Info />
             <span>we use cookies for no reason.</span>
@@ -200,8 +200,8 @@ export default {
 
         {/* With Title and Description */}
         <Block spacing="lg">
-          <Title as="h2" size="3">With Title and Description</Title>
-          <Text color="neutral">Structured alert with title, description, and action button.</Text>
+          <Title as="h2" size="3">{t('withTitleDescription')}</Title>
+          <Text color="neutral">{t('structuredAlert')}</Text>
           <Alert direction="vertical" color="info">
             <Info />
             <div className={css({ display: 'flex', flexDirection: 'column', gap: '0.25rem' })}>
@@ -214,8 +214,8 @@ export default {
 
         {/* Horizontal Direction (default) */}
         <Block spacing="lg">
-          <Title as="h2" size="3">Horizontal Direction (Default)</Title>
-          <Text color="neutral">Content flows horizontally, good for desktop.</Text>
+          <Title as="h2" size="3">{t('horizontalDirectionDefault')}</Title>
+          <Text color="neutral">{t('contentFlowsHorizontally')}</Text>
           <Stack gap="xs">
             <Alert direction="horizontal" color="info">
               <Info />
@@ -230,8 +230,8 @@ export default {
 
         {/* Vertical Direction */}
         <Block spacing="lg">
-          <Title as="h2" size="3">Vertical Direction</Title>
-          <Text color="neutral">Content stacks vertically, good for mobile.</Text>
+          <Title as="h2" size="3">{t('verticalDirection')}</Title>
+          <Text color="neutral">{t('contentStacksVertically')}</Text>
           <Stack gap="xs">
             <Alert direction="vertical" color="info">
               <Info />
@@ -246,8 +246,8 @@ export default {
 
         {/* Style + Direction Combined */}
         <Block spacing="lg">
-          <Title as="h2" size="3">Style + Vertical Direction</Title>
-          <Text color="neutral">The `variant` prop (soft, outline, dash) combines with `direction="vertical"`.</Text>
+          <Title as="h2" size="3">{t('styleVerticalDirection')}</Title>
+          <Text color="neutral">{t('variantDirectionCombined')}</Text>
           <Stack gap="xs">
             <Alert variant="soft" direction="vertical" color="warning">
               <AlertTriangle />
@@ -266,8 +266,8 @@ export default {
 
         {/* Without Icons */}
         <Block spacing="lg">
-          <Title as="h2" size="3">Without Icons</Title>
-          <Text color="neutral">Alerts can be used without icons.</Text>
+          <Title as="h2" size="3">{t('withoutIcons')}</Title>
+          <Text color="neutral">{t('alertsWithoutIcons')}</Text>
           <Stack gap="xs">
             <Alert color="info">Info alert without icon</Alert>
             <Alert color="success">Success alert without icon</Alert>

@@ -55,13 +55,13 @@ export default {
           </TabContent>
         </Tabs>
       </Block>
-      <Block spacing="lg"><Title as="h2" size="3">3 columns, auto span</Title>
+      <Block spacing="lg"><Title as="h2" size="3">{t('threeColumnsAutoSpan')}</Title>
         <Grid cols={3} gap="md">
           <Cell><div className={cell}>1</div></Cell><Cell><div className={cell}>2</div></Cell><Cell><div className={cell}>3</div></Cell>
           <Cell><div className={cell}>4</div></Cell><Cell><div className={cell}>5</div></Cell><Cell><div className={cell}>6</div></Cell>
         </Grid>
       </Block>
-      <Block spacing="lg"><Title as="h2" size="3">Spans</Title>
+      <Block spacing="lg"><Title as="h2" size="3">{t('spans')}</Title>
         <Grid cols={6} gap="md">
           <Cell span={2}><div className={cell}>span 2</div></Cell>
           <Cell span={4}><div className={cell}>span 4</div></Cell>

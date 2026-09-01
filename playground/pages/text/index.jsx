@@ -63,8 +63,8 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h2" size="3">Sizes</Title>
-          <Text size="sm" color="neutral" className={heading}>5 size tiers — from small to large</Text>
+          <Title as="h2" size="3">{t('common.subtitles.sizes')}</Title>
+          <Text size="sm" color="neutral" className={heading}>{t('sizeTiers')}</Text>
           <Stack gap="xs">
             <Text size="xs">Size xs</Text>
             <Text size="sm">Size sm</Text>
@@ -75,7 +75,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h2" size="3">Semantic tags</Title>
+          <Title as="h2" size="3">{t('semanticTags')}</Title>
           <Text size="sm" color="neutral" className={heading}>as only switches the tag — size stays explicit (default md)</Text>
           <Stack gap="xs">
             <Text as="p">p paragraph (default)</Text>
@@ -85,7 +85,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h2" size="3">Colors</Title>
+          <Title as="h2" size="3">{t('common.subtitles.colors')}</Title>
           <Stack direction="row" gap="sm">
             <Text size="lg" color="neutral">Neutral</Text>
             <Text size="lg" color="primary">Primary</Text>
@@ -99,7 +99,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h2" size="3">Alignment</Title>
+          <Title as="h2" size="3">{t('alignment')}</Title>
           <Stack gap="xs" className={css({ maxWidth: '400px', padding: '1rem', border: '1px solid token(colors.base-300)', borderRadius: 'token(radii.md)' })}>
             <Text align="left">Left aligned</Text>
             <Text align="center">Center aligned</Text>
@@ -109,7 +109,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h2" size="3">Transform</Title>
+          <Title as="h2" size="3">{t('transform')}</Title>
           <Stack direction="row" gap="sm">
             <Text size="lg" transform="capitalize">capitalize me</Text>
             <Text size="lg" transform="uppercase">uppercase me</Text>
@@ -118,7 +118,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h2" size="3">Weight</Title>
+          <Title as="h2" size="3">{t('weight')}</Title>
           <Stack gap="xs">
             <Text size="lg" weight="light">Light — 300</Text>
             <Text size="lg" weight="normal">Normal — 400</Text>
@@ -130,7 +130,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h2" size="3">Truncate & Italic</Title>
+          <Title as="h2" size="3">{t('truncateItalic')}</Title>
           <Stack gap="xs" className={css({ maxWidth: '300px' })}>
             <Text size="lg" truncate>This is a very long text that should truncate with an ellipsis when it overflows its container</Text>
             <Text size="lg" italic>Italic text style</Text>

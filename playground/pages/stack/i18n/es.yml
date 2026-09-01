@@ -1,1 +1,6 @@
-paragraph: Stack apila hijos vertical u horizontalmente con un gap configurable y responsive. Inspirado en MUI/Chakra/Primer Stack — contenedor flex simple, no tarjetas superpuestas.
+paragraph: Stack apila los hijos vertical u horizontalmente con un espacio configurable y responsivo. Inspirado en el Stack de MUI/Chakra/Primer — contenedor flex simple, no tarjetas apiladas.
+vstackVertical: VStack (vertical)
+hstackHorizontal: HStack (horizontal)
+gapSizes: Tamaños de espacio
+alignment: Alineación
+justify: Justificación

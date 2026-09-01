@@ -118,7 +118,7 @@ export default {
           {t('paragraph')}
         </Text>
 
-        <Title as="h2" size="3">Positions</Title>
+        <Title as="h2" size="3">{t('positions')}</Title>
         <Stack direction="row" gap="sm">
           {positions.map((p) => (
             <Button key={p} onclick={() => { vnode.state.openFor = p }}>
@@ -147,10 +147,9 @@ export default {
           </Drawer>
         ))}
 
-        <Title as="h2" size="3">Sizes</Title>
+        <Title as="h2" size="3">{t('common.subtitles.sizes')}</Title>
         <Text color="neutral">
-          The <code>size</code> prop sets the panel width for start/end and the
-          panel height for top/bottom. Presets or any CSS size (<code>"55%"</code>, <code>200</code>).
+          {m.trust(t('sizeProp'))}
         </Text>
         <Stack direction="row" gap="sm">
           {sizes.map((s) => (
@@ -205,11 +204,9 @@ export default {
           <DrawerBackdrop onclick={() => { vnode.state.customOpen = false }} />
         </Drawer>
 
-        <Title as="h2" size="3">Events</Title>
+        <Title as="h2" size="3">{t('events')}</Title>
         <Text color="neutral">
-          Open the drawer and watch the lifecycle events fire: <code>onopen</code> and
-          <code> onchange(true)</code> when it opens; <code>onclose</code>, <code>onclosed</code>
-          and <code>onchange(false)</code> when it finishes closing.
+          {m.trust(t('lifecycleEvents'))}
         </Text>
         <Stack direction="row" gap="sm" align="center">
           <Button onclick={() => { vnode.state.eventsOpen = true }}>
@@ -258,9 +255,9 @@ export default {
           <DrawerBackdrop onclick={() => { vnode.state.eventsOpen = false }} />
         </Drawer>
 
-        <Title as="h2" size="3">Persistent</Title>
+        <Title as="h2" size="3">{t('persistent')}</Title>
         <Text color="neutral">
-          With <code>persistent</code>, ESC and clicking outside won't close the drawer — use the Close button.
+          {m.trust(t('persistentBehavior'))}
         </Text>
         <Stack direction="row" gap="sm">
           <Button onclick={() => { vnode.state.persistentOpen = true }}>
@@ -285,9 +282,9 @@ export default {
           </DrawerBox>
         </Drawer>
 
-        <Title as="h2" size="3">Auto Close Button</Title>
+        <Title as="h2" size="3">{t('autoCloseButton')}</Title>
         <Text color="neutral">
-          With <code>buttonClose</code>, an X button is appended automatically — it closes with the exit animation.
+          {m.trust(t('buttonCloseBehavior'))}
         </Text>
         <Stack direction="row" gap="sm">
           <Button onclick={() => { vnode.state.autoCloseOpen = true }}>
@@ -308,10 +305,9 @@ export default {
         </Drawer>
 
         <Block spacing="lg">
-          <Title as="h2" size="3">Real example — navigation drawer</Title>
+          <Title as="h2" size="3">{t('realExampleNavDrawer')}</Title>
           <Text color="neutral">
-            A sidebar drawer built with <code>Menu</code> inside <code>DrawerBox</code>,
-            the typical use case for navigation.
+            {m.trust(t('navDrawerExample'))}
           </Text>
           <Button onclick={() => { vnode.state.navOpen = true }}>
             Open navigation drawer

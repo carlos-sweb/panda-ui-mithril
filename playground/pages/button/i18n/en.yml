@@ -1,1 +1,10 @@
 paragraph: Buttons allow users to take actions and make choices with a single tap. They communicate what will happen when the user touches them.
+responsive: Responsive
+responsiveNote: Responsive button sizes require Panda CSS responsive variants (not yet implemented in cva)
+dashColors: Dash colors
+neutralOnLight: Neutral on light background
+activeColors: Active colors
+wide: Wide
+buttonWithIcon: Button with icon
+block: Block
+loadingSpinner: Loading spinner

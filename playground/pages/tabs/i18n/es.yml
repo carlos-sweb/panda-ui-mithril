@@ -1,1 +1,10 @@
 paragraph: Componente de pestañas para organizar contenido en paneles con pestañas.
+boxedUncontrolled: Recuadrado (no controlado)
+borderUncontrolled: Borde (no controlado)
+liftedUncontrolled: Elevado (no controlado)
+controlledMode: Modo controlado
+keyboardNavigation: Navegación por teclado
+disabledTab: Pestaña deshabilitada
+stateManagedInternally: Estado gestionado internamente mediante defaultActive
+stateManagedExternally: Estado gestionado externamente mediante la prop active
+wcagSupport: Compatibilidad total con WCAG 2.1 AA

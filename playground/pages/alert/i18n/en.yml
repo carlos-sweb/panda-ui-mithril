@@ -1,1 +1,23 @@
 paragraph: Alert component for displaying important messages and notifications. All standard variants available.
+neutralNoColor: Neutral (No Color)
+withoutColorProp: "Without a `color` prop, the alert falls back to a neutral base-200 background."
+baseAlert: Base Alert
+defaultAlertColors: Default alert with different colors.
+softStyle: Soft Style
+softBackgroundNoBorder: Soft background with no border.
+outlineStyle: Outline Style
+transparentColoredBorder: Transparent background with colored border.
+dashStyle: Dash Style
+transparentDashedBorder: Transparent background with dashed border.
+withButtonsResponsive: With Buttons + Responsive
+verticalMobileHorizontalDesktop: Vertical on mobile, horizontal on desktop. Includes action buttons.
+withTitleDescription: With Title and Description
+structuredAlert: Structured alert with title, description, and action button.
+horizontalDirectionDefault: Horizontal Direction (Default)
+contentFlowsHorizontally: Content flows horizontally, good for desktop.
+verticalDirection: Vertical Direction
+contentStacksVertically: Content stacks vertically, good for mobile.
+styleVerticalDirection: Style + Vertical Direction
+variantDirectionCombined: "The `variant` prop (soft, outline, dash) combines with `direction=\"vertical\"`."
+withoutIcons: Without Icons
+alertsWithoutIcons: Alerts can be used without icons.

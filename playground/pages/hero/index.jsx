@@ -74,7 +74,7 @@ export default {
         </Text>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Basic</Title>
+          <Title as="h3" size="5">{t('basic')}</Title>
           <Hero className={surface}>
             <HeroContent className={center}>
               <div>
@@ -87,7 +87,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">With background image + overlay</Title>
+          <Title as="h3" size="5">{t('withBackgroundOverlay')}</Title>
           <Hero className={withImage}>
             <HeroOverlay />
             <HeroContent className={cx(center, white)}>

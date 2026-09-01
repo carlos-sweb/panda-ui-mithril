@@ -1,1 +1,3 @@
 paragraph: Aura es un efecto de luz en el borde que puede envolver cualquier componente — por defecto, un gradiente rotatorio. Ideal para destacar un botón, tarjeta o elemento al que quieras llamar la atención.
+aroundButtonDefault: Alrededor de un botón (por defecto)
+aroundCard: Alrededor de una tarjeta

@@ -76,7 +76,7 @@ export default {
           <Alert color="info">Toast notification!</Alert>
         </Toast>
 
-        <Title as="h3" size="5">Available placements</Title>
+        <Title as="h3" size="5">{t('availablePlacements')}</Title>
         <div className={placementBox}>
           {PLACEMENTS.map((p) => (
             <span

@@ -1,1 +1,4 @@
 paragraph: Modal component for displaying dialog windows and overlays. Backed by a real <dialog> element.
+persistent: Persistent
+persistentDescription: This modal is persistent — ESC and clicking outside won't close it; use the Close button.
+autoCloseButton: Auto Close Button

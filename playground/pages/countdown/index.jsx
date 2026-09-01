@@ -78,12 +78,12 @@ export default {
         </Text>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Presentational</Title>
+          <Title as="h3" size="5">{t('presentational')}</Title>
           <Countdown value={seconds} className={big} />
         </Block>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Clock layout (hh:mm:ss)</Title>
+          <Title as="h3" size="5">{t('clockLayout')}</Title>
           <div className={clock}>
             <div className={clockUnit}><Countdown value={hours} digits={2} className={big} /><span className={clockLabel}>hours</span></div>
             <span className={big}>:</span>
@@ -94,7 +94,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Timer Mode (with oncomplete)</Title>
+          <Title as="h3" size="5">{t('timerMode')}</Title>
           <Countdown
             duration={10}
             autostart

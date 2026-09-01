@@ -73,12 +73,12 @@ export default {
       <Stack>
         <Title as="h1" size="2">Button</Title>
         <Text color="neutral" >{t('paragraph')}</Text>        
-        <Title as="h3" size="5">Default</Title>
+        <Title as="h3" size="5">{t('common.subtitles.default')}</Title>
         <Stack direction="row" >
           <Button>Default</Button>
         </Stack>
         <Divider/>
-        <Title as="h3" size="5">Sizes</Title>
+        <Title as="h3" size="5">{t('common.subtitles.sizes')}</Title>
         <Stack gap="xs" direction="row" align="center">
           <Button size="xs">XS</Button>
           <Button size="sm">SM</Button>
@@ -88,9 +88,9 @@ export default {
         </Stack>
         <Divider/>
         <Block spacing="lg">
-          <Title as="h3" size="5">Responsive</Title>
+          <Title as="h3" size="5">{t('responsive')}</Title>
           <Text size="sm" color="neutral">
-            Responsive button sizes require Panda CSS responsive variants (not yet implemented in cva)
+            {t('responsiveNote')}
           </Text>
           <Stack direction="row" gap="sm">
             <Button size="xs">Responsive (xs)</Button>
@@ -98,7 +98,7 @@ export default {
         </Block>
         <Divider/>
         <Block spacing="lg">
-          <Title as="h3" size="5">Colors</Title>
+          <Title as="h3" size="5">{t('common.subtitles.colors')}</Title>
           <Stack direction="row" gap="sm">
             <Button color="neutral">Neutral</Button>
             <Button color="primary">Primary</Button>
@@ -112,7 +112,7 @@ export default {
         </Block>
         <Divider/>
         <Block spacing="lg">
-          <Title as="h3" size="5">Soft colors</Title>
+          <Title as="h3" size="5">{t('common.subtitles.softColors')}</Title>
           <Stack direction="row" gap="sm">
             <Button variant="soft" color="neutral">Neutral</Button>
             <Button variant="soft" color="primary">Primary</Button>
@@ -126,7 +126,7 @@ export default {
         </Block>
         <Divider/>
         <Block spacing="lg">
-          <Title as="h3" size="5">Outline colors</Title>
+          <Title as="h3" size="5">{t('common.subtitles.outlineColors')}</Title>
           <Stack direction="row" gap="sm">
             <Button variant="outline" color="neutral">Neutral</Button>
             <Button variant="outline" color="primary">Primary</Button>
@@ -140,7 +140,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Dash colors</Title>
+          <Title as="h3" size="5">{t('dashColors')}</Title>
           <Stack direction="row" gap="sm">
             <Button variant="dash" color="neutral">Neutral</Button>
             <Button variant="dash" color="primary">Primary</Button>
@@ -154,7 +154,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Neutral on light background</Title>
+          <Title as="h3" size="5">{t('neutralOnLight')}</Title>
           <div className={whiteSurface}>
             <Stack direction="row" gap="sm">
               <Button variant="outline">Outline</Button>
@@ -164,7 +164,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Active colors</Title>
+          <Title as="h3" size="5">{t('activeColors')}</Title>
           <Stack direction="row" gap="sm">
             <Button active color="neutral">Neutral</Button>
             <Button active color="primary">Primary</Button>
@@ -178,7 +178,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Ghost + Link</Title>
+          <Title as="h3" size="5">{t('common.subtitles.ghostLink')}</Title>
           <Stack direction="row" gap="sm">
             <Button variant="ghost">Ghost</Button>
             <Button variant="link">Link</Button>
@@ -186,21 +186,21 @@ export default {
         </Block>
 
 
-        <Title as="h3" size="5">Wide</Title>        
+        <Title as="h3" size="5">{t('wide')}</Title>        
           <Stack>
             <Button wide>Wide</Button>
           </Stack>                
-          <Title as="h3" size="5">Disabled</Title>
+          <Title as="h3" size="5">{t('common.subtitles.disabled')}</Title>
           <Stack direction="row" gap="xs" >
             <Button disabled>Disabled (attribute)</Button>
             <Button className="btn-disabled">Disabled (class)</Button>
           </Stack>                
-          <Title as="h3" size="5">Square + Circle</Title>
+          <Title as="h3" size="5">{t('common.subtitles.squareCircle')}</Title>
           <Stack direction="row" gap="xs" >
             <Button square><Heart size={20} /></Button>
             <Button circle><Heart size={20} /></Button>
           </Stack>
-        <Title as="h3" size="5">Border Width</Title>        
+        <Title as="h3" size="5">{t('common.subtitles.borderWidth')}</Title>        
         <Stack direction="row" gap="xs">
           <Button variant="outline" borderWidth={1}>border 1</Button>
               <Button variant="outline" borderWidth={2}>border 2</Button>
@@ -211,16 +211,16 @@ export default {
               <Button variant="dash" borderWidth={2}>border 2</Button>
               <Button variant="dash" borderWidth={3}>border 3</Button>
         </Stack>                
-        <Title as="h3" size="5">Button with icon</Title>        
+        <Title as="h3" size="5">{t('buttonWithIcon')}</Title>        
         <Stack direction="row" gap="xs">
           <Button><Heart size={20} /> Like</Button>
             <Button>Like <Heart size={20} /></Button>
         </Stack>        
-        <Title as="h3" size="5">Block</Title>
+        <Title as="h3" size="5">{t('block')}</Title>
         <Stack>
           <Button block>Block</Button>
         </Stack>              
-        <Title as="h3" size="5">Loading spinner</Title>
+        <Title as="h3" size="5">{t('loadingSpinner')}</Title>
         <Stack direction="row" gap="xs">
             <Button square><Loading /></Button>
             <Button><Loading /> Loading</Button>

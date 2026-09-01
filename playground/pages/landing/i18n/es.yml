@@ -1,5 +1,9 @@
   hero: Una librería de componentes Mithril.js estilizada con Panda CSS. Componentes listos para producción con patrones de diseño familiares.
   componentsLabel: componentes
+  install: Instalación
+  quickStart: Inicio rápido
+  componentPreview: Vista previa de componentes
+  browseAllComponents: Explorar todos los componentes
   componentsDesc: listos para producción
   statsComponents: Componentes
   statsCore: Tamaño del núcleo

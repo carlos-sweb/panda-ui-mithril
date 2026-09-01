@@ -1,1 +1,10 @@
 paragraph: Los botones permiten a los usuarios realizar acciones y tomar decisiones con un solo toque. Indican lo que sucederá cuando el usuario los toque.
+responsive: Responsivo
+responsiveNote: Los tamaños responsivos de botón requieren variantes responsivas de Panda CSS (aún no implementadas en cva)
+dashColors: Colores discontinuos
+neutralOnLight: Neutro sobre fondo claro
+activeColors: Colores activos
+wide: Ancho
+buttonWithIcon: Botón con icono
+block: Bloque
+loadingSpinner: Indicador de carga

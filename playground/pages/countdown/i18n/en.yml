@@ -1,1 +1,4 @@
 paragraph: Countdown component for displaying remaining time. You control the ticking (via setInterval or similar) — the component itself just animates value changes.
+presentational: Presentational
+clockLayout: "Clock layout (hh:mm:ss)"
+timerMode: Timer Mode (with oncomplete)

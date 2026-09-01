@@ -74,7 +74,7 @@ export default {
         </Text>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Horizontal (default)</Title>
+          <Title as="h3" size="5">{t('common.subtitles.horizontalDefault')}</Title>
           <Timeline>
             {events.map((year, i) => (
               <TimelineItem key={year} hrBefore={i > 0} hrAfter={i < events.length - 1}>
@@ -87,7 +87,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Vertical</Title>
+          <Title as="h3" size="5">{t('common.subtitles.vertical')}</Title>
           <Timeline vertical>
             {events.slice(0, 3).map((year, i) => (
               <TimelineItem key={year} hrBefore={i > 0} hrAfter={i < 2}>

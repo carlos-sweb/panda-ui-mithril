@@ -1,1 +1,12 @@
 paragraph: Componente de burbuja de chat para mostrar conversaciones de mensajes.
+basicChat: Chat básico
+chatMessage: ChatMessage
+completeMessageComponent: Componente de mensaje completo con nombre, hora, estado, respuesta y reacciones.
+multimediaMessages: Mensajes multimedia
+multimediaContent: Audio, vídeo, imágenes, archivos y vistas previas de enlaces.
+systemMessages: Mensajes del sistema
+systemMessagesDescription: Fechas, notificaciones de entrada e indicadores de escritura.
+emojiSelector: Selector de emojis
+emojiGrid: Una cuadrícula de emojis para reacciones rápidas.
+chatWindow: Ventana de chat
+chatWindowContainer: Contenedor de chat completo con cabecera fija, mensajes desplazables y pie fijo.

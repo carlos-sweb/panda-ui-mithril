@@ -52,7 +52,7 @@ export default {
         </Text>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Generic items</Title>
+          <Title as="h3" size="5">{t('genericItems')}</Title>
           <Join>
             <JoinItem>Button 1</JoinItem>
             <JoinItem>Button 2</JoinItem>
@@ -61,7 +61,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Combined with Button (via PaginationButton)</Title>
+          <Title as="h3" size="5">{t('combinedWithButton')}</Title>
           <Join>
             <PaginationButton>Button 1</PaginationButton>
             <PaginationButton active>Button 2</PaginationButton>
@@ -70,7 +70,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Vertical</Title>
+          <Title as="h3" size="5">{t('common.subtitles.vertical')}</Title>
           <Join vertical>
             <JoinItem>Item 1</JoinItem>
             <JoinItem>Item 2</JoinItem>

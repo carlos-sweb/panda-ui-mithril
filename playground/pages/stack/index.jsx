@@ -67,7 +67,7 @@ export default {
         </Tabs>
       </Block>
 
-      <Block spacing="lg"><Title as="h2" size="3">VStack (vertical)</Title>
+      <Block spacing="lg"><Title as="h2" size="3">{t('vstackVertical')}</Title>
         <Stack gap="md">
           <div className={item}>Item 1</div>
           <div className={item}>Item 2</div>
@@ -75,7 +75,7 @@ export default {
         </Stack>
       </Block>
 
-      <Block spacing="lg"><Title as="h2" size="3">HStack (horizontal)</Title>
+      <Block spacing="lg"><Title as="h2" size="3">{t('hstackHorizontal')}</Title>
         <Stack direction="row" gap="md">
           <Button>Save</Button>
           <Button variant="outline">Cancel</Button>
@@ -83,7 +83,7 @@ export default {
         </Stack>
       </Block>
 
-      <Block spacing="lg"><Title as="h2" size="3">Gap sizes</Title>
+      <Block spacing="lg"><Title as="h2" size="3">{t('gapSizes')}</Title>
         <Stack gap="xs"><div className={item}>xs gap</div><div className={item}>xs gap</div></Stack>
         <br />
         <Stack gap="sm"><div className={item}>sm gap</div><div className={item}>sm gap</div></Stack>
@@ -93,7 +93,7 @@ export default {
         <Stack gap="lg"><div className={item}>lg gap</div><div className={item}>lg gap</div></Stack>
       </Block>
 
-      <Block spacing="lg"><Title as="h2" size="3">Alignment</Title>
+      <Block spacing="lg"><Title as="h2" size="3">{t('alignment')}</Title>
         <Box>
           <Stack gap="sm" align="start"><div className={item}>align start</div><div className={item}>align start</div></Stack>
           <br />
@@ -103,7 +103,7 @@ export default {
         </Box>
       </Block>
 
-      <Block spacing="lg"><Title as="h2" size="3">Justify</Title>
+      <Block spacing="lg"><Title as="h2" size="3">{t('justify')}</Title>
         <Box>
           <Stack direction="row" gap="sm" justify="between">
             <div className={item}>left</div><div className={item}>right</div>

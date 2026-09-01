@@ -1,1 +1,6 @@
 paragraph: Stack stacks children vertically or horizontally with a configurable, responsive gap. Inspired by MUI/Chakra/Primer Stack — simple flex container, not layered cards.
+vstackVertical: VStack (vertical)
+hstackHorizontal: HStack (horizontal)
+gapSizes: Gap sizes
+alignment: Alignment
+justify: Justify

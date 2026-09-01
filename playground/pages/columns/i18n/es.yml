@@ -1,1 +1,4 @@
 paragraph: 'Columns crea una fila flexbox. Cada Column recibe un ancho fraccional de 12. Responsive: apila verticalmente en mobile.'
+equalWidth: Ancho igual
+fixedWidths: Anchos fijos (4+8)
+narrowColumn: Columna estrecha

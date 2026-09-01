@@ -48,7 +48,7 @@ export default {
         </Text>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Colors</Title>
+          <Title as="h3" size="5">{t('common.subtitles.colors')}</Title>
           <Stack direction="row" gap="sm" wrap="wrap">
             <Checkbox />
             <Checkbox checked />
@@ -59,7 +59,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Sizes</Title>
+          <Title as="h3" size="5">{t('common.subtitles.sizes')}</Title>
           <Stack direction="row" gap="sm" wrap="wrap">
             <Checkbox size="xs" checked />
             <Checkbox size="sm" checked />

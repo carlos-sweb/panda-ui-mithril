@@ -1,1 +1,11 @@
 paragraph: Title es un helper de tipografía que renderiza encabezados o elementos de texto HTML semánticos con props de estilo visual (tamaño, color, alineación, transformación, peso, truncado, cursiva).
+sectionHeading: Encabezado de sección
+semanticTags: Etiquetas semánticas
+h2Heading: Encabezado h2
+h3Heading: Encabezado h3
+alignment: Alineación
+transform: Transformación
+weight: Peso
+truncateItalic: Truncar e itálica
+sizeTiers: 7 niveles de tamaño, desde hero hasta caption
+autoSizeFromTag: Tamaño automático según la etiqueta (h1→1, h2→2, …)

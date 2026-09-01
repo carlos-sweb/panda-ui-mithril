@@ -254,7 +254,7 @@ export const Landing = {
         </Grid>
 
         {/* ── Install ── */}
-        <Title as="h2" size="3">Install</Title>
+        <Title as="h2" size="3">{t('install')}</Title>
         <Block spacing="sm" />
         <Tabs
           boxed
@@ -276,7 +276,7 @@ export const Landing = {
         </Tabs>
 
         {/* ── Quick Start ── */}
-        <Title as="h2" size="3" id="quick-start" className={css({ marginTop: '2.5rem' })}>Quick Start</Title>
+        <Title as="h2" size="3" id="quick-start" className={css({ marginTop: '2.5rem' })}>{t('quickStart')}</Title>
         <Block spacing="sm" />
         <Text color="neutral" className={css({ marginBottom: '1.5rem' })}>
           {m.trust(t('quickStartIntro'))}
@@ -315,7 +315,7 @@ export const Landing = {
         </Stack>
 
         {/* ── Component Preview ── */}
-        <Title as="h2" size="3" className={css({ marginTop: '2.5rem' })}>Component Preview</Title>
+        <Title as="h2" size="3" className={css({ marginTop: '2.5rem' })}>{t('componentPreview')}</Title>
         <Block spacing="sm" />
         <Stack gap="sm" className={css({ marginBottom: '1.5rem' })}>
           <Alert color="info">{t('alert')}</Alert>
@@ -358,7 +358,7 @@ export const Landing = {
         </Stack>
 
         {/* ── Browse All Components ── */}
-        <Title as="h2" size="3">Browse All Components</Title>
+        <Title as="h2" size="3">{t('browseAllComponents')}</Title>
         <Block spacing="sm" />
         <Text color="neutral" className={css({ marginBottom: '1.5rem' })}>{t('orgDesc')}</Text>
 

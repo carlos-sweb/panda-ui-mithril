@@ -1,1 +1,3 @@
 paragraph: Join is a container for grouping multiple items — it collapses shared borders and only rounds the outer corners.
+genericItems: Generic items
+combinedWithButton: Combined with Button (via PaginationButton)

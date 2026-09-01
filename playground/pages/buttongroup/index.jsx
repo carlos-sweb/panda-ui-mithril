@@ -65,7 +65,7 @@ export default {
         </Text>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Default</Title>
+          <Title as="h3" size="5">{t('common.subtitles.default')}</Title>
           <ButtonGroup>
             <Button>Left</Button>
             <Button>Center</Button>
@@ -74,7 +74,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">With color</Title>
+          <Title as="h3" size="5">{t('withColor')}</Title>
           <ButtonGroup color="primary">
             <Button>1</Button>
             <Button>2</Button>
@@ -83,7 +83,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">With variant</Title>
+          <Title as="h3" size="5">{t('withVariant')}</Title>
           <ButtonGroup variant="outline">
             <Button>Yes</Button>
             <Button>No</Button>
@@ -91,7 +91,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">With size</Title>
+          <Title as="h3" size="5">{t('withSize')}</Title>
           <ButtonGroup size="lg">
             <Button>A</Button>
             <Button>B</Button>

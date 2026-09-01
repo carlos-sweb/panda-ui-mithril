@@ -55,20 +55,20 @@ export default {
           </TabContent>
         </Tabs>
       </Block>
-      <Block spacing="lg"><Title as="h2" size="3">Equal width</Title>
+      <Block spacing="lg"><Title as="h2" size="3">{t('equalWidth')}</Title>
         <Columns gap="md">
           <Column><div className={cell}>Col 1</div></Column>
           <Column><div className={cell}>Col 2</div></Column>
           <Column><div className={cell}>Col 3</div></Column>
         </Columns>
       </Block>
-      <Block spacing="lg"><Title as="h2" size="3">Fixed widths (4+8)</Title>
+      <Block spacing="lg"><Title as="h2" size="3">{t('fixedWidths')}</Title>
         <Columns gap="md">
           <Column width={4}><div className={cell}>4/12</div></Column>
           <Column width={8}><div className={cell}>8/12</div></Column>
         </Columns>
       </Block>
-      <Block spacing="lg"><Title as="h2" size="3">Narrow column</Title>
+      <Block spacing="lg"><Title as="h2" size="3">{t('narrowColumn')}</Title>
         <Columns gap="md">
           <Column narrow><div className={cell}>Auto</div></Column>
           <Column><div className={cell}>Fills rest</div></Column>

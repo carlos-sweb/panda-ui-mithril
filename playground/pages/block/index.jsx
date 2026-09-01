@@ -55,7 +55,7 @@ export default {
         </Tabs>
       </Block>
       <Block spacing="lg">
-        <Title as="h2" size="3">Spacing</Title>
+        <Title as="h2" size="3">{t('spacing')}</Title>
         <div className={css({ border: '1px solid token(colors.base-300)', borderRadius: 'token(radii.md)', padding: '1rem' })}>
           <Block spacing="sm"><div className={css({ bg: 'token(colors.base-300)', p: '1rem', borderRadius: '0.25rem' })}>sm — 1rem</div></Block>
           <Block spacing="md"><div className={css({ bg: 'token(colors.base-300)', p: '1rem', borderRadius: '0.25rem' })}>md — 1.5rem</div></Block>

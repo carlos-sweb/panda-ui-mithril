@@ -1,1 +1,16 @@
 paragraph: Componente de calificación para mostrar valoraciones con estrellas. Solo puntuaciones enteras, con un máximo configurable (por defecto 5) y modo estático de solo lectura.
+editableUncontrolled: Editable (no controlado)
+editableControlled: Editable (controlado)
+configurableMaxScore: Puntuación máxima configurable
+readonlyStatic: Solo lectura (rating estático)
+configurableMaxNote1: "Establece "
+configurableMaxNote2: " a cualquier valor: escala 1-3, 1-5 (por defecto), incluso 1-10."
+readonlyNote: "Úsalo para valoraciones dejadas por otros usuarios — sin hover, sin clic."
+colorsNote: "El color por defecto es warning (amarillo); sobrescríbelo con cualquier DaisyColor."
+withRatingGroup: Con RatingGroup
+withRatingGroupNote: "Añade una etiqueta sobre el Rating — ideal para formularios y encuestas"
+ratingGroupNote1: "Usa "
+ratingGroupNote2: " para estrellas independientes. Usa "
+ratingGroupNote3: " cuando necesitas una etiqueta. Consulta la "
+ratingGroupPage: página de RatingGroup
+ratingGroupNote4: " para la API completa."

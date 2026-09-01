@@ -1,1 +1,11 @@
 paragraph: Title is a typography helper that renders semantic HTML headings or text elements with visual style props (size, color, align, transform, weight, truncate, italic).
+sectionHeading: Section Heading
+semanticTags: Semantic tags
+h2Heading: h2 heading
+h3Heading: h3 heading
+alignment: Alignment
+transform: Transform
+weight: Weight
+truncateItalic: Truncate & Italic
+sizeTiers: 7 size tiers — from hero to caption
+autoSizeFromTag: Auto-size from tag (h1→1, h2→2, …)

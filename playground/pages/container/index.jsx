@@ -53,7 +53,7 @@ export default {
           </TabContent>
         </Tabs>
       </Block>
-      <Block spacing="lg"><Title as="h2" size="3">Max Widths</Title>
+      <Block spacing="lg"><Title as="h2" size="3">{t('maxWidths')}</Title>
         <Container maxWidth="tablet"><div className={demo}>tablet — 768px</div></Container>
         <br />
         <Container maxWidth="desktop"><div className={demo}>desktop — 960px</div></Container>

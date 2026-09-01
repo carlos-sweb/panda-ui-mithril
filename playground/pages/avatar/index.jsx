@@ -70,7 +70,7 @@ export default {
         </Text>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Sizes</Title>
+          <Title as="h3" size="5">{t('common.subtitles.sizes')}</Title>
           <Stack direction="row" gap="sm" wrap="wrap">
             <Avatar src={avatar1} size="xs" />
             <Avatar src={avatar2} size="sm" />
@@ -81,7 +81,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Shape</Title>
+          <Title as="h3" size="5">{t('shape')}</Title>
           <Stack direction="row" gap="sm" wrap="wrap">
             <Avatar src={avatar7} size="lg" shape="circle" />
             <Avatar src={avatar8} size="lg" shape="square" />
@@ -89,7 +89,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Status indicator</Title>
+          <Title as="h3" size="5">{t('statusIndicator')}</Title>
           <Stack direction="row" gap="sm" wrap="wrap">
             <Avatar src={avatar6} status="online" />
             <Avatar src={avatar9} status="offline" />
@@ -97,7 +97,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Placeholder (No Image)</Title>
+          <Title as="h3" size="5">{t('placeholderNoImage')}</Title>
           <Stack direction="row" gap="sm" wrap="wrap">
             <Avatar placeholder>AB</Avatar>
             <Avatar placeholder size="lg">CD</Avatar>
@@ -105,7 +105,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Avatar Group</Title>
+          <Title as="h3" size="5">{t('avatarGroup')}</Title>
           <AvatarGroup>
             <Avatar src={avatar1} />
             <Avatar src={avatar2} />

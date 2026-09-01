@@ -1,1 +1,4 @@
 paragraph: Componente de cuenta regresiva para mostrar el tiempo restante. Tú controlas el tic (vía setInterval o similar).
+presentational: Presentacional
+clockLayout: "Diseño de reloj (hh:mm:ss)"
+timerMode: Modo temporizador (con oncomplete)

@@ -86,7 +86,7 @@ export default {
           {t('paragraph')}
         </Text>
 
-        <Title as="h2" size="3">Sizes</Title>
+        <Title as="h2" size="3">{t('common.subtitles.sizes')}</Title>
         <Stack direction="row" gap="sm">
           {sizes.map((s) => (
             <Button key={s} onclick={() => { vnode.state.sizeFor = s; vnode.state.sizeOpen = true }}>
@@ -117,9 +117,9 @@ export default {
           <ModalBackdrop onclick={closeSize} />
         </Modal>
 
-        <Title as="h2" size="3">Persistent</Title>
+        <Title as="h2" size="3">{t('persistent')}</Title>
         <Text color="neutral">
-          This modal is persistent — ESC and clicking outside won't close it; use the Close button.
+          {t('persistentDescription')}
         </Text>
         <Stack direction="row" gap="sm">
           <Button onclick={() => { vnode.state.persistentOpen = true }}>
@@ -165,7 +165,7 @@ export default {
         ))}
 
         <Block spacing="lg">
-          <Title as="h2" size="3">Auto Close Button</Title>
+          <Title as="h2" size="3">{t('autoCloseButton')}</Title>
           <Button
             className={css({ marginBottom: '1rem' })}
             onclick={() => { vnode.state.autoCloseOpen = true }}

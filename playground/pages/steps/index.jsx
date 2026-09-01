@@ -55,7 +55,7 @@ export default {
         </Text>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Horizontal (default)</Title>
+          <Title as="h3" size="5">{t('common.subtitles.horizontalDefault')}</Title>
           <Steps>
             <Step color="primary">Register</Step>
             <Step color="primary">Choose Plan</Step>
@@ -65,7 +65,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">With custom icon</Title>
+          <Title as="h3" size="5">{t('withCustomIcon')}</Title>
           <Steps>
             <Step color="success">
               <StepIcon><Check size={16} /></StepIcon>
@@ -80,7 +80,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Vertical</Title>
+          <Title as="h3" size="5">{t('common.subtitles.vertical')}</Title>
           <Steps vertical>
             <Step color="primary">Register</Step>
             <Step color="primary">Choose Plan</Step>

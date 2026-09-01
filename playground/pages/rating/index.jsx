@@ -82,19 +82,19 @@ export default {
         </Text>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Editable (uncontrolled)</Title>
+          <Title as="h3" size="5">{t('editableUncontrolled')}</Title>
           <Rating defaultValue={vnode.state.uncontrolled} max={5} onchange={(v) => { vnode.state.uncontrolled = v }} />
           <p className={note}>Hover to preview, click to set, re-click the selected star to clear. Value: {vnode.state.uncontrolled}</p>
         </Block>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Editable (controlled)</Title>
+          <Title as="h3" size="5">{t('editableControlled')}</Title>
           <Rating value={vnode.state.controlled} max={5} onchange={(v) => { vnode.state.controlled = v }} />
           <p className={note}>Integer scores only. Value: {vnode.state.controlled}</p>
         </Block>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Configurable max score</Title>
+          <Title as="h3" size="5">{t('configurableMaxScore')}</Title>
           <Stack gap="xs">
             <Stack direction="row" align="center" gap="sm">
               <span className={css({ opacity: 0.6, minWidth: '3.5rem' })}>1-3</span>
@@ -112,21 +112,21 @@ export default {
               <span className={valueText}>Value: {vnode.state.tenStars}</span>
             </Stack>
           </Stack>
-          <p className={note}>Set <code>max</code> to any value: a 1-3 scale, 1-5 (default), even 1-10.</p>
+          <p className={note}>{t('configurableMaxNote1')}<code>max</code>{t('configurableMaxNote2')}</p>
         </Block>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Readonly (static rating)</Title>
+          <Title as="h3" size="5">{t('readonlyStatic')}</Title>
           <Stack direction="row" gap="sm">
             <Rating value={4} max={5} readonly />
             <Rating value={3} max={5} readonly />
             <Rating value={2} max={3} readonly />
           </Stack>
-          <p className={note}>Use this for ratings left by other users — no hover, no click.</p>
+          <p className={note}>{t('readonlyNote')}</p>
         </Block>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Sizes</Title>
+          <Title as="h3" size="5">{t('common.subtitles.sizes')}</Title>
           <Stack direction="row" gap="sm">
             <Rating value={3} size="xs" readonly />
             <Rating value={3} size="sm" readonly />
@@ -137,7 +137,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Colors</Title>
+          <Title as="h3" size="5">{t('common.subtitles.colors')}</Title>
           <Stack direction="row" gap="sm">
             <Rating value={4} readonly />
             <Rating value={4} color="warning" readonly />
@@ -145,7 +145,7 @@ export default {
             <Rating value={4} color="error" readonly />
             <Rating value={4} color="primary" readonly />
           </Stack>
-          <p className={note}>Default color is warning (yellow); override with any DaisyColor.</p>
+          <p className={note}>{t('colorsNote')}</p>
         </Block>
 
         <Block spacing="lg">
@@ -163,18 +163,18 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h2" size="3">With RatingGroup</Title>
-          <h4 className={heading}>Adds a label above the Rating — ideal for forms and surveys</h4>
+          <Title as="h2" size="3">{t('withRatingGroup')}</Title>
+          <h4 className={heading}>{t('withRatingGroupNote')}</h4>
           <Stack direction="row" gap="sm">
             <RatingGroup label="Quality" defaultValue={4} />
             <RatingGroup label="Difficulty" defaultValue={2} color="info" size="lg" />
           </Stack>
           <p className={css({ fontSize: '0.875rem', opacity: 0.6, marginTop: '0.5rem' })}>
-            Use <code>&lt;Rating /&gt;</code> for standalone stars. Use{' '}
-            <code>&lt;RatingGroup /&gt;</code> when you need a label. See the{' '}
+            {t('ratingGroupNote1')}<code>&lt;Rating /&gt;</code>{t('ratingGroupNote2')}
+            <code>&lt;RatingGroup /&gt;</code>{t('ratingGroupNote3')}
             <a href="#!/ratinggroup" className={css({ color: 'token(colors.primary)', textDecoration: 'underline' })}>
-              RatingGroup page
-            </a>{' '}for full API.
+              {t('ratingGroupPage')}
+            </a>{t('ratingGroupNote4')}
           </p>
         </Block>
 

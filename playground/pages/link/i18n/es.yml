@@ -1,1 +1,5 @@
 paragraph: Componente de enlace para navegación con etiquetas de anclaje estilizadas.
+underline: Subrayado
+underlineHoverOnly: El default solo subraya al pasar el cursor;
+underlineAlways: subraya siempre;
+underlineNever: nunca subraya (usado por el contexto del Navbar).

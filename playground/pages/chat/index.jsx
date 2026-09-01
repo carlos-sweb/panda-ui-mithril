@@ -169,7 +169,7 @@ export default {
 
         {/* Basic Chat */}
         <Block spacing="lg">
-          <Title as="h2" size="3">Basic Chat</Title>
+          <Title as="h2" size="3">{t('basicChat')}</Title>
           <Chat placement="start">
             <ChatImage><Avatar src={avatar1} /></ChatImage>
             <ChatHeader>John</ChatHeader>
@@ -186,9 +186,9 @@ export default {
 
         {/* ChatMessage */}
         <Block spacing="lg">
-          <Title as="h2" size="3">ChatMessage</Title>
+          <Title as="h2" size="3">{t('chatMessage')}</Title>
           <Text color="neutral" className={css({ marginBottom: '1rem' })}>
-            Complete message component with name, time, status, reply, and reactions.
+            {t('completeMessageComponent')}
           </Text>
           <Chat placement="start">
             <ChatImage><Avatar src={avatar2} /></ChatImage>
@@ -221,9 +221,9 @@ export default {
 
         {/* Multimedia */}
         <Block spacing="lg">
-          <Title as="h2" size="3">Multimedia Messages</Title>
+          <Title as="h2" size="3">{t('multimediaMessages')}</Title>
           <Text color="neutral" className={css({ marginBottom: '1rem' })}>
-            Audio, video, images, files, and link previews.
+            {t('multimediaContent')}
           </Text>
 
           <Chat placement="start">
@@ -273,9 +273,9 @@ export default {
 
         {/* System Messages */}
         <Block spacing="lg">
-          <Title as="h2" size="3">System Messages</Title>
+          <Title as="h2" size="3">{t('systemMessages')}</Title>
           <Text color="neutral" className={css({ marginBottom: '1rem' })}>
-            Dates, join notifications, and typing indicators.
+            {t('systemMessagesDescription')}
           </Text>
 
           <ChatSystem type="date">Today</ChatSystem>
@@ -297,9 +297,9 @@ export default {
 
         {/* Emoji Picker */}
         <Block spacing="lg">
-          <Title as="h2" size="3">Emoji Selector</Title>
+          <Title as="h2" size="3">{t('emojiSelector')}</Title>
           <Text color="neutral" className={css({ marginBottom: '1rem' })}>
-            A grid of emojis for quick reactions.
+            {t('emojiGrid')}
           </Text>
           <ChatEmoji onSelect={(emoji) => console.log('Selected:', emoji)} />
         </Block>
@@ -308,9 +308,9 @@ export default {
 
         {/* ChatWindow */}
         <Block spacing="lg">
-          <Title as="h2" size="3">ChatWindow</Title>
+          <Title as="h2" size="3">{t('chatWindow')}</Title>
           <Text color="neutral" className={css({ marginBottom: '1rem' })}>
-            Complete chat container with fixed header, scrollable messages, and fixed footer.
+            {t('chatWindowContainer')}
           </Text>
           <div className={css({ height: '400px', border: '1px solid', borderColor: 'base-200', borderRadius: 'var(--radius-box)', overflow: 'hidden' })}>
             <ChatWindow>

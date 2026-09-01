@@ -50,7 +50,7 @@ export default {
         </Text>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Colors</Title>
+          <Title as="h3" size="5">{t('common.subtitles.colors')}</Title>
           <Stack direction="row" gap="sm" wrap="wrap">
             <Badge color="neutral">Neutral</Badge>
             <Badge color="primary">Primary</Badge>
@@ -64,7 +64,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Variants</Title>
+          <Title as="h3" size="5">{t('common.subtitles.variants')}</Title>
           <Stack direction="row" gap="sm" wrap="wrap">
             <Badge variant="outline">Outline</Badge>
             <Badge variant="dash">Dash</Badge>
@@ -73,7 +73,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Sizes</Title>
+          <Title as="h3" size="5">{t('common.subtitles.sizes')}</Title>
           <Stack direction="row" gap="sm" wrap="wrap">
             <Badge size="xs">XS</Badge>
             <Badge size="sm">SM</Badge>

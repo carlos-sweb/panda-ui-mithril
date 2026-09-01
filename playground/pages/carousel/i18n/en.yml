@@ -1,1 +1,7 @@
 paragraph: Carousel component for displaying content in a slideshow. Scroll horizontally, or drag on touch devices — native scroll-snap, no JS required.
+basicDragScroll: Basic (drag/scroll to snap)
+fullWidthNav: Full width with next/prev navigation
+fullWidthNavNote1: "The reference implementation navigates with "
+fullWidthNavNote2: ", but that collides with apps using hash-based routing (like this playground's own "
+fullWidthNavNote3: "router) — using "
+fullWidthNavNote4: " on click sidesteps it."

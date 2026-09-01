@@ -1,1 +1,11 @@
 paragraph: Componente Drawer para paneles deslizantes anclados a un borde de la pantalla, basado en Modal. Respaldado por un elemento <dialog> real con eventos de ciclo de vida open/close (onopen, onclose, onclosed, onchange).
+positions: Posiciones
+sizeProp: "La prop <code>size</code> define el ancho del panel para start/end y la altura para top/bottom. Presets o cualquier tamaño CSS (<code>\"55%\"</code>, <code>200</code>)."
+events: Eventos
+lifecycleEvents: "Abre el drawer y observa cómo se disparan los eventos del ciclo de vida: <code>onopen</code> y <code>onchange(true)</code> al abrirse; <code>onclose</code>, <code>onclosed</code> y <code>onchange(false)</code> al terminar de cerrarse."
+persistent: Persistente
+persistentBehavior: "Con <code>persistent</code>, ESC y hacer clic fuera no cerrarán el drawer — usa el botón Close."
+autoCloseButton: Botón de cierre automático
+buttonCloseBehavior: "Con <code>buttonClose</code>, se añade un botón X automáticamente — cierra con la animación de salida."
+realExampleNavDrawer: Ejemplo real — drawer de navegación
+navDrawerExample: "Un drawer lateral construido con <code>Menu</code> dentro de <code>DrawerBox</code>, el caso de uso típico para navegación."

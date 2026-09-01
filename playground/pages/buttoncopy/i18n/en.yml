@@ -1,1 +1,11 @@
 paragraph: Button that copies text to the clipboard and shows a brief "Copied!" tooltip confirmation.
+square: Square
+squareColors: Square + Colors
+iconAnimation: Icon animation
+circleIconAnimation: Circle + Icon animation
+inlineWithText: Inline with Text
+withoutTooltip: Without tooltip (no Tooltip rendered)
+squareNote: "ButtonCopy is round by default. Pass "
+squareNoteSuffix: " for a square button."
+iconAnimationNote1: "The Copy → Check transition can be customised with the "
+iconAnimationNote2: " prop. Click each button to see the effect."

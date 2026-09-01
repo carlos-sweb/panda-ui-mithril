@@ -1,1 +1,5 @@
 paragraph: El componente Avatar representa un usuario o entidad con una imagen o iniciales.
+shape: Forma
+statusIndicator: Indicador de estado
+placeholderNoImage: Placeholder (sin imagen)
+avatarGroup: Grupo de avatares

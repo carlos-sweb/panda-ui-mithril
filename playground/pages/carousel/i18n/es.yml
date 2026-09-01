@@ -1,1 +1,7 @@
 paragraph: Componente de carrusel para mostrar contenido en una presentación de diapositivas. Desplazamiento horizontal nativo, sin JS requerido.
+basicDragScroll: Básico (arrastrar/desplazar para encajar)
+fullWidthNav: Ancho completo con navegación anterior/siguiente
+fullWidthNavNote1: "La implementación de referencia navega con "
+fullWidthNavNote2: ", pero eso choca con las aplicaciones que usan enrutado basado en hash (como el propio "
+fullWidthNavNote3: "enrutador de este playground) — usar "
+fullWidthNavNote4: " al hacer clic lo evita."

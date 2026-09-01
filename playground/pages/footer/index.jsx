@@ -68,7 +68,7 @@ export default {
         </Text>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Columns</Title>
+          <Title as="h3" size="5">{t('columns')}</Title>
           <Footer horizontal className={surface}>
             <div>
               <FooterTitle>Services</FooterTitle>
@@ -91,7 +91,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Centered</Title>
+          <Title as="h3" size="5">{t('centered')}</Title>
           <Footer center className={surface}>
             <div>
               <FooterTitle>panda-ui-mithril</FooterTitle>

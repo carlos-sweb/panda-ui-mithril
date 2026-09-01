@@ -54,7 +54,7 @@ export default {
         <TextInput color="error" placeholder="Error input" />
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Sizes</Title>
+          <Title as="h3" size="5">{t('common.subtitles.sizes')}</Title>
           <TextInput size="xs" placeholder="XS" />
           <TextInput size="sm" placeholder="SM" />
           <TextInput size="md" placeholder="MD" />

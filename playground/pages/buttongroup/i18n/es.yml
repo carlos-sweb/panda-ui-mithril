@@ -1,1 +1,4 @@
 paragraph: Agrupa botones horizontalmente, colapsando bordes y redondeando solo las esquinas exteriores. Color, variante y tamaño se propagan del grupo a los botones hijos.
+withColor: Con color
+withVariant: Con variante
+withSize: Con tamaño

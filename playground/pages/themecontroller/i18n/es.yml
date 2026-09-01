@@ -1,1 +1,4 @@
 paragraph: Control de tema para alternar entre temas claro y oscuro.
+asToggle: Como toggle
+asCheckbox: Como checkbox
+asSwapSunMoon: Como swap (sol/luna)

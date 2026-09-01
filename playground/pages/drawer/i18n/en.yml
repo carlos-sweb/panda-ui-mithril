@@ -1,1 +1,11 @@
 paragraph: Drawer component for sliding panels docked to an edge of the screen, based on Modal. Backed by a real <dialog> element with open/close lifecycle events (onopen, onclose, onclosed, onchange).
+positions: Positions
+sizeProp: "The <code>size</code> prop sets the panel width for start/end and the panel height for top/bottom. Presets or any CSS size (<code>\"55%\"</code>, <code>200</code>)."
+events: Events
+lifecycleEvents: "Open the drawer and watch the lifecycle events fire: <code>onopen</code> and <code>onchange(true)</code> when it opens; <code>onclose</code>, <code>onclosed</code> and <code>onchange(false)</code> when it finishes closing."
+persistent: Persistent
+persistentBehavior: "With <code>persistent</code>, ESC and clicking outside won't close the drawer — use the Close button."
+autoCloseButton: Auto Close Button
+buttonCloseBehavior: "With <code>buttonClose</code>, an X button is appended automatically — it closes with the exit animation."
+realExampleNavDrawer: Real example — navigation drawer
+navDrawerExample: "A sidebar drawer built with <code>Menu</code> inside <code>DrawerBox</code>, the typical use case for navigation."

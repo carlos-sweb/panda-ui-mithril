@@ -1,3 +1,9 @@
 paragraph: Menu component for navigation menus and sidebars.
 autoActiveDescription: "When autoActive is true, the Menu tracks which item is active and updates automatically on click. No need to manage state manually."
 callbackDescription: "Use onActiveChange to get notified when the active item changes. Useful for syncing with router or external state."
+verticalDefault: Vertical (default)
+horizontal: Horizontal
+autoActive: Auto Active
+autoActiveCallback: Auto Active + Callback
+autoActiveTitle: autoActive
+onActiveChangeTitle: onActiveChange

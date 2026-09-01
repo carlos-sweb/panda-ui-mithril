@@ -1,1 +1,12 @@
 paragraph: Chat bubble component for displaying message conversations.
+basicChat: Basic Chat
+chatMessage: ChatMessage
+completeMessageComponent: Complete message component with name, time, status, reply, and reactions.
+multimediaMessages: Multimedia Messages
+multimediaContent: Audio, video, images, files, and link previews.
+systemMessages: System Messages
+systemMessagesDescription: Dates, join notifications, and typing indicators.
+emojiSelector: Emoji Selector
+emojiGrid: A grid of emojis for quick reactions.
+chatWindow: ChatWindow
+chatWindowContainer: Complete chat container with fixed header, scrollable messages, and fixed footer.

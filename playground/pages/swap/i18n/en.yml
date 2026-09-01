@@ -1,3 +1,5 @@
 paragraph: Swap elements with a transition animation.
 controlledTitle: Controlled (onchange)
 controlledDescription: "Use `checked` and `onchange` for controlled usage. The callback receives `(checked, e)` — the new boolean state and the raw DOM event."
+swapNote1: "Click to toggle — the swap works with a hidden native checkbox (like the reference implementation), no JS state required. Pass an icon component to "
+swapNote2: " the same way you'd pass text."

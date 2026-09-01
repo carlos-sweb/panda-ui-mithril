@@ -1,1 +1,7 @@
-paragraph: Text es un helper de tipografía que renderiza un elemento de texto HTML semántico (p por defecto) con props de estilo visual (tamaño, color, alineación, transformación, peso, truncado, cursiva).
+paragraph: Text es una utilidad de tipografía que renderiza un elemento de texto semántico (p por defecto) con props de estilo visual (size, color, align, transform, weight, truncate, italic).
+semanticTags: Etiquetas semánticas
+alignment: Alineación
+transform: Transformación
+weight: Peso
+truncateItalic: Truncar e itálica
+sizeTiers: 5 niveles de tamaño — de pequeño a grande

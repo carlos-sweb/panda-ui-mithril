@@ -59,10 +59,9 @@ export default {
         </Stack>
 
         <Block spacing="lg">
-          <Title as="h2" size="3">Underline</Title>
+          <Title as="h2" size="3">{t('underline')}</Title>
           <Text color="neutral">
-            El default solo subraya al pasar el cursor; <code>hover={false}</code> subraya siempre;
-            <code> noUnderline</code> nunca subraya (usado por el contexto del Navbar).
+            {t('underlineHoverOnly')} <code>hover={false}</code> {t('underlineAlways')} <code>noUnderline</code> {t('underlineNever')}
           </Text>
           <Stack direction="row" gap="md" wrap="wrap">
             <Link href="#!/link">Default (hover)</Link>

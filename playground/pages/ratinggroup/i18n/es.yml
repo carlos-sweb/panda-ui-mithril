@@ -1,1 +1,9 @@
 paragraph: RatingGroup envuelve un componente Rating con una etiqueta descriptiva. Delega todas las props de valor, color, tamaño e interactividad al Rating interno.
+basic: Básico
+readonly: Solo lectura
+hideValue: Ocultar valor
+withStandaloneRating: Con Rating independiente
+wrapWithLabel: Envuelve Rating con una etiqueta que muestra el valor
+displayOnly: "Solo visualización: sin interacción, etiqueta con puntuación"
+showValueFalse: showValue={false} — solo etiqueta, sin visualización numérica
+compareRating: "Comparación: Rating (sin etiqueta) vs RatingGroup (con etiqueta)"

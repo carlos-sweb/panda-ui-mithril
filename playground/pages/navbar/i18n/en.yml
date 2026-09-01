@@ -1,1 +1,24 @@
 paragraph: Navbar with three zones and strategic sub-components (NavbarBrand, NavbarMenu, NavbarLink, NavbarToggle) plus position, color, size, border, shadow and glass variants.
+basic: Basic
+anatomy: Anatomy
+anatomyWith: " with "
+anatomyState: " (controlled active state) and actions in "
+positions: Positions
+positionsSticky: " (sticks to the top of its container on scroll) and "
+positionsFixed: " (fixed to the viewport; here contained in the demo via a transform ancestor — the shell navbar of this playground is the real example)."
+borderShadow: "Border & shadow"
+colorsNote: "The semantic color defines "
+colorsNote2: "; the slots inherit "
+glass: Glass
+glassNote: " makes the background translucent and applies "
+glassNote2: " — here over a color gradient."
+contentOverGradient: Content over gradient
+glassOverlayNote: "The navbar above blurs everything behind it. The "
+glassOverlayNote2: " background is the semantic color at 75% opacity."
+container: Container
+containerNote: " centers the content with max-width ("
+containerNote2: ", default 80rem) — here reduced to 32rem to see it."
+responsiveToggleDrawer: Responsive — toggle + drawer
+responsiveNote1: " is the desktop link group (hidden <768px) and "
+responsiveNote2: " is the mobile-only hamburger (hidden ≥768px). This library's mobile pattern pairs the toggle with the "
+responsiveNote3: ". Try it with the viewport in mobile."

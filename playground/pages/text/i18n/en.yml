@@ -1,1 +1,7 @@
 paragraph: Text is a typography helper that renders a semantic text element (p by default) with visual style props (size, color, align, transform, weight, truncate, italic).
+semanticTags: Semantic tags
+alignment: Alignment
+transform: Transform
+weight: Weight
+truncateItalic: Truncate & Italic
+sizeTiers: 5 size tiers — from small to large

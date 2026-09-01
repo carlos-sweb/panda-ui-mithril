@@ -1,1 +1,6 @@
-paragraph: ''
+paragraph: Elemento de interfaz pequeño e interactivo para etiquetar, categorizar o filtrar contenido. Admite iconos, acciones de eliminación y estados clicables.
+styles: Estilos
+withIcon: Con icono
+oneCharacter: Un carácter (cuadrado)
+clickable: Hacer clic
+onRemove: Al eliminar

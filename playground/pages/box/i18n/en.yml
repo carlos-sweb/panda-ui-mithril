@@ -1,1 +1,3 @@
 paragraph: Box is a simple container with background, padding, border, and shadow. Ideal for cards, forms, and media objects.
+padding: Padding
+shadow: Shadow

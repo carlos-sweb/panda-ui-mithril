@@ -13,6 +13,19 @@ common:
   copy: Copy
   copied: Copied!
   noResults: No results found.
+  subtitles:
+    sizes: Sizes
+    colors: Colors
+    vertical: Vertical
+    variants: Variants
+    default: Default
+    disabled: Disabled
+    squareCircle: Square + Circle
+    softColors: Soft colors
+    outlineColors: Outline colors
+    horizontalDefault: Horizontal (default)
+    ghostLink: Ghost + Link
+    borderWidth: Border Width
   searchPlaceholder: Search ...
   searchNavigate: ↑↓ Navigate
   searchOpen: ↵ Open

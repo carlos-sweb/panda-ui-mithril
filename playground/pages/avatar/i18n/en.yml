@@ -1,1 +1,5 @@
 paragraph: Avatar component represents a user or entity with an image or initials.
+shape: Shape
+statusIndicator: Status indicator
+placeholderNoImage: Placeholder (No Image)
+avatarGroup: Avatar Group

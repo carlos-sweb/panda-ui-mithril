@@ -54,7 +54,7 @@ export default {
         </Text>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Arrow</Title>
+          <Title as="h3" size="5">{t('arrow')}</Title>
           <Collapse arrow border>
             <CollapseTitle>How do I create an account?</CollapseTitle>
             <CollapseContent>
@@ -64,7 +64,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Plus / minus</Title>
+          <Title as="h3" size="5">{t('plusMinus')}</Title>
           <Collapse plus border>
             <CollapseTitle>Can I cancel my subscription?</CollapseTitle>
             <CollapseContent>

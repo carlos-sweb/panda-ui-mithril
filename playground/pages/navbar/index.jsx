@@ -121,7 +121,7 @@ export default {
           {t('paragraph')}
         </Text>
 
-        <Title as="h2" size="3">Basic</Title>
+        <Title as="h2" size="3">{t('basic')}</Title>
         <Navbar className={surface}>
           <NavbarStart><NavbarBrand onclick={(e) => e.preventDefault()}>panda-ui</NavbarBrand></NavbarStart>
           <NavbarEnd>
@@ -131,10 +131,9 @@ export default {
         </Navbar>
 
         <Block spacing="lg">
-          <Title as="h2" size="3">Anatomy</Title>
+          <Title as="h2" size="3">{t('anatomy')}</Title>
           <Text color="neutral">
-            <code>NavbarBrand</code> + <code>NavbarMenu</code> con <code>NavbarLink</code> (estado activo controlado)
-            y acciones en <code>NavbarEnd</code>.
+            <code>NavbarBrand</code> + <code>NavbarMenu</code>{t('anatomyWith')}<code>NavbarLink</code>{t('anatomyState')}<code>NavbarEnd</code>.
           </Text>
           <Navbar className={surface} border shadow="sm">
             <NavbarStart>
@@ -163,11 +162,9 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h2" size="3">Positions</Title>
+          <Title as="h2" size="3">{t('positions')}</Title>
           <Text color="neutral">
-            <code>static</code> (default), <code>sticky</code> (se fija al top de su contenedor al hacer
-            scroll) y <code>fixed</code> (se fija al viewport; aquí contenido en el demo con un ancestro
-            transform — la navbar del shell de este playground es el ejemplo real).
+            <code>static</code> (default), <code>sticky</code>{t('positionsSticky')}<code>fixed</code>{t('positionsFixed')}
           </Text>
 
           <Stack gap="md">
@@ -200,10 +197,9 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h2" size="3">Colors</Title>
+          <Title as="h2" size="3">{t('common.subtitles.colors')}</Title>
           <Text color="neutral">
-            El color semántico define <code>--navbar-bg</code> / <code>--navbar-fg</code>; los slots heredan
-            <code> currentColor</code>.
+            {t('colorsNote')}<code>--navbar-bg</code> / <code>--navbar-fg</code>{t('colorsNote2')}<code>currentColor</code>.
           </Text>
           <Stack gap="md">
             {['base', 'primary', 'neutral', 'secondary', 'accent'].map((c) => (
@@ -218,7 +214,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h2" size="3">Sizes</Title>
+          <Title as="h2" size="3">{t('common.subtitles.sizes')}</Title>
           <Stack gap="md">
             {['sm', 'md', 'lg'].map((s) => (
               <Navbar key={s} size={s} className={surface}>
@@ -230,7 +226,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h2" size="3">Border &amp; shadow</Title>
+          <Title as="h2" size="3">{t('borderShadow')}</Title>
           <Grid cols={2} gap="md">
             <Cell><Navbar className={surface} border><NavbarBrand onclick={(e) => e.preventDefault()}>border</NavbarBrand></Navbar></Cell>
             <Cell><Navbar className={surface} shadow="sm"><NavbarBrand onclick={(e) => e.preventDefault()}>shadow sm</NavbarBrand></Navbar></Cell>
@@ -240,10 +236,9 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h2" size="3">Glass</Title>
+          <Title as="h2" size="3">{t('glass')}</Title>
           <Text color="neutral">
-            <code>glass</code> vuelve el fondo translúcido y aplica <code>backdrop-filter: blur()</code> —
-            aquí sobre un degradado de color.
+            <code>glass</code>{t('glassNote')}<code>backdrop-filter: blur()</code>{t('glassNote2')}
           </Text>
           <Box className={css({
             position: 'relative',
@@ -260,20 +255,18 @@ export default {
               </NavbarEnd>
             </Navbar>
             <Box className={css({ padding: '1.5rem', color: 'white' })}>
-              <Title as="h3" size="4">Content over gradient</Title>
+              <Title as="h3" size="4">{t('contentOverGradient')}</Title>
               <Text className={css({ color: 'white', opacity: 0.9 })}>
-                The navbar above blurs everything behind it. The <code>glass</code> background is the
-                semantic color at 75% opacity.
+                {t('glassOverlayNote')}<code>glass</code>{t('glassOverlayNote2')}
               </Text>
             </Box>
           </Box>
         </Block>
 
         <Block spacing="lg">
-          <Title as="h2" size="3">Container</Title>
+          <Title as="h2" size="3">{t('container')}</Title>
           <Text color="neutral">
-            <code>container</code> centra el contenido con max-width (<code>--navbar-max-w</code>,
-            default 80rem) — aquí reducido a 32rem para verlo.
+            <code>container</code>{t('containerNote')}<code>--navbar-max-w</code>{t('containerNote2')}
           </Text>
           <Navbar container border className={surface} style={{ '--navbar-max-w': '32rem' }}>
             <NavbarStart><NavbarBrand onclick={(e) => e.preventDefault()}>panda-ui</NavbarBrand></NavbarStart>
@@ -282,11 +275,9 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h2" size="3">Responsive — toggle + drawer</Title>
+          <Title as="h2" size="3">{t('responsiveToggleDrawer')}</Title>
           <Text color="neutral">
-            <code>NavbarMenu</code> es el grupo de links de escritorio (oculto &lt;768px) y
-            <code> NavbarToggle</code> es la hamburguesa solo móvil (oculta ≥768px). El patrón móvil de
-            esta librería empareja el toggle con el <code>Drawer</code>. Prueba con el viewport en móvil.
+            <code>NavbarMenu</code>{t('responsiveNote1')}<code>NavbarToggle</code>{t('responsiveNote2')}<code>Drawer</code>{t('responsiveNote3')}
           </Text>
           <Navbar className={surface} border>
             <NavbarStart>

@@ -61,7 +61,7 @@ export default {
 
         {/* Default */}
         <Block spacing="lg">
-          <Title as="h3" size="5">Default</Title>
+          <Title as="h3" size="5">{t('common.subtitles.default')}</Title>
           <Stack direction="row" gap="sm" wrap="wrap" align="center">
             <ButtonCopy text="Hello from ButtonCopy!" tooltip="Copied!" />
           </Stack>
@@ -69,7 +69,7 @@ export default {
 
         {/* Sizes */}
         <Block spacing="lg">
-          <Title as="h3" size="5">Sizes</Title>
+          <Title as="h3" size="5">{t('common.subtitles.sizes')}</Title>
           <Stack direction="row" gap="sm" wrap="wrap" align="center">
             <ButtonCopy text="xs" size="xs" tooltip="Copied!" />
             <ButtonCopy text="sm" size="sm" tooltip="Copied!" />
@@ -81,7 +81,7 @@ export default {
 
         {/* Colors */}
         <Block spacing="lg">
-          <Title as="h3" size="5">Colors</Title>
+          <Title as="h3" size="5">{t('common.subtitles.colors')}</Title>
           <Stack direction="row" gap="sm" wrap="wrap" align="center">
             <ButtonCopy text="neutral" tooltip="Copied!" />
             <ButtonCopy text="primary" color="primary" tooltip="Copied!" />
@@ -96,7 +96,7 @@ export default {
 
         {/* Variants */}
         <Block spacing="lg">
-          <Title as="h3" size="5">Variants</Title>
+          <Title as="h3" size="5">{t('common.subtitles.variants')}</Title>
           <Stack direction="row" gap="sm" wrap="wrap" align="center">
             <ButtonCopy text="default" tooltip="Copied!" />
             <ButtonCopy text="soft" variant="soft" color="primary" tooltip="Copied!" />
@@ -108,9 +108,9 @@ export default {
 
         {/* Square shape (opt-out of the circle default) */}
         <Block spacing="lg">
-          <Title as="h3" size="5">Square</Title>
+          <Title as="h3" size="5">{t('square')}</Title>
           <Text color="neutral" className={css({ marginBottom: '1rem', fontSize: 'sm' })}>
-            ButtonCopy is round by default. Pass <code>shape="square"</code> for a square button.
+            {t('squareNote')}<code>shape="square"</code>{t('squareNoteSuffix')}
           </Text>
           <Stack direction="row" gap="sm" wrap="wrap" align="center">
             <ButtonCopy text="square xs" shape="square" size="xs" tooltip="Copied!" />
@@ -123,7 +123,7 @@ export default {
 
         {/* Square + colors */}
         <Block spacing="lg">
-          <Title as="h3" size="5">Square + Colors</Title>
+          <Title as="h3" size="5">{t('squareColors')}</Title>
           <Stack direction="row" gap="sm" wrap="wrap" align="center">
             <ButtonCopy text="square" shape="square" tooltip="Copied!" />
             <ButtonCopy text="square primary" shape="square" color="primary" tooltip="Copied!" />
@@ -137,9 +137,9 @@ export default {
 
         {/* Icon animations */}
         <Block spacing="lg">
-          <Title as="h3" size="5">Icon animation</Title>
+          <Title as="h3" size="5">{t('iconAnimation')}</Title>
           <Text color="neutral" className={css({ marginBottom: '1rem', fontSize: 'sm' })}>
-            The Copy → Check transition can be customised with the <code>animation</code> prop. Click each button to see the effect.
+            {t('iconAnimationNote1')}<code>animation</code>{t('iconAnimationNote2')}
           </Text>
           <Stack direction="row" gap="sm" wrap="wrap" align="center">
             <Stack gap="xs" align="center">
@@ -167,7 +167,7 @@ export default {
 
         {/* Circle + animations */}
         <Block spacing="lg">
-          <Title as="h3" size="5">Circle + Icon animation</Title>
+          <Title as="h3" size="5">{t('circleIconAnimation')}</Title>
           <Stack direction="row" gap="sm" wrap="wrap" align="center">
             <Stack gap="xs" align="center">
               <ButtonCopy text="scale" animation="scale" circle tooltip="Copied!" color="primary" />
@@ -190,7 +190,7 @@ export default {
 
         {/* Inline with text — the primary use case */}
         <Block spacing="lg">
-          <Title as="h3" size="5">Inline with Text</Title>
+          <Title as="h3" size="5">{t('inlineWithText')}</Title>
           <Stack direction="row" gap="sm" wrap="wrap" align="center">
             <Text id="demo-text-1">npm install panda-ui-mithril</Text>
             <ButtonCopy for="demo-text-1" variant="ghost" size="sm" tooltip="Copied!" />
@@ -199,7 +199,7 @@ export default {
 
         {/* No tooltip */}
         <Block spacing="lg">
-          <Title as="h3" size="5">Without tooltip (no Tooltip rendered)</Title>
+          <Title as="h3" size="5">{t('withoutTooltip')}</Title>
           <Stack direction="row" gap="sm" wrap="wrap" align="center">
             <ButtonCopy text="no tooltip at all" />
             <ButtonCopy text="ghost no tooltip" variant="ghost" color="primary" />
@@ -209,7 +209,7 @@ export default {
 
         {/* Disabled */}
         <Block spacing="lg">
-          <Title as="h3" size="5">Disabled</Title>
+          <Title as="h3" size="5">{t('common.subtitles.disabled')}</Title>
           <Stack direction="row" gap="sm" wrap="wrap" align="center">
             <ButtonCopy text="disabled" disabled tooltip="Copied!" />
             <ButtonCopy text="disabled primary" disabled color="primary" tooltip="Copied!" />

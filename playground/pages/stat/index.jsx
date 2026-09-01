@@ -63,7 +63,7 @@ export default {
         </Text>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">With figures & actions</Title>
+          <Title as="h3" size="5">{t('withFiguresActions')}</Title>
           <Stats className={shadow}>
             <Stat>
               <StatFigure><Wallet size={32} /></StatFigure>
@@ -89,7 +89,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Vertical</Title>
+          <Title as="h3" size="5">{t('common.subtitles.vertical')}</Title>
           <Stats vertical className={shadow}>
             <Stat>
               <StatTitle>Total Downloads</StatTitle>

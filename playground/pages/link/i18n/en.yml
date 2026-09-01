@@ -1,1 +1,5 @@
 paragraph: Link component for navigation with styled anchor tags.
+underline: Underline
+underlineHoverOnly: By default, it only underlines on hover;
+underlineAlways: it always underlines;
+underlineNever: it never underlines (used by the Navbar context).

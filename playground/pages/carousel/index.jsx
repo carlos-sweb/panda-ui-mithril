@@ -86,7 +86,7 @@ export default {
         </Text>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Basic (drag/scroll to snap)</Title>
+          <Title as="h3" size="5">{t('basicDragScroll')}</Title>
           <Carousel className={gap}>
             {[1, 2, 3, 4].map((n) => (
               <CarouselItem key={n}>
@@ -97,11 +97,10 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Full width with next/prev navigation</Title>
+          <Title as="h3" size="5">{t('fullWidthNav')}</Title>
           <Text size="sm" color="neutral">
-            The reference implementation navigates with <code>&lt;a href="#slideId"&gt;</code>, but that collides
-            with apps using hash-based routing (like this playground's own <code>#!/route</code>{' '}
-            router) — using <code>scrollIntoView()</code> on click sidesteps it.
+            {t('fullWidthNavNote1')}<code>&lt;a href="#slideId"&gt;</code>{t('fullWidthNavNote2')}<code>#!/route</code>{' '}
+            {t('fullWidthNavNote3')}<code>scrollIntoView()</code>{t('fullWidthNavNote4')}
           </Text>
           <Carousel className={css({ width: '100%' })}>
             {[1, 2, 3].map((n, i, arr) => {

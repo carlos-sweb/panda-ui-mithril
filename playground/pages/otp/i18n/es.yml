@@ -1,1 +1,9 @@
-paragraph: Entrada de contraseña de un solo uso para códigos de verificación — un input real por celda con avance automático, soporte de pegado, navegación por teclado, máscara y eventos onchange/oncomplete.
+paragraph: Entrada de contraseña de un solo uso para códigos de verificación — una entrada real por celda con avance automático, soporte de pegado, navegación por teclado, máscara y eventos onchange/oncomplete.
+basic: Básico
+controlledEvents: Controlado + eventos
+types: Tipos
+mask: Máscara
+validation: Validación
+states: Estados
+joinedSeparator: Unido + separador
+oneTimeCode: Código de un solo uso

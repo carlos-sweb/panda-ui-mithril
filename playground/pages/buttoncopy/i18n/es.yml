@@ -1,1 +1,11 @@
 paragraph: Botón que copia texto al portapapeles y muestra una breve confirmación "¡Copiado!" como tooltip.
+square: Cuadrado
+squareColors: Cuadrado + Colores
+iconAnimation: Animación del icono
+circleIconAnimation: Círculo + animación del icono
+inlineWithText: En línea con texto
+withoutTooltip: Sin tooltip (no se renderiza Tooltip)
+squareNote: "ButtonCopy es redondo por defecto. Pasa "
+squareNoteSuffix: " para un botón cuadrado."
+iconAnimationNote1: "La transición Copiar → Verificar se puede personalizar con la prop "
+iconAnimationNote2: ". Haz clic en cada botón para ver el efecto."

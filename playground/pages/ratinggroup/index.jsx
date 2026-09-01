@@ -59,8 +59,8 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h2" size="3">Basic</Title>
-          <Text size="sm" color="neutral">Wrap Rating with a label that shows the value</Text>
+          <Title as="h2" size="3">{t('basic')}</Title>
+          <Text size="sm" color="neutral">{t('wrapWithLabel')}</Text>
           <Stack direction="row" gap="md" wrap="wrap">
             <RatingGroup label="Score" defaultValue={3} />
             <RatingGroup label="Quality" defaultValue={4} color="secondary" size="lg" />
@@ -68,8 +68,8 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h2" size="3">Readonly</Title>
-          <Text size="sm" color="neutral">Display-only: no interaction, label with score</Text>
+          <Title as="h2" size="3">{t('readonly')}</Title>
+          <Text size="sm" color="neutral">{t('displayOnly')}</Text>
           <Stack direction="row" gap="md" wrap="wrap">
             <RatingGroup label="Rating" value={4} readonly />
             <RatingGroup label="Performance" value={2} readonly color="info" />
@@ -77,7 +77,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h2" size="3">Colors</Title>
+          <Title as="h2" size="3">{t('common.subtitles.colors')}</Title>
           <Stack direction="row" gap="md" wrap="wrap">
             <RatingGroup label="Default" defaultValue={3} />
             <RatingGroup label="Primary" defaultValue={3} color="primary" />
@@ -87,7 +87,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h2" size="3">Sizes</Title>
+          <Title as="h2" size="3">{t('common.subtitles.sizes')}</Title>
           <Stack direction="row" gap="md" wrap="wrap">
             <RatingGroup label="xs" defaultValue={3} size="xs" />
             <RatingGroup label="sm" defaultValue={3} size="sm" />
@@ -98,16 +98,16 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h2" size="3">Hide value</Title>
-          <Text size="sm" color="neutral">showValue={'{false}'} — label only, no numeric display</Text>
+          <Title as="h2" size="3">{t('hideValue')}</Title>
+          <Text size="sm" color="neutral">{t('showValueFalse')}</Text>
           <Stack direction="row" gap="md" wrap="wrap">
             <RatingGroup label="Overall" defaultValue={4} showValue={false} />
           </Stack>
         </Block>
 
         <Block spacing="lg">
-          <Title as="h2" size="3">With standalone Rating</Title>
-          <Text size="sm" color="neutral">Compare: Rating (no label) vs RatingGroup (with label)</Text>
+          <Title as="h2" size="3">{t('withStandaloneRating')}</Title>
+          <Text size="sm" color="neutral">{t('compareRating')}</Text>
           <Stack direction="row" gap="md" wrap="wrap">
             <Stack gap="xs">
               <Text size="sm" color="neutral">Rating</Text>

@@ -13,6 +13,19 @@ common:
   copy: Copiar
   copied: ¡Copiado!
   noResults: Sin resultados.
+  subtitles:
+    sizes: Tamaños
+    colors: Colores
+    vertical: Vertical
+    variants: Variantes
+    default: Valor por defecto
+    disabled: Deshabilitado
+    squareCircle: Cuadrado + Círculo
+    softColors: Colores suaves
+    outlineColors: Colores de contorno
+    horizontalDefault: Horizontal (por defecto)
+    ghostLink: Fantasma + Enlace
+    borderWidth: Grosor del borde
   searchPlaceholder: Buscar ...
   searchNavigate: ↑↓ Navegar
   searchOpen: ↵ Abrir

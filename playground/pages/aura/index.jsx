@@ -67,7 +67,7 @@ export default {
         </Text>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Around a button (default)</Title>
+          <Title as="h3" size="5">{t('aroundButtonDefault')}</Title>
           <Stack direction="row" gap="sm">
             <Aura shape="field" className={primaryColor}>
               <Button color="primary">Upgrade now</Button>
@@ -76,7 +76,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Around a card</Title>
+          <Title as="h3" size="5">{t('aroundCard')}</Title>
           <Stack direction="row" gap="sm">
             <Aura shape="box">
               <Card className={cardSurface}>
@@ -87,7 +87,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Variants</Title>
+          <Title as="h3" size="5">{t('common.subtitles.variants')}</Title>
           <Stack direction="row" gap="sm">
             <Aura variant="dual" shape="field" className={primaryColor}><Button>dual</Button></Aura>
             <Aura variant="rainbow" shape="field"><Button>rainbow</Button></Aura>

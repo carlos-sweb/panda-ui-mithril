@@ -55,7 +55,7 @@ export default {
         </Text>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Default</Title>
+          <Title as="h3" size="5">{t('common.subtitles.default')}</Title>
           <Stack direction="row" gap="sm" wrap="wrap">
             <ButtonClose />
             <ButtonClose>this text is ignored</ButtonClose>
@@ -63,7 +63,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Sizes</Title>
+          <Title as="h3" size="5">{t('common.subtitles.sizes')}</Title>
           <Stack direction="row" gap="sm" wrap="wrap">
             <ButtonClose size="xs" />
             <ButtonClose size="sm" />
@@ -74,7 +74,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Colors</Title>
+          <Title as="h3" size="5">{t('common.subtitles.colors')}</Title>
           <Stack direction="row" gap="sm" wrap="wrap">
             <ButtonClose />
             <ButtonClose color="neutral" />
@@ -85,7 +85,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Soft colors</Title>
+          <Title as="h3" size="5">{t('common.subtitles.softColors')}</Title>
           <Stack direction="row" gap="sm" wrap="wrap">
             <ButtonClose variant="soft" />
             <ButtonClose variant="soft" color="primary" />
@@ -96,7 +96,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Outline colors</Title>
+          <Title as="h3" size="5">{t('common.subtitles.outlineColors')}</Title>
           <Stack direction="row" gap="sm" wrap="wrap">
             <ButtonClose variant="outline" />
             <ButtonClose variant="outline" color="primary" />
@@ -107,7 +107,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Ghost + Link</Title>
+          <Title as="h3" size="5">{t('common.subtitles.ghostLink')}</Title>
           <Stack direction="row" gap="sm" wrap="wrap">
             <ButtonClose variant="ghost" />
             <ButtonClose variant="ghost" color="primary" />
@@ -117,7 +117,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Square + Circle</Title>
+          <Title as="h3" size="5">{t('common.subtitles.squareCircle')}</Title>
           <Stack direction="row" gap="sm" wrap="wrap">
             <ButtonClose shape="square" />
             <ButtonClose shape="square" color="primary" />
@@ -126,7 +126,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Disabled</Title>
+          <Title as="h3" size="5">{t('common.subtitles.disabled')}</Title>
           <Stack direction="row" gap="sm" wrap="wrap">
             <ButtonClose disabled />
             <ButtonClose disabled color="primary" />
@@ -134,7 +134,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Stroke Width</Title>
+          <Title as="h3" size="5">{t('strokeWidth')}</Title>
           <Stack direction="row" gap="sm" wrap="wrap">
             <ButtonClose strokeWidth={1} />
             <ButtonClose strokeWidth={2} />
@@ -144,7 +144,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Border Width</Title>
+          <Title as="h3" size="5">{t('common.subtitles.borderWidth')}</Title>
           <Stack direction="row" gap="sm" wrap="wrap">
             <ButtonClose variant="outline" borderWidth={1} />
             <ButtonClose variant="outline" borderWidth={2} />

@@ -1,1 +1,9 @@
 paragraph: RatingGroup wraps a Rating component with a descriptive label. Delegates all value, color, size, and interactive props to the internal Rating.
+basic: Basic
+readonly: Readonly
+hideValue: Hide value
+withStandaloneRating: With standalone Rating
+wrapWithLabel: Wrap Rating with a label that shows the value
+displayOnly: "Display-only: no interaction, label with score"
+showValueFalse: showValue={false} — label only, no numeric display
+compareRating: "Compare: Rating (no label) vs RatingGroup (with label)"

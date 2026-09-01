@@ -1,1 +1,24 @@
 paragraph: Barra de navegación de tres zonas con sub-componentes estratégicos (NavbarBrand, NavbarMenu, NavbarLink, NavbarToggle) y variantes de posición, color, tamaño, borde, sombra y glass.
+basic: Básico
+anatomy: Anatomía
+anatomyWith: " con "
+anatomyState: " (estado activo controlado) y acciones en "
+positions: Posiciones
+positionsSticky: " (se fija al top de su contenedor al hacer scroll) y "
+positionsFixed: " (se fija al viewport; aquí contenido en el demo con un ancestro transform — la navbar del shell de este playground es el ejemplo real)."
+borderShadow: "Borde y sombra"
+colorsNote: "El color semántico define "
+colorsNote2: "; los slots heredan "
+glass: Vidrio
+glassNote: " vuelve el fondo translúcido y aplica "
+glassNote2: " — aquí sobre un degradado de color."
+contentOverGradient: Contenido sobre degradado
+glassOverlayNote: "La navbar de arriba difumina todo lo que hay detrás. El fondo "
+glassOverlayNote2: " es el color semántico al 75% de opacidad."
+container: Contenedor
+containerNote: " centra el contenido con max-width ("
+containerNote2: ", default 80rem) — aquí reducido a 32rem para verlo."
+responsiveToggleDrawer: Responsivo — toggle + drawer
+responsiveNote1: " es el grupo de links de escritorio (oculto <768px) y "
+responsiveNote2: " es la hamburguesa solo móvil (oculta ≥768px). El patrón móvil de esta librería empareja el toggle con el "
+responsiveNote3: ". Prueba con el viewport en móvil."

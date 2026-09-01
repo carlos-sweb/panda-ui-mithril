@@ -64,13 +64,13 @@ export default {
           {t('paragraph')}
         </Text>
 
-        <Title as="h2" size="3">Basic</Title>
+        <Title as="h2" size="3">{t('basic')}</Title>
         <Stack direction="row" gap="lg" align="center">
           <OTP />
           <OTP length={6} />
         </Stack>
 
-        <Title as="h2" size="3">Controlled + events</Title>
+        <Title as="h2" size="3">{t('controlledEvents')}</Title>
         <Text color="neutral">
           <code>onchange</code> fires on every change with the full code; <code>oncomplete</code>
           fires when all cells are filled.
@@ -104,7 +104,7 @@ export default {
           </Stack>
         </Box>
 
-        <Title as="h2" size="3">Types</Title>
+        <Title as="h2" size="3">{t('types')}</Title>
         <Text color="neutral">
           <code>type="numeric"</code> (default), <code>type="alphanumeric"</code>, or a custom
           <code> pattern</code> — characters that don't match are discarded.
@@ -115,13 +115,13 @@ export default {
           <OTP length={4} pattern={/^[0-3]$/} placeholder="0-3" />
         </Stack>
 
-        <Title as="h2" size="3">Mask</Title>
+        <Title as="h2" size="3">{t('mask')}</Title>
         <Stack direction="row" gap="lg" align="center">
           <OTP length={6} mask />
           <OTP length={6} mask="_" />
         </Stack>
 
-        <Title as="h2" size="3">Validation</Title>
+        <Title as="h2" size="3">{t('validation')}</Title>
         <Text color="neutral">
           The <code>error</code> prop applies error styles and <code>aria-invalid</code> — here it's
           driven by a validate button.
@@ -131,25 +131,25 @@ export default {
           <Button onclick={validate}>Validate</Button>
         </Stack>
 
-        <Title as="h2" size="3">States</Title>
+        <Title as="h2" size="3">{t('states')}</Title>
         <Stack direction="row" gap="lg" align="center">
           <OTP disabled />
           <OTP readonly value="1234" />
         </Stack>
 
-        <Title as="h2" size="3">Joined + separator</Title>
+        <Title as="h2" size="3">{t('joinedSeparator')}</Title>
         <Stack direction="row" gap="lg" align="center">
           <OTP joined />
           <OTP length={6} separator="-" />
         </Stack>
 
-        <Title as="h2" size="3">Sizes</Title>
+        <Title as="h2" size="3">{t('common.subtitles.sizes')}</Title>
         <Stack direction="row" gap="md" align="center">
           {sizes.map((s) => <OTP key={s} size={s} />)}
         </Stack>
 
         <Block spacing="lg">
-          <Title as="h2" size="3">One time code</Title>
+          <Title as="h2" size="3">{t('oneTimeCode')}</Title>
           <Text color="neutral">
             With <code>oneTimeCode</code>, the first cell gets <code>autocomplete="one-time-code"</code> so
             iOS/macOS keyboards suggest the SMS code.

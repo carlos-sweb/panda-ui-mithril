@@ -62,7 +62,7 @@ export default {
         </Text>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">Grouped (only one open at a time)</Title>
+          <Title as="h3" size="5">{t('groupedOnlyOne')}</Title>
           <div className={group}>
             <Accordion name="faq" arrow border defaultChecked>
               <AccordionTitle>What is panda-ui-mithril?</AccordionTitle>

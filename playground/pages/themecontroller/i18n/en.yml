@@ -1,1 +1,4 @@
 paragraph: Theme controller toggle for switching between light and dark themes.
+asToggle: As a toggle
+asCheckbox: As a checkbox
+asSwapSunMoon: As a swap (sun/moon)

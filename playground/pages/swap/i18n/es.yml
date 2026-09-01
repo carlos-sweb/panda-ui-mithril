@@ -1,3 +1,5 @@
 paragraph: Intercambia elementos con una animación de transición.
 controlledTitle: Uso controlado (onchange)
 controlledDescription: "Usa `checked` y `onchange` para uso controlado. El callback recibe `(checked, e)` — el nuevo estado boolean y el evento DOM crudo."
+swapNote1: "Haz clic para alternar — el swap funciona con un checkbox nativo oculto (como la implementación de referencia), sin necesidad de estado JS. Pasa un componente de icono a "
+swapNote2: " igual que pasarías texto."

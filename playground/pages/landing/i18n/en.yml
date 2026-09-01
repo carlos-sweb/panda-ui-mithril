@@ -1,5 +1,9 @@
   hero: A Mithril.js component library styled with Panda CSS. Production-ready components with familiar design patterns.
   componentsLabel: components
+  install: Install
+  quickStart: Quick Start
+  componentPreview: Component Preview
+  browseAllComponents: Browse All Components
   componentsDesc: ready for production
   statsComponents: Components
   statsCore: Core size

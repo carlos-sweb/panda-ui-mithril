@@ -1,1 +1,10 @@
 paragraph: Tabs component for organizing content into tabbed panels.
+boxedUncontrolled: Boxed (Uncontrolled)
+borderUncontrolled: Border (Uncontrolled)
+liftedUncontrolled: Lifted (Uncontrolled)
+controlledMode: Controlled Mode
+keyboardNavigation: Keyboard Navigation
+disabledTab: Disabled Tab
+stateManagedInternally: State managed internally via defaultActive
+stateManagedExternally: State managed externally via active prop
+wcagSupport: Full WCAG 2.1 AA support
