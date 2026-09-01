@@ -22,6 +22,7 @@ export {
   ChatSystem, ChatInput, ChatTyping, ChatEmoji
 } from './components/ChatBubble'
 export { Checkbox } from './components/Checkbox'
+export { ColorPicker } from './components/ColorPicker'
 export { ButtonClose } from './components/ButtonClose'
 export { ButtonCopy } from './components/ButtonCopy'
 export { Countdown } from './components/Countdown'

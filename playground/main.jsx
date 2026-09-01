@@ -37,6 +37,7 @@ import Carousel from './pages/carousel/index.jsx'
 import Chat from './pages/chat/index.jsx'
 import Checkbox from './pages/checkbox/index.jsx'
 import Collapse from './pages/collapse/index.jsx'
+import ColorPicker from './pages/colorpicker/index.jsx'
 import ColumnPage from './pages/columns/index.jsx'
 import ContainerPage from './pages/container/index.jsx'
 import Countdown from './pages/countdown/index.jsx'
@@ -113,6 +114,7 @@ const routes = {
   '/carousel':Carousel,
   '/chat':Chat,
   '/checkbox':Checkbox,
+  '/colorpicker':ColorPicker,
   '/collapse':Collapse,
   '/columns':ColumnPage,
   '/container':ContainerPage,
@@ -277,7 +279,7 @@ const Layout = {
         '/buttonclose': 'ButtonClose — PUM', '/buttongroup': 'ButtonGroup — PUM',
         '/buttoncopy': 'ButtonCopy — PUM',
         '/calendar': 'Calendar — PUM', '/card': 'Card — PUM', '/carousel': 'Carousel — PUM',
-        '/chat': 'Chat — PUM', '/checkbox': 'Checkbox — PUM', '/collapse': 'Collapse — PUM',
+        '/chat': 'Chat — PUM', '/checkbox': 'Checkbox — PUM', '/colorpicker': 'ColorPicker — PUM', '/collapse': 'Collapse — PUM',
         '/columns': 'Columns — PUM', '/container': 'Container — PUM',
         '/countdown': 'Countdown — PUM', '/diff': 'Diff — PUM', '/divider': 'Divider — PUM', '/dropdown': 'Dropdown — PUM', '/drawer': 'Drawer — PUM',
         '/fab': 'FAB — PUM', '/fieldset': 'Fieldset — PUM', '/fileinput': 'FileInput — PUM',

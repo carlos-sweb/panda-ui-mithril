@@ -39,6 +39,8 @@ import pagechatEn from '../pages/chat/i18n/en.yml'
 import pagechatEs from '../pages/chat/i18n/es.yml'
 import pagecheckboxEn from '../pages/checkbox/i18n/en.yml'
 import pagecheckboxEs from '../pages/checkbox/i18n/es.yml'
+import pagecolorpickerEn from '../pages/colorpicker/i18n/en.yml'
+import pagecolorpickerEs from '../pages/colorpicker/i18n/es.yml'
 import pagecollapseEn from '../pages/collapse/i18n/en.yml'
 import pagecollapseEs from '../pages/collapse/i18n/es.yml'
 import pagecomponentpageEn from '../pages/componentpage/i18n/en.yml'
@@ -187,6 +189,8 @@ pageI18n.en['chat'] = pagechatEn
 pageI18n.es['chat'] = pagechatEs
 pageI18n.en['checkbox'] = pagecheckboxEn
 pageI18n.es['checkbox'] = pagecheckboxEs
+pageI18n.en['colorpicker'] = pagecolorpickerEn
+pageI18n.es['colorpicker'] = pagecolorpickerEs
 pageI18n.en['collapse'] = pagecollapseEn
 pageI18n.es['collapse'] = pagecollapseEs
 pageI18n.en['componentpage'] = pagecomponentpageEn

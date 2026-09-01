@@ -16,6 +16,7 @@ import { cardRecipe } from './../src/recipes/card'
 import { carouselRecipe , carouselItemRecipe } from './../src/recipes/carousel'
 import { chatBubbleRecipe } from './../src/recipes/chatBubble'
 import { checkboxRecipe } from './../src/recipes/checkbox'
+import { colorPickerRecipe } from './../src/recipes/colorpicker'
 import { columnsRecipe } from './../src/recipes/columns'
 import { containerRecipe } from './../src/recipes/container'
 import { countdownDigitRecipe, countdownRecipe } from './../src/recipes/countdown'
@@ -114,6 +115,7 @@ export const pumPreset = definePreset({
         carousel : carouselRecipe,
         carouselItem : carouselItemRecipe,
         checkbox : checkboxRecipe,
+        colorPicker : colorPickerRecipe,
         containerPUM : containerRecipe,
         countdown : countdownRecipe,
         countdownDigit : countdownDigitRecipe,

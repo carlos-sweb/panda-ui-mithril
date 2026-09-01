@@ -1,0 +1,13 @@
+paragraph: ColorPicker is a professional multi-space color picker. It features a 2D saturation/brightness area with a hue slider (Picker mode), plus HSB, HSL, RGB, CMYK and LAB channel sliders, a hex input with live swatch, and a copy button. All conversions update in real time while dragging.
+basicTitle: Basic
+basicDesc: Uncontrolled — pick any color and read the hex below.
+controlledTitle: Controlled
+controlledDesc: value + onchange — the parent owns the color state.
+noCopyTitle: Without copy button
+noCopyDesc: copy={false} hides the footer copy button.
+modesTitle: Modes
+modesDesc: Switch between Picker (2D area) and per-channel sliders (HSB, HSL, RGB, CMYK, LAB). Each slider track reflects the current channels dynamically.
+restrictedModesTitle: Restricted modes
+restrictedModesDesc: modes whitelists the menu (only Picker + RGB below); excludeModes removes single spaces (LAB hidden in the second one).
+dropdownTitle: As dropdown
+dropdownDesc: trigger launches the picker from a button or text; close shows a ButtonClose in the chosen corner ('end' by default, 'start' on the left).

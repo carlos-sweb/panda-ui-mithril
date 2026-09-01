@@ -11,6 +11,7 @@ export * from './button-group';
 export * from './carousel';
 export * from './carousel-item';
 export * from './checkbox';
+export * from './color-picker';
 export * from './container-pum';
 export * from './countdown';
 export * from './countdown-digit';

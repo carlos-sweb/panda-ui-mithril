@@ -10,6 +10,7 @@ export * from './button-group.mjs';
 export * from './carousel.mjs';
 export * from './carousel-item.mjs';
 export * from './checkbox.mjs';
+export * from './color-picker.mjs';
 export * from './container-pum.mjs';
 export * from './countdown.mjs';
 export * from './countdown-digit.mjs';

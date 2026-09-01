@@ -44,10 +44,10 @@ minimal pointer to the site).
 ## Architecture
 
 ```
-src/components/    71 components, one folder each: index.js + index.d.ts
+src/components/    72 components, one folder each: index.js + index.d.ts
                     (Button and Alert are .jsx — JSX with Mithril's factory;
-                     the other 69 are .js using direct m() hyperscript)
-src/recipes/       67 Panda recipes in TypeScript (cva/sva) — single source of
+                     the other 70 are .js using direct m() hyperscript)
+src/recipes/       68 Panda recipes in TypeScript (cva/sva) — single source of
                     truth for every visual variant
 src/index.js       Barrel file re-exporting all components
 src/index.d.ts     Type declarations (barrel)

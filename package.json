@@ -91,6 +91,10 @@
       "types": "./src/components/Checkbox/index.d.ts",
       "import": "./src/components/Checkbox/index.js"
     },
+    "./color-picker": {
+      "types": "./src/components/ColorPicker/index.d.ts",
+      "import": "./src/components/ColorPicker/index.js"
+    },
     "./column": {
       "types": "./src/components/Column/index.d.ts",
       "import": "./src/components/Column/index.js"

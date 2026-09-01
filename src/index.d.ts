@@ -18,6 +18,8 @@ export { Card, CardBody, CardTitle, CardActions, CardFigure } from './components
 export { Carousel, CarouselItem } from './components/Carousel'
 export { Chat, ChatImage, ChatHeader, ChatBubble, ChatFooter } from './components/ChatBubble'
 export { Checkbox } from './components/Checkbox'
+export { ColorPicker } from './components/ColorPicker'
+export type { ColorPickerAttrs, ColorPickerMode } from './components/ColorPicker'
 export { ButtonClose } from './components/ButtonClose'
 export { ButtonCopy } from './components/ButtonCopy'
 export type { ButtonCopyAttrs, ButtonCopyAnimation } from './components/ButtonCopy'

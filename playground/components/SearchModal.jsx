@@ -22,6 +22,7 @@ const allComponents = [
   { name: 'chat', category: 'Data Display', route: '/chat' },
   { name: 'checkbox', category: 'Data Input', route: '/checkbox' },
   { name: 'collapse', category: 'Layout', route: '/collapse' },
+  { name: 'colorpicker', category: 'Data Input', route: '/colorpicker' },
   { name: 'columns', category: 'Layout', route: '/columns' },
   { name: 'container', category: 'Layout', route: '/container' },
   { name: 'countdown', category: 'Data Display', route: '/countdown' },
