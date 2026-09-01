@@ -71,7 +71,7 @@ export default {
         </Text>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">As a toggle</Title>
+          <Title as="h3" size="5">{t('asToggle')}</Title>
           <Stack direction="row" gap="md">
             <label className={label}>
               <ThemeController theme="dark" checked={isDark} onchange={change} />
@@ -81,7 +81,7 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">As a checkbox</Title>
+          <Title as="h3" size="5">{t('asCheckbox')}</Title>
           <Stack direction="row" gap="md">
             <label className={label}>
               <ThemeController variant="checkbox" theme="dark" checked={isDark} onchange={change} color="primary" />
@@ -91,12 +91,12 @@ export default {
         </Block>
 
         <Block spacing="lg">
-          <Title as="h3" size="5">As a swap (sun/moon)</Title>
+          <Title as="h3" size="5">{t('asSwapSunMoon')}</Title>
           <Stack direction="row" gap="md">
             <Swap
               style="rotate"
               checked={isDark}
-              onchange={(e) => change(e.target.checked ? 'dark' : undefined)}
+              onchange={(checked) => change(checked ? 'dark' : undefined)}
               on={<Moon size={24} />}
               off={<Sun size={24} />}
             />
