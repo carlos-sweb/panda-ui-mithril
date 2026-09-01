@@ -56,11 +56,13 @@ export const dropdownRecipe = defineSlotRecipe({
       'right-end': { content: { insetInlineStart: 'calc(100% + var(--dropdown-offset, 0.5rem))', bottom: '0' } },
     },
     // Abierto: el panel pasa a visible. La clase se aplica al slot `dropdown`
-    // (`.dropdown-open`), que activa el content con el selector descendente.
+    // (`.dropdown-open`), que activa el content con el selector de HIJO DIRECTO
+    // (`>`): un dropdown anidado dentro de otro abierto no debe "encender" su
+    // propio content (el menú de modos dentro del ColorPicker, p. ej.).
     open: {
       true: {
         dropdown: {
-          '& .dropdown-content': {
+          '& > .dropdown-content': {
             opacity: '1',
             visibility: 'visible',
             translate: '0 0',
