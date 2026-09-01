@@ -291,10 +291,14 @@ showing `[flag circle size 18] [abbr] [ChevronDown size 14]`, and
 `PumDropdownContent > PumMenu > PumMenuItem` per language with
 `[flag circle 18] [long name]`. Language data lives in the `langs` array
 (`{code, name, abbr, flag}` with `FlagEs`/`FlagUs` from `circle-flags-mithril`).
-Item `onclick` = `() => { PumSetLocale(l.code); setLang(l.code) }` — the
-dropdown auto-closes via `closeOnSelect` (default true). Keep `abbr` short
-(`Es`/`En`) and `name` long (`Español`/`English`). The trigger shows the
-CURRENT language (not the target).
+The menu lists ONLY the available languages EXCLUDING the current one
+(`langs.filter((l) => l.code !== current.code)`) — with `En` active it shows
+only `Español`, and vice versa; add future languages to `langs` and they show
+up as available targets automatically. Item `onclick` =
+`() => { PumSetLocale(l.code); setLang(l.code) }` — the dropdown auto-closes
+via `closeOnSelect` (default true). Keep `abbr` short (`Es`/`En`) and `name`
+long (`Español`/`English`). The trigger shows the CURRENT language (not the
+target). The same pattern is duplicated in `config-ui/main.jsx`.
 
 ## Verifying Component Changes
 

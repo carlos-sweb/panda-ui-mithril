@@ -215,7 +215,9 @@ const Layout = {
                 </PumDropdownTrigger>
                 <PumDropdownContent>
                   <PumMenu>
-                    {langs.map((l) => (
+                    {/* Solo idiomas disponibles: se excluye el actual
+                        (si es En → solo Español, y viceversa). */}
+                    {langs.filter((l) => l.code !== current.code).map((l) => (
                       <PumMenuItem
                         key={l.code}
                         onclick={() => { PumSetLocale(l.code); setLang(l.code) }}
