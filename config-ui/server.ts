@@ -1,12 +1,13 @@
 #!/usr/bin/env bun
 /**
- * config-ui server — API del editor del theme (Bao.js).
+ * config-ui server — API del editor del theme (Elysia).
  *
  * `bunx panda-ui-mithril config` sirve este servidor (por defecto en :1234):
  *   GET  /              → SPA del editor (bundleada con Bun.build)
  *   GET  /api/theme     → valores actuales del theme (JSON por categoría)
  *   POST /api/theme     → recibe edits y reescribe pum/theme/*.ts
  *   POST /api/rebuild   → ejecuta codegen + cssgen
+ *   …y el resto de rutas /api/fonts/* (ver fonts-api.ts)
  *
  * Flags (leídos de process.argv — el bin ya los recibió):
  *   --port <n> | --port=<n> | -p <n>   puerto del servidor (default 1234)
@@ -26,8 +27,14 @@
  *
  * La SPA (config-ui/) se bundlea con Bun.build en runtime — resuelve los bare
  * imports (mithril, lucide-mithril, ...) que el navegador no entiende.
+ *
+ * Framework: Elysia (https://elysiajs.com/). Contrato HTTP de Bao preservado:
+ * los handlers devuelven el objeto JSON directamente (Elysia lo serializa) o
+ * un `new Response(...)` para contenido raw; el body JSON se parsea con
+ * `request.json().catch(() => ({}))` (tolerante, igual que antes); el 404 se
+ * resuelve en `onError` con `code === 'NOT_FOUND'`.
  */
-import Bao from 'baojs'
+import { Elysia } from 'elysia'
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join, relative, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -45,7 +52,7 @@ const CLI_DIR = dirname(fileURLToPath(import.meta.url))
 const PKG_DIR = join(CLI_DIR, '..')
 const UI_DIR = join(PKG_DIR, 'config-ui')
 
-const app = new Bao()
+const app = new Elysia()
 
 // Content types para servir binarios (fuentes del editor y de los proyectos).
 const FONT_TYPES: Record<string, string> = {
@@ -100,27 +107,27 @@ const HTML_TEMPLATE = `<!DOCTYPE html>
 </body>
 </html>`
 
-app.get('/', (ctx) => {
-  return ctx.sendRaw(new Response(HTML_TEMPLATE, { headers: { 'Content-Type': 'text/html' } }))
+app.get('/', () => {
+  return new Response(HTML_TEMPLATE, { headers: { 'Content-Type': 'text/html' } })
 })
 
 // ── API: leer theme ───────────────────────────────────────────────────────
-app.get('/api/theme', (ctx) => {
+app.get('/api/theme', () => {
   const found = resolveTheme(process.cwd())
   if (found.legacy) {
-    return ctx.sendJson({
+    return {
       ok: false,
       legacy: true,
       projectRoot: found.projectRoot,
       error: 'Legacy theme detected: pum/theme.ts is a single file. Run `bunx panda-ui-mithril init` to migrate it to pum/theme/*.ts (your values are preserved).',
       hint: 'bunx panda-ui-mithril init',
-    })
+    }
   }
   if (!found.themeDir) {
-    return ctx.sendJson({
+    return {
       ok: false,
       error: 'pum/theme not found. Run bunx panda-ui-mithril init first (or pass --dir <path>).',
-    })
+    }
   }
 
   const data = {
@@ -129,29 +136,29 @@ app.get('/api/theme', (ctx) => {
     spacing: readFlat(found.themeDir, 'spacing'),
     radii: readFlat(found.themeDir, 'radii'),
   }
-  return ctx.sendJson({
+  return {
     ok: true,
     ...data,
     themeDir: found.themeDir,
     projectRoot: found.projectRoot,
     themeRel: relative(found.projectRoot, found.themeDir) || found.themeDir,
-  })
+  }
 })
 
 // ── API: escribir theme ───────────────────────────────────────────────────
-app.post('/api/theme', async (ctx) => {
+app.post('/api/theme', async ({ request }) => {
   const found = resolveTheme(process.cwd())
   if (found.legacy) {
-    return ctx.sendJson({
+    return {
       ok: false,
       legacy: true,
       error: 'Legacy theme detected: run `bunx panda-ui-mithril init` to migrate to pum/theme/*.ts first.',
       hint: 'bunx panda-ui-mithril init',
-    })
+    }
   }
-  if (!found.themeDir) return ctx.sendJson({ ok: false, error: 'pum/theme not found' })
+  if (!found.themeDir) return { ok: false, error: 'pum/theme not found' }
 
-  const body = await ctx.req.json()
+  const body = await request.json().catch(() => ({})) as Record<string, unknown>
   try {
     if (body.colors) writeColors(found.themeDir, body.colors)
     if (body.fonts) {
@@ -165,9 +172,9 @@ app.post('/api/theme', async (ctx) => {
     }
     if (body.spacing) writeFlat(found.themeDir, 'spacing', body.spacing)
     if (body.radii) writeFlat(found.themeDir, 'radii', body.radii)
-    return ctx.sendJson({ ok: true })
+    return { ok: true }
   } catch (e) {
-    return ctx.sendJson({ ok: false, error: String(e) })
+    return { ok: false, error: String(e) }
   }
 })
 
@@ -176,7 +183,7 @@ app.post('/api/theme', async (ctx) => {
  * codegen + cssgen en la raíz del proyecto (donde está panda.config.ts),
  * nunca en process.cwd() — el editor puede haberse lanzado desde un
  * subdirectorio. Se reusa para el rebuild manual (POST /api/rebuild) y para
- * los rebuilds automáticos tras instalar/desinstalar/asignar fuentes.
+ * los rebuilds automáticos tras añadir/asignar/desasignar fuentes.
  */
 function runRebuild(projectRoot: string) {
   const codegen = spawnSync('bunx', ['panda', 'codegen'], { cwd: projectRoot, encoding: 'utf8' })
@@ -188,11 +195,11 @@ function runRebuild(projectRoot: string) {
   }
 }
 
-app.post('/api/rebuild', (ctx) => {
+app.post('/api/rebuild', () => {
   const found = resolveTheme(process.cwd())
   const cwd = found.projectRoot || process.cwd()
   const result = runRebuild(cwd)
-  return ctx.sendJson({ ok: result.ok, codegen: result.codegen, cssgen: result.cssgen })
+  return { ok: result.ok, codegen: result.codegen, cssgen: result.cssgen }
 })
 
 // ── API: fuentes (modelo npm — catálogo, añadir, disponibles, asignar) ─────
@@ -223,23 +230,23 @@ function themeError(found: { themeDir: string | null; projectRoot: string | null
   return null
 }
 
-app.get('/api/fonts/search', async (ctx) => {
+app.get('/api/fonts/search', async ({ query }) => {
   const found = resolveTheme(process.cwd())
   const err = themeError(found)
-  if (err) return ctx.sendJson(err)
-  const q = ctx.query.get('q') ?? ''
+  if (err) return err
+  const q = query.q ?? ''
   try {
     const results = await searchFonts(q)
-    return ctx.sendJson({ ok: true, results })
+    return { ok: true, results }
   } catch (e) {
-    return ctx.sendJson({ ok: false, error: `Fontsource: ${String(e)}` })
+    return { ok: false, error: `Fontsource: ${String(e)}` }
   }
 })
 
-app.get('/api/fonts/available', (ctx) => {
+app.get('/api/fonts/available', () => {
   const found = resolveTheme(process.cwd())
   const err = themeError(found)
-  if (err) return ctx.sendJson(err)
+  if (err) return err
   try {
     const themeDir = found.themeDir!
     const projectRoot = found.projectRoot || dirname(themeDir)
@@ -264,42 +271,42 @@ app.get('/api/fonts/available', (ctx) => {
       subsets: lf.subsets,
       tokens: tokensForFamily(tokens, lf.family),
     }))
-    return ctx.sendJson({ ok: true, available, loaded, wired, migrated })
+    return { ok: true, available, loaded, wired, migrated }
   } catch (e) {
-    return ctx.sendJson({ ok: false, error: String(e) })
+    return { ok: false, error: String(e) }
   }
 })
 
 /** Añade el paquete @fontsource/{id} al proyecto (queda DISPONIBLE). */
-app.post('/api/fonts/add', async (ctx) => {
+app.post('/api/fonts/add', async ({ request }) => {
   const found = resolveTheme(process.cwd())
   const err = themeError(found)
-  if (err) return ctx.sendJson(err)
-  const body = await ctx.req.json().catch(() => ({})) as Record<string, unknown>
+  if (err) return err
+  const body = await request.json().catch(() => ({})) as Record<string, unknown>
   const id = sanitizeFontId(String(body.id ?? ''))
-  if (!id) return ctx.sendJson({ ok: false, error: 'Falta el id de la fuente.' })
+  if (!id) return { ok: false, error: 'Falta el id de la fuente.' }
   try {
     const projectRoot = found.projectRoot || dirname(found.themeDir!)
     if (!packageMeta(projectRoot, id)) {
       const r = bunAdd(projectRoot, id)
       if (!r.ok) {
-        return ctx.sendJson({ ok: false, error: `bun add @fontsource/${id} falló: ${r.output.slice(-250)}` })
+        return { ok: false, error: `bun add @fontsource/${id} falló: ${r.output.slice(-250)}` }
       }
     }
     const meta = packageMeta(projectRoot, id)
-    return ctx.sendJson({ ok: true, id, meta })
+    return { ok: true, id, meta }
   } catch (e) {
-    return ctx.sendJson({ ok: false, error: String(e) })
+    return { ok: false, error: String(e) }
   }
 })
 
 /** Asigna una fuente disponible a un token — la única operación que carga la fuente. */
-app.post('/api/fonts/assign', async (ctx) => {
+app.post('/api/fonts/assign', async ({ request }) => {
   const found = resolveTheme(process.cwd())
   const err = themeError(found)
-  if (err) return ctx.sendJson(err)
-  const body = await ctx.req.json().catch(() => ({})) as Record<string, unknown>
-  if (!body.id || !body.token) return ctx.sendJson({ ok: false, error: 'Faltan id y token.' })
+  if (err) return err
+  const body = await request.json().catch(() => ({})) as Record<string, unknown>
+  if (!body.id || !body.token) return { ok: false, error: 'Faltan id y token.' }
   try {
     const themeDir = found.themeDir!
     const projectRoot = found.projectRoot || dirname(themeDir)
@@ -310,9 +317,9 @@ app.post('/api/fonts/assign', async (ctx) => {
       styles: Array.isArray(body.styles) ? body.styles.map(String) : undefined,
       subsets: Array.isArray(body.subsets) ? body.subsets.map(String) : undefined,
     })
-    if (!res.ok) return ctx.sendJson({ ok: false, error: res.error })
+    if (!res.ok) return { ok: false, error: res.error }
     const rebuild = res.changed ? runRebuild(projectRoot) : { ok: true }
-    return ctx.sendJson({
+    return {
       ok: true,
       family: res.family,
       token: res.token,
@@ -320,94 +327,100 @@ app.post('/api/fonts/assign', async (ctx) => {
       wired: res.changed,
       rebuildOk: rebuild.ok,
       ...(rebuild.ok ? {} : { rebuildError: rebuild.codegen || rebuild.cssgen || 'rebuild failed' }),
-    })
+    }
   } catch (e) {
-    return ctx.sendJson({ ok: false, error: String(e) })
+    return { ok: false, error: String(e) }
   }
 })
 
 /** Desasigna una familia: resetea sus tokens y la quita del bloque. */
-app.post('/api/fonts/unassign', async (ctx) => {
+app.post('/api/fonts/unassign', async ({ request }) => {
   const found = resolveTheme(process.cwd())
   const err = themeError(found)
-  if (err) return ctx.sendJson(err)
-  const body = await ctx.req.json().catch(() => ({})) as Record<string, unknown>
-  if (!body.id) return ctx.sendJson({ ok: false, error: 'Falta el id de la fuente.' })
+  if (err) return err
+  const body = await request.json().catch(() => ({})) as Record<string, unknown>
+  if (!body.id) return { ok: false, error: 'Falta el id de la fuente.' }
   try {
     const themeDir = found.themeDir!
     const projectRoot = found.projectRoot || dirname(themeDir)
     const res = unassignFont(themeDir, projectRoot, String(body.id))
-    if (!res.ok) return ctx.sendJson({ ok: false, error: res.error })
+    if (!res.ok) return { ok: false, error: res.error }
     const rebuild = res.changed ? runRebuild(projectRoot) : { ok: true }
-    return ctx.sendJson({
+    return {
       ok: true,
       resetTokens: res.resetTokens,
       wired: false,
       rebuildOk: rebuild.ok,
       ...(rebuild.ok ? {} : { rebuildError: rebuild.codegen || rebuild.cssgen || 'rebuild failed' }),
-    })
+    }
   } catch (e) {
-    return ctx.sendJson({ ok: false, error: String(e) })
+    return { ok: false, error: String(e) }
   }
 })
 
 /** Desasigna (si estaba) y ejecuta `bun remove @fontsource/{id}`. */
-app.post('/api/fonts/remove', async (ctx) => {
+app.post('/api/fonts/remove', async ({ request }) => {
   const found = resolveTheme(process.cwd())
   const err = themeError(found)
-  if (err) return ctx.sendJson(err)
-  const body = await ctx.req.json().catch(() => ({})) as Record<string, unknown>
-  if (!body.id) return ctx.sendJson({ ok: false, error: 'Falta el id de la fuente.' })
+  if (err) return err
+  const body = await request.json().catch(() => ({})) as Record<string, unknown>
+  if (!body.id) return { ok: false, error: 'Falta el id de la fuente.' }
   try {
     const themeDir = found.themeDir!
     const projectRoot = found.projectRoot || dirname(themeDir)
     const res = removePackage(themeDir, projectRoot, String(body.id))
-    if (!res.ok) return ctx.sendJson({ ok: false, error: res.error })
+    if (!res.ok) return { ok: false, error: res.error }
     const rebuild = res.changed ? runRebuild(projectRoot) : { ok: true }
-    return ctx.sendJson({
+    return {
       ok: true,
       resetTokens: res.resetTokens,
       wired: false,
       rebuildOk: rebuild.ok,
       ...(rebuild.ok ? {} : { rebuildError: rebuild.codegen || rebuild.cssgen || 'rebuild failed' }),
-    })
+    }
   } catch (e) {
-    return ctx.sendJson({ ok: false, error: String(e) })
+    return { ok: false, error: String(e) }
   }
 })
 
 /** woff2 del paquete node_modules/@fontsource/{id}/files (preview local). */
-app.get('/api/fonts/file/:id/:file', (ctx) => {
+app.get('/api/fonts/file/:id/:file', ({ params }) => {
   const found = resolveTheme(process.cwd())
   const err = themeError(found)
-  if (err) return ctx.sendJson(err)
+  if (err) return err
   const projectRoot = found.projectRoot || dirname(found.themeDir!)
-  const p = packageFontFilePath(projectRoot, ctx.params.id, ctx.params.file)
-  if (!p) return ctx.sendRaw(new Response('Not found', { status: 404 }))
+  const p = packageFontFilePath(projectRoot, params.id, params.file)
+  if (!p) return new Response('Not found', { status: 404 })
   const ext = p.split('.').pop() || ''
-  return ctx.sendRaw(new Response(readFileSync(p), {
+  return new Response(readFileSync(p), {
     headers: { 'Content-Type': FONT_TYPES[ext] || 'application/octet-stream' },
-  }))
+  })
 })
 
 // El CSS inline (config-ui.css) referencia las fuentes como rutas relativas
 // (fonts/xxx.woff2, copiadas por postcss-url) — el navegador las pide al
 // server, así que hay que servirlas desde config-ui/fonts/.
-app.get('/fonts/*path', (ctx) => {
-  const rel = ctx.params.path
+app.get('/fonts/*', ({ params }) => {
+  const rel = params['*'] ?? ''
   const file = join(UI_DIR, 'fonts', rel)
-  if (!existsSync(file)) return ctx.sendRaw(new Response('Not found', { status: 404 }))
+  if (!existsSync(file)) return new Response('Not found', { status: 404 })
   const ext = file.split('.').pop() || ''
-  return ctx.sendRaw(new Response(readFileSync(file), {
+  return new Response(readFileSync(file), {
     headers: { 'Content-Type': FONT_TYPES[ext] || 'application/octet-stream' },
-  }))
+  })
 })
 
-// Bao exige un Response real del notFoundHandler (ctx.sendText devuelve el
-// Context y crashea con "Expected a Response object").
-app.notFoundHandler = () => new Response('Not found', { status: 404 })
+// 404 para rutas desconocidas (GET y POST). En Elysia 1.4 no existe
+// `.notFound`; el hook es `onError` con `code === 'NOT_FOUND'`.
+app.onError(({ code, set }) => {
+  if (code === 'NOT_FOUND') {
+    set.status = 404
+    return new Response('Not found', { status: 404 })
+  }
+  return undefined
+})
 
-const server = app.listen({ port: PORT })
+app.listen({ port: PORT })
 const url = `http://localhost:${PORT}`
 console.log(`PUM Config — theme editor: ${url}`)
 

@@ -413,8 +413,9 @@ subpaths in the exports map are lowercase kebab: `panda-ui-mithril/button`,
 
 `config-ui/` is a **client of the core like the playground** (NOT inside
 `src/`): it reuses the playground shell (navbar + sidebar + routes + i18n) and
-consumes only `panda-ui-mithril` components. The editor is a Bao.js server on
-**:1234** (`config-ui/server.ts`) that bundles the SPA with `Bun.build` in
+consumes only `panda-ui-mithril` components. The editor is an **Elysia**
+(https://elysiajs.com/) server on **:1234** (`config-ui/server.ts`, dependency
+`elysia` in `package.json`) that bundles the SPA with `Bun.build` in
 runtime and serves its own generated CSS (`config-ui/config-ui.css`, built by
 `bun run build:config-ui` / `scripts/build-config-ui.ts` with a **dedicated
 Panda config** — `panda-config-ui.config.ts`, outdir `styled-system-config-ui`,
