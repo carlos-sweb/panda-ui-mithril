@@ -3,7 +3,9 @@ import { defineRecipe } from '@pandacss/dev'
 export const titleRecipe = defineRecipe({
   className:'title',
   base: {
-    fontFamily: 'inherit',
+    // Rol display: los títulos usan la familia asignada al token fonts.display
+    // (por defecto comparte el stack de sans → sin cambio visual).
+    fontFamily: 'token(fonts.display)',
     lineHeight: 'token(lineHeights.tight)',
     color: 'var(--title-color, inherit)',
   },

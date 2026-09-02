@@ -152,7 +152,7 @@ export const colorPickerRecipe = defineSlotRecipe({
       background: 'base-100',
       color: 'inherit',
       fontSize: '0.8125rem',
-      fontFamily: 'monospace',
+      fontFamily: 'token(fonts.mono)',
       // El root tiene userSelect none; el input debe permitir seleccionar y
       // pegar valores desde la web.
       userSelect: 'text',

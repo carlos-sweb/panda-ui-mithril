@@ -24,7 +24,7 @@ export const otpRecipe = defineSlotRecipe({
       height: 'var(--otp-size)',
       padding: '0',
       textAlign: 'center',
-      fontFamily: 'monospace',
+      fontFamily: 'token(fonts.mono)',
       fontSize: 'var(--otp-fs)',
       fontVariantNumeric: 'tabular-nums',
       appearance: 'none',

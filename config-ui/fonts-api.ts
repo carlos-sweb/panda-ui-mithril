@@ -23,7 +23,7 @@ import {
 } from 'node:fs'
 import { spawnSync } from 'node:child_process'
 import { dirname, join, relative, resolve, sep } from 'node:path'
-import { parseFlat, writeFlatSrc } from './theme-io'
+import { ensureToken, parseFlat, writeFlatSrc } from './theme-io'
 
 // ── API de Fontsource (catálogo) ────────────────────────────────────────────
 const LIST_URL = 'https://api.fontsource.org/v1/fonts'
@@ -203,6 +203,23 @@ export function readFontsTokens(themeDir: string): Record<string, string> {
   } catch {
     return {}
   }
+}
+
+/** Garantiza los roles tipográficos canónicos en pum/theme/fonts.ts:
+ * inserta `display` (titulares) con el stack actual de `sans` si falta — así
+ * el rol existe sin cambiar la apariencia (los títulos heredan sans hasta que
+ * se asigne otra familia al rol). Devuelve si cambió el archivo. */
+export function ensureRoleTokens(themeDir: string): boolean {
+  const path = join(themeDir, 'fonts.ts')
+  if (!existsSync(path)) return false
+  let src = readFileSync(path, 'utf8')
+  const tokens = parseFlat(src)
+  if (tokens['display'] !== undefined) return false
+  const sansValue = tokens['sans'] ?? '"Ubuntu", system-ui, sans-serif'
+  const next = ensureToken(src, 'fonts', 'display', sansValue)
+  if (next === src) return false
+  writeFileSync(path, next, 'utf8')
+  return true
 }
 
 /** Tokens cuyo stack incluye la familia (p. ej. '"JetBrains Mono", …'). */

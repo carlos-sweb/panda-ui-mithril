@@ -39,9 +39,9 @@ import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join, relative, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { spawn, spawnSync } from 'node:child_process'
-import { parseColors, parseFlat, writeColorsSrc, writeFlatSrc } from './theme-io'
+import { ensureToken, parseColors, parseFlat, removeToken, writeColorsSrc, writeFlatSrc } from './theme-io'
 import {
-  assignFont, availableFonts, bunAdd, fontfaceWired, migrateLegacyFonts,
+  assignFont, availableFonts, bunAdd, ensureRoleTokens, fontfaceWired, migrateLegacyFonts,
   packageFontFilePath, packageMeta, pruneLoaded, readFontsTokens, readLoaded, removePackage,
   sanitizeFontId, searchFonts, syncBlock, tokensForFamily, unassignFont,
 } from './fonts-api'
@@ -162,6 +162,27 @@ app.post('/api/theme', async ({ request }) => {
   try {
     if (body.colors) writeColors(found.themeDir, body.colors)
     if (body.fonts) {
+      // Estructura de tokens de rol (fonts.ts): quitar/añadir entradas que
+      // writeFlatSrc no puede crear por sí sola (solo reemplaza valores).
+      const fontsPath = join(found.themeDir!, 'fonts.ts')
+      if (body.fontRemove && Array.isArray(body.fontRemove)) {
+        let src = readFileSync(fontsPath, 'utf8')
+        let next = src
+        for (const name of body.fontRemove.map(String)) {
+          if (!/^[a-z0-9-]+$/.test(name)) continue
+          next = removeToken(next, name)
+        }
+        if (next !== src) writeFileSync(fontsPath, next, 'utf8')
+      }
+      if (body.fontAdd && typeof body.fontAdd === 'object') {
+        let src = readFileSync(fontsPath, 'utf8')
+        let next = src
+        for (const [name, value] of Object.entries(body.fontAdd as Record<string, unknown>)) {
+          if (!/^[a-z0-9-]+$/.test(name)) continue
+          next = ensureToken(next, 'fonts', name, String(value ?? ''))
+        }
+        if (next !== src) writeFileSync(fontsPath, next, 'utf8')
+      }
       writeFlat(found.themeDir, 'fonts', body.fonts)
       // Prune: si el usuario editó los stacks (tab Tipografías) y dejó de
       // usar una familia cargada, se regenera el bloque para que el CSS no
@@ -250,6 +271,8 @@ app.get('/api/fonts/available', () => {
   try {
     const themeDir = found.themeDir!
     const projectRoot = found.projectRoot || dirname(themeDir)
+    // Autocuración 0: garantiza los roles tipográficos (display) en fonts.ts.
+    if (ensureRoleTokens(themeDir)) runRebuild(projectRoot)
     // Autocuración 1: migra instalaciones self-hosted antiguas ({raiz}/fonts)
     // a paquetes npm (bun add + fonts-loaded.json + limpieza).
     const migrated = migrateLegacyFonts(themeDir, projectRoot)

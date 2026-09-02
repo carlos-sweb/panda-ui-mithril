@@ -10,6 +10,15 @@ tabs:
   available: Available
 token:
   placeholder: font-family stack
+roles:
+  add: Add role
+  adding: Adding…
+  namePlaceholder: role name (e.g. display)
+  valuePlaceholder: font stack (e.g. "Lato", sans-serif)
+  removeLabel: Remove role {name}
+  exists: 'Role "{name}" already exists.'
+  invalid: Invalid role name (use a-z, 0-9 and dashes).
+  added: 'Role "{name}" added.'
   saving: Saving…
   save: Save
   reload: Reload

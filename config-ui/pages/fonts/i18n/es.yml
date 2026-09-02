@@ -10,6 +10,15 @@ tabs:
   available: Disponibles
 token:
   placeholder: font-family stack
+roles:
+  add: Añadir rol
+  adding: Añadiendo…
+  namePlaceholder: nombre del rol (p. ej. display)
+  valuePlaceholder: stack (p. ej. "Lato", sans-serif)
+  removeLabel: Quitar rol {name}
+  exists: 'El rol "{name}" ya existe.'
+  invalid: Nombre de rol inválido (usa a-z, 0-9 y guiones).
+  added: 'Rol "{name}" añadido.'
   saving: Guardando…
   save: Guardar
   reload: Recargar

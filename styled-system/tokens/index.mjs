@@ -1563,6 +1563,10 @@ const tokens = {
     "value": "\"Ubuntu\", system-ui, sans-serif",
     "variable": "var(--fonts-sans)"
   },
+  "fonts.display": {
+    "value": "\"Ubuntu\", system-ui, sans-serif",
+    "variable": "var(--fonts-display)"
+  },
   "fonts.mono": {
     "value": "\"Ubuntu Mono\", monospace",
     "variable": "var(--fonts-mono)"

@@ -345,6 +345,74 @@ function doRemove(s, f) {
     })
 }
 
+/** Añade un rol tipográfico nuevo a fonts.ts (p. ej. display2) + rebuild. */
+function doAddRole(s) {
+  const name = (s.newRoleName || '').trim()
+  if (!/^[a-z0-9-]+$/.test(name)) {
+    s.roleError = t('roles.invalid')
+    return
+  }
+  if (s.fonts[name]) {
+    s.roleError = tf('roles.exists', { name })
+    return
+  }
+  const value = (s.newRoleValue || '').trim()
+    || (name.includes('mono') ? 'monospace' : 'system-ui, sans-serif')
+  s.roleBusy = true
+  s.roleError = null
+  s.roleMsg = null
+  fetch('/api/theme', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ fonts: s.fonts, fontAdd: { [name]: value } }),
+  })
+    .then((r) => r.json())
+    .then(async (res) => {
+      if (!res.ok) throw new Error(res.error || 'Add role failed')
+      await fetch('/api/rebuild', { method: 'POST' })
+      s.fonts[name] = value
+      s.newRoleName = ''
+      s.newRoleValue = ''
+      s.roleBusy = false
+      s.roleMsg = tf('roles.added', { name })
+      m.redraw()
+    })
+    .catch((e) => {
+      s.roleBusy = false
+      s.roleError = String(e)
+      m.redraw()
+    })
+}
+
+/** Elimina un rol tipográfico de fonts.ts (prune del bloque incluido). */
+function doRemoveRole(s, name) {
+  if (Object.keys(s.fonts).length <= 1) return
+  const fonts = { ...s.fonts }
+  delete fonts[name]
+  s.roleBusy = true
+  s.roleError = null
+  s.roleMsg = null
+  fetch('/api/theme', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ fonts, fontRemove: [name] }),
+  })
+    .then((r) => r.json())
+    .then(async (res) => {
+      if (!res.ok) throw new Error(res.error || 'Remove role failed')
+      await fetch('/api/rebuild', { method: 'POST' })
+      delete s.fonts[name]
+      s.roleBusy = false
+      reloadAvailable(s)
+      m.redraw()
+    })
+    .catch((e) => {
+      s.roleBusy = false
+      s.roleError = String(e)
+      m.redraw()
+    })
+}
+
 const page = {
   oninit(vnode) {
     const s = vnode.state
@@ -388,6 +456,12 @@ const page = {
     s.assignOk = null
     s.unassigningId = null
     s.removingId = null
+    // roles tipográficos (pestaña Tipografías)
+    s.newRoleName = ''
+    s.newRoleValue = ''
+    s.roleBusy = false
+    s.roleError = null
+    s.roleMsg = null
 
     fetch('/api/theme')
       .then((r) => r.json())
@@ -627,15 +701,51 @@ const page = {
                 <CardBody>
                   <Stack gap="md">
                     {names.map((name) => (
-                      <div key={name} className={fieldRow}>
-                        <Text weight="bold" className={tokenName}>{name}</Text>
-                        <TextInput
-                          value={s.fonts[name] || ''}
-                          placeholder={t('token.placeholder')}
-                          oninput={(e) => { s.fonts[name] = e.target.value }}
-                        />
-                      </div>
+                      <Columns key={name} gap="sm" centered>
+                        <Column width={2}>
+                          <Text weight="bold" className={tokenName}>{name}</Text>
+                        </Column>
+                        <Column>
+                          <TextInput
+                            value={s.fonts[name] || ''}
+                            placeholder={t('token.placeholder')}
+                            oninput={(e) => { s.fonts[name] = e.target.value }}
+                          />
+                        </Column>
+                        <Column narrow>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            square
+                            disabled={names.length <= 1}
+                            aria-label={tf('roles.removeLabel', { name })}
+                            onclick={() => doRemoveRole(s, name)}
+                          >
+                            ×
+                          </Button>
+                        </Column>
+                      </Columns>
                     ))}
+                    <Block spacing="sm" />
+                    <Stack direction="row" gap="sm" align="center">
+                      <TextInput
+                        size="sm"
+                        value={s.newRoleName || ''}
+                        placeholder={t('roles.namePlaceholder')}
+                        oninput={(e) => { s.newRoleName = e.target.value }}
+                      />
+                      <TextInput
+                        size="sm"
+                        value={s.newRoleValue || ''}
+                        placeholder={t('roles.valuePlaceholder')}
+                        oninput={(e) => { s.newRoleValue = e.target.value }}
+                      />
+                      <Button variant="outline" size="sm" disabled={s.roleBusy} onclick={() => doAddRole(s)}>
+                        {s.roleBusy ? t('roles.adding') : t('roles.add')}
+                      </Button>
+                    </Stack>
+                    {s.roleError && <Alert color="error">{s.roleError}</Alert>}
+                    {s.roleMsg && <Alert color="success">{s.roleMsg}</Alert>}
                     <Block spacing="sm" />
                     <Stack direction="row" gap="sm">
                       <Button color="primary" onclick={save} disabled={s.saving}>{s.saving ? t('token.saving') : t('token.save')}</Button>

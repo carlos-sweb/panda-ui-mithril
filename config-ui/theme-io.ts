@@ -122,3 +122,26 @@ export function writeFlatSrc(src: string, values: Record<string, string>): strin
   }
   return out
 }
+
+/**
+ * Inserta un token PLANO nuevo (fonts/spacing/radii) en su categoría si no
+ * existe (los valores de un token ausente no se pueden editar con
+ * writeFlatSrc — hace falta crear la entrada). No-op si ya existe o si la
+ * estructura no es reconocible. Los names se validan fuera (/^[a-z0-9-]+$/).
+ */
+export function ensureToken(src: string, category: string, name: string, value: string): string {
+  const exists = new RegExp(`'?${name}'?:\\s*\\{\\s*value:`).test(src)
+  if (exists) return src
+  const re = new RegExp(`(['"]?${category}['"]?\\s*:\\s*\\{)`)
+  const m = re.exec(src)
+  if (!m) return src
+  const insertAt = m.index + m[0].length
+  const entry = `\n    ${name}: { value: '${value.replace(/'/g, "\\'")}' },`
+  return src.slice(0, insertAt) + entry + src.slice(insertAt)
+}
+
+/** Elimina un token plano (fonts/spacing/radii). No-op si no existe. */
+export function removeToken(src: string, name: string): string {
+  const re = new RegExp(`\\s*'?${name}'?:\\s*\\{\\s*value:\\s*'[^']*'\\s*\\},?`)
+  return src.replace(re, '')
+}
