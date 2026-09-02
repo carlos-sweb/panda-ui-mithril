@@ -454,6 +454,33 @@ must NOT require a second closing brace (that bug silently dropped all but the
 last token per category); `extractBalanced` must match `marker` followed by
 `(` or `=` so `import { defineTokens }` is ignored.
 
+**Fonts API — buscar e instalar fuentes (Fontsource)** (`config-ui/server.ts`
++ `config-ui/fonts-api.ts`, proveedor por defecto `https://fontsource.org/`):
+- **Modelo instalado** (derivado de `dirname(themeDir)` → `pum/` consumidor o
+  `src/` repo): `{raiz}/fonts/{id}/{archivo}.woff2` + `index.css` (@font-face
+  con urls relativas) + `metadata.json` (metadata de Fontsource + pesos/estilos
+  elegidos + `installedAt`), y `{raiz}/fonts.css` **auto-regenerado** con un
+  `@import './fonts/{id}/index.css'` por fuente. El consumidor carga las
+  fuentes importando `{raiz}/fonts.css` en la entrada de su app (el editor
+  devuelve la línea exacta en `importHint`, relativa al projectRoot).
+- **Endpoints**: `GET /api/fonts/search?q=` (proxy de `api.fontsource.org/v1/fonts`
+  con caché en memoria de 30 min del listado completo ~540 KB, filtrado por
+  family/id con ranking), `GET /api/fonts/installed`, `POST /api/fonts/install`
+  `{id, weights?, styles?, subsets?}` (idempotente; defaults 400/700 + normal +
+  `defSubset`; ante fallo limpia el dir parcial), `POST /api/fonts/uninstall`,
+  `GET /api/fonts/css/{id}` (index.css con urls reescritas a
+  `/api/fonts/file/{id}/…` para preview en el editor), `GET /api/fonts/file/{id}/{file}`
+  (woff2 con guard de traversal). Mismo contrato de error que `/api/theme`
+  (`legacy` / sin theme).
+- **Reglas críticas**: los ids se validan con `/^[a-z0-9-]+$/`; los woff2 se
+  descargan del CDN de jsDelivr (`variants[peso][estilo][subset].url.woff2` de
+  `GET /v1/fonts/{id}`) y se verifica el magic `wOF2` (jsDelivr puede devolver
+  HTML con 200); los archivos van a `{raiz}/fonts/` **fuera** de `pum/theme/`
+  (no son tokens); `metadata.json` guarda `family` (lo que usará la futura
+  asignación de fuente a token). NUNCA escribas `*/` dentro de un JSDoc en
+  estos archivos (p. ej. `fonts/*/metadata.json`): cierra el comentario y
+  rompe el bundle de la SPA en silencio.
+
 ## Commit Conventions
 
 - Stage everything (`dist-playground/` and `styled-system/styles.css` are

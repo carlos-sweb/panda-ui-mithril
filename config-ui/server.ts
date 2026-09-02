@@ -33,6 +33,10 @@ import { dirname, join, relative, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { spawn, spawnSync } from 'node:child_process'
 import { parseColors, parseFlat, writeColorsSrc, writeFlatSrc } from './theme-io'
+import {
+  fontFilePath, fontsLayout, installFont, installedFonts, readFontCss,
+  searchFonts, uninstallFont,
+} from './fonts-api'
 
 const PORT = portFromArgv() ?? 1234
 const CLI_DIR = dirname(fileURLToPath(import.meta.url))
@@ -41,6 +45,12 @@ const PKG_DIR = join(CLI_DIR, '..')
 const UI_DIR = join(PKG_DIR, 'config-ui')
 
 const app = new Bao()
+
+// Content types para servir binarios (fuentes del editor y de los proyectos).
+const FONT_TYPES: Record<string, string> = {
+  woff2: 'font/woff2', woff: 'font/woff', ttf: 'font/ttf', otf: 'font/otf',
+  svg: 'image/svg+xml', png: 'image/png', ico: 'image/x-icon',
+}
 
 // ── Bundle de la SPA (Bun.build en runtime) ───────────────────────────────
 // El JS se bundlea (resuelve bare imports). El CSS NO se toma del bundle:
@@ -165,6 +175,126 @@ app.post('/api/rebuild', (ctx) => {
   return ctx.sendJson({ ok, codegen: codegen.stderr?.slice(-200), cssgen: cssgen.stderr?.slice(-200) })
 })
 
+// ── API: fuentes (Fontsource) ───────────────────────────────────────────────
+// Característica "buscar e instalar fuentes" — el proveedor por defecto es
+// Fontsource (https://fontsource.org/). El modelo instalado en el proyecto
+// objetivo vive en {raiz}/fonts/ (ver fonts-api.ts).
+
+/**
+ * Error de theme compartido por las rutas de fuentes (mismo contrato que
+ * /api/theme). null si el theme es editable.
+ */
+function themeError(found: { themeDir: string | null; projectRoot: string | null; legacy: boolean }) {
+  if (found.legacy) {
+    return {
+      ok: false,
+      legacy: true,
+      error: 'Legacy theme detected: run `bunx panda-ui-mithril init` to migrate to pum/theme/*.ts first.',
+      hint: 'bunx panda-ui-mithril init',
+    }
+  }
+  if (!found.themeDir) {
+    return {
+      ok: false,
+      error: 'pum/theme not found. Run bunx panda-ui-mithril init first (or pass --dir <path>).',
+    }
+  }
+  return null
+}
+
+app.get('/api/fonts/search', async (ctx) => {
+  const found = resolveTheme(process.cwd())
+  const err = themeError(found)
+  if (err) return ctx.sendJson(err)
+  const q = ctx.query.get('q') ?? ''
+  try {
+    const results = await searchFonts(q)
+    return ctx.sendJson({ ok: true, results })
+  } catch (e) {
+    return ctx.sendJson({ ok: false, error: `Fontsource: ${String(e)}` })
+  }
+})
+
+app.get('/api/fonts/installed', (ctx) => {
+  const found = resolveTheme(process.cwd())
+  const err = themeError(found)
+  if (err) return ctx.sendJson(err)
+  try {
+    const themeDir = found.themeDir!
+    const { cssPath } = fontsLayout(themeDir)
+    // Ruta relativa del {raiz}/fonts.css al projectRoot — la página la usa
+    // para el banner de import sin depender de una instalación previa.
+    const fontsCssRel = relative(found.projectRoot || dirname(themeDir), cssPath)
+    return ctx.sendJson({ ok: true, fonts: installedFonts(themeDir), fontsCssRel })
+  } catch (e) {
+    return ctx.sendJson({ ok: false, error: String(e) })
+  }
+})
+
+app.post('/api/fonts/install', async (ctx) => {
+  const found = resolveTheme(process.cwd())
+  const err = themeError(found)
+  if (err) return ctx.sendJson(err)
+  const body = await ctx.req.json().catch(() => ({})) as Record<string, unknown>
+  if (!body.id) return ctx.sendJson({ ok: false, error: 'Falta el id de la fuente.' })
+  try {
+    const { font, cssPath } = await installFont(found.themeDir!, {
+      id: String(body.id),
+      weights: Array.isArray(body.weights) ? body.weights.map(Number) : undefined,
+      styles: Array.isArray(body.styles) ? body.styles.map(String) : undefined,
+      subsets: Array.isArray(body.subsets) ? body.subsets.map(String) : undefined,
+    })
+    // El importHint es relativo a la raíz del proyecto (donde suele estar la
+    // entrada de la app del consumidor), no al dir del theme.
+    const fontsCssRel = relative(found.projectRoot || dirname(found.themeDir!), cssPath)
+    return ctx.sendJson({
+      ok: true,
+      font,
+      fontsCssRel,
+      importHint: `import './${fontsCssRel}'`,
+    })
+  } catch (e) {
+    return ctx.sendJson({ ok: false, error: String(e) })
+  }
+})
+
+app.post('/api/fonts/uninstall', async (ctx) => {
+  const found = resolveTheme(process.cwd())
+  const err = themeError(found)
+  if (err) return ctx.sendJson(err)
+  const body = await ctx.req.json().catch(() => ({})) as Record<string, unknown>
+  if (!body.id) return ctx.sendJson({ ok: false, error: 'Falta el id de la fuente.' })
+  try {
+    const removed = uninstallFont(found.themeDir!, String(body.id))
+    return ctx.sendJson({ ok: true, removed })
+  } catch (e) {
+    return ctx.sendJson({ ok: false, error: String(e) })
+  }
+})
+
+/** index.css de una fuente instalada con urls → /api/fonts/file/{id}/… (preview). */
+app.get('/api/fonts/css/:id', (ctx) => {
+  const found = resolveTheme(process.cwd())
+  const err = themeError(found)
+  if (err) return ctx.sendJson(err)
+  const css = readFontCss(found.themeDir!, ctx.params.id)
+  if (css === null) return ctx.sendRaw(new Response('Not found', { status: 404 }))
+  return ctx.sendRaw(new Response(css, { headers: { 'Content-Type': 'text/css' } }))
+})
+
+/** woff2 instalado en el proyecto (guard de traversal en fonts-api). */
+app.get('/api/fonts/file/:id/:file', (ctx) => {
+  const found = resolveTheme(process.cwd())
+  const err = themeError(found)
+  if (err) return ctx.sendJson(err)
+  const p = fontFilePath(found.themeDir!, ctx.params.id, ctx.params.file)
+  if (!p) return ctx.sendRaw(new Response('Not found', { status: 404 }))
+  const ext = p.split('.').pop() || ''
+  return ctx.sendRaw(new Response(readFileSync(p), {
+    headers: { 'Content-Type': FONT_TYPES[ext] || 'application/octet-stream' },
+  }))
+})
+
 // El CSS inline (config-ui.css) referencia las fuentes como rutas relativas
 // (fonts/xxx.woff2, copiadas por postcss-url) — el navegador las pide al
 // server, así que hay que servirlas desde config-ui/fonts/.
@@ -173,12 +303,8 @@ app.get('/fonts/*path', (ctx) => {
   const file = join(UI_DIR, 'fonts', rel)
   if (!existsSync(file)) return ctx.sendRaw(new Response('Not found', { status: 404 }))
   const ext = file.split('.').pop() || ''
-  const types = {
-    woff2: 'font/woff2', woff: 'font/woff', ttf: 'font/ttf', otf: 'font/otf',
-    svg: 'image/svg+xml', png: 'image/png', ico: 'image/x-icon',
-  }
   return ctx.sendRaw(new Response(readFileSync(file), {
-    headers: { 'Content-Type': types[ext] || 'application/octet-stream' },
+    headers: { 'Content-Type': FONT_TYPES[ext] || 'application/octet-stream' },
   }))
 })
 
