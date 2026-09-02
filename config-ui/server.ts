@@ -46,6 +46,10 @@ import {
   readFontsTokens, readLoaded, removePackage, sanitizeFontId, searchFonts, syncBlock,
   tokensForFamily, unassignFont,
 } from './fonts-api'
+import {
+  availablePlugins, bunAddPackage, bunRemovePackage, catalog, packageInstalled,
+  resolveNpmPackage, searchCatalog,
+} from './postcss-api'
 
 const PORT = portFromArgv() ?? 1234
 const CLI_DIR = dirname(fileURLToPath(import.meta.url))
@@ -427,6 +431,85 @@ app.get('/api/fonts/file/:id/:file', ({ params, query }) => {
   return new Response(readFileSync(p), {
     headers: { 'Content-Type': FONT_TYPES[ext] || 'application/octet-stream' },
   })
+})
+
+// ── API: plugins PostCSS (catálogo oficial postcss.org + npm) ───────────────
+// El catálogo (https://postcss.org/docs/postcss-plugins) lista los plugins
+// oficiales; "Install" ejecuta `bun add {paquete}` en la raíz del proyecto
+// (queda disponible en node_modules). La configuración del pipeline es una
+// fase posterior. Mismo contrato que fonts: requiere theme resuelto.
+
+/** Catálogo oficial (filtrando por q si viene) — proxy de postcss.org. */
+app.get('/api/postcss/catalog', async ({ query }) => {
+  const found = resolveTheme(process.cwd())
+  const err = themeError(found)
+  if (err) return err
+  try {
+    await catalog() // pobla la caché (searchCatalog filtra sobre ella)
+    return { ok: true, categories: searchCatalog(String(query.q ?? '')) }
+  } catch (e) {
+    return { ok: false, error: `postcss.org: ${String(e)}` }
+  }
+})
+
+/** Plugins del catálogo presentes en node_modules del proyecto. */
+app.get('/api/postcss/available', async () => {
+  const found = resolveTheme(process.cwd())
+  const err = themeError(found)
+  if (err) return err
+  const projectRoot = found.projectRoot || dirname(found.themeDir!)
+  try {
+    const categories = await catalog()
+    return { ok: true, available: availablePlugins(projectRoot, categories) }
+  } catch (e) {
+    return { ok: false, error: `postcss.org: ${String(e)}` }
+  }
+})
+
+/** Resuelve el paquete npm de un plugin del catálogo y corre `bun add`. */
+app.post('/api/postcss/install', async ({ request }) => {
+  const found = resolveTheme(process.cwd())
+  const err = themeError(found)
+  if (err) return err
+  const body = await request.json().catch(() => ({})) as Record<string, unknown>
+  const name = String(body.name ?? '').trim()
+  if (!name) return { ok: false, error: 'Falta el nombre del plugin.' }
+  const projectRoot = found.projectRoot || dirname(found.themeDir!)
+  try {
+    const categories = await catalog()
+    const plugin = categories.flatMap((c) => c.plugins).find((p) => p.name === name)
+    if (!plugin) return { ok: false, error: `'${name}' no está en el listado oficial.` }
+    const pkg = await resolveNpmPackage(plugin.name, plugin.url)
+    if (!pkg) {
+      return { ok: false, error: `No hay paquete npm para '${name}' (${plugin.url}).` }
+    }
+    if (packageInstalled(projectRoot, pkg)) {
+      return { ok: true, name, pkg, already: true }
+    }
+    const r = bunAddPackage(projectRoot, pkg)
+    if (!r.ok) return { ok: false, error: `bun add ${pkg} falló: ${r.output.slice(-250)}` }
+    return { ok: true, name, pkg, already: false }
+  } catch (e) {
+    return { ok: false, error: String(e) }
+  }
+})
+
+/** `bun remove {paquete}` (el pkg npm real, no el nombre del listado). */
+app.post('/api/postcss/remove', async ({ request }) => {
+  const found = resolveTheme(process.cwd())
+  const err = themeError(found)
+  if (err) return err
+  const body = await request.json().catch(() => ({})) as Record<string, unknown>
+  const pkg = String(body.pkg ?? '').trim()
+  if (!pkg) return { ok: false, error: 'Falta el paquete.' }
+  const projectRoot = found.projectRoot || dirname(found.themeDir!)
+  try {
+    const r = bunRemovePackage(projectRoot, pkg)
+    if (!r.ok) return { ok: false, error: `bun remove ${pkg} falló: ${r.output.slice(-250)}` }
+    return { ok: true, pkg }
+  } catch (e) {
+    return { ok: false, error: String(e) }
+  }
 })
 
 // El CSS inline (config-ui.css) referencia las fuentes como rutas relativas

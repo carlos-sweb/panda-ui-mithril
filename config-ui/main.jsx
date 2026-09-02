@@ -19,6 +19,7 @@ import ColorsPage from './pages/colors/index.jsx'
 import FontsPage from './pages/fonts/index.jsx'
 import SpacingPage from './pages/spacing/index.jsx'
 import RadiiPage from './pages/radii/index.jsx'
+import PostcssPage from './pages/postcss/index.jsx'
 
 // Build routes - only page components, no layout wrapper.
 // Sin landing propia: el hash por defecto es /colors (Home se eliminó del
@@ -29,6 +30,7 @@ const routes = {
   '/fonts': FontsPage,
   '/spacing': SpacingPage,
   '/radii': RadiiPage,
+  '/postcss': PostcssPage,
 }
 
 routes['/:component...'] = {

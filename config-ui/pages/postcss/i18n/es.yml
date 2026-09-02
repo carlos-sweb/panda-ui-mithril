@@ -1,0 +1,25 @@
+title: Postcss
+intro: Pipeline de generación del CSS del proyecto — Panda es una capa; los plugins de PostCSS procesan su salida (podado de variables de tokens sin uso, copia de urls, nesting, autoprefixer, minificación).
+loadingCatalog: Cargando el listado oficial de plugins…
+errorPrefix: 'Error: '
+tabs:
+  install: Instalar
+  available: Disponibles
+install:
+  intro: Busca en el listado oficial de plugins de PostCSS — “Install” ejecuta bun add en tu proyecto y el plugin queda disponible en node_modules. Cablearlo al pipeline de CSS es un paso posterior.
+  placeholder: Buscar plugins… (p. ej. import, preset-env, nested)
+  noResults: 'Ningún plugin coincide con "{query}".'
+  category: '{category}'
+  install: Instalar
+  installing: Instalando…
+  installed: instalado
+  installedHint: '{name} instalado como {pkg} — ya está disponible en node_modules.'
+  seeMore: Ver página del plugin
+available:
+  intro: Plugins del catálogo oficial presentes en este proyecto (node_modules). Cablearlos al pipeline es el siguiente paso.
+  empty: Aún no hay plugins del catálogo en node_modules — usa la viñeta Instalar.
+  loading: Cargando plugins instalados…
+  remove: Quitar paquete
+  removing: Quitando…
+  removed: '{pkg} quitado.'
+  npm: 'npm: {pkg}'

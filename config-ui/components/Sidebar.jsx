@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { css } from '../../styled-system/css'
-import { Palette, Type, Ruler, CircleDot, X } from 'lucide-mithril'
+import { Palette, Type, Ruler, CircleDot, Wind, X } from 'lucide-mithril'
 import { Menu, MenuItem, MenuTitle, Button, Drawer, DrawerBox, DrawerBackdrop } from '../../src/index.js'
 import { t } from '../i18n/index.js'
 
@@ -10,6 +10,7 @@ const categories = [
   { i18n: 'sidebar.categories.typography', icon: Type, items: ['fonts'] },
   { i18n: 'sidebar.categories.spacing', icon: Ruler, items: ['spacing'] },
   { i18n: 'sidebar.categories.radii', icon: CircleDot, items: ['radii'] },
+  { i18n: 'sidebar.categories.postcss', icon: Wind, items: ['postcss'] },
 ]
 
 const menu = css({ width: '100%', padding: '0'})
