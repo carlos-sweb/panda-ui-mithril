@@ -1,0 +1,47 @@
+title: Fuentes
+introPre: Edita las tipografías del theme y gestiona typefaces desde Fontsource — los cambios se escriben en
+introAnd: y
+introPost: .
+loadingTheme: Cargando theme…
+errorPrefix: 'Error: '
+savedAndRebuilt: Guardado y reconstruido ✓
+tabs:
+  tokens: Tipografías
+  search: Buscar e instalar
+  installed: Instaladas
+token:
+  placeholder: font-family stack
+  saving: Guardando…
+  save: Guardar
+  reload: Recargar
+search:
+  intro: Busca en Fontsource (fontsource.org) — previsualiza una typeface e instálala en el proyecto.
+  placeholder: Buscar fuentes… (p. ej. Inter, Roboto, Ubuntu)
+  searching: Buscando…
+  noResults: 'Ninguna fuente coincide con "{query}".'
+  weightsCount: '{count} pesos · {subsets}'
+  variable: variable
+  installed: instalada
+  previewAndInstall: Previsualizar e instalar
+  close: Cerrar
+  subset: Subconjunto
+  italic: Cursiva
+  installing: Instalando…
+  install: Instalar
+  reinstall: Reinstalar
+  alreadyInstalled: Ya instalada
+  downloadsHint: Descarga los archivos woff2 en el proyecto
+  installedSuccess: 'Instalada {family}. Añade este import a la entrada de tu app:'
+installed:
+  loading: Cargando fuentes instaladas…
+  empty: Aún no hay fuentes instaladas. Usa la pestaña de búsqueda para instalar una.
+  summary: '{subsets} · instalada el {date}'
+  preview: Previsualizar
+  hidePreview: Ocultar preview
+  loadingPreview: Cargando preview…
+  removing: Eliminando…
+  uninstall: Desinstalar
+  italic: cursiva
+  variable: variable
+  banner: 'Carga la fuente en tu app — añade esta línea a la entrada de tu app:'
+sample: El veloz murciélago hindú comía feliz cardillo y kiwi — 0123456789

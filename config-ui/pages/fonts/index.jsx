@@ -4,6 +4,7 @@ import {
   Stack, Title, Text, Button, Card, CardBody, TextInput, Alert, Block,
   Columns, Column, Select, Checkbox, Tag, Tabs, Tab, TabContent,
 } from '../../../src/index.js'
+import { t, loadPageI18n, currentLang } from '../../i18n/index.js'
 
 /**
  * Página Fonts — edita las tipografías del theme (tokens.fonts) y permite
@@ -96,6 +97,11 @@ const importCode = css({
 /** Escapa una family para usarla como string CSS (comillas simples). */
 function cssStr(v) {
   return String(v).replace(/\\/g, '\\\\').replace(/'/g, "\\'")
+}
+
+/** t() con interpolación: tf('a.b', { x }) reemplaza {x} en la traducción. */
+function tf(path, vars) {
+  return t(path).replace(/\{(\w+)\}/g, (_, k) => (vars && vars[k] !== undefined ? vars[k] : `{${k}}`))
 }
 
 // ── estado / acciones ────────────────────────────────────────────────────────
@@ -275,7 +281,7 @@ function previewBlock(s) {
     <Block spacing="sm">
       <Text className={previewBig} style={{ '--preview-font': s.previewFamily }}>Aa</Text>
       <Text className={previewSample} style={{ '--preview-font': s.previewFamily }}>
-        The quick brown fox jumps over the lazy dog — 0123456789
+        {t('sample')}
       </Text>
     </Block>
   )
@@ -290,7 +296,7 @@ function installPanel(s, f) {
       {previewBlock(s)}
       <Columns gap="sm" centered>
         <Column narrow>
-          <Text as="span" weight="semibold" size="sm">Subset</Text>
+          <Text as="span" weight="semibold" size="sm">{t('search.subset')}</Text>
         </Column>
         <Column>
           <Select
@@ -321,13 +327,13 @@ function installPanel(s, f) {
             checked={s.installItalic}
             onchange={(e) => { s.installItalic = e.target.checked }}
           />
-          <Text as="span" size="sm">Italic</Text>
+          <Text as="span" size="sm">{t('search.italic')}</Text>
         </label>
       )}
-      {s.installError && <Alert color="error">Error: {s.installError}</Alert>}
+      {s.installError && <Alert color="error">{t('errorPrefix')}{s.installError}</Alert>}
       {s.installOk && (
         <Alert color="success">
-          <Text as="span">Installed {s.installOk.family}. Add this import to your app entry:</Text>
+          <Text as="span">{tf('search.installedSuccess', { family: s.installOk.family })}</Text>
           <code className={importCode}>{s.installOk.importHint}</code>
         </Alert>
       )}
@@ -338,10 +344,10 @@ function installPanel(s, f) {
           disabled={s.installing || s.installWeights.length === 0}
           onclick={() => install(s, f)}
         >
-          {s.installing ? 'Installing…' : (already ? 'Reinstall' : 'Install')}
+          {s.installing ? t('search.installing') : (already ? t('search.reinstall') : t('search.install'))}
         </Button>
         <Text color="neutral" size="sm">
-          {already ? 'Already installed' : 'Downloads woff2 files into the project'}
+          {already ? t('search.alreadyInstalled') : t('search.downloadsHint')}
         </Text>
       </Stack>
     </Stack>
@@ -351,6 +357,7 @@ function installPanel(s, f) {
 const page = {
   oninit(vnode) {
     const s = vnode.state
+    loadPageI18n('fonts')
     s.loading = true
     s.saving = false
     s.error = null
@@ -441,10 +448,10 @@ const page = {
             <Text as="div" className={resultMeta}>
               {f.category && <Tag size="md">{f.category}</Tag>}
               {f.license && <Tag size="md">{f.license}</Tag>}
-              {f.variable && <Tag size="md" variant="info">variable</Tag>}
-              {installedIds.includes(f.id) && <Tag size="md" variant="success">installed</Tag>}
+              {f.variable && <Tag size="md" variant="info">{t('search.variable')}</Tag>}
+              {installedIds.includes(f.id) && <Tag size="md" variant="success">{t('search.installed')}</Tag>}
               <Text as="span" size="sm" color="neutral">
-                {f.weights.length} weights · {f.subsets.join(', ')}
+                {tf('search.weightsCount', { count: f.weights.length, subsets: f.subsets.join(', ') })}
               </Text>
             </Text>
           </Column>
@@ -454,7 +461,7 @@ const page = {
               size="sm"
               onclick={() => expandResult(s, f)}
             >
-              {expanded ? 'Close' : 'Preview & install'}
+              {expanded ? t('search.close') : t('search.previewAndInstall')}
             </Button>
           </Column>
         </Columns>,
@@ -480,16 +487,19 @@ const page = {
             <Text weight="semibold" size="md">{f.family}</Text>
             <Text as="div" className={resultMeta}>
               {f.weights.map((w) => <Tag key={w} size="md">{w}</Tag>)}
-              {f.styles.includes('italic') && <Tag size="md" variant="info">italic</Tag>}
-              {f.variable && <Tag size="md" variant="info">variable</Tag>}
+              {f.styles.includes('italic') && <Tag size="md" variant="info">{t('installed.italic')}</Tag>}
+              {f.variable && <Tag size="md" variant="info">{t('installed.variable')}</Tag>}
               <Text as="span" size="sm" color="neutral">
-                {f.subsets.join(', ')} · installed {new Date(f.installedAt).toLocaleDateString()}
+                {tf('installed.summary', {
+                  subsets: f.subsets.join(', '),
+                  date: new Date(f.installedAt).toLocaleDateString(currentLang()),
+                })}
               </Text>
             </Text>
           </Column>
           <Column narrow>
             <Button variant="outline" size="sm" onclick={() => expandInstalled(s, f)}>
-              {expanded ? 'Hide preview' : 'Preview'}
+              {expanded ? t('installed.hidePreview') : t('installed.preview')}
             </Button>
           </Column>
           <Column narrow>
@@ -499,13 +509,13 @@ const page = {
               disabled={s.uninstalling === f.id}
               onclick={() => uninstall(s, f)}
             >
-              {s.uninstalling === f.id ? 'Removing…' : 'Uninstall'}
+              {s.uninstalling === f.id ? t('installed.removing') : t('installed.uninstall')}
             </Button>
           </Column>
         </Columns>,
         expanded ? (
           <Block key={'pi-' + f.id} spacing="sm" className={previewPanel}>
-            {previewBlock(s) || <Text color="neutral" size="sm">Loading preview…</Text>}
+            {previewBlock(s) || <Text color="neutral" size="sm">{t('installed.loadingPreview')}</Text>}
           </Block>
         ) : null,
       ].filter(Boolean)
@@ -513,20 +523,20 @@ const page = {
 
     return (
       <Stack gap="lg">
-        <Title as="h1" size="2">Fonts</Title>
+        <Title as="h1" size="2">{t('title')}</Title>
         <Text color="neutral">
-          Edit the theme fonts and manage typefaces from Fontsource — changes are written to <code>{s.themeRel}/fonts.ts</code> and <code>{s.themeRel}/../fonts/</code>.
+          {t('introPre')} <code>{s.themeRel}/fonts.ts</code> {t('introAnd')} <code>{s.themeRel}/../fonts/</code>{t('introPost')}
         </Text>
 
-        {s.loading && <Alert color="info">Loading theme…</Alert>}
-        {s.error && <Alert color="error">Error: {s.error}</Alert>}
-        {s.saved && !s.saving && <Alert color="success">Saved and rebuilt ✓</Alert>}
+        {s.loading && <Alert color="info">{t('loadingTheme')}</Alert>}
+        {s.error && <Alert color="error">{t('errorPrefix')}{s.error}</Alert>}
+        {s.saved && !s.saving && <Alert color="success">{t('savedAndRebuilt')}</Alert>}
 
         {!s.loading && !s.error && (
           <Tabs boxed defaultActive="tokens">
-            <Tab ref="tokens">Tokens</Tab>
-            <Tab ref="search">Search &amp; install</Tab>
-            <Tab ref="installed">Installed</Tab>
+            <Tab ref="tokens">{t('tabs.tokens')}</Tab>
+            <Tab ref="search">{t('tabs.search')}</Tab>
+            <Tab ref="installed">{t('tabs.installed')}</Tab>
 
             {/* Principal (sin título interior): editor de stacks del theme */}
             <TabContent ref="tokens">
@@ -538,15 +548,15 @@ const page = {
                         <Text weight="bold" className={tokenName}>{name}</Text>
                         <TextInput
                           value={s.fonts[name] || ''}
-                          placeholder="font-family stack"
+                          placeholder={t('token.placeholder')}
                           oninput={(e) => { s.fonts[name] = e.target.value }}
                         />
                       </div>
                     ))}
                     <Block spacing="sm" />
                     <Stack direction="row" gap="sm">
-                      <Button color="primary" onclick={save} disabled={s.saving}>{s.saving ? 'Saving…' : 'Save'}</Button>
-                      <Button variant="ghost" onclick={() => location.reload()}>Reload</Button>
+                      <Button color="primary" onclick={save} disabled={s.saving}>{s.saving ? t('token.saving') : t('token.save')}</Button>
+                      <Button variant="ghost" onclick={() => location.reload()}>{t('token.reload')}</Button>
                     </Stack>
                   </Stack>
                 </CardBody>
@@ -558,21 +568,21 @@ const page = {
                 <CardBody>
                   <Stack gap="md">
                     <Text color="neutral">
-                      Search Fontsource (fontsource.org) — preview a typeface and install it into the project.
+                      {t('search.intro')}
                     </Text>
                     <TextInput
                       value={s.query}
-                      placeholder="Search fonts… (e.g. Inter, Roboto, Ubuntu)"
+                      placeholder={t('search.placeholder')}
                       oninput={(e) => {
                         s.query = e.target.value
                         clearTimeout(s._debounce)
                         s._debounce = setTimeout(() => runSearch(s), 250)
                       }}
                     />
-                    {s.searching && <Text color="neutral">Searching…</Text>}
-                    {s.searchError && <Alert color="error">Error: {s.searchError}</Alert>}
+                    {s.searching && <Text color="neutral">{t('search.searching')}</Text>}
+                    {s.searchError && <Alert color="error">{t('errorPrefix')}{s.searchError}</Alert>}
                     {s.results !== null && s.results.length === 0 && !s.searching && (
-                      <Text color="neutral">No fonts match “{s.query}”.</Text>
+                      <Text color="neutral">{tf('search.noResults', { query: s.query })}</Text>
                     )}
                     {searchRows}
                   </Stack>
@@ -586,18 +596,18 @@ const page = {
                     @font-face existen pero la app no los carga. */}
                 {s.installed.length > 0 && (
                   <Alert color="info">
-                    <Text as="span">Load the font in your app — add this line to your app entry:</Text>
+                    <Text as="span">{t('installed.banner')}</Text>
                     <code className={importCode}>import './{s.fontsCssRel}'</code>
                   </Alert>
                 )}
                 <Card>
                   <CardBody>
                     <Stack gap="md">
-                      {s.installedLoading && <Alert color="info">Loading installed fonts…</Alert>}
-                      {s.installedError && <Alert color="error">Error: {s.installedError}</Alert>}
+                      {s.installedLoading && <Alert color="info">{t('installed.loading')}</Alert>}
+                      {s.installedError && <Alert color="error">{t('errorPrefix')}{s.installedError}</Alert>}
                       {!s.installedLoading && !s.installedError && s.installed.length === 0 && (
                         <Text color="neutral">
-                          No fonts installed yet. Use the search tab to install one.
+                          {t('installed.empty')}
                         </Text>
                       )}
                       {installedRows}

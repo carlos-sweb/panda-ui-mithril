@@ -1,0 +1,47 @@
+title: Fonts
+introPre: Edit the theme fonts and manage typefaces from Fontsource — changes are written to
+introAnd: and
+introPost: .
+loadingTheme: Loading theme…
+errorPrefix: 'Error: '
+savedAndRebuilt: Saved and rebuilt ✓
+tabs:
+  tokens: Tokens
+  search: Search & install
+  installed: Installed
+token:
+  placeholder: font-family stack
+  saving: Saving…
+  save: Save
+  reload: Reload
+search:
+  intro: Search Fontsource (fontsource.org) — preview a typeface and install it into the project.
+  placeholder: Search fonts… (e.g. Inter, Roboto, Ubuntu)
+  searching: Searching…
+  noResults: 'No fonts match "{query}".'
+  weightsCount: '{count} weights · {subsets}'
+  variable: variable
+  installed: installed
+  previewAndInstall: Preview & install
+  close: Close
+  subset: Subset
+  italic: Italic
+  installing: Installing…
+  install: Install
+  reinstall: Reinstall
+  alreadyInstalled: Already installed
+  downloadsHint: Downloads woff2 files into the project
+  installedSuccess: 'Installed {family}. Add this import to your app entry:'
+installed:
+  loading: Loading installed fonts…
+  empty: No fonts installed yet. Use the search tab to install one.
+  summary: '{subsets} · installed {date}'
+  preview: Preview
+  hidePreview: Hide preview
+  loadingPreview: Loading preview…
+  removing: Removing…
+  uninstall: Uninstall
+  italic: italic
+  variable: variable
+  banner: 'Load the font in your app — add this line to your app entry:'
+sample: The quick brown fox jumps over the lazy dog — 0123456789
