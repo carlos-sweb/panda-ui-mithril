@@ -10,6 +10,9 @@ tabs:
   available: Disponibles
 token:
   placeholder: font-family stack
+  saving: Guardando…
+  save: Guardar
+  reload: Recargar
 roles:
   add: Añadir rol
   adding: Añadiendo…
@@ -19,9 +22,6 @@ roles:
   exists: 'El rol "{name}" ya existe.'
   invalid: Nombre de rol inválido (usa a-z, 0-9 y guiones).
   added: 'Rol "{name}" añadido.'
-  saving: Guardando…
-  save: Guardar
-  reload: Recargar
 search:
   intro: Busca en el catálogo de Fontsource — "Add" instala el paquete (@fontsource/{id}) en tu proyecto. Asígnala en la pestaña Disponibles para cargarla en el CSS.
   placeholder: Buscar fuentes… (p. ej. Inter, Roboto, Ubuntu)
@@ -35,6 +35,8 @@ search:
   add: Añadir
   adding: Añadiendo…
   added: Añadida
+  addVar: Añadir variable
+  addedVar: Variable añadida
   addedHint: '{family} añadida — asígnala en la pestaña Disponibles para cargarla en el CSS.'
   addInfo: 'Instala {pkg} con bun — solo las familias asignadas acaban en el CSS.'
 available:
@@ -43,6 +45,8 @@ available:
   empty: Aún no hay fuentes añadidas. Usa la pestaña de búsqueda para añadir un paquete.
   version: '{version}'
   usedBy: usada por {token}
+  variable: variable
+  variableHint: 'Fuente variable — un solo archivo cubre todos los pesos (100–900).'
   assign: Asignar
   assignBtn: Asignar
   assignToken: Token

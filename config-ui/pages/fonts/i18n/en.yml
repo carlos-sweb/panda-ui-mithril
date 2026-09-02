@@ -10,6 +10,9 @@ tabs:
   available: Available
 token:
   placeholder: font-family stack
+  saving: Saving…
+  save: Save
+  reload: Reload
 roles:
   add: Add role
   adding: Adding…
@@ -19,9 +22,6 @@ roles:
   exists: 'Role "{name}" already exists.'
   invalid: Invalid role name (use a-z, 0-9 and dashes).
   added: 'Role "{name}" added.'
-  saving: Saving…
-  save: Save
-  reload: Reload
 search:
   intro: Search the Fontsource catalog — “Add” installs the package (@fontsource/{id}) into your project. Assign it in the Available tab to load it into the CSS.
   placeholder: Search fonts… (e.g. Inter, Roboto, Ubuntu)
@@ -35,6 +35,8 @@ search:
   add: Add
   adding: Adding…
   added: Added
+  addVar: Add variable
+  addedVar: Variable added
   addedHint: '{family} added — assign it in the Available tab to load it into the CSS.'
   addInfo: 'Installs {pkg} with bun — only assigned families end up in the CSS.'
 available:
@@ -43,6 +45,8 @@ available:
   empty: No fonts added yet. Use the search tab to add a package.
   version: '{version}'
   usedBy: used by {token}
+  variable: variable
+  variableHint: 'Variable font — a single file covers every weight (100–900).'
   assign: Assign
   assignBtn: Assign
   assignToken: Token

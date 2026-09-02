@@ -465,9 +465,18 @@ last token per category); `extractBalanced` must match `marker` followed by
   contiene familias asignadas y usadas (prune automático contra los tokens).
 - **Estado del editor** (derivado de `dirname(themeDir)` → `pum/` o `src/`):
   `{raiz}/fonts-loaded.json` (familias cargadas: id → family/weights/styles/
-  subsets). Los paquetes disponibles se escanean en
-  `node_modules/@fontsource/*/metadata.json` (id/family/weights/styles/
-  defSubset/version/license). `pum/theme/fonts.ts` = qué token usa cada familia.
+  subsets; clave `v:`+id para @fontsource-variable). Los paquetes disponibles
+  se escanean en `node_modules/@fontsource/*` Y `node_modules/@fontsource-variable/*`
+  (metadata.json: id/family/weights/styles/defSubset/version/license).
+  `pum/theme/fonts.ts` = qué token usa cada familia.
+- **Fuentes variable (@fontsource-variable/{id})**: se añaden con
+  `bun add @fontsource-variable/{id}` (`variable: true` en add/assign/
+  available/unassign/remove/file). Un woff2 por subset×estilo cubre TODO el
+  rango de pesos: la family del CSS es `'{Familia} Variable'` (se lee del css
+  del paquete con `variableFontInfo`), el @font-face emitido usa
+  `font-weight: '100 900'` (rango) + `format('woff2-variations')` y el archivo
+  `{id}-{subset}-wght-{style}.woff2` (eje wght). El assign de una variable NO
+  ofrece selección de pesos (un solo archivo).
 - **Carga = vía nativa de Panda**: el editor escribe la clave **`globalFontface`**
   (nivel superior de `defineConfig`, f minúscula — la `theme.globalFontFace`
   mayúscula NO emite nada en Panda 1.12, verificado) en el `panda.config.ts`

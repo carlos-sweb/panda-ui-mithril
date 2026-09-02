@@ -62,16 +62,42 @@ export interface AvailableFont {
   styles: string[]
   subsets: string[]
   license: string
+  /** true si el paquete es @fontsource-variable/{id}. La family reportada es
+   * la del CSS del paquete (p. ej. 'Inter Variable') — la que usa la app. */
+  variable: boolean
 }
 
-/** Una familia cargada (fonts-loaded.json). key = id del paquete. */
+/** Una familia cargada (fonts-loaded.json). key = id, o `v:`+id si variable. */
 export interface LoadedFont {
   family: string
   weights: number[]
   styles: string[]
   subsets: string[]
+  variable?: boolean
 }
 export type LoadedState = Record<string, LoadedFont>
+
+/** Prefijo de clave en fonts-loaded.json para paquetes @fontsource-variable. */
+const VKEY = 'v:'
+
+/** Nombre de scope npm de un paquete. */
+export function packageScope(variable: boolean): string {
+  return variable ? '@fontsource-variable' : '@fontsource'
+}
+
+/** Clave de fonts-loaded.json para un id con su scope. */
+export function loadedKey(variable: boolean, id: string): string {
+  return variable ? VKEY + id : id
+}
+
+/** Descompone una clave de fonts-loaded.json → { id, variable } o null. */
+export function parseLoadedKey(key: string): { id: string; variable: boolean } | null {
+  if (key.startsWith(VKEY)) {
+    const id = key.slice(VKEY.length)
+    return FONT_ID_RE.test(id) ? { id, variable: true } : null
+  }
+  return FONT_ID_RE.test(key) ? { id: key, variable: false } : null
+}
 
 // ── Catálogo ────────────────────────────────────────────────────────────────
 /** Listado completo con caché. Lanza si la API de Fontsource falla. */
@@ -120,22 +146,24 @@ export function sanitizeFontId(id: string): string | null {
   return FONT_ID_RE.test(v) ? v : null
 }
 
-// ── Paquetes npm (@fontsource) ──────────────────────────────────────────────
-export function packageDir(projectRoot: string, id: string): string {
-  return join(projectRoot, 'node_modules', '@fontsource', id)
+// ── Paquetes npm (@fontsource y @fontsource-variable) ───────────────────────
+export function packageDir(projectRoot: string, id: string, variable = false): string {
+  return join(projectRoot, 'node_modules', packageScope(variable), id)
 }
 
 /** Lee metadata.json de un paquete; null si no está instalado. */
-export function packageMeta(projectRoot: string, id: string): AvailableFont | null {
+export function packageMeta(projectRoot: string, id: string, variable = false): AvailableFont | null {
   const safe = sanitizeFontId(id)
   if (!safe) return null
-  const p = join(packageDir(projectRoot, safe), 'metadata.json')
+  const p = join(packageDir(projectRoot, safe, variable), 'metadata.json')
   if (!existsSync(p)) return null
   try {
     const d = JSON.parse(readFileSync(p, 'utf8')) as Record<string, unknown>
     const lic = d.license as { type?: string; name?: string } | string | undefined
-    return {
+    const meta: AvailableFont = {
       id: String(d.id || safe),
+      // La family que la app debe usar: para variable es la del CSS del
+      // paquete (p. ej. 'Inter Variable') — se refina abajo.
       family: String(d.family || safe),
       version: String(d.version || ''),
       defSubset: String(d.defSubset || 'latin'),
@@ -144,23 +172,93 @@ export function packageMeta(projectRoot: string, id: string): AvailableFont | nu
       subsets: Array.isArray(d.subsets) ? d.subsets.map(String) : ['latin'],
       // La licencia de Fontsource es un objeto { type, url, attribution }.
       license: typeof lic === 'string' ? lic : String(lic?.type || lic?.name || ''),
+      variable,
     }
+    if (variable) {
+      const info = variableFontInfo(projectRoot, safe)
+      if (!info) return null // paquete sin css/wght utilizable
+      meta.family = info.family
+      if (meta.subsets.includes('latin')) meta.defSubset = 'latin'
+    }
+    return meta
   } catch {
     return null
   }
 }
 
-/** Paquetes @fontsource instalados en node_modules (los "disponibles"). */
+/** Paquetes @fontsource y @fontsource-variable instalados (los "disponibles"). */
 export function availableFonts(projectRoot: string): AvailableFont[] {
-  const base = join(projectRoot, 'node_modules', '@fontsource')
-  if (!existsSync(base)) return []
   const out: AvailableFont[] = []
-  for (const name of readdirSync(base)) {
-    if (!FONT_ID_RE.test(name)) continue
-    const meta = packageMeta(projectRoot, name)
-    if (meta) out.push(meta)
+  for (const scope of [false, true]) {
+    const base = join(projectRoot, 'node_modules', packageScope(scope))
+    if (!existsSync(base)) continue
+    for (const name of readdirSync(base)) {
+      if (!FONT_ID_RE.test(name)) continue
+      const meta = packageMeta(projectRoot, name, scope)
+      if (meta) out.push(meta)
+    }
   }
   return out.sort((a, b) => a.family.localeCompare(b.family))
+}
+
+// ── Fuentes variable (@fontsource-variable) ──────────────────────────────────
+/** Información base de un paquete variable (leída de su CSS por eje). */
+export interface VariableFontInfo {
+  /** family del CSS del paquete (p. ej. 'Inter Variable'). */
+  family: string
+  /** rango de pesos declarado (p. ej. '100 900'). */
+  weightRange: string
+}
+
+/** CSS del eje wght (o index.css si no hay) del paquete variable; null si no. */
+function variableCssText(projectRoot: string, id: string): string | null {
+  const dir = packageDir(projectRoot, id, true)
+  for (const name of ['wght.css', 'index.css']) {
+    const p = join(dir, name)
+    if (existsSync(p)) return readFileSync(p, 'utf8')
+  }
+  return null
+}
+
+/**
+ * Family y rango de pesos del paquete variable desde su primer @font-face
+ * (font-family 'X Variable', font-weight '100 900'). null si no hay css.
+ */
+export function variableFontInfo(projectRoot: string, id: string): VariableFontInfo | null {
+  const css = variableCssText(projectRoot, id)
+  if (!css) return null
+  const open = css.indexOf('@font-face')
+  if (open === -1) return null
+  const blockStart = css.indexOf('{', open)
+  if (blockStart === -1) return null
+  let depth = 1
+  let end = -1
+  for (let i = blockStart + 1; i < css.length; i++) {
+    const ch = css[i]
+    if (ch === '{') depth++
+    else if (ch === '}') {
+      depth--
+      if (depth === 0) {
+        end = i + 1
+        break
+      }
+    }
+  }
+  if (end === -1) return null
+  const block = css.slice(blockStart + 1, end)
+  const family = /font-family:\s*'([^']+)'/.exec(block)?.[1]
+  const weight = /font-weight:\s*([^;]+)/.exec(block)?.[1]?.trim()
+  if (!family) return null
+  return { family, weightRange: weight ?? '100 900' }
+}
+
+/** ¿Existe el archivo variable {id}-{subset}-wght-{style}.woff2 en el paquete? */
+export function variableFaceFileExists(
+  projectRoot: string, id: string, subset: string, style: string,
+): boolean {
+  const safe = sanitizeFontId(id)
+  if (!safe) return false
+  return existsSync(join(packageDir(projectRoot, safe, true), 'files', `${safe}-${subset}-wght-${style}.woff2`))
 }
 
 /** ¿Existe el archivo {id}-{subset}-{weight}-{style}.woff2 en el paquete? */
@@ -170,25 +268,27 @@ export function faceFileExists(projectRoot: string, id: string, subset: string, 
   return existsSync(join(packageDir(projectRoot, safe), 'files', `${safe}-${subset}-${weight}-${style}.woff2`))
 }
 
-/** Resuelve un archivo dentro de node_modules/@fontsource/{id}/files con guard. */
-export function packageFontFilePath(projectRoot: string, id: string, file: string): string | null {
+/** Resuelve un archivo dentro de node_modules/@fontsource{,-variable}/{id}/files. */
+export function packageFontFilePath(
+  projectRoot: string, id: string, file: string, variable = false,
+): string | null {
   const safe = sanitizeFontId(id)
   if (!safe || !file || file.includes('\0')) return null
-  const base = resolve(join(packageDir(projectRoot, safe), 'files'))
+  const base = resolve(join(packageDir(projectRoot, safe, variable), 'files'))
   const p = resolve(join(base, file))
   if (p !== base && !p.startsWith(base + sep)) return null
   if (!existsSync(p)) return null
   return p
 }
 
-/** `bun add @fontsource/{id}` en la raíz del proyecto. */
-export function bunAdd(projectRoot: string, id: string): { ok: boolean; output: string } {
-  return runBun(projectRoot, ['add', `@fontsource/${id}`])
+/** `bun add @fontsource/{id}` (o @fontsource-variable) en la raíz del proyecto. */
+export function bunAdd(projectRoot: string, id: string, variable = false): { ok: boolean; output: string } {
+  return runBun(projectRoot, ['add', `${packageScope(variable)}/${id}`])
 }
 
-/** `bun remove @fontsource/{id}` en la raíz del proyecto. */
-export function bunRemove(projectRoot: string, id: string): { ok: boolean; output: string } {
-  return runBun(projectRoot, ['remove', `@fontsource/${id}`])
+/** `bun remove @fontsource/{id}` (o @fontsource-variable) en la raíz del proyecto. */
+export function bunRemove(projectRoot: string, id: string, variable = false): { ok: boolean; output: string } {
+  return runBun(projectRoot, ['remove', `${packageScope(variable)}/${id}`])
 }
 
 function runBun(projectRoot: string, args: string[]): { ok: boolean; output: string } {
@@ -251,14 +351,19 @@ export function readLoaded(themeDir: string): LoadedState {
   try {
     const d = JSON.parse(readFileSync(p, 'utf8')) as Record<string, Partial<LoadedFont>>
     const out: LoadedState = {}
-    for (const [id, v] of Object.entries(d)) {
-      if (!FONT_ID_RE.test(id) || !v || typeof v !== 'object') continue
+    for (const [rawKey, v] of Object.entries(d)) {
+      const parsed = parseLoadedKey(rawKey)
+      if (!parsed || !v || typeof v !== 'object') continue
       if (typeof v.family !== 'string' || !v.family) continue
-      out[id] = {
+      const variable = parsed.variable
+      out[rawKey] = {
         family: v.family,
-        weights: Array.isArray(v.weights) ? v.weights.map(Number).filter(Number.isInteger) : [400],
+        weights: variable
+          ? []
+          : (Array.isArray(v.weights) ? v.weights.map(Number).filter(Number.isInteger) : [400]),
         styles: Array.isArray(v.styles) ? v.styles.map(String) : ['normal'],
         subsets: Array.isArray(v.subsets) ? v.subsets.map(String) : ['latin'],
+        variable,
       }
     }
     return out
@@ -309,21 +414,42 @@ export function buildFontfaceSource(themeDir: string, projectRoot: string, panda
   const tokens = readFontsTokens(themeDir)
   const outdirAbs = join(projectRoot, readOutdir(pandaConfigSrc))
   const lines: string[] = []
-  for (const [id, lf] of Object.entries(loaded)) {
-    if (!FONT_ID_RE.test(id)) continue
+  for (const [rawKey, lf] of Object.entries(loaded)) {
+    const parsed = parseLoadedKey(rawKey)
+    if (!parsed) continue
+    const { id, variable } = parsed
     // Prune: solo familias que algún token usa de verdad.
     if (tokensForFamily(tokens, lf.family).length === 0) continue
     const faces: string[] = []
-    for (const subset of lf.subsets) {
-      for (const weight of lf.weights) {
-        for (const style of lf.styles) {
-          const file = `${id}-${subset}-${weight}-${style}.woff2`
-          const fileAbs = join(packageDir(projectRoot, id), 'files', file)
-          if (!existsSync(fileAbs)) continue
-          const rel = relative(outdirAbs, fileAbs).split(sep).join('/')
-          faces.push(
-            `      { fontStyle: '${style}', fontDisplay: 'swap', fontWeight: ${weight}, src: 'url(${rel}) format("woff2")' },`,
-          )
+    if (variable) {
+      // Una cara por subset×estilo: un woff2 variable (eje wght) cubre todo
+      // el rango de pesos (family 'X Variable', font-weight '100 900').
+      const info = variableFontInfo(projectRoot, id)
+      if (info) {
+        for (const subset of lf.subsets) {
+          for (const style of lf.styles) {
+            const file = `${id}-${subset}-wght-${style}.woff2`
+            const fileAbs = join(packageDir(projectRoot, id, true), 'files', file)
+            if (!existsSync(fileAbs)) continue
+            const rel = relative(outdirAbs, fileAbs).split(sep).join('/')
+            faces.push(
+              `      { fontStyle: '${style}', fontDisplay: 'swap', fontWeight: '${info.weightRange}', src: 'url(${rel}) format("woff2-variations")' },`,
+            )
+          }
+        }
+      }
+    } else {
+      for (const subset of lf.subsets) {
+        for (const weight of lf.weights) {
+          for (const style of lf.styles) {
+            const file = `${id}-${subset}-${weight}-${style}.woff2`
+            const fileAbs = join(packageDir(projectRoot, id), 'files', file)
+            if (!existsSync(fileAbs)) continue
+            const rel = relative(outdirAbs, fileAbs).split(sep).join('/')
+            faces.push(
+              `      { fontStyle: '${style}', fontDisplay: 'swap', fontWeight: ${weight}, src: 'url(${rel}) format("woff2")' },`,
+            )
+          }
         }
       }
     }
@@ -403,25 +529,62 @@ export type AssignResult =
 export function assignFont(
   themeDir: string,
   projectRoot: string,
-  opts: { id: string; token: string; weights?: number[]; styles?: string[]; subsets?: string[] },
+  opts: { id: string; token: string; weights?: number[]; styles?: string[]; subsets?: string[]; variable?: boolean },
 ): AssignResult {
   const safe = sanitizeFontId(opts.id)
   if (!safe) return { ok: false, error: `Font id inválido: '${opts.id}'` }
-  const meta = packageMeta(projectRoot, safe)
+  const variable = !!opts.variable
+  const meta = packageMeta(projectRoot, safe, variable)
   if (!meta) {
-    return { ok: false, error: `'${opts.id}' no está disponible — añade el paquete primero (@fontsource/${safe}).` }
+    return {
+      ok: false,
+      error: `'${opts.id}' no está disponible — añade el paquete primero (${packageScope(variable)}/${safe}).`,
+    }
   }
   const tokens = readFontsTokens(themeDir)
   if (!(opts.token in tokens)) {
     return { ok: false, error: `El token '${opts.token}' no existe en fonts.ts (${Object.keys(tokens).join(', ')}).` }
   }
-  const weights = pick(opts.weights, meta.weights, [400, 700])
   const styles = pick(opts.styles, meta.styles, ['normal'])
   const subsets = pick(opts.subsets, meta.subsets, [meta.defSubset])
-  if (weights.length === 0 || styles.length === 0 || subsets.length === 0) {
+  if (styles.length === 0 || subsets.length === 0) {
     return {
       ok: false,
-      error: `'${meta.family}' no soporta la combinación pedida — disponibles: pesos [${meta.weights.join(', ')}], estilos [${meta.styles.join(', ')}].`,
+      error: `'${meta.family}' no soporta la combinación pedida — estilos [${meta.styles.join(', ')}], subsets [${meta.subsets.join(', ')}].`,
+    }
+  }
+  const loaded = readLoaded(themeDir)
+  if (variable) {
+    // Variable: una cara por subset×estilo (el woff2 cubre todo el rango de
+    // pesos) — verifica que existan los archivos del eje wght.
+    const info = variableFontInfo(projectRoot, safe)
+    let found = 0
+    for (const subset of subsets) {
+      for (const style of styles) {
+        if (info && variableFaceFileExists(projectRoot, safe, subset, style)) found++
+      }
+    }
+    if (found === 0) {
+      return {
+        ok: false,
+        error: `No hay caras variable de '${meta.family}' para subsets [${subsets.join(', ')}] × estilos [${styles.join(', ')}].`,
+      }
+    }
+    const isMono = opts.token.includes('mono')
+    const value = `"${meta.family}", ${isMono ? 'monospace' : 'system-ui, sans-serif'}`
+    writeFontToken(themeDir, opts.token, value)
+    loaded[loadedKey(true, safe)] = { family: meta.family, weights: [], styles, subsets, variable: true }
+    writeLoaded(themeDir, loaded)
+    const configPath = join(projectRoot, 'panda.config.ts')
+    const changed = syncBlock(themeDir, projectRoot, readFileSync(configPath, 'utf8'))
+    return { ok: true, family: meta.family, token: opts.token, value, changed }
+  }
+
+  const weights = pick(opts.weights, meta.weights, [400, 700])
+  if (weights.length === 0) {
+    return {
+      ok: false,
+      error: `'${meta.family}' no soporta la combinación pedida — disponibles: pesos [${meta.weights.join(', ')}].`,
     }
   }
   // Verifica que al menos un archivo exista en el paquete.
@@ -441,7 +604,6 @@ export function assignFont(
   const value = `"${meta.family}", ${isMono ? 'monospace' : 'system-ui, sans-serif'}`
   writeFontToken(themeDir, opts.token, value)
 
-  const loaded = readLoaded(themeDir)
   loaded[safe] = { family: meta.family, weights, styles, subsets }
   writeLoaded(themeDir, loaded)
 
@@ -458,11 +620,14 @@ export type UnassignResult =
  * Desasigna una familia: resetea los tokens que la usaban a un stack genérico
  * y la quita de fonts-loaded.json + del bloque.
  */
-export function unassignFont(themeDir: string, projectRoot: string, id: string): UnassignResult {
+export function unassignFont(
+  themeDir: string, projectRoot: string, id: string, variable = false,
+): UnassignResult {
   const safe = sanitizeFontId(id)
   if (!safe) return { ok: false, error: `Font id inválido: '${id}'` }
   const loaded = readLoaded(themeDir)
-  const entry = loaded[safe]
+  const key = loadedKey(variable, safe)
+  const entry = loaded[key]
   if (!entry) return { ok: false, error: `'${safe}' no está cargada.` }
 
   const tokens = readFontsTokens(themeDir)
@@ -470,7 +635,7 @@ export function unassignFont(themeDir: string, projectRoot: string, id: string):
   for (const tk of resetTokens) {
     writeFontToken(themeDir, tk, defaultStackForToken(tk))
   }
-  delete loaded[safe]
+  delete loaded[key]
   writeLoaded(themeDir, loaded)
 
   const configPath = join(projectRoot, 'panda.config.ts')
@@ -482,18 +647,20 @@ export type RemoveResult =
   | { ok: true; resetTokens: string[]; bunOutput: string; changed: boolean }
   | { ok: false; error: string }
 
-/** Desasigna (si estaba) y ejecuta `bun remove @fontsource/{id}`. */
-export function removePackage(themeDir: string, projectRoot: string, id: string): RemoveResult {
+/** Desasigna (si estaba) y ejecuta `bun remove @fontsource{,-variable}/{id}`. */
+export function removePackage(
+  themeDir: string, projectRoot: string, id: string, variable = false,
+): RemoveResult {
   const safe = sanitizeFontId(id)
   if (!safe) return { ok: false, error: `Font id inválido: '${id}'` }
-  const un = unassignFont(themeDir, projectRoot, safe)
+  const un = unassignFont(themeDir, projectRoot, safe, variable)
   if (!un.ok) {
     // No estaba cargada — bun remove igualmente.
-    const r = bunRemove(projectRoot, safe)
+    const r = bunRemove(projectRoot, safe, variable)
     if (!r.ok) return { ok: false, error: `bun remove falló: ${r.output.slice(-200)}` }
     return { ok: true, resetTokens: [], bunOutput: r.output, changed: false }
   }
-  const r = bunRemove(projectRoot, safe)
+  const r = bunRemove(projectRoot, safe, variable)
   if (!r.ok) return { ok: false, error: `bun remove falló: ${r.output.slice(-200)}` }
   return { ok: true, resetTokens: un.resetTokens, bunOutput: r.output, changed: un.changed }
 }

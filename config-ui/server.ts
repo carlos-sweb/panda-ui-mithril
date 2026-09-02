@@ -42,8 +42,9 @@ import { spawn, spawnSync } from 'node:child_process'
 import { ensureToken, parseColors, parseFlat, removeToken, writeColorsSrc, writeFlatSrc } from './theme-io'
 import {
   assignFont, availableFonts, bunAdd, ensureRoleTokens, fontfaceWired, migrateLegacyFonts,
-  packageFontFilePath, packageMeta, pruneLoaded, readFontsTokens, readLoaded, removePackage,
-  sanitizeFontId, searchFonts, syncBlock, tokensForFamily, unassignFont,
+  packageFontFilePath, packageMeta, packageScope, parseLoadedKey, pruneLoaded,
+  readFontsTokens, readLoaded, removePackage, sanitizeFontId, searchFonts, syncBlock,
+  tokensForFamily, unassignFont,
 } from './fonts-api'
 
 const PORT = portFromArgv() ?? 1234
@@ -286,14 +287,19 @@ app.get('/api/fonts/available', () => {
     const wired = src !== '' && fontfaceWired(src)
     const available = availableFonts(projectRoot)
     const tokens = readFontsTokens(themeDir)
-    const loaded = Object.entries(readLoaded(themeDir)).map(([id, lf]) => ({
-      id,
-      family: lf.family,
-      weights: lf.weights,
-      styles: lf.styles,
-      subsets: lf.subsets,
-      tokens: tokensForFamily(tokens, lf.family),
-    }))
+    const loaded = Object.entries(readLoaded(themeDir)).flatMap(([rawKey, lf]) => {
+      const parsed = parseLoadedKey(rawKey)
+      if (!parsed) return []
+      return [{
+        id: parsed.id,
+        variable: parsed.variable,
+        family: lf.family,
+        weights: lf.weights,
+        styles: lf.styles,
+        subsets: lf.subsets,
+        tokens: tokensForFamily(tokens, lf.family),
+      }]
+    })
     return { ok: true, available, loaded, wired, migrated }
   } catch (e) {
     return { ok: false, error: String(e) }
@@ -310,13 +316,14 @@ app.post('/api/fonts/add', async ({ request }) => {
   if (!id) return { ok: false, error: 'Falta el id de la fuente.' }
   try {
     const projectRoot = found.projectRoot || dirname(found.themeDir!)
-    if (!packageMeta(projectRoot, id)) {
-      const r = bunAdd(projectRoot, id)
+    const variable = !!body.variable
+    if (!packageMeta(projectRoot, id, variable)) {
+      const r = bunAdd(projectRoot, id, variable)
       if (!r.ok) {
-        return { ok: false, error: `bun add @fontsource/${id} falló: ${r.output.slice(-250)}` }
+        return { ok: false, error: `bun add ${packageScope(variable)}/${id} falló: ${r.output.slice(-250)}` }
       }
     }
-    const meta = packageMeta(projectRoot, id)
+    const meta = packageMeta(projectRoot, id, variable)
     return { ok: true, id, meta }
   } catch (e) {
     return { ok: false, error: String(e) }
@@ -336,6 +343,7 @@ app.post('/api/fonts/assign', async ({ request }) => {
     const res = assignFont(themeDir, projectRoot, {
       id: String(body.id),
       token: String(body.token),
+      variable: !!body.variable,
       weights: Array.isArray(body.weights) ? body.weights.map(Number) : undefined,
       styles: Array.isArray(body.styles) ? body.styles.map(String) : undefined,
       subsets: Array.isArray(body.subsets) ? body.subsets.map(String) : undefined,
@@ -366,7 +374,7 @@ app.post('/api/fonts/unassign', async ({ request }) => {
   try {
     const themeDir = found.themeDir!
     const projectRoot = found.projectRoot || dirname(themeDir)
-    const res = unassignFont(themeDir, projectRoot, String(body.id))
+    const res = unassignFont(themeDir, projectRoot, String(body.id), !!body.variable)
     if (!res.ok) return { ok: false, error: res.error }
     const rebuild = res.changed ? runRebuild(projectRoot) : { ok: true }
     return {
@@ -391,7 +399,7 @@ app.post('/api/fonts/remove', async ({ request }) => {
   try {
     const themeDir = found.themeDir!
     const projectRoot = found.projectRoot || dirname(themeDir)
-    const res = removePackage(themeDir, projectRoot, String(body.id))
+    const res = removePackage(themeDir, projectRoot, String(body.id), !!body.variable)
     if (!res.ok) return { ok: false, error: res.error }
     const rebuild = res.changed ? runRebuild(projectRoot) : { ok: true }
     return {
@@ -407,12 +415,13 @@ app.post('/api/fonts/remove', async ({ request }) => {
 })
 
 /** woff2 del paquete node_modules/@fontsource/{id}/files (preview local). */
-app.get('/api/fonts/file/:id/:file', ({ params }) => {
+app.get('/api/fonts/file/:id/:file', ({ params, query }) => {
   const found = resolveTheme(process.cwd())
   const err = themeError(found)
   if (err) return err
   const projectRoot = found.projectRoot || dirname(found.themeDir!)
-  const p = packageFontFilePath(projectRoot, params.id, params.file)
+  const variable = query.variable === '1' || query.v === '1'
+  const p = packageFontFilePath(projectRoot, params.id, params.file, variable)
   if (!p) return new Response('Not found', { status: 404 })
   const ext = p.split('.').pop() || ''
   return new Response(readFileSync(p), {

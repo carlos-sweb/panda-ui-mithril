@@ -179,16 +179,30 @@ function expandResult(s, f) {
 
 // Expande una fuente disponible: preview con el woff2 local del paquete.
 function expandAvailable(s, f) {
-  if (s.expand === 'a:' + f.id) {
+  const scopeKey = 'a:' + (f.variable ? 'v' : 's') + f.id
+  if (s.expand === scopeKey) {
     s.expand = null
     s.previewCss = ''
     return
   }
-  s.expand = 'a:' + f.id
+  s.expand = scopeKey
   s.previewFamily = '"' + f.family + '", sans-serif'
+  const subset = f.defSubset || 'latin'
+  if (f.variable) {
+    // Variable: un woff2 por subset×estilo que cubre todo el rango de pesos.
+    s.previewCss = [
+      "@font-face {",
+      `  font-family: '${cssStr(f.family)}';`,
+      '  font-style: normal;',
+      '  font-display: swap;',
+      '  font-weight: 100 900;',
+      `  src: url('/api/fonts/file/${f.id}/${f.id}-${subset}-wght-normal.woff2?variable=1') format('woff2-variations');`,
+      '}',
+    ].join('\n')
+    return
+  }
   const w400 = f.weights.includes(400)
   const w = w400 ? 400 : f.weights[0]
-  const subset = f.defSubset || 'latin'
   s.previewCss = [
     "@font-face {",
     `  font-family: '${cssStr(f.family)}';`,
@@ -214,25 +228,28 @@ function previewBlock(s) {
 }
 
 /** Añade el paquete @fontsource/{id} (bun add) — queda disponible. */
-function doAdd(s, f) {
-  s.addingId = f.id
+function doAdd(s, f, variable) {
+  if (variable) s.addingVarId = f.id
+  else s.addingId = f.id
   s.addError = null
   s.addOk = null
   fetch('/api/fonts/add', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ id: f.id }),
+    body: JSON.stringify({ id: f.id, variable: !!variable }),
   })
     .then((r) => r.json())
     .then((res) => {
       s.addingId = null
+      s.addingVarId = null
       if (!res.ok) throw new Error(res.error || 'Add failed')
-      s.addOk = { id: f.id, family: f.family }
+      s.addOk = { id: f.id, variable: !!variable, family: f.family }
       reloadAvailable(s)
       m.redraw()
     })
     .catch((e) => {
       s.addingId = null
+      s.addingVarId = null
       s.addError = String(e)
       m.redraw()
     })
@@ -240,15 +257,17 @@ function doAdd(s, f) {
 
 /** Abre/cierra el panel de asignación de una fuente disponible. */
 function toggleAssign(s, f) {
-  if (s.assignFor === f.id) {
+  const key = (f.variable ? 'v' : 's') + f.id
+  if (s.assignFor === key) {
     s.assignFor = null
     return
   }
-  s.assignFor = f.id
+  s.assignFor = key
   s.assignToken = Object.keys(s.fonts)[0] || 'sans'
   const w400 = f.weights.includes(400)
   const w700 = f.weights.includes(700)
-  s.assignWeights = w400 ? (w700 ? [400, 700] : [400]) : (w700 ? [700] : [f.weights[0]])
+  // Variable: un solo archivo cubre todos los pesos — no se seleccionan pesos.
+  s.assignWeights = f.variable ? [] : (w400 ? (w700 ? [400, 700] : [400]) : (w700 ? [700] : [f.weights[0]]))
   s.assignItalic = false
   s.assignSubset = f.defSubset || 'latin'
   s.assignError = null
@@ -263,7 +282,7 @@ function toggleWeight(s, w) {
 
 /** Asigna la fuente a un token — la operación que la carga en el CSS. */
 function doAssign(s, f) {
-  s.assigningId = f.id
+  s.assigningId = (f.variable ? 'v' : 's') + f.id
   s.assignError = null
   s.assignOk = null
   fetch('/api/fonts/assign', {
@@ -271,8 +290,9 @@ function doAssign(s, f) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       id: f.id,
+      variable: !!f.variable,
       token: s.assignToken,
-      weights: s.assignWeights,
+      weights: f.variable ? undefined : s.assignWeights,
       styles: s.assignItalic ? ['normal', 'italic'] : ['normal'],
       subsets: [s.assignSubset],
     }),
@@ -299,7 +319,7 @@ function doUnassign(s, f) {
   fetch('/api/fonts/unassign', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ id: f.id }),
+    body: JSON.stringify({ id: f.id, variable: !!f.variable }),
   })
     .then((r) => r.json())
     .then((res) => {
@@ -308,7 +328,7 @@ function doUnassign(s, f) {
       ;(res.resetTokens || []).forEach((tk) => {
         s.fonts[tk] = tk.includes('mono') ? 'monospace' : 'system-ui, sans-serif'
       })
-      if (s.assignFor === f.id) s.assignFor = null
+      if (s.assignFor === (f.variable ? 'v' : 's') + f.id) s.assignFor = null
       reloadAvailable(s)
       m.redraw()
     })
@@ -325,7 +345,7 @@ function doRemove(s, f) {
   fetch('/api/fonts/remove', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ id: f.id }),
+    body: JSON.stringify({ id: f.id, variable: !!f.variable }),
   })
     .then((r) => r.json())
     .then((res) => {
@@ -334,7 +354,7 @@ function doRemove(s, f) {
       ;(res.resetTokens || []).forEach((tk) => {
         s.fonts[tk] = tk.includes('mono') ? 'monospace' : 'system-ui, sans-serif'
       })
-      if (s.assignFor === f.id) s.assignFor = null
+      if (s.assignFor === (f.variable ? 'v' : 's') + f.id) s.assignFor = null
       reloadAvailable(s)
       m.redraw()
     })
@@ -431,6 +451,7 @@ const page = {
     s.searchError = null
     s.searchSeq = 0
     s.addingId = null
+    s.addingVarId = null
     s.addError = null
     s.addOk = null
 
@@ -509,8 +530,10 @@ const page = {
         .catch((e) => { s.saving = false; s.error = String(e); m.redraw() })
     }
 
-    const availableIds = s.available.map((f) => f.id)
-    const loadedById = Object.fromEntries(s.loaded.map((l) => [l.id, l]))
+    const scopeId = (f) => (f.variable ? 'v' : 's') + f.id
+    const availStatic = new Set(s.available.filter((a) => !a.variable).map((a) => a.id))
+    const availVar = new Set(s.available.filter((a) => a.variable).map((a) => a.id))
+    const loadedByKey = Object.fromEntries(s.loaded.map((l) => [scopeId(l), l]))
 
     // Filas de resultados de búsqueda (array plano y keyed).
     const searchRows = (s.results || []).flatMap((f) => {
@@ -523,7 +546,7 @@ const page = {
               {f.category && <Tag size="md">{f.category}</Tag>}
               {f.license && <Tag size="md">{f.license}</Tag>}
               {f.variable && <Tag size="md" variant="info">{t('search.variable')}</Tag>}
-              {availableIds.includes(f.id) && <Tag size="md" variant="success">{t('search.available')}</Tag>}
+              {(availStatic.has(f.id) || availVar.has(f.id)) && <Tag size="md" variant="success">{t('search.available')}</Tag>}
               <Text as="span" size="sm" color="neutral">
                 {tf('search.weightsCount', { count: f.weights.length, subsets: f.subsets.join(', ') })}
               </Text>
@@ -535,16 +558,30 @@ const page = {
             </Button>
           </Column>
           <Column narrow>
-            <Button
-              color="primary"
-              size="sm"
-              disabled={s.addingId === f.id || availableIds.includes(f.id)}
-              onclick={() => doAdd(s, f)}
-            >
-              {availableIds.includes(f.id)
-                ? t('search.added')
-                : (s.addingId === f.id ? t('search.adding') : t('search.add'))}
-            </Button>
+            <Stack direction="column" gap="sm" align="end">
+              <Button
+                color="primary"
+                size="sm"
+                disabled={s.addingId === f.id || availStatic.has(f.id)}
+                onclick={() => doAdd(s, f, false)}
+              >
+                {availStatic.has(f.id)
+                  ? t('search.added')
+                  : (s.addingId === f.id ? t('search.adding') : t('search.add'))}
+              </Button>
+              {f.variable && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  disabled={s.addingVarId === f.id || availVar.has(f.id)}
+                  onclick={() => doAdd(s, f, true)}
+                >
+                  {availVar.has(f.id)
+                    ? t('search.addedVar')
+                    : (s.addingVarId === f.id ? t('search.adding') : t('search.addVar'))}
+                </Button>
+              )}
+            </Stack>
           </Column>
         </Columns>,
         expanded ? (
@@ -560,18 +597,20 @@ const page = {
       ].filter(Boolean)
     })
 
-    // Filas de fuentes disponibles (node_modules).
+    // Filas de fuentes disponibles (node_modules y @fontsource-variable).
     const availableRows = s.available.map((f) => {
-      const loaded = loadedById[f.id]
-      const expanded = s.expand === 'a:' + f.id
-      const assignOpen = s.assignFor === f.id
+      const key = scopeId(f)
+      const loaded = loadedByKey[key]
+      const expanded = s.expand === 'a:' + key
+      const assignOpen = s.assignFor === key
       return [
-        <Columns key={'a-' + f.id} gap="sm" centered className={resultRow}>
+        <Columns key={'a-' + key} gap="sm" centered className={resultRow}>
           <Column>
             <Text weight="semibold" size="md">{f.family}</Text>
             <Text as="div" className={resultMeta}>
               {f.license && <Tag size="md">{f.license}</Tag>}
               <Tag size="md" variant="info">{tf('available.version', { version: f.version })}</Tag>
+              {f.variable && <Tag size="md" variant="info">{t('available.variable')}</Tag>}
               {loaded && (loaded.tokens || []).map((tk) => (
                 <Tag key={tk} size="md" variant="success">{tf('available.usedBy', { token: tk })}</Tag>
               ))}
@@ -596,10 +635,10 @@ const page = {
               <Button
                 variant="outline"
                 size="sm"
-                disabled={s.unassigningId === f.id}
+                disabled={s.unassigningId === key}
                 onclick={() => doUnassign(s, f)}
               >
-                {s.unassigningId === f.id ? t('available.unassigning') : t('available.unassign')}
+                {s.unassigningId === key ? t('available.unassigning') : t('available.unassign')}
               </Button>
             </Column>
           )}
@@ -607,15 +646,15 @@ const page = {
             <Button
               variant="ghost"
               size="sm"
-              disabled={s.removingId === f.id}
+              disabled={s.removingId === key}
               onclick={() => doRemove(s, f)}
             >
-              {s.removingId === f.id ? t('available.removing') : t('available.remove')}
+              {s.removingId === key ? t('available.removing') : t('available.remove')}
             </Button>
           </Column>
         </Columns>,
         assignOpen ? (
-          <Block key={'aa-' + f.id} spacing="sm" className={previewPanel}>
+          <Block key={'aa-' + key} spacing="sm" className={previewPanel}>
             <Stack gap="md">
               <Columns gap="sm" centered>
                 <Column narrow>
@@ -627,14 +666,18 @@ const page = {
                   </Select>
                 </Column>
               </Columns>
-              <Stack direction="row" gap="md">
-                {f.weights.map((w) => (
-                  <label key={w} className={weightOption}>
-                    <Checkbox size="sm" checked={s.assignWeights.includes(w)} onchange={() => toggleWeight(s, w)} />
-                    <Text as="span" size="sm">{w}</Text>
-                  </label>
-                ))}
-              </Stack>
+              {f.variable ? (
+                <Text color="neutral" size="sm">{t('available.variableHint')}</Text>
+              ) : (
+                <Stack direction="row" gap="md">
+                  {f.weights.map((w) => (
+                    <label key={w} className={weightOption}>
+                      <Checkbox size="sm" checked={s.assignWeights.includes(w)} onchange={() => toggleWeight(s, w)} />
+                      <Text as="span" size="sm">{w}</Text>
+                    </label>
+                  ))}
+                </Stack>
+              )}
               {f.styles.includes('italic') && (
                 <label className={weightOption}>
                   <Checkbox size="sm" checked={s.assignItalic} onchange={(e) => { s.assignItalic = e.target.checked }} />
@@ -657,10 +700,10 @@ const page = {
                 <Button
                   color="primary"
                   size="sm"
-                  disabled={s.assigningId === f.id || s.assignWeights.length === 0}
+                  disabled={s.assigningId === key || (!f.variable && s.assignWeights.length === 0)}
                   onclick={() => doAssign(s, f)}
                 >
-                  {s.assigningId === f.id ? t('available.assigning') : t('available.assignBtn')}
+                  {s.assigningId === key ? t('available.assigning') : t('available.assignBtn')}
                 </Button>
                 <Text color="neutral" size="sm">{t('available.assignHint')}</Text>
               </Stack>
@@ -668,12 +711,13 @@ const page = {
           </Block>
         ) : null,
         expanded ? (
-          <Block key={'ap-' + f.id} spacing="sm" className={previewPanel}>
+          <Block key={'ap-' + key} spacing="sm" className={previewPanel}>
             {previewBlock(s)}
           </Block>
         ) : null,
       ].filter(Boolean)
     })
+
 
     return (
       <Stack gap="lg">
