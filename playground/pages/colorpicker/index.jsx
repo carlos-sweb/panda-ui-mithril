@@ -8,7 +8,7 @@ import table from './table.yaml'
 import { tableToRows } from '../../components/table-rows'
 
 const usageCodeJsx = `import m from 'mithril'
-import { ColorPicker } from 'panda-ui-mithril'
+import { ColorPicker, Button } from 'panda-ui-mithril'
 
 export const MyPage = {
   view() {
@@ -16,19 +16,41 @@ export const MyPage = {
       <div>
         <ColorPicker defaultValue="#623CEA" onchange={(hex) => console.log(hex)} />
         <ColorPicker value="#ff8800" copy={false} />
+
+        {/* Dropdown: el prop trigger convierte el picker en un dropdown */}
+        <ColorPicker defaultValue="#7c3aed" trigger="Pick a color" />
+        <ColorPicker
+          defaultValue="#2563eb"
+          trigger={(hex) => (
+            <Button variant="outline" size="sm">
+              <span style={{ display: 'inline-block', width: '1rem', height: '1rem', borderRadius: '0.25rem', background: hex, border: '1px solid rgba(0,0,0,0.15)', marginRight: '0.375rem', verticalAlign: 'middle' }} />
+              {hex}
+            </Button>
+          )}
+        />
       </div>
     )
   }
 }`
 
 const usageCodeJavascript = `import m from 'mithril'
-import { ColorPicker } from 'panda-ui-mithril'
+import { ColorPicker, Button } from 'panda-ui-mithril'
 
 export const MyPage = {
   view() {
     return m('div', null, [
       m(ColorPicker, { defaultValue: '#623CEA', onchange: (hex) => console.log(hex) }),
-      m(ColorPicker, { value: '#ff8800', copy: false })
+      m(ColorPicker, { value: '#ff8800', copy: false }),
+
+      // Dropdown: el prop trigger convierte el picker en un dropdown
+      m(ColorPicker, { defaultValue: '#7c3aed', trigger: 'Pick a color' }),
+      m(ColorPicker, {
+        defaultValue: '#2563eb',
+        trigger: (hex) => m(Button, { variant: 'outline', size: 'sm' }, [
+          m('span', { style: { display: 'inline-block', width: '1rem', height: '1rem', borderRadius: '0.25rem', background: hex, border: '1px solid rgba(0,0,0,0.15)', marginRight: '0.375rem', verticalAlign: 'middle' } }),
+          hex
+        ])
+      })
     ])
   }
 }`
