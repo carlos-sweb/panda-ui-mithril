@@ -34,8 +34,9 @@ import { fileURLToPath } from 'node:url'
 import { spawn, spawnSync } from 'node:child_process'
 import { parseColors, parseFlat, writeColorsSrc, writeFlatSrc } from './theme-io'
 import {
-  fontFilePath, fontsLayout, installFont, installedFonts, readFontCss,
-  searchFonts, uninstallFont,
+  buildFontfaceSource, fontFilePath, fontfaceWired, fontsLayout, installFont,
+  installedFonts, readFontCss, readOutdir, searchFonts, uninstallFont,
+  writeFontfaceConfig,
 } from './fonts-api'
 
 const PORT = portFromArgv() ?? 1234
@@ -163,17 +164,43 @@ app.post('/api/theme', async (ctx) => {
 })
 
 // ── API: rebuild (codegen + cssgen) ───────────────────────────────────────
+/**
+ * codegen + cssgen en la raíz del proyecto (donde está panda.config.ts),
+ * nunca en process.cwd() — el editor puede haberse lanzado desde un
+ * subdirectorio. Se reusa para el rebuild manual (POST /api/rebuild) y para
+ * los rebuilds automáticos tras instalar/desinstalar/asignar fuentes.
+ */
+function runRebuild(projectRoot: string) {
+  const codegen = spawnSync('bunx', ['panda', 'codegen'], { cwd: projectRoot, encoding: 'utf8' })
+  const cssgen = spawnSync('bunx', ['panda', 'cssgen'], { cwd: projectRoot, encoding: 'utf8' })
+  return {
+    ok: codegen.status === 0 && cssgen.status === 0,
+    codegen: codegen.stderr?.slice(-200),
+    cssgen: cssgen.stderr?.slice(-200),
+  }
+}
+
 app.post('/api/rebuild', (ctx) => {
   const found = resolveTheme(process.cwd())
-  // El rebuild corre SIEMPRE en la raíz del proyecto (donde está
-  // panda.config.ts), no en process.cwd() — el editor puede haberse lanzado
-  // desde un subdirectorio.
   const cwd = found.projectRoot || process.cwd()
-  const codegen = spawnSync('bunx', ['panda', 'codegen'], { cwd, encoding: 'utf8' })
-  const cssgen = spawnSync('bunx', ['panda', 'cssgen'], { cwd, encoding: 'utf8' })
-  const ok = codegen.status === 0 && cssgen.status === 0
-  return ctx.sendJson({ ok, codegen: codegen.stderr?.slice(-200), cssgen: cssgen.stderr?.slice(-200) })
+  const result = runRebuild(cwd)
+  return ctx.sendJson({ ok: result.ok, codegen: result.codegen, cssgen: result.cssgen })
 })
+
+/**
+ * Sincroniza el bloque `globalFontface` del panda.config.ts del consumidor
+ * con las fuentes instaladas (la vía nativa de Panda: cssgen emite los
+ * @font-face dentro de styles.css). Devuelve { wired, changed }.
+ */
+function syncFontface(projectRoot: string, themeDir: string) {
+  const configPath = join(projectRoot, 'panda.config.ts')
+  if (!existsSync(configPath)) return { wired: false, changed: false }
+  const src = readFileSync(configPath, 'utf8')
+  const faces = buildFontfaceSource(installedFonts(themeDir), themeDir, projectRoot, readOutdir(src))
+  const next = writeFontfaceConfig(src, faces)
+  if (next !== src) writeFileSync(configPath, next, 'utf8')
+  return { wired: faces !== '', changed: next !== src }
+}
 
 // ── API: fuentes (Fontsource) ───────────────────────────────────────────────
 // Característica "buscar e instalar fuentes" — el proveedor por defecto es
@@ -221,11 +248,21 @@ app.get('/api/fonts/installed', (ctx) => {
   if (err) return ctx.sendJson(err)
   try {
     const themeDir = found.themeDir!
+    const projectRoot = found.projectRoot || dirname(themeDir)
     const { cssPath } = fontsLayout(themeDir)
-    // Ruta relativa del {raiz}/fonts.css al projectRoot — la página la usa
-    // para el banner de import sin depender de una instalación previa.
-    const fontsCssRel = relative(found.projectRoot || dirname(themeDir), cssPath)
-    return ctx.sendJson({ ok: true, fonts: installedFonts(themeDir), fontsCssRel })
+    // Autocuración: si hay fuentes instaladas pero el panda.config.ts no tiene
+    // el bloque globalFontface (p. ej. instaladas antes de esta feature), se
+    // escribe y se rebuilda — el editor es el dueño del wiring, sin pasos
+    // manuales. No-op si el bloque ya está al día.
+    const synced = syncFontface(projectRoot, themeDir)
+    if (synced.changed) runRebuild(projectRoot)
+    // Ruta relativa del {raiz}/fonts.css al projectRoot — fallback del banner.
+    const fontsCssRel = relative(projectRoot, cssPath)
+    // wired: el panda.config.ts tiene el bloque globalFontface (las fuentes
+    // compilan dentro de styles.css vía Panda, sin pasos manuales).
+    const configPath = join(projectRoot, 'panda.config.ts')
+    const wired = existsSync(configPath) && fontfaceWired(readFileSync(configPath, 'utf8'))
+    return ctx.sendJson({ ok: true, fonts: installedFonts(themeDir), fontsCssRel, wired })
   } catch (e) {
     return ctx.sendJson({ ok: false, error: String(e) })
   }
@@ -238,20 +275,27 @@ app.post('/api/fonts/install', async (ctx) => {
   const body = await ctx.req.json().catch(() => ({})) as Record<string, unknown>
   if (!body.id) return ctx.sendJson({ ok: false, error: 'Falta el id de la fuente.' })
   try {
-    const { font, cssPath } = await installFont(found.themeDir!, {
+    const themeDir = found.themeDir!
+    const projectRoot = found.projectRoot || dirname(themeDir)
+    const { font, cssPath } = await installFont(themeDir, {
       id: String(body.id),
       weights: Array.isArray(body.weights) ? body.weights.map(Number) : undefined,
       styles: Array.isArray(body.styles) ? body.styles.map(String) : undefined,
       subsets: Array.isArray(body.subsets) ? body.subsets.map(String) : undefined,
     })
-    // El importHint es relativo a la raíz del proyecto (donde suele estar la
-    // entrada de la app del consumidor), no al dir del theme.
-    const fontsCssRel = relative(found.projectRoot || dirname(found.themeDir!), cssPath)
+    // Wire automático: globalFontface en panda.config.ts + rebuild, para que
+    // los @font-face compilen dentro de styled-system/styles.css.
+    const { wired, changed } = syncFontface(projectRoot, themeDir)
+    const rebuild = changed || wired ? runRebuild(projectRoot) : { ok: true }
+    const fontsCssRel = relative(projectRoot, cssPath)
     return ctx.sendJson({
       ok: true,
       font,
       fontsCssRel,
       importHint: `import './${fontsCssRel}'`,
+      wired,
+      rebuildOk: rebuild.ok,
+      ...(rebuild.ok ? {} : { rebuildError: rebuild.codegen || rebuild.cssgen || 'rebuild failed' }),
     })
   } catch (e) {
     return ctx.sendJson({ ok: false, error: String(e) })
@@ -265,8 +309,18 @@ app.post('/api/fonts/uninstall', async (ctx) => {
   const body = await ctx.req.json().catch(() => ({})) as Record<string, unknown>
   if (!body.id) return ctx.sendJson({ ok: false, error: 'Falta el id de la fuente.' })
   try {
-    const removed = uninstallFont(found.themeDir!, String(body.id))
-    return ctx.sendJson({ ok: true, removed })
+    const themeDir = found.themeDir!
+    const projectRoot = found.projectRoot || dirname(themeDir)
+    const removed = uninstallFont(themeDir, String(body.id))
+    const { wired, changed } = syncFontface(projectRoot, themeDir)
+    const rebuild = changed || wired ? runRebuild(projectRoot) : { ok: true }
+    return ctx.sendJson({
+      ok: true,
+      removed,
+      wired,
+      rebuildOk: rebuild.ok,
+      ...(rebuild.ok ? {} : { rebuildError: rebuild.codegen || rebuild.cssgen || 'rebuild failed' }),
+    })
   } catch (e) {
     return ctx.sendJson({ ok: false, error: String(e) })
   }

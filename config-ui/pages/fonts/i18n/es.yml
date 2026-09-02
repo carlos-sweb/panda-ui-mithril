@@ -32,6 +32,7 @@ search:
   alreadyInstalled: Ya instalada
   downloadsHint: Descarga los archivos woff2 en el proyecto
   installedSuccess: 'Instalada {family}. Añade este import a la entrada de tu app:'
+  installedWired: 'Instalada {family} — compilada en styled-system/styles.css vía Panda. Recarga tu app para verla.'
 installed:
   loading: Cargando fuentes instaladas…
   empty: Aún no hay fuentes instaladas. Usa la pestaña de búsqueda para instalar una.
@@ -44,4 +45,12 @@ installed:
   italic: cursiva
   variable: variable
   banner: 'Carga la fuente en tu app — añade esta línea a la entrada de tu app:'
+  wired: 'Compilada en styled-system/styles.css vía Panda — recarga tu app para ver las fuentes.'
+  assign: Asignar
+  assignToken: Token
+  assignBtn: Asignar
+  assigning: Asignando…
+  assigned: asignada a {token}
+  assignSuccess: 'Asignada {family} a {token}.'
+  rebuildFailed: 'Rebuild falló: {detail}'
 sample: El veloz murciélago hindú comía feliz cardillo y kiwi — 0123456789

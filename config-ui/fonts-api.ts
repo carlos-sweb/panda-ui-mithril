@@ -18,7 +18,7 @@
 import {
   existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync,
 } from 'node:fs'
-import { basename, dirname, join, resolve, sep } from 'node:path'
+import { basename, dirname, join, relative, resolve, sep } from 'node:path'
 
 // ── API de Fontsource ────────────────────────────────────────────────────────
 const LIST_URL = 'https://api.fontsource.org/v1/fonts'
@@ -321,6 +321,115 @@ export function fontFilePath(themeDir: string, id: string, file: string): string
   if (p !== base && !p.startsWith(base + sep)) return null
   if (!existsSync(p)) return null
   return p
+}
+
+// ── globalFontface en panda.config.ts ───────────────────────────────────────
+// La vía nativa de Panda para cargar fuentes: la clave `globalFontface`
+// (nivel superior de defineConfig, verificada en Panda 1.12) hace que cssgen
+// emita los @font-face DENTRO de {projectRoot}/{outdir}/styles.css — la app
+// ya linkea ese CSS, así que no hace falta tocar el HTML del consumidor.
+// El url() de cada src es relativo al styles.css generado (../pum/fonts/…).
+
+/** Marker que identifica el bloque gestionado por el editor en panda.config.ts. */
+export const FONTFACE_MARKER = '/* pum:fontfaces */'
+
+/** Lee `outdir: '...'` del panda.config.ts (default 'styled-system'). */
+export function readOutdir(pandaConfigSrc: string): string {
+  const m = /outdir\s*:\s*['"]([^'"]+)['"]/.exec(pandaConfigSrc)
+  return m ? m[1] : 'styled-system'
+}
+
+/**
+ * Genera el fuente TS del bloque globalFontface para las fuentes instaladas
+ * (una entrada por familia, con un @font-face por subset×peso×estilo real):
+ *
+ *   <!-- el bloque lleva el marker del editor (FONTFACE_MARKER) -->
+ *   globalFontface: {
+ *     'Poppins': [
+ *       { fontStyle: 'normal', fontDisplay: 'swap', fontWeight: 600, src: 'url(../pum/fonts/poppins/latin-600-normal.woff2) format("woff2")' },
+ *     ],
+ *   },
+ *
+ * src es relativo a {projectRoot}/{outdir}/styles.css. Vacío si no hay fuentes.
+ */
+export function buildFontfaceSource(
+  fonts: InstalledFont[],
+  themeDir: string,
+  projectRoot: string,
+  outdir: string,
+): string {
+  const outdirAbs = join(projectRoot, outdir)
+  const lines: string[] = []
+  for (const f of fonts) {
+    const { dir } = fontsLayout(themeDir)
+    const fontDir = join(dir, f.id)
+    const faces: string[] = []
+    for (const subset of f.subsets) {
+      for (const weight of f.weights) {
+        for (const style of f.styles) {
+          const file = `${subset}-${weight}-${style}.woff2`
+          if (!existsSync(join(fontDir, file))) continue
+          const rel = relative(outdirAbs, join(fontDir, file)).split(sep).join('/')
+          faces.push(
+            `      { fontStyle: '${style}', fontDisplay: 'swap', fontWeight: ${weight}, src: 'url(${rel}) format("woff2")' },`,
+          )
+        }
+      }
+    }
+    if (faces.length === 0) continue
+    const family = f.family.replace(/'/g, "\\'")
+    lines.push(`    '${family}': [\n${faces.join('\n')}\n    ],`)
+  }
+  if (lines.length === 0) return ''
+  return `  ${FONTFACE_MARKER}\n  globalFontface: {\n${lines.join('\n')}\n  },\n`
+}
+
+/**
+ * Inserta/actualiza/elimina el bloque globalFontface marcado en
+ * panda.config.ts. Idempotente: si el marker existe, reemplaza el bloque
+ * completo (brace-matching); si no, lo inserta tras `export default
+ * defineConfig({`. Con `faces` vacío elimina el bloque. Devuelve el src nuevo
+ * (igual al original si no se pudo editar — nunca rompe el config).
+ */
+export function writeFontfaceConfig(pandaConfigSrc: string, faces: string): string {
+  const markerIdx = pandaConfigSrc.indexOf(FONTFACE_MARKER)
+  if (markerIdx !== -1) {
+    const openIdx = pandaConfigSrc.indexOf('{', markerIdx)
+    if (openIdx === -1) return pandaConfigSrc
+    let depth = 0
+    let end = -1
+    for (let i = openIdx; i < pandaConfigSrc.length; i++) {
+      const ch = pandaConfigSrc[i]
+      if (ch === '{') depth++
+      else if (ch === '}') {
+        depth--
+        if (depth === 0) {
+          end = i + 1
+          break
+        }
+      }
+    }
+    if (end === -1) return pandaConfigSrc
+    // Consume la coma y el whitespace que siguen al cierre del bloque.
+    let after = end
+    while (after < pandaConfigSrc.length && /[,\s]/.test(pandaConfigSrc[after])) after++
+    const head = pandaConfigSrc.slice(0, markerIdx)
+    const tail = pandaConfigSrc.slice(after)
+    if (!faces) return (head + tail).replace(/\n{3,}/g, '\n\n')
+    return head + faces + tail
+  }
+  if (!faces) return pandaConfigSrc
+  const anchor = 'export default defineConfig({\n'
+  if (pandaConfigSrc.includes(anchor)) return pandaConfigSrc.replace(anchor, anchor + faces, 1)
+  if (pandaConfigSrc.includes('defineConfig({')) {
+    return pandaConfigSrc.replace('defineConfig({', 'defineConfig({\n' + faces, 1)
+  }
+  return pandaConfigSrc
+}
+
+/** true si panda.config.ts tiene el bloque gestionado con ≥1 familia. */
+export function fontfaceWired(pandaConfigSrc: string): boolean {
+  return pandaConfigSrc.includes(FONTFACE_MARKER) && pandaConfigSrc.includes('globalFontface:')
 }
 
 // ── Helpers ──────────────────────────────────────────────────────────────────

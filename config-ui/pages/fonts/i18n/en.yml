@@ -32,6 +32,7 @@ search:
   alreadyInstalled: Already installed
   downloadsHint: Downloads woff2 files into the project
   installedSuccess: 'Installed {family}. Add this import to your app entry:'
+  installedWired: 'Installed {family} — compiled into styled-system/styles.css via Panda. Reload your app to see it.'
 installed:
   loading: Loading installed fonts…
   empty: No fonts installed yet. Use the search tab to install one.
@@ -44,4 +45,12 @@ installed:
   italic: italic
   variable: variable
   banner: 'Load the font in your app — add this line to your app entry:'
+  wired: 'Compiled into styled-system/styles.css via Panda — reload your app to see the fonts.'
+  assign: Assign
+  assignToken: Token
+  assignBtn: Assign
+  assigning: Assigning…
+  assigned: assigned to {token}
+  assignSuccess: 'Assigned {family} to {token}.'
+  rebuildFailed: 'Rebuild failed: {detail}'
 sample: The quick brown fox jumps over the lazy dog — 0123456789

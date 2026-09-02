@@ -169,7 +169,10 @@ export const pumPreset = definePreset({
   },
   globalCss: {
     ':root': {
-      fontFamily: '"Ubuntu", system-ui, sans-serif',
+      // La fuente base viene del token fonts.sans (no hardcodeada): así el
+      // editor de fuentes (config-ui) y los consumidores pueden cambiar la
+      // tipografía del proyecto vía pum/theme/fonts.ts y se aplica de verdad.
+      fontFamily: 'var(--fonts-sans)',
       '--size-field': '.25rem',
       '--size': 'calc(var(--size-field,.25rem) * 10)',
       /* Border-radius tokens (light theme defaults) */

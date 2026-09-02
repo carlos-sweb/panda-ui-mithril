@@ -115,6 +115,7 @@ function loadInstalled(s) {
       if (d.ok) {
         s.installed = d.fonts || []
         s.fontsCssRel = d.fontsCssRel || 'fonts.css'
+        s.wired = !!d.wired
       } else {
         s.installedError = d.error || 'Failed to load installed fonts'
       }
@@ -223,6 +224,7 @@ function install(s, f) {
   s.installing = true
   s.installError = null
   s.installOk = null
+  s.rebuildError = null
   fetch('/api/fonts/install', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -237,7 +239,14 @@ function install(s, f) {
     .then((res) => {
       s.installing = false
       if (!res.ok) throw new Error(res.error || 'Install failed')
-      s.installOk = { family: res.font.family, importHint: res.importHint, fontsCssRel: res.fontsCssRel }
+      s.installOk = {
+        family: res.font.family,
+        importHint: res.importHint,
+        fontsCssRel: res.fontsCssRel,
+        wired: !!res.wired,
+      }
+      s.wired = !!res.wired
+      if (res.rebuildOk === false) s.rebuildError = res.rebuildError || 'rebuild failed'
       loadInstalled(s)
       m.redraw()
     })
@@ -250,6 +259,7 @@ function install(s, f) {
 
 function uninstall(s, f) {
   s.uninstalling = f.id
+  s.rebuildError = null
   fetch('/api/fonts/uninstall', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -259,16 +269,63 @@ function uninstall(s, f) {
     .then((res) => {
       s.uninstalling = null
       if (!res.ok) throw new Error(res.error || 'Uninstall failed')
+      s.wired = !!res.wired
+      if (res.rebuildOk === false) s.rebuildError = res.rebuildError || 'rebuild failed'
       if (s.expand === 'i:' + f.id) {
         s.expand = null
         s.previewCss = ''
       }
+      if (s.assignFor === f.id) s.assignFor = null
       loadInstalled(s)
       m.redraw()
     })
     .catch((e) => {
       s.uninstalling = null
       s.installError = String(e)
+      m.redraw()
+    })
+}
+
+/** Abre/cierra el panel de asignación de una fuente instalada. */
+function toggleAssign(s, f) {
+  if (s.assignFor === f.id) {
+    s.assignFor = null
+    return
+  }
+  s.assignFor = f.id
+  s.assignToken = Object.keys(s.fonts)[0] || 'sans'
+  s.assignError = null
+  s.assignMsg = null
+}
+
+/** Asigna la fuente a un token del theme (POST /api/theme + rebuild). */
+function doAssign(s, f) {
+  const token = s.assignToken
+  if (!token) return
+  const isMono = token.includes('mono')
+  const value = '"' + f.family + '", ' + (isMono ? 'monospace' : 'system-ui, sans-serif')
+  s.assigningId = f.id
+  s.assignError = null
+  s.assignMsg = null
+  s.rebuildError = null
+  fetch('/api/theme', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ fonts: { [token]: value } }),
+  })
+    .then((r) => r.json())
+    .then(async (res) => {
+      if (!res.ok) throw new Error(res.error || 'Assign failed')
+      const rebuild = await fetch('/api/rebuild', { method: 'POST' }).then((r) => r.json())
+      if (rebuild.ok === false) throw new Error(rebuild.codegen || rebuild.cssgen || 'rebuild failed')
+      s.fonts[token] = value
+      s.assigningId = null
+      s.assignMsg = tf('installed.assignSuccess', { family: f.family, token })
+      m.redraw()
+    })
+    .catch((e) => {
+      s.assigningId = null
+      s.assignError = String(e)
       m.redraw()
     })
 }
@@ -332,10 +389,16 @@ function installPanel(s, f) {
       )}
       {s.installError && <Alert color="error">{t('errorPrefix')}{s.installError}</Alert>}
       {s.installOk && (
-        <Alert color="success">
-          <Text as="span">{tf('search.installedSuccess', { family: s.installOk.family })}</Text>
-          <code className={importCode}>{s.installOk.importHint}</code>
-        </Alert>
+        s.installOk.wired ? (
+          <Alert color="success">
+            <Text as="span">{tf('search.installedWired', { family: s.installOk.family })}</Text>
+          </Alert>
+        ) : (
+          <Alert color="success">
+            <Text as="span">{tf('search.installedSuccess', { family: s.installOk.family })}</Text>
+            <code className={importCode}>{s.installOk.importHint}</code>
+          </Alert>
+        )
       )}
       <Stack direction="row" gap="sm" align="center">
         <Button
@@ -370,6 +433,8 @@ const page = {
     s.installedLoading = true
     s.installedError = null
     s.fontsCssRel = 'fonts.css'
+    s.wired = false
+    s.rebuildError = null
     s.query = ''
     s.results = null
     s.searching = false
@@ -385,6 +450,12 @@ const page = {
     s.installError = null
     s.installOk = null
     s.uninstalling = null
+    // asignación
+    s.assignFor = null
+    s.assignToken = ''
+    s.assigningId = null
+    s.assignMsg = null
+    s.assignError = null
 
     fetch('/api/theme')
       .then((r) => r.json())
@@ -474,8 +545,12 @@ const page = {
     })
 
     // Filas de fuentes instaladas.
+    const tokenNames = Object.keys(s.fonts)
     const installedRows = s.installed.map((f) => {
       const expanded = s.expand === 'i:' + f.id
+      const assignOpen = s.assignFor === f.id
+      // Tokens que ya apuntan a esta familia (p. ej. sans → "Poppins", ...).
+      const assignedTo = tokenNames.filter((k) => (s.fonts[k] || '').includes('"' + f.family + '"'))
       return [
         <Columns
           key={'i-' + f.id}
@@ -489,6 +564,9 @@ const page = {
               {f.weights.map((w) => <Tag key={w} size="md">{w}</Tag>)}
               {f.styles.includes('italic') && <Tag size="md" variant="info">{t('installed.italic')}</Tag>}
               {f.variable && <Tag size="md" variant="info">{t('installed.variable')}</Tag>}
+              {assignedTo.map((tk) => (
+                <Tag key={tk} size="md" variant="success">{tf('installed.assigned', { token: tk })}</Tag>
+              ))}
               <Text as="span" size="sm" color="neutral">
                 {tf('installed.summary', {
                   subsets: f.subsets.join(', '),
@@ -504,6 +582,15 @@ const page = {
           </Column>
           <Column narrow>
             <Button
+              variant="outline"
+              size="sm"
+              onclick={() => toggleAssign(s, f)}
+            >
+              {assignOpen ? t('search.close') : t('installed.assign')}
+            </Button>
+          </Column>
+          <Column narrow>
+            <Button
               variant="ghost"
               size="sm"
               disabled={s.uninstalling === f.id}
@@ -513,6 +600,38 @@ const page = {
             </Button>
           </Column>
         </Columns>,
+        assignOpen ? (
+          <Block key={'a-' + f.id} spacing="sm" className={previewPanel}>
+            <Stack gap="md">
+              <Columns gap="sm" centered>
+                <Column narrow>
+                  <Text as="span" weight="semibold" size="sm">{t('installed.assignToken')}</Text>
+                </Column>
+                <Column>
+                  <Select
+                    size="sm"
+                    value={s.assignToken}
+                    onchange={(e) => { s.assignToken = e.target.value }}
+                  >
+                    {tokenNames.map((tk) => m('option', { key: tk, value: tk }, tk))}
+                  </Select>
+                </Column>
+                <Column narrow>
+                  <Button
+                    color="primary"
+                    size="sm"
+                    disabled={s.assigningId === f.id}
+                    onclick={() => doAssign(s, f)}
+                  >
+                    {s.assigningId === f.id ? t('installed.assigning') : t('installed.assignBtn')}
+                  </Button>
+                </Column>
+              </Columns>
+              {s.assignError && <Alert color="error">{t('errorPrefix')}{s.assignError}</Alert>}
+              {s.assignMsg && <Alert color="success">{s.assignMsg}</Alert>}
+            </Stack>
+          </Block>
+        ) : null,
         expanded ? (
           <Block key={'pi-' + f.id} spacing="sm" className={previewPanel}>
             {previewBlock(s) || <Text color="neutral" size="sm">{t('installed.loadingPreview')}</Text>}
@@ -592,13 +711,18 @@ const page = {
 
             <TabContent ref="installed">
               <Stack gap="md">
-                {/* Guía persistente del paso manual de carga: sin este import los
-                    @font-face existen pero la app no los carga. */}
+                {s.rebuildError && (
+                  <Alert color="error">{tf('installed.rebuildFailed', { detail: s.rebuildError })}</Alert>
+                )}
                 {s.installed.length > 0 && (
-                  <Alert color="info">
-                    <Text as="span">{t('installed.banner')}</Text>
-                    <code className={importCode}>import './{s.fontsCssRel}'</code>
-                  </Alert>
+                  s.wired ? (
+                    <Alert color="success">{t('installed.wired')}</Alert>
+                  ) : (
+                    <Alert color="info">
+                      <Text as="span">{t('installed.banner')}</Text>
+                      <code className={importCode}>import './{s.fontsCssRel}'</code>
+                    </Alert>
+                  )
                 )}
                 <Card>
                   <CardBody>
