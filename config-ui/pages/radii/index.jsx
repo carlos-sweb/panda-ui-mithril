@@ -3,6 +3,7 @@ import { css } from '../../../styled-system/css'
 import {
   Stack, Title, Text, Button, Card, CardBody, TextInput, Alert, Block,
 } from '../../../src/index.js'
+import { t, loadPageI18n } from '../../i18n/index.js'
 
 /**
  * Página Radii — edita los radios del theme (tokens.radii).
@@ -20,6 +21,7 @@ const fieldRow = css({
 
 const page = {
   oninit(vnode) {
+    loadPageI18n('radii')
     vnode.state.loading = true
     vnode.state.saving = false
     vnode.state.error = null
@@ -72,12 +74,12 @@ const page = {
 
     return (
       <Stack gap="lg">
-        <Title as="h1" size="2">Radii</Title>
-        <Text color="neutral">Border radii of the theme — written to <code>{s.themeRel}/radii.ts</code>.</Text>
+        <Title as="h1" size="2">{t('title')}</Title>
+        <Text color="neutral">{t('introPre')} <code>{s.themeRel}/radii.ts</code>.</Text>
 
-        {s.loading && <Alert color="info">Loading theme…</Alert>}
-        {s.error && <Alert color="error">Error: {s.error}</Alert>}
-        {s.saved && !s.saving && <Alert color="success">Saved and rebuilt ✓</Alert>}
+        {s.loading && <Alert color="info">{t('loadingTheme')}</Alert>}
+        {s.error && <Alert color="error">{t('errorPrefix')}{s.error}</Alert>}
+        {s.saved && !s.saving && <Alert color="success">{t('savedAndRebuilt')}</Alert>}
 
         {!s.loading && !s.error && (
           <Card>
@@ -88,15 +90,15 @@ const page = {
                     <Text weight="bold" className={css({ fontFamily: 'monospace', fontSize: '0.8125rem' })}>{name}</Text>
                     <TextInput
                       value={s.radii[name] || ''}
-                      placeholder="e.g. 4px"
+                      placeholder={t('placeholder')}
                       oninput={(e) => { s.radii[name] = e.target.value }}
                     />
                   </div>
                 ))}
                 <Block spacing="sm" />
                 <Stack direction="row" gap="sm">
-                  <Button color="primary" onclick={save} disabled={s.saving}>{s.saving ? 'Saving…' : 'Save'}</Button>
-                  <Button variant="ghost" onclick={() => location.reload()}>Reload</Button>
+                  <Button color="primary" onclick={save} disabled={s.saving}>{s.saving ? t('saving') : t('save')}</Button>
+                  <Button variant="ghost" onclick={() => location.reload()}>{t('reload')}</Button>
                 </Stack>
               </Stack>
             </CardBody>

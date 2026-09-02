@@ -3,6 +3,7 @@ import { css } from '../../../styled-system/css'
 import {
   Stack, Title, Text, Button, Card, CardBody, TextInput, Alert, Block,
 } from '../../../src/index.js'
+import { t, loadPageI18n } from '../../i18n/index.js'
 
 /**
  * Página Spacing — edita la escala de espaciado extra (tokens.spacing).
@@ -20,6 +21,7 @@ const fieldRow = css({
 
 const page = {
   oninit(vnode) {
+    loadPageI18n('spacing')
     vnode.state.loading = true
     vnode.state.saving = false
     vnode.state.error = null
@@ -72,12 +74,12 @@ const page = {
 
     return (
       <Stack gap="lg">
-        <Title as="h1" size="2">Spacing</Title>
-        <Text color="neutral">Extra spacing scale beyond Panda's native 0.5–96 — written to <code>{s.themeRel}/spacing.ts</code>.</Text>
+        <Title as="h1" size="2">{t('title')}</Title>
+        <Text color="neutral">{t('introPre')} <code>{s.themeRel}/spacing.ts</code>.</Text>
 
-        {s.loading && <Alert color="info">Loading theme…</Alert>}
-        {s.error && <Alert color="error">Error: {s.error}</Alert>}
-        {s.saved && !s.saving && <Alert color="success">Saved and rebuilt ✓</Alert>}
+        {s.loading && <Alert color="info">{t('loadingTheme')}</Alert>}
+        {s.error && <Alert color="error">{t('errorPrefix')}{s.error}</Alert>}
+        {s.saved && !s.saving && <Alert color="success">{t('savedAndRebuilt')}</Alert>}
 
         {!s.loading && !s.error && (
           <Card>
@@ -88,15 +90,15 @@ const page = {
                     <Text weight="bold" className={css({ fontFamily: 'monospace', fontSize: '0.8125rem' })}>{name}</Text>
                     <TextInput
                       value={s.spacing[name] || ''}
-                      placeholder="e.g. 32rem"
+                      placeholder={t('placeholder')}
                       oninput={(e) => { s.spacing[name] = e.target.value }}
                     />
                   </div>
                 ))}
                 <Block spacing="sm" />
                 <Stack direction="row" gap="sm">
-                  <Button color="primary" onclick={save} disabled={s.saving}>{s.saving ? 'Saving…' : 'Save'}</Button>
-                  <Button variant="ghost" onclick={() => location.reload()}>Reload</Button>
+                  <Button color="primary" onclick={save} disabled={s.saving}>{s.saving ? t('saving') : t('save')}</Button>
+                  <Button variant="ghost" onclick={() => location.reload()}>{t('reload')}</Button>
                 </Stack>
               </Stack>
             </CardBody>

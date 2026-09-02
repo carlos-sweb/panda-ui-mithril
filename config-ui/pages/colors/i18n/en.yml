@@ -1,0 +1,14 @@
+title: Colors
+introPre: Edit the theme colors — changes are written to
+loadingTheme: Loading theme…
+errorPrefix: 'Error: '
+savedAndRebuilt: Saved and rebuilt ✓
+columns:
+  token: Token
+  base: Light (base)
+  dark: Dark
+ariaPickBase: 'Pick base color for {name}'
+ariaPickDark: 'Pick dark color for {name}'
+save: Save
+saving: Saving…
+reload: Reload

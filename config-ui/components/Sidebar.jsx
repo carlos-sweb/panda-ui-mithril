@@ -90,19 +90,16 @@ const SidebarContent = {
                 {t(cat.i18n)}
               </span>
             </MenuTitle>,
-            ...cat.items.map((key) => {
-              const label = key.charAt(0).toUpperCase() + key.slice(1)
-              return (
-                <MenuItem
-                  key={key}
-                  href={`#/${key}`}
-                  active={current === `/${key}`}
-                  onclick={navigate(`/${key}`, onclose)}                  
-                >
-                  {label}
-                </MenuItem>
-              )
-            }),
+            ...cat.items.map((key) => (
+              <MenuItem
+                key={key}
+                href={`#/${key}`}
+                active={current === `/${key}`}
+                onclick={navigate(`/${key}`, onclose)}
+              >
+                {t('sidebar.items.' + key)}
+              </MenuItem>
+            )),
           ])}
         </Menu>
       </div>

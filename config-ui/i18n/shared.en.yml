@@ -25,6 +25,11 @@ sidebar:
     typography: Typography
     spacing: Spacing
     radii: Radii
+  items:
+    colors: Colors
+    fonts: Fonts
+    spacing: Spacing
+    radii: Radii
 navbar:
   themeLabels:
     light: 🌞 Light

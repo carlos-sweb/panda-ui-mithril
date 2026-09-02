@@ -3,6 +3,7 @@ import { css } from '../../../styled-system/css'
 import {
   Stack, Title, Text, Button, Card, CardBody, Columns, Column, Block, Alert, ColorPicker,
 } from '../../../src/index.js'
+import { t, loadPageI18n } from '../../i18n/index.js'
 
 /**
  * Página Colors — editor de los colores del theme.
@@ -41,8 +42,14 @@ const pickerValueBtn = css({
   fontSize: '0.75rem',
 })
 
+/** t() con interpolación: tf('a.b', { x }) reemplaza {x} en la traducción. */
+function tf(path, vars) {
+  return t(path).replace(/\{(\w+)\}/g, (_, k) => (vars && vars[k] !== undefined ? vars[k] : `{${k}}`))
+}
+
 const page = {
   oninit(vnode) {
+    loadPageI18n('colors')
     vnode.state.loading = true
     vnode.state.saving = false
     vnode.state.error = null
@@ -110,21 +117,21 @@ const page = {
 
     return (
       <Stack gap="lg">
-        <Title as="h1" size="2">Colors</Title>
-        <Text color="neutral">Edit the theme colors — changes are written to <code>{s.themeRel}/colors.ts</code>.</Text>
+        <Title as="h1" size="2">{t('title')}</Title>
+        <Text color="neutral">{t('introPre')} <code>{s.themeRel}/colors.ts</code>.</Text>
 
-        {s.loading && <Alert color="info">Loading theme…</Alert>}
-        {s.error && <Alert color="error">Error: {s.error}</Alert>}
-        {s.saved && !s.saving && <Alert color="success">Saved and rebuilt ✓</Alert>}
+        {s.loading && <Alert color="info">{t('loadingTheme')}</Alert>}
+        {s.error && <Alert color="error">{t('errorPrefix')}{s.error}</Alert>}
+        {s.saved && !s.saving && <Alert color="success">{t('savedAndRebuilt')}</Alert>}
 
         {!s.loading && !s.error && (
           <Card>
             <CardBody>
               <Stack gap="md">
                 <Columns gap="md">
-                  <Column width={2}><Text weight="bold">Token</Text></Column>
-                  <Column><Text weight="bold">Light (base)</Text></Column>
-                  <Column><Text weight="bold">Dark</Text></Column>
+                  <Column width={2}><Text weight="bold">{t('columns.token')}</Text></Column>
+                  <Column><Text weight="bold">{t('columns.base')}</Text></Column>
+                  <Column><Text weight="bold">{t('columns.dark')}</Text></Column>
                 </Columns>
 
                 {names.map((name) => {
@@ -143,7 +150,7 @@ const page = {
                             variant: 'outline',
                             size: 'sm',
                             className: pickerValueBtn,
-                            'aria-label': `Pick base color for ${name}`,
+                            'aria-label': tf('ariaPickBase', { name }),
                           }, [
                             m('span', { className: pickerValueSwatch, style: { backgroundColor: c.base || 'transparent' } }),
                             c.base || '—',
@@ -159,7 +166,7 @@ const page = {
                             variant: 'outline',
                             size: 'sm',
                             className: pickerValueBtn,
-                            'aria-label': `Pick dark color for ${name}`,
+                            'aria-label': tf('ariaPickDark', { name }),
                           }, [
                             m('span', { className: pickerValueSwatch, style: { backgroundColor: c.dark || 'transparent' } }),
                             c.dark || '—',
@@ -173,9 +180,9 @@ const page = {
                 <Block spacing="sm" />
                 <Stack direction="row" gap="sm">
                   <Button color="primary" onclick={save} disabled={s.saving}>
-                    {s.saving ? 'Saving…' : 'Save'}
+                    {s.saving ? t('saving') : t('save')}
                   </Button>
-                  <Button variant="ghost" onclick={() => location.reload()}>Reload</Button>
+                  <Button variant="ghost" onclick={() => location.reload()}>{t('reload')}</Button>
                 </Stack>
               </Stack>
             </CardBody>

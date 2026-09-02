@@ -131,15 +131,12 @@ const Layout = {
       }
       vnode.state._prevRoute = current
 
-      // Set document title based on route
-      const pageTitles = {
-        '/': 'PUM Config — Theme Editor',
-        '/colors': 'Colors — PUM Config',
-        '/fonts': 'Fonts — PUM Config',
-        '/spacing': 'Spacing — PUM Config',
-        '/radii': 'Radii — PUM Config',
-      }
-      document.title = pageTitles[current] || 'PUM Config — Theme Editor'
+      // Set document title based on route (labels traducidas vía shared)
+      const key = current.replace(/^\//, '')
+      const label = t('sidebar.items.' + key)
+      document.title = label.startsWith('sidebar.items.')
+        ? 'PUM Config — Theme Editor'
+        : `${label} — PUM Config`
     }
 
     vnode.state.onKeydown = (e) => {

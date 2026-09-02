@@ -1,0 +1,14 @@
+title: Colores
+introPre: Edita los colores del theme — los cambios se escriben en
+loadingTheme: Cargando theme…
+errorPrefix: 'Error: '
+savedAndRebuilt: Guardado y reconstruido ✓
+columns:
+  token: Token
+  base: Claro (base)
+  dark: Oscuro
+ariaPickBase: 'Elegir color base para {name}'
+ariaPickDark: 'Elegir color oscuro para {name}'
+save: Guardar
+saving: Guardando…
+reload: Recargar

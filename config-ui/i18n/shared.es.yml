@@ -25,6 +25,11 @@ sidebar:
     typography: Tipografía
     spacing: Espaciado
     radii: Radios
+  items:
+    colors: Colores
+    fonts: Fuentes
+    spacing: Espaciado
+    radii: Radios
 navbar:
   themeLabels:
     light: 🌞 Claro
