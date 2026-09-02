@@ -454,45 +454,52 @@ must NOT require a second closing brace (that bug silently dropped all but the
 last token per category); `extractBalanced` must match `marker` followed by
 `(` or `=` so `import { defineTokens }` is ignored.
 
-**Fonts API — buscar e instalar fuentes (Fontsource)** (`config-ui/server.ts`
+**Fonts API — fuentes por paquetes npm @fontsource** (`config-ui/server.ts`
 + `config-ui/fonts-api.ts`, proveedor por defecto `https://fontsource.org/`):
-- **Modelo instalado** (derivado de `dirname(themeDir)` → `pum/` consumidor o
-  `src/` repo): `{raiz}/fonts/{id}/{archivo}.woff2` + `index.css` (@font-face
-  con urls relativas, usado por el preview del editor) + `metadata.json`
-  (metadata de Fontsource + pesos/estilos + `installedAt`), y `{raiz}/fonts.css`
-  **auto-regenerado** con un `@import` por fuente (compat; ya NO es el
-  mecanismo de carga).
-- **Carga = vía nativa de Panda**: al instalar/desinstalar, el editor escribe
-  la clave **`globalFontface`** (nivel superior de `defineConfig`, f minúscula —
-  la `theme.globalFontFace` mayúscula NO emite nada en Panda 1.12, verificado)
-  en el `panda.config.ts` del consumidor, bajo el marker `/* pum:fontfaces */`
-  (`buildFontfaceSource`/`writeFontfaceConfig` en fonts-api, brace-matching
-  idempotente), y corre `codegen + cssgen` automáticamente (`runRebuild`/
-  `syncFontface` en server.ts). cssgen emite los `@font-face` DENTRO de
-  `{projectRoot}/{outdir}/styles.css` — la app ya linkea ese CSS, así que NO se
-  toca el HTML del consumidor. El `url()` de cada src es relativo al styles.css
-  generado (`../pum/fonts/{id}/{file}`, calculado con `relative(outdirAbs, woff2)`).
-- **Asignación (sin pasos manuales)**: desde la UI, "Assign" en cada fuente
-  instalada → `POST /api/theme` `{ fonts: { [token]: '"Family", system-ui,
-  sans-serif' } }` (token `mono` → `'"Family", monospace'`) + rebuild.
+- **Flujo (sin paso intermedio de "instalar")**: el catálogo de Fontsource solo
+  sirve para BUSCAR; "Add" ejecuta **`bun add @fontsource/{id}`** en el
+  projectRoot y la fuente queda DISPONIBLE en `node_modules`; **"Assign" es la
+  ÚNICA operación que carga la fuente al sistema** (escribe el token en
+  `pum/theme/fonts.ts` + emite los `@font-face` de esa familia) — el CSS solo
+  contiene familias asignadas y usadas (prune automático contra los tokens).
+- **Estado del editor** (derivado de `dirname(themeDir)` → `pum/` o `src/`):
+  `{raiz}/fonts-loaded.json` (familias cargadas: id → family/weights/styles/
+  subsets). Los paquetes disponibles se escanean en
+  `node_modules/@fontsource/*/metadata.json` (id/family/weights/styles/
+  defSubset/version/license). `pum/theme/fonts.ts` = qué token usa cada familia.
+- **Carga = vía nativa de Panda**: el editor escribe la clave **`globalFontface`**
+  (nivel superior de `defineConfig`, f minúscula — la `theme.globalFontFace`
+  mayúscula NO emite nada en Panda 1.12, verificado) en el `panda.config.ts`
+  del consumidor bajo el marker `/* pum:fontfaces */`
+  (`buildFontfaceSource`/`writeFontfaceConfig`/`syncBlock` en fonts-api),
+  y corre `codegen + cssgen` automáticamente (`runRebuild` en server.ts).
+  cssgen emite los `@font-face` DENTRO de `{projectRoot}/{outdir}/styles.css`
+  — la app ya linkea ese CSS, no se toca el HTML. El `url()` de cada src es
+  relativo al styles.css generado y apunta al woff2 del paquete:
+  `node_modules/@fontsource/{id}/files/{id}-{subset}-{peso}-{estilo}.woff2`
+  (naming CON prefijo del id; el bundler de Bun lo resuelve e inlinea).
+- **Asignación (sin pasos manuales)**: "Assign" (fuente + token + pesos/
+  estilos/subsets) → fonts.ts con `'"Family", system-ui, sans-serif'` (token
+  `mono` → `'"Family", monospace'`) + bloque + rebuild. Unassign resetea los
+  tokens a stack genérico (`system-ui, sans-serif` / `monospace`).
+- **Migración legacy**: instalaciones self-hosted antiguas (`{raiz}/fonts/{id}`
+  con metadata.json) se migran solas al abrir el editor: `bun add` + registro
+  en fonts-loaded.json con los pesos del legacy + borrado del dir y
+  `{raiz}/fonts.css`.
 - **Endpoints**: `GET /api/fonts/search?q=` (proxy de `api.fontsource.org/v1/fonts`
-  con caché en memoria de 30 min del listado completo ~540 KB, filtrado por
-  family/id con ranking), `GET /api/fonts/installed` (+`fontsCssRel`, `wired`),
-  `POST /api/fonts/install` `{id, weights?, styles?, subsets?}` (idempotente;
-  defaults 400/700 + normal + `defSubset`; ante fallo limpia el dir parcial;
-  devuelve `wired`/`rebuildOk`), `POST /api/fonts/uninstall`,
-  `GET /api/fonts/css/{id}` (index.css con urls reescritas a
-  `/api/fonts/file/{id}/…` para preview en el editor), `GET /api/fonts/file/{id}/{file}`
-  (woff2 con guard de traversal). Mismo contrato de error que `/api/theme`
-  (`legacy` / sin theme).
-- **Reglas críticas**: los ids se validan con `/^[a-z0-9-]+$/`; los woff2 se
-  descargan del CDN de jsDelivr (`variants[peso][estilo][subset].url.woff2` de
-  `GET /v1/fonts/{id}`) y se verifica el magic `wOF2` (jsDelivr puede devolver
-  HTML con 200); los archivos van a `{raiz}/fonts/` **fuera** de `pum/theme/`
-  (no son tokens); `metadata.json` guarda `family` (lo que usa la asignación).
+  con caché en memoria de 30 min del listado ~540 KB, ranking por family/id),
+  `POST /api/fonts/add` (bun add), `GET /api/fonts/available` (paquetes +
+  estado cargado + wired + migrated), `POST /api/fonts/assign`,
+  `POST /api/fonts/unassign`, `POST /api/fonts/remove` (bun remove),
+  `GET /api/fonts/file/{id}/{file}` (woff2 del paquete con guard de traversal,
+  preview local). Mismo contrato de error que `/api/theme` (`legacy` / sin theme).
+  `POST /api/theme` con `fonts` dispara el prune del bloque (syncBlock).
+- **Reglas críticas**: los ids se validan con `/^[a-z0-9-]+$/`; el bloque y
+  fonts-loaded.json son fuente de verdad del editor (reconstruibles); el
+  `:root` del preset usa `font-family: var(--fonts-sans)` (el token manda).
   NUNCA escribas `*/` dentro de un JSDoc en
-  estos archivos (p. ej. `fonts/*/metadata.json`): cierra el comentario y
-  rompe el bundle de la SPA en silencio.
+  estos archivos (p. ej. rutas con `fonts/` dentro de un comentario): cierra
+  el comentario y rompe el bundle de la SPA en silencio.
 
 ## Commit Conventions
 

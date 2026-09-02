@@ -1,56 +1,51 @@
 title: Fuentes
-introPre: Edita las tipografías del theme y gestiona typefaces desde Fontsource — los cambios se escriben en
-introAnd: y
-introPost: .
+introPre: Las familias asignadas se compilan en
+introMid: ' vía Panda; los tokens del theme se escriben en'
 loadingTheme: Cargando theme…
 errorPrefix: 'Error: '
 savedAndRebuilt: Guardado y reconstruido ✓
 tabs:
   tokens: Tipografías
-  search: Buscar e instalar
-  installed: Instaladas
+  search: Buscar y añadir
+  available: Disponibles
 token:
   placeholder: font-family stack
   saving: Guardando…
   save: Guardar
   reload: Recargar
 search:
-  intro: Busca en Fontsource (fontsource.org) — previsualiza una typeface e instálala en el proyecto.
+  intro: Busca en el catálogo de Fontsource — "Add" instala el paquete (@fontsource/{id}) en tu proyecto. Asígnala en la pestaña Disponibles para cargarla en el CSS.
   placeholder: Buscar fuentes… (p. ej. Inter, Roboto, Ubuntu)
   searching: Buscando…
   noResults: 'Ninguna fuente coincide con "{query}".'
   weightsCount: '{count} pesos · {subsets}'
   variable: variable
-  installed: instalada
-  previewAndInstall: Previsualizar e instalar
-  close: Cerrar
-  subset: Subconjunto
-  italic: Cursiva
-  installing: Instalando…
-  install: Instalar
-  reinstall: Reinstalar
-  alreadyInstalled: Ya instalada
-  downloadsHint: Descarga los archivos woff2 en el proyecto
-  installedSuccess: 'Instalada {family}. Añade este import a la entrada de tu app:'
-  installedWired: 'Instalada {family} — compilada en styled-system/styles.css vía Panda. Recarga tu app para verla.'
-installed:
-  loading: Cargando fuentes instaladas…
-  empty: Aún no hay fuentes instaladas. Usa la pestaña de búsqueda para instalar una.
-  summary: '{subsets} · instalada el {date}'
+  available: disponible
   preview: Previsualizar
-  hidePreview: Ocultar preview
-  loadingPreview: Cargando preview…
-  removing: Eliminando…
-  uninstall: Desinstalar
-  italic: cursiva
-  variable: variable
-  banner: 'Carga la fuente en tu app — añade esta línea a la entrada de tu app:'
-  wired: 'Compilada en styled-system/styles.css vía Panda — recarga tu app para ver las fuentes.'
+  close: Cerrar
+  add: Añadir
+  adding: Añadiendo…
+  added: Añadida
+  addedHint: '{family} añadida — asígnala en la pestaña Disponibles para cargarla en el CSS.'
+  addInfo: 'Instala {pkg} con bun — solo las familias asignadas acaban en el CSS.'
+available:
+  intro: Fuentes añadidas a este proyecto (node_modules/@fontsource). Asigna una a un token para cargarla en el CSS — los paquetes sin asignar quedan disponibles pero sin uso.
+  loading: Cargando fuentes disponibles…
+  empty: Aún no hay fuentes añadidas. Usa la pestaña de búsqueda para añadir un paquete.
+  version: '{version}'
+  usedBy: usada por {token}
   assign: Asignar
-  assignToken: Token
   assignBtn: Asignar
+  assignToken: Token
+  assignSubset: Subconjunto
+  assignItalic: Cursiva
+  assignHint: Carga la familia en el CSS (solo las asignadas se compilan).
   assigning: Asignando…
-  assigned: asignada a {token}
-  assignSuccess: 'Asignada {family} a {token}.'
-  rebuildFailed: 'Rebuild falló: {detail}'
+  assignedOk: '{family} asignada a {token}.'
+  unassign: Desasignar
+  unassigning: Desasignando…
+  remove: Quitar paquete
+  removing: Quitando…
+  wired: 'Compilada en styled-system/styles.css vía Panda — recarga tu app para ver las fuentes.'
+  migrated: 'Instalaciones antiguas migradas a paquetes npm: {ids}'
 sample: El veloz murciélago hindú comía feliz cardillo y kiwi — 0123456789

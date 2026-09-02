@@ -4,28 +4,28 @@ import {
   Stack, Title, Text, Button, Card, CardBody, TextInput, Alert, Block,
   Columns, Column, Select, Checkbox, Tag, Tabs, Tab, TabContent,
 } from '../../../src/index.js'
-import { t, loadPageI18n, currentLang } from '../../i18n/index.js'
+import { t, loadPageI18n } from '../../i18n/index.js'
 
 /**
- * Página Fonts — edita las tipografías del theme (tokens.fonts) y permite
- * buscar e instalar fuentes desde Fontsource (https://fontsource.org/), el
- * proveedor por defecto de esta exploración.
+ * Página Fonts — tipografías del theme por paquetes npm (@fontsource).
  *
- * Tokens (igual que antes):
- *   GET/POST /api/theme → pum/theme/fonts.ts
- * Fuentes:
- *   GET  /api/fonts/search?q=      → resultados de Fontsource (proxy)
- *   GET  /api/fonts/installed      → fuentes instaladas (metadata.json por dir)
- *   POST /api/fonts/install        → descarga woff2 + genera {raiz}/fonts.css
- *   POST /api/fonts/uninstall      → borra la fuente + regenera fonts.css
- *   GET  /api/fonts/css/{id}       → @font-face con urls locales (preview)
- *   GET  /api/fonts/file/{id}/{f}  → sirve el woff2 instalado
+ * Flujo (sin paso intermedio de "instalar"): el catálogo de Fontsource sirve
+ * para BUSCAR; "Add" ejecuta `bun add @fontsource/{id}` y la fuente queda
+ * DISPONIBLE (node_modules); "Assign" es la única operación que CARGA la
+ * fuente al sistema (token en fonts.ts + globalFontface → cssgen la compila
+ * en styles.css). El CSS solo contiene familias asignadas y usadas.
  *
- * Instalar es self-hosting: los woff2 viven en el proyecto objetivo y el
- * consumidor carga {raiz}/fonts.css (el editor muestra el import exacto).
+ * API:
+ *   GET  /api/fonts/search?q=      catálogo (proxy Fontsource)
+ *   POST /api/fonts/add            bun add @fontsource/{id}
+ *   GET  /api/fonts/available      paquetes en node_modules + estado cargado
+ *   POST /api/fonts/assign         token + faces (globalFontface) + rebuild
+ *   POST /api/fonts/unassign       reset de tokens + quita del bloque
+ *   POST /api/fonts/remove         bun remove @fontsource/{id}
+ *   GET  /api/fonts/file/{id}/{f}  woff2 del paquete (preview local)
  */
 
-// ── utilidades css() de la página (generadas en config-ui.css) ──────────────
+// ── utilidades css() de la página ────────────────────────────────────────────
 const fieldRow = css({
   display: 'grid',
   gridTemplateColumns: '200px 1fr',
@@ -39,12 +39,12 @@ const tokenName = css({
   fontSize: '0.8125rem',
 })
 
-// Fila de resultado (búsqueda e instaladas): familia + tags + botones.
+// Fila de resultado (búsqueda y disponibles): familia + tags + botones.
 const resultRow = css({
   padding: '0.5rem 0',
 })
 
-// Línea de metadatos de un resultado (categoría, licencia, badge variable…).
+// Línea de metadatos de un resultado (categoría, licencia, pesos…).
 const resultMeta = css({
   display: 'flex',
   flexWrap: 'wrap',
@@ -53,7 +53,7 @@ const resultMeta = css({
   marginTop: '0.125rem',
 })
 
-// Panel expandido de preview + opciones de instalación.
+// Panel expandido de preview + opciones.
 const previewPanel = css({
   border: '1px solid',
   borderColor: 'base-300',
@@ -62,8 +62,7 @@ const previewPanel = css({
   marginTop: '0.5rem',
 })
 
-// Preview "Aa" y texto de muestra — la familia viene por custom property
-// (--preview-font) para poder variarla por fila sin estilos inline.
+// Preview "Aa" y texto de muestra — familia por custom property.
 const previewBig = css({
   fontFamily: 'var(--preview-font)',
   fontSize: '2rem',
@@ -86,14 +85,6 @@ const weightOption = css({
   cursor: 'pointer',
 })
 
-// Línea de import que el consumidor debe añadir en su entrada de la app.
-const importCode = css({
-  display: 'block',
-  fontFamily: 'monospace',
-  fontSize: '0.8125rem',
-  marginTop: '0.25rem',
-})
-
 /** Escapa una family para usarla como string CSS (comillas simples). */
 function cssStr(v) {
   return String(v).replace(/\\/g, '\\\\').replace(/'/g, "\\'")
@@ -104,26 +95,32 @@ function tf(path, vars) {
   return t(path).replace(/\{(\w+)\}/g, (_, k) => (vars && vars[k] !== undefined ? vars[k] : `{${k}}`))
 }
 
+/** URL CDN (jsDelivr npm) de un archivo de paquete — preview sin instalación. */
+function cdnPackageFile(id, subset, weight, style) {
+  return `https://cdn.jsdelivr.net/npm/@fontsource/${id}@latest/files/${id}-${subset}-${weight}-${style}.woff2`
+}
+
 // ── estado / acciones ────────────────────────────────────────────────────────
-function loadInstalled(s) {
-  s.installedLoading = true
-  s.installedError = null
-  fetch('/api/fonts/installed')
+function reloadAvailable(s) {
+  s.availableLoading = true
+  s.availableError = null
+  fetch('/api/fonts/available')
     .then((r) => r.json())
     .then((d) => {
-      s.installedLoading = false
+      s.availableLoading = false
       if (d.ok) {
-        s.installed = d.fonts || []
-        s.fontsCssRel = d.fontsCssRel || 'fonts.css'
+        s.available = d.available || []
+        s.loaded = d.loaded || []
         s.wired = !!d.wired
+        if (d.migrated && d.migrated.length) s.migrated = d.migrated
       } else {
-        s.installedError = d.error || 'Failed to load installed fonts'
+        s.availableError = d.error || 'Failed to load available fonts'
       }
       m.redraw()
     })
     .catch((e) => {
-      s.installedLoading = false
-      s.installedError = String(e)
+      s.availableLoading = false
+      s.availableError = String(e)
       m.redraw()
     })
 }
@@ -143,7 +140,7 @@ function runSearch(s) {
   fetch('/api/fonts/search?q=' + encodeURIComponent(q))
     .then((r) => r.json())
     .then((d) => {
-      if (seq !== s.searchSeq) return // respuesta obsoleta
+      if (seq !== s.searchSeq) return
       s.searching = false
       if (d.ok) s.results = d.results || []
       else s.searchError = d.error || 'Search failed'
@@ -157,7 +154,7 @@ function runSearch(s) {
     })
 }
 
-// Expande un resultado de búsqueda: preview vía CDN (CORS abierto) + defaults.
+// Expande un resultado de búsqueda: preview vía CDN (CORS abierto).
 function expandResult(s, f) {
   if (s.expand === 's:' + f.id) {
     s.expand = null
@@ -165,173 +162,45 @@ function expandResult(s, f) {
     return
   }
   s.expand = 's:' + f.id
-  s.installError = null
-  s.installOk = null
-  const w400 = f.weights.includes(400)
-  const w700 = f.weights.includes(700)
-  s.installWeights = w400 ? (w700 ? [400, 700] : [400]) : (w700 ? [700] : [f.weights[0]])
-  // El toggle de italic es opt-in: el checkbox solo se muestra si la fuente
-  // tiene estilo italic, pero arranca desmarcado.
-  s.installItalic = false
-  s.installSubset = f.defSubset || (f.subsets && f.subsets[0]) || 'latin'
   s.previewFamily = '"' + f.family + '", sans-serif'
-  // Un solo @font-face (peso base que tenga la fuente) para el preview.
+  const w400 = f.weights.includes(400)
   const w = w400 ? 400 : f.weights[0]
+  const subset = f.defSubset || (f.subsets && f.subsets[0]) || 'latin'
   s.previewCss = [
     "@font-face {",
     `  font-family: '${cssStr(f.family)}';`,
     '  font-style: normal;',
     '  font-display: swap;',
     `  font-weight: ${w};`,
-    `  src: url('https://cdn.jsdelivr.net/fontsource/fonts/${f.id}@latest/${s.installSubset}-${w}-normal.woff2') format('woff2');`,
+    `  src: url('${cdnPackageFile(f.id, subset, w, 'normal')}') format('woff2');`,
     '}',
   ].join('\n')
 }
 
-// Expande una instalada: preview con los woff2 locales servidos por el editor.
-function expandInstalled(s, f) {
-  if (s.expand === 'i:' + f.id) {
+// Expande una fuente disponible: preview con el woff2 local del paquete.
+function expandAvailable(s, f) {
+  if (s.expand === 'a:' + f.id) {
     s.expand = null
     s.previewCss = ''
     return
   }
-  s.expand = 'i:' + f.id
+  s.expand = 'a:' + f.id
   s.previewFamily = '"' + f.family + '", sans-serif'
-  s.previewCss = ''
-  fetch('/api/fonts/css/' + f.id)
-    .then((r) => r.text())
-    .then((cssText) => {
-      if (s.expand === 'i:' + f.id) {
-        s.previewCss = cssText
-        m.redraw()
-      }
-    })
-    .catch(() => {
-      if (s.expand === 'i:' + f.id) {
-        s.previewCss = ''
-        m.redraw()
-      }
-    })
+  const w400 = f.weights.includes(400)
+  const w = w400 ? 400 : f.weights[0]
+  const subset = f.defSubset || 'latin'
+  s.previewCss = [
+    "@font-face {",
+    `  font-family: '${cssStr(f.family)}';`,
+    '  font-style: normal;',
+    '  font-display: swap;',
+    `  font-weight: ${w};`,
+    `  src: url('/api/fonts/file/${f.id}/${f.id}-${subset}-${w}-normal.woff2') format('woff2');`,
+    '}',
+  ].join('\n')
 }
 
-function toggleWeight(s, w) {
-  s.installWeights = s.installWeights.includes(w)
-    ? s.installWeights.filter((x) => x !== w)
-    : [...s.installWeights, w].sort((a, b) => a - b)
-}
-
-function install(s, f) {
-  s.installing = true
-  s.installError = null
-  s.installOk = null
-  s.rebuildError = null
-  fetch('/api/fonts/install', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      id: f.id,
-      weights: s.installWeights,
-      styles: s.installItalic ? ['normal', 'italic'] : ['normal'],
-      subsets: [s.installSubset],
-    }),
-  })
-    .then((r) => r.json())
-    .then((res) => {
-      s.installing = false
-      if (!res.ok) throw new Error(res.error || 'Install failed')
-      s.installOk = {
-        family: res.font.family,
-        importHint: res.importHint,
-        fontsCssRel: res.fontsCssRel,
-        wired: !!res.wired,
-      }
-      s.wired = !!res.wired
-      if (res.rebuildOk === false) s.rebuildError = res.rebuildError || 'rebuild failed'
-      loadInstalled(s)
-      m.redraw()
-    })
-    .catch((e) => {
-      s.installing = false
-      s.installError = String(e)
-      m.redraw()
-    })
-}
-
-function uninstall(s, f) {
-  s.uninstalling = f.id
-  s.rebuildError = null
-  fetch('/api/fonts/uninstall', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ id: f.id }),
-  })
-    .then((r) => r.json())
-    .then((res) => {
-      s.uninstalling = null
-      if (!res.ok) throw new Error(res.error || 'Uninstall failed')
-      s.wired = !!res.wired
-      if (res.rebuildOk === false) s.rebuildError = res.rebuildError || 'rebuild failed'
-      if (s.expand === 'i:' + f.id) {
-        s.expand = null
-        s.previewCss = ''
-      }
-      if (s.assignFor === f.id) s.assignFor = null
-      loadInstalled(s)
-      m.redraw()
-    })
-    .catch((e) => {
-      s.uninstalling = null
-      s.installError = String(e)
-      m.redraw()
-    })
-}
-
-/** Abre/cierra el panel de asignación de una fuente instalada. */
-function toggleAssign(s, f) {
-  if (s.assignFor === f.id) {
-    s.assignFor = null
-    return
-  }
-  s.assignFor = f.id
-  s.assignToken = Object.keys(s.fonts)[0] || 'sans'
-  s.assignError = null
-  s.assignMsg = null
-}
-
-/** Asigna la fuente a un token del theme (POST /api/theme + rebuild). */
-function doAssign(s, f) {
-  const token = s.assignToken
-  if (!token) return
-  const isMono = token.includes('mono')
-  const value = '"' + f.family + '", ' + (isMono ? 'monospace' : 'system-ui, sans-serif')
-  s.assigningId = f.id
-  s.assignError = null
-  s.assignMsg = null
-  s.rebuildError = null
-  fetch('/api/theme', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ fonts: { [token]: value } }),
-  })
-    .then((r) => r.json())
-    .then(async (res) => {
-      if (!res.ok) throw new Error(res.error || 'Assign failed')
-      const rebuild = await fetch('/api/rebuild', { method: 'POST' }).then((r) => r.json())
-      if (rebuild.ok === false) throw new Error(rebuild.codegen || rebuild.cssgen || 'rebuild failed')
-      s.fonts[token] = value
-      s.assigningId = null
-      s.assignMsg = tf('installed.assignSuccess', { family: f.family, token })
-      m.redraw()
-    })
-    .catch((e) => {
-      s.assigningId = null
-      s.assignError = String(e)
-      m.redraw()
-    })
-}
-
-// ── vnodes por fila ──────────────────────────────────────────────────────────
-/** Preview compartido (se renderiza dentro del panel expandido). */
+// Preview compartido (se renderiza dentro del panel expandido).
 function previewBlock(s) {
   if (!s.previewCss) return null
   return (
@@ -344,77 +213,136 @@ function previewBlock(s) {
   )
 }
 
-/** Panel de opciones de instalación (dentro del resultado expandido). */
-function installPanel(s, f) {
-  const installedIds = s.installed.map((i) => i.id)
-  const already = installedIds.includes(f.id)
-  return (
-    <Stack gap="md" className={previewPanel}>
-      {previewBlock(s)}
-      <Columns gap="sm" centered>
-        <Column narrow>
-          <Text as="span" weight="semibold" size="sm">{t('search.subset')}</Text>
-        </Column>
-        <Column>
-          <Select
-            size="sm"
-            value={s.installSubset}
-            onchange={(e) => { s.installSubset = e.target.value }}
-          >
-            {f.subsets.map((sub) => m('option', { key: sub, value: sub }, sub))}
-          </Select>
-        </Column>
-      </Columns>
-      <Stack direction="row" gap="md">
-        {f.weights.map((w) => (
-          <label key={w} className={weightOption}>
-            <Checkbox
-              size="sm"
-              checked={s.installWeights.includes(w)}
-              onchange={() => toggleWeight(s, w)}
-            />
-            <Text as="span" size="sm">{w}</Text>
-          </label>
-        ))}
-      </Stack>
-      {f.styles.includes('italic') && (
-        <label className={weightOption}>
-          <Checkbox
-            size="sm"
-            checked={s.installItalic}
-            onchange={(e) => { s.installItalic = e.target.checked }}
-          />
-          <Text as="span" size="sm">{t('search.italic')}</Text>
-        </label>
-      )}
-      {s.installError && <Alert color="error">{t('errorPrefix')}{s.installError}</Alert>}
-      {s.installOk && (
-        s.installOk.wired ? (
-          <Alert color="success">
-            <Text as="span">{tf('search.installedWired', { family: s.installOk.family })}</Text>
-          </Alert>
-        ) : (
-          <Alert color="success">
-            <Text as="span">{tf('search.installedSuccess', { family: s.installOk.family })}</Text>
-            <code className={importCode}>{s.installOk.importHint}</code>
-          </Alert>
-        )
-      )}
-      <Stack direction="row" gap="sm" align="center">
-        <Button
-          color="primary"
-          size="sm"
-          disabled={s.installing || s.installWeights.length === 0}
-          onclick={() => install(s, f)}
-        >
-          {s.installing ? t('search.installing') : (already ? t('search.reinstall') : t('search.install'))}
-        </Button>
-        <Text color="neutral" size="sm">
-          {already ? t('search.alreadyInstalled') : t('search.downloadsHint')}
-        </Text>
-      </Stack>
-    </Stack>
-  )
+/** Añade el paquete @fontsource/{id} (bun add) — queda disponible. */
+function doAdd(s, f) {
+  s.addingId = f.id
+  s.addError = null
+  s.addOk = null
+  fetch('/api/fonts/add', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id: f.id }),
+  })
+    .then((r) => r.json())
+    .then((res) => {
+      s.addingId = null
+      if (!res.ok) throw new Error(res.error || 'Add failed')
+      s.addOk = { id: f.id, family: f.family }
+      reloadAvailable(s)
+      m.redraw()
+    })
+    .catch((e) => {
+      s.addingId = null
+      s.addError = String(e)
+      m.redraw()
+    })
+}
+
+/** Abre/cierra el panel de asignación de una fuente disponible. */
+function toggleAssign(s, f) {
+  if (s.assignFor === f.id) {
+    s.assignFor = null
+    return
+  }
+  s.assignFor = f.id
+  s.assignToken = Object.keys(s.fonts)[0] || 'sans'
+  const w400 = f.weights.includes(400)
+  const w700 = f.weights.includes(700)
+  s.assignWeights = w400 ? (w700 ? [400, 700] : [400]) : (w700 ? [700] : [f.weights[0]])
+  s.assignItalic = false
+  s.assignSubset = f.defSubset || 'latin'
+  s.assignError = null
+  s.assignOk = null
+}
+
+function toggleWeight(s, w) {
+  s.assignWeights = s.assignWeights.includes(w)
+    ? s.assignWeights.filter((x) => x !== w)
+    : [...s.assignWeights, w].sort((a, b) => a - b)
+}
+
+/** Asigna la fuente a un token — la operación que la carga en el CSS. */
+function doAssign(s, f) {
+  s.assigningId = f.id
+  s.assignError = null
+  s.assignOk = null
+  fetch('/api/fonts/assign', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      id: f.id,
+      token: s.assignToken,
+      weights: s.assignWeights,
+      styles: s.assignItalic ? ['normal', 'italic'] : ['normal'],
+      subsets: [s.assignSubset],
+    }),
+  })
+    .then((r) => r.json())
+    .then((res) => {
+      s.assigningId = null
+      if (!res.ok) throw new Error(res.error || 'Assign failed')
+      s.fonts[res.token] = res.value
+      s.assignOk = tf('available.assignedOk', { family: res.family, token: res.token })
+      reloadAvailable(s)
+      m.redraw()
+    })
+    .catch((e) => {
+      s.assigningId = null
+      s.assignError = String(e)
+      m.redraw()
+    })
+}
+
+/** Desasigna: resetea tokens + quita la familia del bloque. */
+function doUnassign(s, f) {
+  s.unassigningId = f.id
+  fetch('/api/fonts/unassign', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id: f.id }),
+  })
+    .then((r) => r.json())
+    .then((res) => {
+      s.unassigningId = null
+      if (!res.ok) throw new Error(res.error || 'Unassign failed')
+      ;(res.resetTokens || []).forEach((tk) => {
+        s.fonts[tk] = tk.includes('mono') ? 'monospace' : 'system-ui, sans-serif'
+      })
+      if (s.assignFor === f.id) s.assignFor = null
+      reloadAvailable(s)
+      m.redraw()
+    })
+    .catch((e) => {
+      s.unassigningId = null
+      s.availableError = String(e)
+      m.redraw()
+    })
+}
+
+/** Elimina el paquete (bun remove). */
+function doRemove(s, f) {
+  s.removingId = f.id
+  fetch('/api/fonts/remove', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id: f.id }),
+  })
+    .then((r) => r.json())
+    .then((res) => {
+      s.removingId = null
+      if (!res.ok) throw new Error(res.error || 'Remove failed')
+      ;(res.resetTokens || []).forEach((tk) => {
+        s.fonts[tk] = tk.includes('mono') ? 'monospace' : 'system-ui, sans-serif'
+      })
+      if (s.assignFor === f.id) s.assignFor = null
+      reloadAvailable(s)
+      m.redraw()
+    })
+    .catch((e) => {
+      s.removingId = null
+      s.availableError = String(e)
+      m.redraw()
+    })
 }
 
 const page = {
@@ -428,34 +356,38 @@ const page = {
     s.fonts = {}
     s.themeRel = 'pum/theme'
 
-    // estado de fuentes
-    s.installed = []
-    s.installedLoading = true
-    s.installedError = null
-    s.fontsCssRel = 'fonts.css'
-    s.wired = false
-    s.rebuildError = null
+    // búsqueda (catálogo)
     s.query = ''
     s.results = null
     s.searching = false
     s.searchError = null
     s.searchSeq = 0
+    s.addingId = null
+    s.addError = null
+    s.addOk = null
+
+    // disponibles + cargadas
+    s.available = []
+    s.loaded = []
+    s.availableLoading = true
+    s.availableError = null
+    s.wired = false
+    s.migrated = null
+
+    // preview / asignación
     s.expand = null
     s.previewCss = ''
     s.previewFamily = ''
-    s.installSubset = ''
-    s.installWeights = []
-    s.installItalic = false
-    s.installing = false
-    s.installError = null
-    s.installOk = null
-    s.uninstalling = null
-    // asignación
     s.assignFor = null
     s.assignToken = ''
+    s.assignWeights = []
+    s.assignItalic = false
+    s.assignSubset = ''
     s.assigningId = null
-    s.assignMsg = null
     s.assignError = null
+    s.assignOk = null
+    s.unassigningId = null
+    s.removingId = null
 
     fetch('/api/theme')
       .then((r) => r.json())
@@ -477,13 +409,12 @@ const page = {
         m.redraw()
       })
 
-    loadInstalled(s)
+    reloadAvailable(s)
   },
 
   view(vnode) {
     const s = vnode.state
     const names = Object.keys(s.fonts)
-    const installedIds = s.installed.map((i) => i.id)
 
     const save = () => {
       s.saving = true
@@ -504,137 +435,167 @@ const page = {
         .catch((e) => { s.saving = false; s.error = String(e); m.redraw() })
     }
 
-    // Filas de resultados de búsqueda (array plano y keyed: regla de Mithril).
+    const availableIds = s.available.map((f) => f.id)
+    const loadedById = Object.fromEntries(s.loaded.map((l) => [l.id, l]))
+
+    // Filas de resultados de búsqueda (array plano y keyed).
     const searchRows = (s.results || []).flatMap((f) => {
       const expanded = s.expand === 's:' + f.id
       return [
-        <Columns
-          key={'r-' + f.id}
-          gap="sm"
-          centered
-          className={resultRow}
-        >
+        <Columns key={'r-' + f.id} gap="sm" centered className={resultRow}>
           <Column>
             <Text weight="semibold" size="md">{f.family}</Text>
             <Text as="div" className={resultMeta}>
               {f.category && <Tag size="md">{f.category}</Tag>}
               {f.license && <Tag size="md">{f.license}</Tag>}
               {f.variable && <Tag size="md" variant="info">{t('search.variable')}</Tag>}
-              {installedIds.includes(f.id) && <Tag size="md" variant="success">{t('search.installed')}</Tag>}
+              {availableIds.includes(f.id) && <Tag size="md" variant="success">{t('search.available')}</Tag>}
               <Text as="span" size="sm" color="neutral">
                 {tf('search.weightsCount', { count: f.weights.length, subsets: f.subsets.join(', ') })}
               </Text>
             </Text>
           </Column>
           <Column narrow>
+            <Button variant="outline" size="sm" onclick={() => expandResult(s, f)}>
+              {expanded ? t('search.close') : t('search.preview')}
+            </Button>
+          </Column>
+          <Column narrow>
             <Button
-              variant="outline"
+              color="primary"
               size="sm"
-              onclick={() => expandResult(s, f)}
+              disabled={s.addingId === f.id || availableIds.includes(f.id)}
+              onclick={() => doAdd(s, f)}
             >
-              {expanded ? t('search.close') : t('search.previewAndInstall')}
+              {availableIds.includes(f.id)
+                ? t('search.added')
+                : (s.addingId === f.id ? t('search.adding') : t('search.add'))}
             </Button>
           </Column>
         </Columns>,
         expanded ? (
-          <Block key={'p-' + f.id} spacing="sm">
-            {installPanel(s, f)}
+          <Block key={'p-' + f.id} spacing="sm" className={previewPanel}>
+            <Stack gap="md">
+              {previewBlock(s)}
+              {s.addError && s.addOk === null && <Alert color="error">{t('errorPrefix')}{s.addError}</Alert>}
+              {s.addOk && s.addOk.id === f.id && <Alert color="success">{tf('search.addedHint', { family: f.family })}</Alert>}
+              <Text color="neutral" size="sm">{tf('search.addInfo', { pkg: '@fontsource/' + f.id })}</Text>
+            </Stack>
           </Block>
         ) : null,
       ].filter(Boolean)
     })
 
-    // Filas de fuentes instaladas.
-    const tokenNames = Object.keys(s.fonts)
-    const installedRows = s.installed.map((f) => {
-      const expanded = s.expand === 'i:' + f.id
+    // Filas de fuentes disponibles (node_modules).
+    const availableRows = s.available.map((f) => {
+      const loaded = loadedById[f.id]
+      const expanded = s.expand === 'a:' + f.id
       const assignOpen = s.assignFor === f.id
-      // Tokens que ya apuntan a esta familia (p. ej. sans → "Poppins", ...).
-      const assignedTo = tokenNames.filter((k) => (s.fonts[k] || '').includes('"' + f.family + '"'))
       return [
-        <Columns
-          key={'i-' + f.id}
-          gap="sm"
-          centered
-          className={resultRow}
-        >
+        <Columns key={'a-' + f.id} gap="sm" centered className={resultRow}>
           <Column>
             <Text weight="semibold" size="md">{f.family}</Text>
             <Text as="div" className={resultMeta}>
-              {f.weights.map((w) => <Tag key={w} size="md">{w}</Tag>)}
-              {f.styles.includes('italic') && <Tag size="md" variant="info">{t('installed.italic')}</Tag>}
-              {f.variable && <Tag size="md" variant="info">{t('installed.variable')}</Tag>}
-              {assignedTo.map((tk) => (
-                <Tag key={tk} size="md" variant="success">{tf('installed.assigned', { token: tk })}</Tag>
+              {f.license && <Tag size="md">{f.license}</Tag>}
+              <Tag size="md" variant="info">{tf('available.version', { version: f.version })}</Tag>
+              {loaded && (loaded.tokens || []).map((tk) => (
+                <Tag key={tk} size="md" variant="success">{tf('available.usedBy', { token: tk })}</Tag>
               ))}
               <Text as="span" size="sm" color="neutral">
-                {tf('installed.summary', {
-                  subsets: f.subsets.join(', '),
-                  date: new Date(f.installedAt).toLocaleDateString(currentLang()),
-                })}
+                {tf('search.weightsCount', { count: f.weights.length, subsets: f.subsets.join(', ') })}
               </Text>
             </Text>
           </Column>
           <Column narrow>
-            <Button variant="outline" size="sm" onclick={() => expandInstalled(s, f)}>
-              {expanded ? t('installed.hidePreview') : t('installed.preview')}
+            <Button variant="outline" size="sm" onclick={() => expandAvailable(s, f)}>
+              {expanded ? t('search.close') : t('search.preview')}
             </Button>
           </Column>
-          <Column narrow>
-            <Button
-              variant="outline"
-              size="sm"
-              onclick={() => toggleAssign(s, f)}
-            >
-              {assignOpen ? t('search.close') : t('installed.assign')}
-            </Button>
-          </Column>
+          {!loaded ? (
+            <Column narrow>
+              <Button color="primary" size="sm" onclick={() => toggleAssign(s, f)}>
+                {assignOpen ? t('search.close') : t('available.assign')}
+              </Button>
+            </Column>
+          ) : (
+            <Column narrow>
+              <Button
+                variant="outline"
+                size="sm"
+                disabled={s.unassigningId === f.id}
+                onclick={() => doUnassign(s, f)}
+              >
+                {s.unassigningId === f.id ? t('available.unassigning') : t('available.unassign')}
+              </Button>
+            </Column>
+          )}
           <Column narrow>
             <Button
               variant="ghost"
               size="sm"
-              disabled={s.uninstalling === f.id}
-              onclick={() => uninstall(s, f)}
+              disabled={s.removingId === f.id}
+              onclick={() => doRemove(s, f)}
             >
-              {s.uninstalling === f.id ? t('installed.removing') : t('installed.uninstall')}
+              {s.removingId === f.id ? t('available.removing') : t('available.remove')}
             </Button>
           </Column>
         </Columns>,
         assignOpen ? (
-          <Block key={'a-' + f.id} spacing="sm" className={previewPanel}>
+          <Block key={'aa-' + f.id} spacing="sm" className={previewPanel}>
             <Stack gap="md">
               <Columns gap="sm" centered>
                 <Column narrow>
-                  <Text as="span" weight="semibold" size="sm">{t('installed.assignToken')}</Text>
+                  <Text as="span" weight="semibold" size="sm">{t('available.assignToken')}</Text>
                 </Column>
                 <Column>
-                  <Select
-                    size="sm"
-                    value={s.assignToken}
-                    onchange={(e) => { s.assignToken = e.target.value }}
-                  >
-                    {tokenNames.map((tk) => m('option', { key: tk, value: tk }, tk))}
+                  <Select size="sm" value={s.assignToken} onchange={(e) => { s.assignToken = e.target.value }}>
+                    {names.map((tk) => m('option', { key: tk, value: tk }, tk))}
                   </Select>
                 </Column>
+              </Columns>
+              <Stack direction="row" gap="md">
+                {f.weights.map((w) => (
+                  <label key={w} className={weightOption}>
+                    <Checkbox size="sm" checked={s.assignWeights.includes(w)} onchange={() => toggleWeight(s, w)} />
+                    <Text as="span" size="sm">{w}</Text>
+                  </label>
+                ))}
+              </Stack>
+              {f.styles.includes('italic') && (
+                <label className={weightOption}>
+                  <Checkbox size="sm" checked={s.assignItalic} onchange={(e) => { s.assignItalic = e.target.checked }} />
+                  <Text as="span" size="sm">{t('available.assignItalic')}</Text>
+                </label>
+              )}
+              <Columns gap="sm" centered>
                 <Column narrow>
-                  <Button
-                    color="primary"
-                    size="sm"
-                    disabled={s.assigningId === f.id}
-                    onclick={() => doAssign(s, f)}
-                  >
-                    {s.assigningId === f.id ? t('installed.assigning') : t('installed.assignBtn')}
-                  </Button>
+                  <Text as="span" weight="semibold" size="sm">{t('available.assignSubset')}</Text>
+                </Column>
+                <Column>
+                  <Select size="sm" value={s.assignSubset} onchange={(e) => { s.assignSubset = e.target.value }}>
+                    {f.subsets.map((sub) => m('option', { key: sub, value: sub }, sub))}
+                  </Select>
                 </Column>
               </Columns>
               {s.assignError && <Alert color="error">{t('errorPrefix')}{s.assignError}</Alert>}
-              {s.assignMsg && <Alert color="success">{s.assignMsg}</Alert>}
+              {s.assignOk && <Alert color="success">{s.assignOk}</Alert>}
+              <Stack direction="row" gap="sm" align="center">
+                <Button
+                  color="primary"
+                  size="sm"
+                  disabled={s.assigningId === f.id || s.assignWeights.length === 0}
+                  onclick={() => doAssign(s, f)}
+                >
+                  {s.assigningId === f.id ? t('available.assigning') : t('available.assignBtn')}
+                </Button>
+                <Text color="neutral" size="sm">{t('available.assignHint')}</Text>
+              </Stack>
             </Stack>
           </Block>
         ) : null,
         expanded ? (
-          <Block key={'pi-' + f.id} spacing="sm" className={previewPanel}>
-            {previewBlock(s) || <Text color="neutral" size="sm">{t('installed.loadingPreview')}</Text>}
+          <Block key={'ap-' + f.id} spacing="sm" className={previewPanel}>
+            {previewBlock(s)}
           </Block>
         ) : null,
       ].filter(Boolean)
@@ -644,18 +605,21 @@ const page = {
       <Stack gap="lg">
         <Title as="h1" size="2">{t('title')}</Title>
         <Text color="neutral">
-          {t('introPre')} <code>{s.themeRel}/fonts.ts</code> {t('introAnd')} <code>{s.themeRel}/../fonts/</code>{t('introPost')}
+          {t('introPre')} <code>styled-system/styles.css</code> {t('introMid')} <code>{s.themeRel}/fonts.ts</code>.
         </Text>
 
         {s.loading && <Alert color="info">{t('loadingTheme')}</Alert>}
         {s.error && <Alert color="error">{t('errorPrefix')}{s.error}</Alert>}
         {s.saved && !s.saving && <Alert color="success">{t('savedAndRebuilt')}</Alert>}
+        {s.migrated && (
+          <Alert color="info">{tf('available.migrated', { ids: s.migrated.join(', ') })}</Alert>
+        )}
 
         {!s.loading && !s.error && (
           <Tabs boxed defaultActive="tokens">
             <Tab ref="tokens">{t('tabs.tokens')}</Tab>
             <Tab ref="search">{t('tabs.search')}</Tab>
-            <Tab ref="installed">{t('tabs.installed')}</Tab>
+            <Tab ref="available">{t('tabs.available')}</Tab>
 
             {/* Principal (sin título interior): editor de stacks del theme */}
             <TabContent ref="tokens">
@@ -686,9 +650,7 @@ const page = {
               <Card>
                 <CardBody>
                   <Stack gap="md">
-                    <Text color="neutral">
-                      {t('search.intro')}
-                    </Text>
+                    <Text color="neutral">{t('search.intro')}</Text>
                     <TextInput
                       value={s.query}
                       placeholder={t('search.placeholder')}
@@ -709,32 +671,19 @@ const page = {
               </Card>
             </TabContent>
 
-            <TabContent ref="installed">
+            <TabContent ref="available">
               <Stack gap="md">
-                {s.rebuildError && (
-                  <Alert color="error">{tf('installed.rebuildFailed', { detail: s.rebuildError })}</Alert>
-                )}
-                {s.installed.length > 0 && (
-                  s.wired ? (
-                    <Alert color="success">{t('installed.wired')}</Alert>
-                  ) : (
-                    <Alert color="info">
-                      <Text as="span">{t('installed.banner')}</Text>
-                      <code className={importCode}>import './{s.fontsCssRel}'</code>
-                    </Alert>
-                  )
-                )}
+                {s.wired && <Alert color="success">{t('available.wired')}</Alert>}
                 <Card>
                   <CardBody>
                     <Stack gap="md">
-                      {s.installedLoading && <Alert color="info">{t('installed.loading')}</Alert>}
-                      {s.installedError && <Alert color="error">{t('errorPrefix')}{s.installedError}</Alert>}
-                      {!s.installedLoading && !s.installedError && s.installed.length === 0 && (
-                        <Text color="neutral">
-                          {t('installed.empty')}
-                        </Text>
+                      <Text color="neutral">{t('available.intro')}</Text>
+                      {s.availableLoading && <Alert color="info">{t('available.loading')}</Alert>}
+                      {s.availableError && <Alert color="error">{t('errorPrefix')}{s.availableError}</Alert>}
+                      {!s.availableLoading && !s.availableError && s.available.length === 0 && (
+                        <Text color="neutral">{t('available.empty')}</Text>
                       )}
-                      {installedRows}
+                      {availableRows}
                     </Stack>
                   </CardBody>
                 </Card>

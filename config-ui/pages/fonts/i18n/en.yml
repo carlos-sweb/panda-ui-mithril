@@ -1,56 +1,51 @@
 title: Fonts
-introPre: Edit the theme fonts and manage typefaces from Fontsource — changes are written to
-introAnd: and
-introPost: .
+introPre: Assigned families compile into
+introMid: ' via Panda; the theme tokens are written to'
 loadingTheme: Loading theme…
 errorPrefix: 'Error: '
 savedAndRebuilt: Saved and rebuilt ✓
 tabs:
   tokens: Tokens
-  search: Search & install
-  installed: Installed
+  search: Search & add
+  available: Available
 token:
   placeholder: font-family stack
   saving: Saving…
   save: Save
   reload: Reload
 search:
-  intro: Search Fontsource (fontsource.org) — preview a typeface and install it into the project.
+  intro: Search the Fontsource catalog — “Add” installs the package (@fontsource/{id}) into your project. Assign it in the Available tab to load it into the CSS.
   placeholder: Search fonts… (e.g. Inter, Roboto, Ubuntu)
   searching: Searching…
   noResults: 'No fonts match "{query}".'
   weightsCount: '{count} weights · {subsets}'
   variable: variable
-  installed: installed
-  previewAndInstall: Preview & install
-  close: Close
-  subset: Subset
-  italic: Italic
-  installing: Installing…
-  install: Install
-  reinstall: Reinstall
-  alreadyInstalled: Already installed
-  downloadsHint: Downloads woff2 files into the project
-  installedSuccess: 'Installed {family}. Add this import to your app entry:'
-  installedWired: 'Installed {family} — compiled into styled-system/styles.css via Panda. Reload your app to see it.'
-installed:
-  loading: Loading installed fonts…
-  empty: No fonts installed yet. Use the search tab to install one.
-  summary: '{subsets} · installed {date}'
+  available: available
   preview: Preview
-  hidePreview: Hide preview
-  loadingPreview: Loading preview…
-  removing: Removing…
-  uninstall: Uninstall
-  italic: italic
-  variable: variable
-  banner: 'Load the font in your app — add this line to your app entry:'
-  wired: 'Compiled into styled-system/styles.css via Panda — reload your app to see the fonts.'
+  close: Close
+  add: Add
+  adding: Adding…
+  added: Added
+  addedHint: '{family} added — assign it in the Available tab to load it into the CSS.'
+  addInfo: 'Installs {pkg} with bun — only assigned families end up in the CSS.'
+available:
+  intro: Fonts added to this project (node_modules/@fontsource). Assign one to a token to load it into the CSS — unassigned packages stay available but unused.
+  loading: Loading available fonts…
+  empty: No fonts added yet. Use the search tab to add a package.
+  version: '{version}'
+  usedBy: used by {token}
   assign: Assign
-  assignToken: Token
   assignBtn: Assign
+  assignToken: Token
+  assignSubset: Subset
+  assignItalic: Italic
+  assignHint: Loads the family into the CSS (only assigned fonts are compiled).
   assigning: Assigning…
-  assigned: assigned to {token}
-  assignSuccess: 'Assigned {family} to {token}.'
-  rebuildFailed: 'Rebuild failed: {detail}'
+  assignedOk: '{family} assigned to {token}.'
+  unassign: Unassign
+  unassigning: Unassigning…
+  remove: Remove package
+  removing: Removing…
+  wired: 'Compiled into styled-system/styles.css via Panda — reload your app to see the fonts.'
+  migrated: 'Migrated legacy installs to npm packages: {ids}'
 sample: The quick brown fox jumps over the lazy dog — 0123456789
