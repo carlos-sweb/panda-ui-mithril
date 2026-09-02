@@ -2,7 +2,7 @@ import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import {
   Stack, Title, Text, Button, Card, CardBody, TextInput, Alert, Block,
-  Columns, Column, Select, Checkbox, Tag, Tabs, Tab, TabContent,
+  Columns, Column, Select, Checkbox, Tag, Tabs, Tab, TabContent, Loading,
 } from '../../../src/index.js'
 import { t, loadPageI18n } from '../../i18n/index.js'
 
@@ -726,7 +726,12 @@ const page = {
           {t('introPre')} <code>styled-system/styles.css</code> {t('introMid')} <code>{s.themeRel}/fonts.ts</code>.
         </Text>
 
-        {s.loading && <Alert color="info">{t('loadingTheme')}</Alert>}
+        {s.loading && (
+          <Stack align="center" gap="sm">
+            <Loading variant="spinner" size="lg" />
+            <Text color="neutral" size="sm">{t('loadingTheme')}</Text>
+          </Stack>
+        )}
         {s.error && <Alert color="error">{t('errorPrefix')}{s.error}</Alert>}
         {s.saved && !s.saving && <Alert color="success">{t('savedAndRebuilt')}</Alert>}
         {s.migrated && (
@@ -832,7 +837,12 @@ const page = {
                   <CardBody>
                     <Stack gap="md">
                       <Text color="neutral">{t('available.intro')}</Text>
-                      {s.availableLoading && <Alert color="info">{t('available.loading')}</Alert>}
+                      {s.availableLoading && (
+                        <Stack align="center" gap="sm">
+                          <Loading variant="spinner" size="md" />
+                          <Text color="neutral" size="sm">{t('available.loading')}</Text>
+                        </Stack>
+                      )}
                       {s.availableError && <Alert color="error">{t('errorPrefix')}{s.availableError}</Alert>}
                       {!s.availableLoading && !s.availableError && s.available.length === 0 && (
                         <Text color="neutral">{t('available.empty')}</Text>
