@@ -41,8 +41,8 @@
     transform. It also migrates an old single-file theme automatically.
   quickStartStep3Title: 3 · Generate the helpers and the CSS
   quickStartStep3Desc: >-
-    <code>init</code> does not run codegen — generate the helpers and
-    <code>styles.css</code>.
+    <code>bunx panda-ui-mithril init</code> does not run codegen — generate
+    the helpers and <code>styles.css</code>.
   quickStartStep4Title: 4 · Hello world
   quickStartStep4Desc: >-
     The import uses the lowercase kebab subpath (<code>panda-ui-mithril/button</code>).
@@ -50,8 +50,8 @@
     Run with <code>bun index.html</code> and open <code>http://localhost:3000</code>.
   quickStartWhatInitTitle: What init does for you
   quickStartWhatInitIntro: >-
-    The manual setup is automated by <code>init</code> — shown here so you
-    know what to expect (or can configure it by hand).
+    The manual setup is automated by <code>bunx panda-ui-mithril init</code> —
+    shown here so you know what to expect (or can configure it by hand).
   quickStartWhatInit1Title: 1 · pum/ — preset + editable theme
   quickStartWhatInit1Desc: >-
     Copies the library preset and the theme files (colors, fonts, spacing,
@@ -65,5 +65,5 @@
   quickStartWhatInit3Title: 3 · Mithril JSX
   quickStartWhatInit3Desc: >-
     <code>Button</code> and <code>Alert</code> are the only <code>.jsx</code>
-    components; <code>init</code> merges the JSX fields into
-    <code>tsconfig.json</code> (the same fields work in <code>bunfig.toml</code>).
+    components; <code>bunx panda-ui-mithril init</code> merges the JSX fields
+    into <code>tsconfig.json</code> (the same fields work in <code>bunfig.toml</code>).
