@@ -39,10 +39,15 @@ const packageManagers = [
 const quickStartInstall = `bun add -d @pandacss/dev @pandacss/preset-panda
 bun add https://github.com/carlos-sweb/panda-ui-mithril.git mithril`
 
-const quickStartConfig = `// panda.config.ts
+const quickStartInit = `bunx panda-ui-mithril init`
+
+const quickStartCss = `bunx panda codegen && bunx panda cssgen`
+
+// Lo que init escribe: panda.config.ts apuntando a ./pum/preset.
+const quickStartConfig = `// panda.config.ts (generado por init)
 import { defineConfig } from '@pandacss/dev'
 import pandaPreset from '@pandacss/preset-panda'
-import { pumPreset } from 'panda-ui-mithril/preset'
+import { pumPreset } from './pum/preset'
 
 export default defineConfig({
   presets: [pandaPreset, pumPreset],
@@ -51,12 +56,27 @@ export default defineConfig({
   outdir: 'styled-system',
 })`
 
-const quickStartCss = `bunx panda codegen && bunx panda cssgen`
+// Lo que init escribe: los campos JSX en tsconfig.json.
+const quickStartTsconfig = `// tsconfig.json — campos JSX que init fusiona
+{
+  "compilerOptions": {
+    "jsx": "react",
+    "jsxFactory": "m",
+    "jsxFragmentFactory": "m.Fragment"
+  }
+}`
 
-const quickStartBunfig = `// bunfig.toml — JSX clásico con factory de Mithril
-jsx = "react"
-jsxFactory = "m"
-jsxFragmentFactory = "m.Fragment"`
+// Árbol que init crea en tu proyecto.
+const quickStartPumTree = `pum/
+├── preset.ts        # registra las recipes + theme (importa panda-ui-mithril/recipes)
+├── theme.ts         # agrega los tokens del theme
+├── theme.d.ts
+└── theme/           # edita tus tokens aquí
+    ├── colors.ts
+    ├── fonts.ts
+    ├── spacing.ts
+    ├── radii.ts
+    └── keyframes.ts`
 
 const quickStartApp = `// src/main.js
 import m from 'mithril'
@@ -292,28 +312,50 @@ export const Landing = {
           <Stack gap="sm">
             <Text weight="bold">{t('quickStartStep2Title')}</Text>
             <Text color="neutral">{m.trust(t('quickStartStep2Desc'))}</Text>
-            <CodeExample code={quickStartConfig} type="typescript" copyId="quick-start-config" />
+            <CodeExample code={quickStartInit} type="bash" copyId="quick-start-init" />
           </Stack>
 
           <Stack gap="sm">
             <Text weight="bold">{t('quickStartStep3Title')}</Text>
+            <Text color="neutral">{m.trust(t('quickStartStep3Desc'))}</Text>
             <CodeExample code={quickStartCss} type="bash" copyId="quick-start-css" />
           </Stack>
 
           <Stack gap="sm">
             <Text weight="bold">{t('quickStartStep4Title')}</Text>
             <Text color="neutral">{m.trust(t('quickStartStep4Desc'))}</Text>
-            <CodeExample code={quickStartBunfig} type="bash" copyId="quick-start-bunfig" />
-          </Stack>
-
-          <Stack gap="sm">
-            <Text weight="bold">{t('quickStartStep5Title')}</Text>
-            <Text color="neutral">{m.trust(t('quickStartStep5Desc'))}</Text>
             <CodeExample code={quickStartApp} type="jsx" copyId="quick-start-app" />
             <Text color="neutral">{m.trust(t('quickStartStep5Run'))}</Text>
           </Stack>
-        </Stack>
 
+          <Card>
+            <CardBody>
+              <Stack gap="sm">
+                <Title as="h3" size="5">{t('quickStartWhatInitTitle')}</Title>
+                <Text color="neutral">{m.trust(t('quickStartWhatInitIntro'))}</Text>
+
+                <Block spacing="sm" />
+                <Stack gap="sm">
+                  <Text weight="bold">{t('quickStartWhatInit1Title')}</Text>
+                  <Text color="neutral">{m.trust(t('quickStartWhatInit1Desc'))}</Text>
+                  <CodeExample code={quickStartPumTree} type="bash" copyId="quick-start-pum-tree" />
+                </Stack>
+
+                <Stack gap="sm">
+                  <Text weight="bold">{t('quickStartWhatInit2Title')}</Text>
+                  <Text color="neutral">{m.trust(t('quickStartWhatInit2Desc'))}</Text>
+                  <CodeExample code={quickStartConfig} type="typescript" copyId="quick-start-config" />
+                </Stack>
+
+                <Stack gap="sm">
+                  <Text weight="bold">{t('quickStartWhatInit3Title')}</Text>
+                  <Text color="neutral">{m.trust(t('quickStartWhatInit3Desc'))}</Text>
+                  <CodeExample code={quickStartTsconfig} type="typescript" copyId="quick-start-tsconfig" />
+                </Stack>
+              </Stack>
+            </CardBody>
+          </Card>
+        </Stack>
         {/* ── Component Preview ── */}
         <Title as="h2" size="3" className={css({ marginTop: '2.5rem' })}>{t('componentPreview')}</Title>
         <Block spacing="sm" />

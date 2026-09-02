@@ -33,18 +33,37 @@
   quickStartStep1Desc: >-
     Install Panda first (the package runs <code>panda codegen</code> when
     installed from git), then the library and Mithril.
-  quickStartStep2Title: 2 · Configure your Panda with the preset
+  quickStartStep2Title: 2 · Init the project
   quickStartStep2Desc: >-
-    Recipes ship inside <code>pumPreset</code>;
-    <code>staticCss: { recipes: '*' }</code> makes <code>cssgen</code> emit
-    them all.
+    <code>bunx panda-ui-mithril init</code> creates the <code>pum/</code>
+    folder with the editable theme, writes <code>panda.config.ts</code>
+    (pointing to <code>./pum/preset</code>) and configures the Mithril JSX
+    transform. It also migrates an old single-file theme automatically.
   quickStartStep3Title: 3 · Generate the helpers and the CSS
-  quickStartStep4Title: 4 · Mithril JSX
+  quickStartStep3Desc: >-
+    <code>init</code> does not run codegen — generate the helpers and
+    <code>styles.css</code>.
+  quickStartStep4Title: 4 · Hello world
   quickStartStep4Desc: >-
-    <code>Button</code> and <code>Alert</code> are the only <code>.jsx</code>
-    components; they need the JSX transform with Mithril's factory.
-  quickStartStep5Title: 5 · Hello world
-  quickStartStep5Desc: >-
     The import uses the lowercase kebab subpath (<code>panda-ui-mithril/button</code>).
   quickStartStep5Run: >-
     Run with <code>bun index.html</code> and open <code>http://localhost:3000</code>.
+  quickStartWhatInitTitle: What init does for you
+  quickStartWhatInitIntro: >-
+    The manual setup is automated by <code>init</code> — shown here so you
+    know what to expect (or can configure it by hand).
+  quickStartWhatInit1Title: 1 · pum/ — preset + editable theme
+  quickStartWhatInit1Desc: >-
+    Copies the library preset and the theme files (colors, fonts, spacing,
+    radii, keyframes) into <code>pum/</code>. Recipes are NOT copied — they
+    come from the package via <code>panda-ui-mithril/recipes</code>.
+  quickStartWhatInit2Title: 2 · panda.config.ts → ./pum/preset
+  quickStartWhatInit2Desc: >-
+    Writes a config using the copied preset with
+    <code>staticCss: { recipes: '*' }</code> (emits every recipe) and
+    <code>outdir: styled-system</code>.
+  quickStartWhatInit3Title: 3 · Mithril JSX
+  quickStartWhatInit3Desc: >-
+    <code>Button</code> and <code>Alert</code> are the only <code>.jsx</code>
+    components; <code>init</code> merges the JSX fields into
+    <code>tsconfig.json</code> (the same fields work in <code>bunfig.toml</code>).
