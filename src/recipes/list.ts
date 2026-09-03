@@ -22,6 +22,29 @@ export const listRecipe = defineSlotRecipe({
           borderBottom: 'var(--border, 1px) solid color-mix(in oklab, token(colors.base-content) 5%, transparent)',
         },
       },
+
+      // Modo sortable (envuelve SortableJS, ver src/components/List/sortable.js):
+      // SortableJS aplica ghost/chosen/drag a la fila durante el arrastre y el
+      // bridge marca el <ul> con list-sort-whole (fila entera) o
+      // list-sort-handle (solo desde el asa ListDragHandle).
+      '& .list-sort-ghost': {
+        opacity: '0.35',
+      },
+      '& .list-sort-chosen': {
+        backgroundColor: 'base-200',
+      },
+      '&.list-sort-whole > li': {
+        cursor: 'grab',
+      },
+      '& .list-drag-handle': {
+        display: 'inline-flex',
+        alignItems: 'center',
+        cursor: 'grab',
+        color: 'color-mix(in oklab, token(colors.base-content) 45%, transparent)',
+        // Crucial para touch: el gesto de arrastre no debe hacer scroll.
+        touchAction: 'none',
+        '&:active': { cursor: 'grabbing' },
+      },
     },
     row: {
       '--list-grid-cols': 'minmax(0, auto) 1fr',

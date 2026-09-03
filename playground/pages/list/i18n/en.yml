@@ -24,3 +24,19 @@ interactiveDesc: >-
   (<code>push</code> to add, <code>splice</code> to remove) — Mithril redraws
   automatically after each event and the <code>key</code> by <code>id</code>
   keeps the diffing correct. Same pattern as the demos above.
+sortableTitle: Sortable (self) — drag rows to reorder
+sortableDesc: >-
+  The drag-to-reorder of the data-driven rows is not implemented from scratch:
+  <code>List</code> wraps <strong>SortableJS</strong>
+  (<a href="https://sortablejs.github.io/Sortable/" target="_blank" rel="noreferrer">sortablejs.github.io/Sortable</a>),
+  so the whole drag engine comes from the library and you keep a controlled
+  API: <code>sortable</code> enables it and <code>onReorder(next)</code>
+  receives the new order when you drop a row (List never mutates
+  <code>data</code>). Use case demoed here: ordering a postcss pipeline — the
+  visual order is the exact order delivered in <code>next</code>. By default
+  the whole row is draggable; include a <code>ListDragHandle</code> in the row
+  template to drag only from the grip (recommended when the row has
+  buttons/inputs). Try the <code>✕</code>: a click does not start a drag, and
+  the <code>index</code> column proves the model really reordered.
+sortableWholeLabel: Whole-row drag (no handle)
+sortableHandleLabel: Drag only from the ListDragHandle grip

@@ -195,6 +195,21 @@ future data-driven `Table`:
 - `List`: `data={items}` + `render={(item, index) => vnode}` (or a single
   child function), `key={(item) => item.id}`, `empty`, `header`, `footer`,
   `loading`, `loadingRows`, `hover`, `ordered`.
+  Sortable-self: `sortable` + `onReorder={(next) => ...}` reorder the rows by
+  dragging. The drag is NOT hand-rolled: `List` wraps SortableJS (dependency
+  `sortablejs`; the only importer is `src/components/List/sortable.js`, the
+  bridge). Controlled pattern: List never mutates `data`; on drop it computes
+  the new order from the SortableJS event indices
+  (`oldDraggableIndex`/`newDraggableIndex`) and calls `onReorder(next)`. Whole row
+  by default; including a `ListDragHandle` (GripVertical grip) in the row
+  template restricts dragging to the grip. `header`/`footer` rows get
+  `list-static` (not draggable); the drag classes (`list-sort-ghost`,
+  `list-sort-chosen`, `list-sort-whole/handle`) are styled in the `list`
+  recipe. Guard: `onbeforeupdate` returns false while a drag is active
+  (Mithril would fight SortableJS over the DOM). SortableJS finishes moving
+  the node AFTER `onEnd`, so the reorder runs on a deferred tick
+  (`setTimeout(finishSort, 0)`) with the guard still up — then `onReorder(next)`
+  + `m.redraw()` reconcile.
 - `Pagination`: `page` + `pageCount` + `onchange(page)`; `variant`
   (joined/separated), `shape` (square/circle), `siblings`, `boundaries`,
   `withControls`/`withEdges`, `getHref`, controlled (`page`) or uncontrolled

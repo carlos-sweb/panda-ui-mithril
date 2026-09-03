@@ -25,3 +25,19 @@ interactiveDesc: >-
   redibuja automáticamente tras cada evento y el <code>key</code> por
   <code>id</code> mantiene el diffing correcto. Es el mismo patrón que usan
   los demos de arriba.
+sortableTitle: Sortable (self) — arrastra las filas para reordenar
+sortableDesc: >-
+  El drag-to-reorder de las filas data-driven no se implementa desde cero:
+  <code>List</code> envuelve <strong>SortableJS</strong>
+  (<a href="https://sortablejs.github.io/Sortable/" target="_blank" rel="noreferrer">sortablejs.github.io/Sortable</a>),
+  así que todo el motor de arrastre viene de la librería y tú mantienes una API
+  controlada: <code>sortable</code> lo habilita y <code>onReorder(next)</code>
+  recibe el nuevo orden al soltar una fila (List nunca muta <code>data</code>).
+  Caso de uso del demo: ordenar un pipeline postcss — el orden visual es
+  exactamente el orden que llega en <code>next</code>. Por defecto se arrastra
+  la fila entera; incluye un <code>ListDragHandle</code> en el template de la
+  fila para arrastrar solo desde el asa (recomendado cuando la fila tiene
+  botones/inputs). Prueba el <code>✕</code>: un click no inicia arrastre, y la
+  columna <code>index</code> demuestra que el modelo sí se reordenó.
+sortableWholeLabel: Arrastre de fila entera (sin asa)
+sortableHandleLabel: Arrastre solo desde el asa ListDragHandle

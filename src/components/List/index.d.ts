@@ -33,6 +33,21 @@ export interface ListAttrs<T = unknown> extends ComponentAttrs {
   /** Renderiza `<ol>` en vez de `<ul>`. */
   ordered?: boolean
   /**
+   * Habilita reordenar las filas arrastrándolas (solo modo data-driven,
+   * "sortable-self"). El drag NO se implementa desde cero: List envuelve
+   * SortableJS internamente. Por defecto se arrastra la fila completa; si el
+   * template incluye un `ListDragHandle`, el drag solo arranca desde el asa
+   * (recomendado cuando la fila tiene botones/inputs).
+   */
+  sortable?: boolean
+  /**
+   * Callback controlado con el nuevo orden al soltar una fila:
+   * `(next: T[]) => void`. List nunca muta `data` — actualiza tu array desde
+   * `next` (patrón de Pagination/Table). Si el array no cambia, la lista
+   * vuelve a su orden previo en el próximo redraw.
+   */
+  onReorder?: (next: T[]) => void
+  /**
    * En modo data-driven los children pueden ser UNA función
    * `(item, index) => vnode` — el template repetido por item (alternativa al
    * prop `render`). Debe ser el único child. Con `data` sin template se lanza
@@ -55,6 +70,16 @@ export interface ListColAttrs extends ComponentAttrs {
   [key: string]: unknown
 }
 
+export interface ListDragHandleAttrs extends ComponentAttrs {
+  /**
+   * Tamaño del icono GripVertical en px. Default: 16.
+   */
+  size?: number
+  children?: Vnode | Vnode[] | string | null
+  [key: string]: unknown
+}
+
 export const List: Component<ListAttrs>
 export const ListRow: Component<ListRowAttrs>
 export const ListCol: Component<ListColAttrs>
+export const ListDragHandle: Component<ListDragHandleAttrs>

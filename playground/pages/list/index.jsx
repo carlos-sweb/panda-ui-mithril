@@ -1,7 +1,7 @@
 import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import { t, loadPageI18n } from '../../i18n/index.js'
-import { Stack, Title, List, ListRow, ListCol, Avatar, Button, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
+import { Stack, Title, List, ListRow, ListCol, ListDragHandle, Avatar, Button, Text, Block, Tabs, Tab, TabContent } from '../../../src/index.js'
 import { Play, Heart, X, Star } from 'lucide-mithril'
 import { CodeExample } from '../../components/CodeExample.jsx'
 import { ClassTable } from '../../components/ClassTable.jsx'
@@ -261,6 +261,79 @@ export const Todo = {
   }
 }`
 
+// ── Sortable (self): reordenar las filas arrastrándolas ───────────────────
+// El drag NO se implementa desde cero: List envuelve SortableJS internamente
+// (ver el texto del demo). La API es controlada: `sortable` + `onReorder`.
+const sortableJsx = `import m from 'mithril'
+import { List, ListRow, ListCol, ListDragHandle, Button } from 'panda-ui-mithril'
+
+export const Pipeline = {
+  oninit(vnode) {
+    vnode.state.plugins = [
+      { id: 'postcss-import', hint: 'resolve @import' },
+      { id: 'postcss-nesting', hint: 'CSS nesting' },
+      { id: 'autoprefixer', hint: 'vendor prefixes' },
+      { id: 'cssnano', hint: 'minify' },
+    ]
+  },
+
+  view(vnode) {
+    return (
+      <List
+        data={vnode.state.plugins}
+        key={(p) => p.id}
+        sortable
+        onReorder={(next) => { vnode.state.plugins = next }}
+        render={(p, index) => (
+          <ListRow>
+            <ListDragHandle />
+            <ListCol grow>
+              <div>{p.id}</div>
+              <div>{p.hint}</div>
+            </ListCol>
+            <ListCol>{index}</ListCol>
+            <Button variant="ghost" square size="sm" onclick={() => {
+              vnode.state.plugins = vnode.state.plugins.filter((x) => x.id !== p.id)
+            }}>✕</Button>
+          </ListRow>
+        )}
+      />
+    )
+  }
+}`
+
+const sortableJs = `import m from 'mithril'
+import { List, ListRow, ListCol, ListDragHandle, Button } from 'panda-ui-mithril'
+
+export const Pipeline = {
+  oninit(vnode) {
+    vnode.state.plugins = [
+      { id: 'postcss-import', hint: 'resolve @import' },
+      { id: 'postcss-nesting', hint: 'CSS nesting' },
+      { id: 'autoprefixer', hint: 'vendor prefixes' },
+      { id: 'cssnano', hint: 'minify' },
+    ]
+  },
+
+  view(vnode) {
+    return m(List, {
+      data: vnode.state.plugins,
+      key: (p) => p.id,
+      sortable: true,
+      onReorder: (next) => { vnode.state.plugins = next },
+      render: (p, index) => m(ListRow, null, [
+        m(ListDragHandle),
+        m(ListCol, { grow: true }, [m('div', null, p.id), m('div', null, p.hint)]),
+        m(ListCol, null, index),
+        m(Button, {
+          variant: 'ghost', square: true, size: 'sm',
+          onclick: () => { vnode.state.plugins = vnode.state.plugins.filter((x) => x.id !== p.id) },
+        }, '✕'),
+      ]),
+    })
+  }
+}`
+
 export default {
   name: 'List',
   category: 'Data Display',
@@ -282,6 +355,14 @@ export default {
     ]
     vnode.state.rpSeq = 3
     vnode.state.rpLoading = false
+    // Sortable (self): pipeline postcss — el orden visual es el orden real
+    vnode.state.soItems = [
+      { id: 'postcss-import', hint: 'resolve @import' },
+      { id: 'postcss-nesting', hint: 'CSS nesting' },
+      { id: 'autoprefixer', hint: 'vendor prefixes' },
+      { id: 'postcss-prune-var', hint: 'drop unused vars' },
+      { id: 'cssnano', hint: 'minify' },
+    ]
     // Inbox estilo Gmail/Proton Mail para el demo de "Buen uso"
     vnode.state.mails = [
       { id: 1, sender: 'Ada Lovelace', subject: 'Analytical Engine notes', time: '09:42', color: '#0ea5e9', starred: true },
@@ -291,6 +372,23 @@ export default {
     ]
   },
   view(vnode) {
+    // Sortable (self): el estado se reemplaza con el orden que entrega List
+    // (controlado); ambos demos comparten el mismo array para mostrar el sync.
+    const soReorder = (next) => { vnode.state.soItems = next }
+    const soRow = (item, index, withHandle) => (
+      <ListRow>
+        {withHandle ? <ListDragHandle /> : null}
+        <ListCol grow>
+          <div className={css({ fontWeight: '600' })}>{item.id}</div>
+          <div className={css({ fontSize: '0.8125rem', opacity: 0.6 })}>{item.hint}</div>
+        </ListCol>
+        <ListCol className={css({ alignSelf: 'center' })}>{index}</ListCol>
+        <Button variant="ghost" square size="sm" className={css({ alignSelf: 'center' })} onclick={() => {
+          vnode.state.soItems = vnode.state.soItems.filter((x) => x.id !== item.id)
+        }}><X size={16} /></Button>
+      </ListRow>
+    )
+
     return (
       <Stack gap="lg">
         <Title as="h1" size="2">List</Title>
@@ -464,6 +562,53 @@ export default {
             </TabContent>
             <TabContent ref="js">
               <CodeExample type="javascript" code={usageStatefulJs} copyId="interactive-js" />
+            </TabContent>
+          </Tabs>
+        </Block>
+
+        {/* ── Sortable (self): reordenar filas arrastrándolas ── */}
+        <Block spacing="lg">
+          <Title as="h2" size="3">{t('sortableTitle')}</Title>
+          <Text color="neutral" className={css({ marginBottom: '1rem', maxWidth: '680px' })}>
+            {m.trust(t('sortableDesc'))}
+          </Text>
+
+          <Stack gap="sm" className={css({ marginBottom: '1rem' })}>
+            <Text size="sm" color="neutral" weight="bold">{t('sortableWholeLabel')}</Text>
+            <div className={wrapper}>
+              <List
+                data={vnode.state.soItems}
+                key={(item) => item.id}
+                sortable
+                hover
+                onReorder={soReorder}
+                render={(item, index) => soRow(item, index, false)}
+              />
+            </div>
+
+            <Text size="sm" color="neutral" weight="bold" className={css({ marginTop: '0.75rem' })}>
+              {t('sortableHandleLabel')}
+            </Text>
+            <div className={wrapper}>
+              <List
+                data={vnode.state.soItems}
+                key={(item) => item.id}
+                sortable
+                hover
+                onReorder={soReorder}
+                render={(item, index) => soRow(item, index, true)}
+              />
+            </div>
+          </Stack>
+
+          <Tabs defaultActive="jsx" lifted size="lg">
+            <Tab ref="jsx">Jsx</Tab>
+            <Tab ref="js">Js</Tab>
+            <TabContent ref="jsx">
+              <CodeExample type="jsx" code={sortableJsx} copyId="sortable-jsx" />
+            </TabContent>
+            <TabContent ref="js">
+              <CodeExample type="javascript" code={sortableJs} copyId="sortable-js" />
             </TabContent>
           </Tabs>
         </Block>
