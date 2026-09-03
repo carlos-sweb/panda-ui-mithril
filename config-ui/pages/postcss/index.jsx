@@ -4,6 +4,7 @@ import {
   Stack, Title, Text, Button, Card, CardBody, TextInput, Alert, Block,
   Tag, Tabs, Tab, TabContent, Loading, List, ListRow, ListCol,
   Select, Checkbox, Textarea,
+  Collapse, CollapseTitle, CollapseContent,
 } from '../../../src/index.js'
 import { t, loadPageI18n } from '../../i18n/index.js'
 import { schemaFor, PANDA_PLUGIN_ID } from '../../postcss-schemas'
@@ -812,46 +813,44 @@ const page = {
                         )}
 
                         <div>
-                          {s.plugins.map((pl) => (
-                            <Card key={pl.id}>
-                              <CardBody>
-                                <Stack gap="md">
-                                  <Stack direction="row" align="center" className={css({ justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem' })}>
+                          {s.plugins.map((pl, i) => (
+                            <Collapse key={pl.id} arrow border className={css({ marginBottom: '0.5rem' })} defaultChecked={i === 0}>
+                              <CollapseTitle>
+                                <Stack direction="row" gap="sm" align="center" className={css({ flexWrap: 'wrap' })}>
+                                  <Text weight="bold" className={pluginName}>{pl.id}</Text>
+                                  {pl.id === PANDA_PLUGIN_ID
+                                    ? <Tag size="md" variant="info">{t('configure.pandaBase')}</Tag>
+                                    : pl.enabled
+                                      ? <Tag size="md" variant="success">{t('configure.enabled')}</Tag>
+                                      : <Tag size="md" variant="ghost">{t('configure.disabled')}</Tag>}
+                                  {!schemaFor(pl.id) && (
+                                    <Tag size="md" variant="ghost">{t('configure.noSchema')}</Tag>
+                                  )}
+                                </Stack>
+                              </CollapseTitle>
+                              <CollapseContent>
+                                <Stack gap="md" className={css({ paddingTop: '0.5rem' })}>
+                                  {pl.id !== PANDA_PLUGIN_ID && (
                                     <Stack direction="row" gap="sm" align="center">
-                                      <Text weight="bold" className={pluginName}>{pl.id}</Text>
-                                      {pl.id === PANDA_PLUGIN_ID
-                                        ? <Tag size="md" variant="info">{t('configure.pandaBase')}</Tag>
-                                        : pl.enabled
-                                          ? <Tag size="md" variant="success">{t('configure.enabled')}</Tag>
-                                          : <Tag size="md" variant="ghost">{t('configure.disabled')}</Tag>}
-                                      {!schemaFor(pl.id) && (
-                                        <Tag size="md" variant="ghost">{t('configure.noSchema')}</Tag>
-                                      )}
+                                      <Checkbox
+                                        checked={pl.enabled}
+                                        onchange={(e) => { pl.enabled = !!e.target.checked }}
+                                      >
+                                        {t('configure.enabled')}
+                                      </Checkbox>
+                                      <Button
+                                        size="sm"
+                                        variant="ghost"
+                                        onclick={() => removeFromPipeline(s, pl.id)}
+                                      >
+                                        {t('configure.removeFromPipeline')}
+                                      </Button>
                                     </Stack>
-                                    <Stack direction="row" gap="sm" align="center">
-                                      {pl.id !== PANDA_PLUGIN_ID && (
-                                        <>
-                                          <Checkbox
-                                            checked={pl.enabled}
-                                            onchange={(e) => { pl.enabled = !!e.target.checked }}
-                                          >
-                                            {t('configure.enabled')}
-                                          </Checkbox>
-                                          <Button
-                                            size="sm"
-                                            variant="ghost"
-                                            onclick={() => removeFromPipeline(s, pl.id)}
-                                          >
-                                            {t('configure.removeFromPipeline')}
-                                          </Button>
-                                        </>
-                                      )}
-                                    </Stack>
-                                  </Stack>
+                                  )}
                                   {pluginEditor(s, pl)}
                                 </Stack>
-                              </CardBody>
-                            </Card>
+                              </CollapseContent>
+                            </Collapse>
                           ))}
                         </div>
 
