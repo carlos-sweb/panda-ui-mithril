@@ -2,24 +2,51 @@ title: Postcss
 intro: CSS generation pipeline of the project — Panda is one layer; PostCSS plugins process its output (unused token variables pruning, url copy, nesting, autoprefixer, minification).
 loadingCatalog: Loading the official plugin list…
 errorPrefix: 'Error: '
+savedAndRebuilt: Pipeline saved ✓
 tabs:
   install: Install
   available: Available
+  configure: Configure
 install:
-  intro: Search the official PostCSS plugin list — “Install” runs bun add in your project, so the plugin becomes available in node_modules. Wiring it into the CSS pipeline is a later step.
+  intro: Search the official PostCSS plugin list — “Install” runs bun add in your project, so the plugin becomes available in node_modules. Then configure it in the Configure tab.
   placeholder: Search plugins… (e.g. import, preset-env, nested)
   noResults: 'No plugins match "{query}".'
-  category: '{category}'
   install: Install
   installing: Installing…
   installed: installed
-  installedHint: '{name} installed as {pkg} — it is now available in node_modules.'
+  installedHint: '{name} installed as {pkg} — configure it in the Configure tab.'
   seeMore: See plugin page
 available:
-  intro: Plugins from the official catalog present in this project (node_modules). Wiring them into the pipeline comes next.
+  intro: Plugins from the official catalog present in this project (node_modules). Add one to the pipeline to configure it, or remove the package.
   empty: No catalog plugins in node_modules yet — use the Install tab.
   loading: Loading installed plugins…
   remove: Remove package
   removing: Removing…
   removed: '{pkg} removed.'
   npm: 'npm: {pkg}'
+  addToPipeline: Add to pipeline
+  inPipeline: in pipeline
+configure:
+  intro: 'Plugins of the PostCSS pipeline — saved to'
+  empty: The pipeline is empty. Add plugins from the Available tab.
+  noConfigYet: No postcss.config.cjs yet — Save creates it (Panda via PostCSS).
+  pandaBase: Panda (base)
+  addFromAvailable: Add from Available
+  addFromAvailableHint: 'Pick an installed plugin to add:'
+  saving: Saving…
+  save: Save pipeline
+  rebuild: Rebuild CSS
+  rebuilding: Rebuilding…
+  reload: Reload
+  enabled: Enabled
+  disabled: Disabled
+  removeFromPipeline: Remove from pipeline
+  noSchema: No curated schema for this plugin — edit options as free JSON.
+  enumDefault: '(default)'
+  addItem: Add item
+  removeItem: Remove item
+  invalidJson: 'Invalid JSON for {key}: {error}'
+  buildTitle: Build (PostCSS pipeline)
+  buildHint: The entry CSS must contain the @layer directive; the output is what your index.html links.
+  entry: Entry CSS
+  output: Output CSS

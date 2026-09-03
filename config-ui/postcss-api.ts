@@ -18,9 +18,10 @@
  * (con fallback `postcss-` + nombre y caché en memoria), nunca se asume.
  */
 
-import { existsSync, readdirSync } from 'node:fs'
+import { existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { spawnSync } from 'node:child_process'
-import { join } from 'node:path'
+import { dirname, join } from 'node:path'
+import { PANDA_PLUGIN_ID } from './postcss-schemas'
 
 // ── Catálogo oficial (postcss.org/docs/postcss-plugins) ─────────────────────
 const CATALOG_URL = 'https://postcss.org/docs/postcss-plugins'
@@ -282,4 +283,255 @@ export function availablePlugins(
     }
   }
   return out.sort((a, b) => a.name.localeCompare(b.name))
+}
+
+// ── Pipeline config (postcss.config.cjs en la RAÍZ del proyecto) ─────────────
+// La fuente de verdad del pipeline es el postcss.config.cjs que crea init
+// (modelo recomendado por panda-css.com/docs/installation/postcss): Panda es
+// un plugin de PostCSS. El editor gestiona el bloque entre markers:
+//
+//   module.exports = {
+//     plugins: {
+//       /* pum:postcss */
+//       '@pandacss/dev/postcss': {},
+//       'autoprefixer': { "grid": "autoplace" }
+//       /* /pum:postcss */
+//     },
+//   }
+//
+// Solo se reescribe el interior del par de markers (cabecera, otros plugins
+// manuales fuera del bloque y el resto del archivo se conservan). El plugin
+// de Panda es SIEMPRE la primera entrada (base no removible).
+
+/** Apertura del bloque de plugins gestionado por el editor. */
+export const POSTCSS_MARKER = '/* pum:postcss */'
+/** Cierre del bloque de plugins gestionado por el editor. */
+export const POSTCSS_MARKER_END = '/* /pum:postcss */'
+/** Nombre del archivo de pipeline (postcss.config.cjs). */
+export const PIPELINE_CONFIG_NAME = 'postcss.config.cjs'
+
+/** Un plugin configurado en el pipeline. */
+export interface PipelinePluginEntry {
+  /** Paquete npm instalado (id del catálogo/available o el plugin de Panda). */
+  id: string
+  /** true (default) si el plugin corre en el build. */
+  enabled?: boolean
+  /** Opciones del plugin (JSON puro; regex como "/patrón/"). */
+  options?: Record<string, unknown>
+}
+
+/** Ruta del postcss.config.cjs del proyecto (raíz = projectRoot). */
+export function pipelineConfigPath(projectRoot: string): string {
+  return join(projectRoot, PIPELINE_CONFIG_NAME)
+}
+
+/** ¿El proyecto tiene postcss.config.cjs (pipeline postcss-aware)? */
+export function hasPostcssConfig(projectRoot: string): boolean {
+  return existsSync(pipelineConfigPath(projectRoot))
+}
+
+/**
+ * Evalúa el interior del bloque gestionado (entradas `'id': {...},`) como un
+ * objeto. Devuelve null si no se puede evaluar (bloque vacío o editado a
+ * mano con sintaxis no soportada).
+ */
+function evalManagedBlock(inner: string): Record<string, Record<string, unknown>> | null {
+  const src = inner.trim()
+  if (!src) return {}
+  try {
+    // El interior es JS literal de objeto; lo evaluamos en un Function (nunca
+    // pasamos datos del usuario sin validar fuera de este archivo del proyecto).
+    const value = new Function(`return ({ ${src} })`)()
+    if (value && typeof value === 'object' && !Array.isArray(value)) {
+      return value as Record<string, Record<string, unknown>>
+    }
+    return {}
+  } catch {
+    return null
+  }
+}
+
+const PANDA_BASE = (): PipelinePluginEntry[] => [{ id: PANDA_PLUGIN_ID, enabled: true, options: {} }]
+
+/**
+ * Lee el pipeline del postcss.config.cjs: plugins gestionados en el bloque
+ * (Panda base SIEMPRE primero + el resto en orden). Si el archivo no existe o
+ * el bloque no se puede leer, devuelve solo la base de Panda.
+ */
+export function readPipelineConfig(projectRoot: string): PipelinePluginEntry[] {
+  const p = pipelineConfigPath(projectRoot)
+  if (!existsSync(p)) return PANDA_BASE()
+  let src = ''
+  try {
+    src = readFileSync(p, 'utf8')
+  } catch {
+    return PANDA_BASE()
+  }
+  const start = src.indexOf(POSTCSS_MARKER)
+  const end = src.indexOf(POSTCSS_MARKER_END)
+  if (start === -1 || end === -1 || end <= start) return PANDA_BASE()
+  const inner = src.slice(start + POSTCSS_MARKER.length, end)
+  const parsed = evalManagedBlock(inner)
+  if (!parsed) return PANDA_BASE()
+  const out: PipelinePluginEntry[] = []
+  // Panda base primero, sea que esté o no en el bloque.
+  if (parsed[PANDA_PLUGIN_ID] !== undefined) {
+    out.push({ id: PANDA_PLUGIN_ID, enabled: true, options: parsed[PANDA_PLUGIN_ID] })
+  } else {
+    out.push({ id: PANDA_PLUGIN_ID, enabled: true, options: {} })
+  }
+  for (const [id, options] of Object.entries(parsed)) {
+    if (id === PANDA_PLUGIN_ID) continue
+    out.push({ id, enabled: true, options })
+  }
+  return out
+}
+
+/** Nombre npm válido (con o sin scope) — copia de NAME_RE/SCOPE_RE. */
+export function isValidPackageName(name: string): boolean {
+  return NAME_RE.test(name) || SCOPE_RE.test(name)
+}
+
+/** Valida una lista de plugins recibida del cliente. */
+export function sanitizePipelineConfig(pluginsRaw: unknown): { ok: true; plugins: PipelinePluginEntry[] } | { ok: false; error: string } {
+  if (!Array.isArray(pluginsRaw)) {
+    return { ok: false, error: 'Config inválida: falta el array de plugins.' }
+  }
+  const plugins: PipelinePluginEntry[] = []
+  const seen = new Set<string>()
+  for (const rawPl of pluginsRaw) {
+    if (!rawPl || typeof rawPl !== 'object') continue
+    const pl = rawPl as Record<string, unknown>
+    const id = String(pl.id ?? '').trim()
+    if (id !== PANDA_PLUGIN_ID && !isValidPackageName(id)) {
+      return { ok: false, error: `Id de paquete inválido: '${pl.id}'.` }
+    }
+    if (seen.has(id)) return { ok: false, error: `Plugin duplicado en el pipeline: '${id}'.` }
+    seen.add(id)
+    const options = pl.options && typeof pl.options === 'object' && !Array.isArray(pl.options)
+      ? pl.options as Record<string, unknown>
+      : {}
+    plugins.push({ id, enabled: pl.enabled !== false, options })
+  }
+  return { ok: true, plugins }
+}
+
+/**
+ * Serializa la lista de plugins a entradas JS del bloque gestionado.
+ * Panda base SIEMPRE primero; los deshabilitados se omiten del .cjs.
+ */
+function serializeManagedBlock(plugins: PipelinePluginEntry[]): string {
+  const lines: string[] = []
+  const ordered = [
+    { id: PANDA_PLUGIN_ID, options: {} },
+    ...plugins.filter((p) => p.id !== PANDA_PLUGIN_ID),
+  ]
+  for (const pl of ordered) {
+    if (pl.enabled === false) continue
+    lines.push(`    ${JSON.stringify(pl.id)}: ${JSON.stringify(pl.options || {})},`)
+  }
+  return lines.join('\n')
+}
+
+/**
+ * Escribe la lista de plugins en el bloque gestionado de postcss.config.cjs.
+ * Si el archivo no existe, lo crea con el scaffold base (Panda). Si existe
+ * pero no tiene markers, inserta el bloque tras `plugins: {` (o al final del
+ * archivo como último recurso). Devuelve si cambió el archivo.
+ */
+export function writePipelineConfig(projectRoot: string, plugins: PipelinePluginEntry[]): boolean {
+  const p = pipelineConfigPath(projectRoot)
+  const block = serializeManagedBlock(plugins)
+  const managed = `  ${POSTCSS_MARKER}\n${block}\n  ${POSTCSS_MARKER_END}`
+
+  let next: string
+  if (!existsSync(p)) {
+    next = `// postcss.config.cjs — pipeline postcss del proyecto (Panda es una capa).\n` +
+      `// Gestionado por \`panda-ui-mithril config\` (sección Postcss → Configure).\n` +
+      `module.exports = {\n  plugins: {\n${managed}\n  },\n}\n`
+  } else {
+    const src = readFileSync(p, 'utf8')
+    const start = src.indexOf(POSTCSS_MARKER)
+    const end = src.indexOf(POSTCSS_MARKER_END)
+    if (start !== -1 && end !== -1 && end > start) {
+      // Reemplaza SOLO el interior del par de markers.
+      next = src.slice(0, start + POSTCSS_MARKER.length) +
+        '\n' + block + '\n  ' +
+        src.slice(end)
+    } else {
+      // Sin markers: inserta el bloque justo después de `plugins: {`.
+      const anchor = 'plugins: {'
+      const ai = src.indexOf(anchor)
+      if (ai !== -1) {
+        const after = ai + anchor.length
+        next = src.slice(0, after) + '\n' + managed + '\n' + src.slice(after)
+      } else {
+        // Último recurso: anexar module.exports con los plugins.
+        next = src.trimEnd() + '\nmodule.exports = {\n  plugins: {\n' + managed + '\n  },\n}\n'
+      }
+    }
+  }
+  if (next === readPipelineConfigSource(p)) return false
+  writeFileSync(p, next, 'utf8')
+  return true
+}
+
+/** Lee el contenido actual del archivo ('' si no existe). */
+function readPipelineConfigSource(p: string): string {
+  return existsSync(p) ? readFileSync(p, 'utf8') : ''
+}
+
+// ── Metadatos de build ({raiz}/postcss.build.json) ───────────────────────────
+// Entry y output del pipeline postcss. NO son parte del estándar
+// postcss.config.cjs: viven en un json de metadatos del editor (raiz =
+// dirname(themeDir), igual que fonts-loaded.json) y son configurables por el
+// usuario desde la viñeta Configure.
+
+/** Un plugin configurado en el pipeline (alias público de la UI). */
+export interface PostcssBuildConfig {
+  /** Entry css con la directiva @layer (default: pum/index.css). */
+  entry: string
+  /** Output del pipeline (default: styled-system/styles.css). */
+  output: string
+}
+
+const BUILD_DEFAULTS: PostcssBuildConfig = {
+  entry: 'pum/index.css',
+  output: 'styled-system/styles.css',
+}
+
+export const BUILD_CONFIG_NAME = 'postcss.build.json'
+
+/** Ruta del build config (raiz = dirname(themeDir) → pum/ o src/). */
+export function buildConfigPath(themeDir: string): string {
+  return join(dirname(themeDir), BUILD_CONFIG_NAME)
+}
+
+/** Lee {raiz}/postcss.build.json; defaults si no existe o es inválido. */
+export function readBuildConfig(themeDir: string): PostcssBuildConfig {
+  const p = buildConfigPath(themeDir)
+  if (!existsSync(p)) return { ...BUILD_DEFAULTS }
+  try {
+    const d = JSON.parse(readFileSync(p, 'utf8')) as Partial<PostcssBuildConfig>
+    return {
+      entry: typeof d.entry === 'string' && d.entry.trim() ? d.entry.trim() : BUILD_DEFAULTS.entry,
+      output: typeof d.output === 'string' && d.output.trim() ? d.output.trim() : BUILD_DEFAULTS.output,
+    }
+  } catch {
+    return { ...BUILD_DEFAULTS }
+  }
+}
+
+/** Escribe {raiz}/postcss.build.json. Devuelve si cambió. */
+export function writeBuildConfig(themeDir: string, cfg: PostcssBuildConfig): boolean {
+  const p = buildConfigPath(themeDir)
+  const clean = {
+    entry: cfg.entry && cfg.entry.trim() ? cfg.entry.trim() : BUILD_DEFAULTS.entry,
+    output: cfg.output && cfg.output.trim() ? cfg.output.trim() : BUILD_DEFAULTS.output,
+  }
+  const next = JSON.stringify(clean, null, 2) + '\n'
+  const prev = existsSync(p) ? readFileSync(p, 'utf8') : ''
+  if (prev === next) return false
+  writeFileSync(p, next, 'utf8')
+  return true
 }

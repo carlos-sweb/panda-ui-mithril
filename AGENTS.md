@@ -402,6 +402,24 @@ helpers and `styles.css` are generated and where `index.html` links
 (`./styled-system/styles.css`); a different outdir means the stylesheet is
 never loaded.
 
+**CSS pipeline (PostCSS)** — the recommended way to build the consumer CSS is
+Panda as a PostCSS plugin (https://panda-css.com/docs/installation/postcss),
+which is what `init` scaffolds since it matches the repo's own build
+(`playground/style.css` → postcss → `styled-system/styles.css`):
+- `postcss.config.cjs` (project root): `plugins` with `'@pandacss/dev/postcss'`
+  ALWAYS first (Panda base) + any extra plugins. config-ui manages the block
+  between the markers `/* pum:postcss */` … `/* /pum:postcss */`; manual
+  plugins outside the markers are preserved.
+- `pum/index.css` (default entry, configurable): first line
+  `@layer reset, base, tokens, recipes, utilities;` — the directive Panda
+  replaces with the generated CSS. Output default `styled-system/styles.css`
+  (configurable); `{raiz}/postcss.build.json` stores entry/output (editor
+  metadata, like `fonts-loaded.json`).
+- Rebuild: `runRebuild` in the editor is postcss-aware — if the project has
+  `postcss.config.cjs` it runs `panda codegen` + `config-ui/postcss-runner.cjs`
+  (reads the config, instantiates each plugin from the project's node_modules
+  and processes entry → output); otherwise it falls back to `codegen + cssgen`.
+
 Consumer JSX for the `.jsx` components: only `Button` and `Alert` are `.jsx`;
 importing them requires Mithril's classic JSX transform in the consumer's
 bundler (`jsx: "react"`, `jsxFactory: "m"`, `jsxFragmentFactory: "m.Fragment"`
@@ -433,8 +451,9 @@ so it never clobbers the playground's `styled-system/`).
 - Without a flag: **upward search** from `process.cwd()` (up to 10 levels),
   trying `pum/theme` (consumer) then `src/theme` (this repo).
 - Returns `{ themeDir, projectRoot, legacy }`; `projectRoot` = dir containing
-  `panda.config.ts` (found by walking up) — `POST /api/rebuild` runs
-  `bunx panda codegen && cssgen` in **`projectRoot`**, never in `process.cwd()`.
+  `panda.config.ts` (found by walking up) — `POST /api/rebuild` regenerates the
+  CSS in **`projectRoot`**, never in `process.cwd()` (postcss-aware: see the
+  pipeline block below).
 - `GET /api/theme` also returns `themeRel` (e.g. `pum/theme` or `src/theme`)
   so the pages show the real edited path instead of a hardcoded one.
 
@@ -510,6 +529,45 @@ last token per category); `extractBalanced` must match `marker` followed by
   NUNCA escribas `*/` dentro de un JSDoc en
   estos archivos (p. ej. rutas con `fonts/` dentro de un comentario): cierra
   el comentario y rompe el bundle de la SPA en silencio.
+
+**Postcss section — plugins de PostCSS por paquetes npm** (`config-ui/server.ts`
++ `config-ui/postcss-api.ts` + `config-ui/postcss-schemas.ts` + página
+`config-ui/pages/postcss/`): gestiona el pipeline postcss del proyecto
+(modelo Panda-as-Plugin, ver sección Consumer):
+- **Viñeta Install**: catálogo OFICIAL de `postcss.org/docs/postcss-plugins`
+  (scrapeado del HTML server-rendered, 13 categorías/~353 plugins, caché 30
+  min). "Install" ejecuta `bun add {paquete}` en el projectRoot (paquete npm
+  RESUELTO contra la registry con candidatos del href: npmjs.com/package,
+  último segmento github, nombre, `postcss-`+nombre; caché 1 h).
+- **Viñeta Available**: plugins del catálogo presentes en node_modules (con
+  flag `configurable` si hay esquema curado).
+- **Viñeta Configure** (fuente = `postcss.config.cjs` del projectRoot):
+  `readPipelineConfig`/`writePipelineConfig` reescriben SOLO el bloque entre
+  los markers `/* pum:postcss */` … `/* /pum:postcss */` (plugins manuales
+  fuera del bloque se conservan); `'@pandacss/dev/postcss'` (base, de
+  `postcss-schemas.ts` → `PANDA_PLUGIN_ID`) SIEMPRE primero y no removible;
+  `enabled: false` se omite al escribir. El editor de opciones se genera de
+  los esquemas curados (`postcss-schemas.ts`): tipos string/number/boolean/
+  enum (value+label)/array/regex/json; opciones FUNCIÓN → `editable:false` +
+  `notes`. Sin esquema → editor JSON libre. Build entry/output (defaults
+  `pum/index.css` → `styled-system/styles.css`) se guardan en
+  `{raiz}/postcss.build.json` (`readBuildConfig`/`writeBuildConfig`).
+- **Runner**: `config-ui/postcss-runner.cjs` ejecuta el pipeline declarado en
+  el `postcss.config.cjs` del proyecto (require de `postcss` y de cada plugin
+  desde el node_modules del PROYECTO vía createRequire; soporta objeto
+  name→opts, arrays [name, opts] y funciones). `runRebuild` lo usa cuando
+  `hasPostcssConfig(projectRoot)` (tras `panda codegen`); si no, `cssgen`.
+- **Endpoints**: `GET/POST /api/postcss/config` (plugins del .cjs + build
+  config), `GET /api/postcss/catalog?q=`, `GET /api/postcss/available`,
+  `POST /api/postcss/install|remove`. Mismo contrato de error que /api/theme.
+- **Reglas críticas**: NUNCA escribas `*/` dentro de un JSDoc (cierra el
+  comentario y rompe el bundle de la SPA en silencio). El bloque gestionado se
+  serializa con `JSON.stringify` por entrada (claves con comillas dobles,
+  válido como JS y parseable envolviéndolo en `({ ... })`); el interior del
+  par de markers se evalúa con `new Function('return ({ ' + src + ' })')`.
+  `postcss-schemas.ts` NO importa node (se bundlea en la SPA); `postcss-api.ts`
+  y `server.ts` sí. El runner nunca se ejecuta contra el propio repo por
+  defecto: el repo no tiene `postcss.config.cjs` (usa `scripts/build-css.ts`).
 
 ## Commit Conventions
 

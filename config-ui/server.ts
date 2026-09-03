@@ -47,9 +47,12 @@ import {
   tokensForFamily, unassignFont,
 } from './fonts-api'
 import {
-  availablePlugins, bunAddPackage, bunRemovePackage, catalog, packageInstalled,
-  resolveNpmPackage, searchCatalog,
+  availablePlugins, bunAddPackage, bunRemovePackage, buildConfigPath, catalog,
+  hasPostcssConfig, packageInstalled, pipelineConfigPath, readBuildConfig,
+  readPipelineConfig, resolveNpmPackage, sanitizePipelineConfig, searchCatalog,
+  writeBuildConfig, writePipelineConfig,
 } from './postcss-api'
+import { schemaFor, PANDA_PLUGIN_ID } from './postcss-schemas'
 
 const PORT = portFromArgv() ?? 1234
 const CLI_DIR = dirname(fileURLToPath(import.meta.url))
@@ -204,28 +207,52 @@ app.post('/api/theme', async ({ request }) => {
   }
 })
 
-// ── API: rebuild (codegen + cssgen) ───────────────────────────────────────
+// ── API: rebuild (codegen + cssgen, o pipeline postcss) ────────────────────
 /**
- * codegen + cssgen en la raíz del proyecto (donde está panda.config.ts),
- * nunca en process.cwd() — el editor puede haberse lanzado desde un
- * subdirectorio. Se reusa para el rebuild manual (POST /api/rebuild) y para
- * los rebuilds automáticos tras añadir/asignar/desasignar fuentes.
+ * Regenera el CSS del proyecto en su raíz (donde está panda.config.ts), nunca
+ * en process.cwd() — el editor puede haberse lanzado desde un subdirectorio.
+ *
+ * Postcss-aware: si el proyecto tiene postcss.config.cjs (modelo recomendado
+ * por Panda), corre `panda codegen` + el pipeline postcss declarado en ese
+ * archivo sobre el entry css (configurable; default pum/index.css) hacia el
+ * output (default styled-system/styles.css). Si no, mantiene el flujo clásico
+ * `panda codegen && panda cssgen`.
  */
-function runRebuild(projectRoot: string) {
+function runRebuild(projectRoot: string, themeDir?: string | null) {
   const codegen = spawnSync('bunx', ['panda', 'codegen'], { cwd: projectRoot, encoding: 'utf8' })
+
+  if (themeDir && hasPostcssConfig(projectRoot)) {
+    const build = readBuildConfig(themeDir)
+    const runner = join(UI_DIR, 'postcss-runner.cjs')
+    const r = spawnSync('bun', [runner, projectRoot, build.entry, build.output], {
+      cwd: projectRoot,
+      encoding: 'utf8',
+      timeout: 240_000,
+    })
+    return {
+      ok: codegen.status === 0 && r.status === 0,
+      codegen: codegen.stderr?.slice(-200),
+      postcss: String(r.stdout || '') + String(r.stderr || ''),
+      cssgen: null,
+      mode: 'postcss' as const,
+    }
+  }
+
   const cssgen = spawnSync('bunx', ['panda', 'cssgen'], { cwd: projectRoot, encoding: 'utf8' })
   return {
     ok: codegen.status === 0 && cssgen.status === 0,
     codegen: codegen.stderr?.slice(-200),
     cssgen: cssgen.stderr?.slice(-200),
+    postcss: null,
+    mode: 'cssgen' as const,
   }
 }
 
 app.post('/api/rebuild', () => {
   const found = resolveTheme(process.cwd())
   const cwd = found.projectRoot || process.cwd()
-  const result = runRebuild(cwd)
-  return { ok: result.ok, codegen: result.codegen, cssgen: result.cssgen }
+  const result = runRebuild(cwd, found.themeDir)
+  return { ok: result.ok, codegen: result.codegen, cssgen: result.cssgen, postcss: result.postcss, mode: result.mode }
 })
 
 // ── API: fuentes (modelo npm — catálogo, añadir, disponibles, asignar) ─────
@@ -277,7 +304,7 @@ app.get('/api/fonts/available', () => {
     const themeDir = found.themeDir!
     const projectRoot = found.projectRoot || dirname(themeDir)
     // Autocuración 0: garantiza los roles tipográficos (display) en fonts.ts.
-    if (ensureRoleTokens(themeDir)) runRebuild(projectRoot)
+    if (ensureRoleTokens(themeDir)) runRebuild(projectRoot, themeDir)
     // Autocuración 1: migra instalaciones self-hosted antiguas ({raiz}/fonts)
     // a paquetes npm (bun add + fonts-loaded.json + limpieza).
     const migrated = migrateLegacyFonts(themeDir, projectRoot)
@@ -286,7 +313,7 @@ app.get('/api/fonts/available', () => {
     pruneLoaded(themeDir)
     const configPath = join(projectRoot, 'panda.config.ts')
     const src = existsSync(configPath) ? readFileSync(configPath, 'utf8') : ''
-    if (src && syncBlock(themeDir, projectRoot, src)) runRebuild(projectRoot)
+    if (src && syncBlock(themeDir, projectRoot, src)) runRebuild(projectRoot, themeDir)
     // wired: las fuentes cargadas compilan en styles.css vía Panda.
     const wired = src !== '' && fontfaceWired(src)
     const available = availableFonts(projectRoot)
@@ -353,7 +380,7 @@ app.post('/api/fonts/assign', async ({ request }) => {
       subsets: Array.isArray(body.subsets) ? body.subsets.map(String) : undefined,
     })
     if (!res.ok) return { ok: false, error: res.error }
-    const rebuild = res.changed ? runRebuild(projectRoot) : { ok: true }
+    const rebuild = res.changed ? runRebuild(projectRoot, themeDir) : { ok: true }
     return {
       ok: true,
       family: res.family,
@@ -380,7 +407,7 @@ app.post('/api/fonts/unassign', async ({ request }) => {
     const projectRoot = found.projectRoot || dirname(themeDir)
     const res = unassignFont(themeDir, projectRoot, String(body.id), !!body.variable)
     if (!res.ok) return { ok: false, error: res.error }
-    const rebuild = res.changed ? runRebuild(projectRoot) : { ok: true }
+    const rebuild = res.changed ? runRebuild(projectRoot, themeDir) : { ok: true }
     return {
       ok: true,
       resetTokens: res.resetTokens,
@@ -405,7 +432,7 @@ app.post('/api/fonts/remove', async ({ request }) => {
     const projectRoot = found.projectRoot || dirname(themeDir)
     const res = removePackage(themeDir, projectRoot, String(body.id), !!body.variable)
     if (!res.ok) return { ok: false, error: res.error }
-    const rebuild = res.changed ? runRebuild(projectRoot) : { ok: true }
+    const rebuild = res.changed ? runRebuild(projectRoot, themeDir) : { ok: true }
     return {
       ok: true,
       resetTokens: res.resetTokens,
@@ -460,7 +487,12 @@ app.get('/api/postcss/available', async () => {
   const projectRoot = found.projectRoot || dirname(found.themeDir!)
   try {
     const categories = await catalog()
-    return { ok: true, available: availablePlugins(projectRoot, categories) }
+    const available = availablePlugins(projectRoot, categories).map((p) => ({
+      ...p,
+      // El plugin tiene esquema curado (editor tipado) o es un pack conocido.
+      configurable: !!schemaFor(p.npm) || !!schemaFor(p.name),
+    }))
+    return { ok: true, available }
   } catch (e) {
     return { ok: false, error: `postcss.org: ${String(e)}` }
   }
@@ -507,6 +539,79 @@ app.post('/api/postcss/remove', async ({ request }) => {
     const r = bunRemovePackage(projectRoot, pkg)
     if (!r.ok) return { ok: false, error: `bun remove ${pkg} falló: ${r.output.slice(-250)}` }
     return { ok: true, pkg }
+  } catch (e) {
+    return { ok: false, error: String(e) }
+  }
+})
+
+// ── API: pipeline config (postcss.config.cjs — plugins del build css) ───────
+// La fuente de verdad es postcss.config.cjs en la raíz del proyecto (modelo
+// recomendado por Panda: el plugin de Panda como capa + plugins con opciones,
+// bloque gestionado entre markers). El build (entry/output) vive en
+// {raiz}/postcss.build.json, configurable por el usuario.
+
+/** Lee el pipeline (postcss.config.cjs) + build config (entry/output). */
+app.get('/api/postcss/config', () => {
+  const found = resolveTheme(process.cwd())
+  const err = themeError(found)
+  if (err) return err
+  const themeDir = found.themeDir!
+  const projectRoot = found.projectRoot || dirname(themeDir)
+  try {
+    const plugins = readPipelineConfig(projectRoot)
+    const build = readBuildConfig(themeDir)
+    return {
+      ok: true,
+      path: relative(process.cwd(), pipelineConfigPath(projectRoot)),
+      hasConfig: hasPostcssConfig(projectRoot),
+      plugins,
+      build,
+      buildPath: relative(process.cwd(), buildConfigPath(themeDir)),
+    }
+  } catch (e) {
+    return { ok: false, error: String(e) }
+  }
+})
+
+/** Escribe el pipeline (plugins en postcss.config.cjs) + build config. */
+app.post('/api/postcss/config', async ({ request }) => {
+  const found = resolveTheme(process.cwd())
+  const err = themeError(found)
+  if (err) return err
+  const themeDir = found.themeDir!
+  const projectRoot = found.projectRoot || dirname(themeDir)
+  const body = await request.json().catch(() => ({})) as Record<string, unknown>
+  try {
+    const clean = sanitizePipelineConfig(body.plugins)
+    if (!clean.ok) return { ok: false, error: clean.error }
+    // Valida que los plugins referenciados estén instalados. El plugin de
+    // Panda (@pandacss/dev/postcss) NO es un paquete standalone: es un subpath
+    // de @pandacss/dev (siempre presente si panda codegen funciona).
+    const missing = clean.plugins
+      .filter((pl) => pl.id !== PANDA_PLUGIN_ID)
+      .filter((pl) => !packageInstalled(projectRoot, pl.id))
+    if (missing.length > 0) {
+      return {
+        ok: false,
+        error: `No instalados — usa la viñeta Install: ${missing.map((p) => p.id).join(', ')}.`,
+      }
+    }
+    const changed = writePipelineConfig(projectRoot, clean.plugins)
+    let buildChanged = false
+    if (body.build && typeof body.build === 'object') {
+      const b = body.build as { entry?: unknown; output?: unknown }
+      buildChanged = writeBuildConfig(themeDir, {
+        entry: String(b.entry ?? ''),
+        output: String(b.output ?? ''),
+      })
+    }
+    return {
+      ok: true,
+      changed,
+      buildChanged,
+      path: relative(process.cwd(), pipelineConfigPath(projectRoot)),
+      buildPath: relative(process.cwd(), buildConfigPath(themeDir)),
+    }
   } catch (e) {
     return { ok: false, error: String(e) }
   }

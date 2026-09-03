@@ -2,24 +2,51 @@ title: Postcss
 intro: Pipeline de generación del CSS del proyecto — Panda es una capa; los plugins de PostCSS procesan su salida (podado de variables de tokens sin uso, copia de urls, nesting, autoprefixer, minificación).
 loadingCatalog: Cargando el listado oficial de plugins…
 errorPrefix: 'Error: '
+savedAndRebuilt: Pipeline guardado ✓
 tabs:
   install: Instalar
   available: Disponibles
+  configure: Configurar
 install:
-  intro: Busca en el listado oficial de plugins de PostCSS — “Install” ejecuta bun add en tu proyecto y el plugin queda disponible en node_modules. Cablearlo al pipeline de CSS es un paso posterior.
+  intro: Busca en el listado oficial de plugins de PostCSS — “Install” ejecuta bun add en tu proyecto y el plugin queda disponible en node_modules. Después configúralo en la viñeta Configurar.
   placeholder: Buscar plugins… (p. ej. import, preset-env, nested)
   noResults: 'Ningún plugin coincide con "{query}".'
-  category: '{category}'
   install: Instalar
   installing: Instalando…
   installed: instalado
-  installedHint: '{name} instalado como {pkg} — ya está disponible en node_modules.'
+  installedHint: '{name} instalado como {pkg} — configúralo en la viñeta Configurar.'
   seeMore: Ver página del plugin
 available:
-  intro: Plugins del catálogo oficial presentes en este proyecto (node_modules). Cablearlos al pipeline es el siguiente paso.
+  intro: Plugins del catálogo oficial presentes en este proyecto (node_modules). Añádelo al pipeline para configurarlo, o quita el paquete.
   empty: Aún no hay plugins del catálogo en node_modules — usa la viñeta Instalar.
   loading: Cargando plugins instalados…
   remove: Quitar paquete
   removing: Quitando…
   removed: '{pkg} quitado.'
   npm: 'npm: {pkg}'
+  addToPipeline: Añadir al pipeline
+  inPipeline: en el pipeline
+configure:
+  intro: 'Plugins del pipeline PostCSS — se guardan en'
+  empty: El pipeline está vacío. Añade plugins desde la viñeta Disponibles.
+  noConfigYet: Aún no hay postcss.config.cjs — Guardar lo crea (Panda vía PostCSS).
+  pandaBase: Panda (base)
+  addFromAvailable: Añadir desde Disponibles
+  addFromAvailableHint: 'Elige un plugin instalado para añadirlo:'
+  saving: Guardando…
+  save: Guardar pipeline
+  rebuild: Reconstruir CSS
+  rebuilding: Reconstruyendo…
+  reload: Recargar
+  enabled: Activo
+  disabled: Inactivo
+  removeFromPipeline: Quitar del pipeline
+  noSchema: No hay esquema curado para este plugin — edita las opciones como JSON libre.
+  enumDefault: '(por defecto)'
+  addItem: Añadir elemento
+  removeItem: Quitar elemento
+  invalidJson: 'JSON inválido para {key}: {error}'
+  buildTitle: Build (pipeline PostCSS)
+  buildHint: El CSS de entrada debe contener la directiva @layer; el de salida es el que enlaza tu index.html.
+  entry: CSS de entrada
+  output: CSS de salida

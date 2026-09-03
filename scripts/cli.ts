@@ -51,6 +51,11 @@ const PKG_DIR = join(CLI_DIR, '..')
 const CONFIG_NAME = 'panda.config.ts'
 const TSCONFIG_NAME = 'tsconfig.json'
 const PUM_DIR = 'pum'
+const POSTCSS_CONFIG_NAME = 'postcss.config.cjs'
+// Entry css del pipeline postcss (default; el usuario puede cambiarlo en
+// config-ui → Postcss). La directiva @layer activa la generación del CSS de
+// Panda (reset/base/tokens/recipes/utilities) al correr postcss.
+const PUM_ENTRY_CSS = 'pum/index.css'
 
 const CONFIG_TEMPLATE = `import { defineConfig } from '@pandacss/dev'
 import pandaPreset from '@pandacss/preset-panda'
@@ -68,6 +73,61 @@ export default defineConfig({
 })
 `
 
+// Marker que delimita el bloque de plugins gestionado por config-ui dentro
+// de postcss.config.cjs (mismo patrón que /* pum:fontfaces */ en panda.config).
+// Apertura y cierre en líneas propias: el editor reemplaza SOLO el interior
+// del par; todo lo demás del archivo se conserva.
+const POSTCSS_MARKER = '/* pum:postcss */'
+const POSTCSS_MARKER_END = '/* /pum:postcss */'
+
+// postcss.config.cjs base: Panda como plugin de PostCSS (vía recomendada por
+// panda-css.com/docs/installation/postcss). El bloque entre markers lo
+// gestiona config-ui (sección Postcss → Configure): añade/quita plugins
+// instalados con sus opciones. Todo lo que escribas FUERA del bloque (p. ej.
+// más entradas en `plugins` antes/después del par) se conserva al guardar.
+const POSTCSS_CONFIG_TEMPLATE = `// postcss.config.cjs — pipeline postcss del proyecto (Panda es una capa).
+// El bloque entre ${POSTCSS_MARKER} y ${POSTCSS_MARKER_END} lo gestiona
+// \`panda-ui-mithril config\` (sección Postcss → Configure). No edites su
+// interior a mano si usas el editor; sí puedes añadir plugins manuales fuera
+// del par de markers (se conservan al guardar).
+module.exports = {
+  plugins: {
+    ${POSTCSS_MARKER}
+    '@pandacss/dev/postcss': {},
+    ${POSTCSS_MARKER_END}
+  },
+}
+`
+
+// Entry css del pipeline postcss. La primera línea (@layer …) es la directiva
+// que el plugin de Panda reemplaza por el CSS generado (preflight, tokens,
+// recipes, utilities) — el resto del archivo es css propio del proyecto.
+const PUM_INDEX_CSS_TEMPLATE = `/* Entry CSS del pipeline postcss — gestionado por panda-ui-mithril config.
+   La directiva @layer activa la generación del CSS de Panda (reset, base,
+   tokens, recipes, utilities) al correr postcss sobre este archivo. */
+@layer reset, base, tokens, recipes, utilities;
+`
+
+/**
+ * Crea el scaffold postcss del proyecto (solo si no existe, o --force):
+ *   - postcss.config.cjs (raíz): Panda como plugin de PostCSS + marker.
+ *   - pum/index.css (entry del pipeline con la directiva @layer).
+ */
+function writePostcssScaffold(cwd: string, force: boolean) {
+  const configPath = join(cwd, POSTCSS_CONFIG_NAME)
+  if (!existsSync(configPath) || force) {
+    writeFileSync(configPath, POSTCSS_CONFIG_TEMPLATE)
+    console.log(`✔ Created ${POSTCSS_CONFIG_NAME} (Panda via PostCSS)`)
+  }
+
+  const entryPath = join(cwd, PUM_ENTRY_CSS)
+  if (!existsSync(entryPath) || force) {
+    mkdirSync(dirname(entryPath), { recursive: true })
+    writeFileSync(entryPath, PUM_INDEX_CSS_TEMPLATE)
+    console.log(`✔ Created ${PUM_ENTRY_CSS} (entry CSS with @layer)`)
+  }
+}
+
 // Mithril JSX fields the dev server needs to compile the package's .jsx
 // components (Button/Alert).
 const JSX_FIELDS = {
@@ -82,8 +142,11 @@ Usage:
   bunx panda-ui-mithril init            Copies pum/preset.ts + pum/theme.ts +
                                          pum/theme/*.ts into your project,
                                          creates panda.config.ts (pointing to
-                                         ./pum/preset) and merges the Mithril
-                                         JSX fields into tsconfig.json.
+                                         ./pum/preset), merges the Mithril JSX
+                                         fields into tsconfig.json, and scaffolds
+                                         the PostCSS pipeline (postcss.config.cjs
+                                         with Panda as a plugin + pum/index.css
+                                         entry with @layer).
                                          Migrates an old single-file pum/theme.ts
                                          layout automatically (values preserved).
   bunx panda-ui-mithril init --force    Overwrites if pum/ or panda.config.ts
@@ -101,16 +164,22 @@ Usage:
   bunx panda-ui-mithril --help          Shows this help.
 
 The editable theme lives in pum/theme/*.ts — change colors/scales there and
-recompile (bunx panda codegen && bunx panda cssgen). Recipes are NOT copied:
-they come from the package via panda-ui-mithril/recipes.
+recompile. Recipes are NOT copied: they come from the package via
+panda-ui-mithril/recipes.
+
+The CSS pipeline follows Panda's recommended PostCSS integration:
+postcss.config.cjs declares the plugins (Panda base + any extras, managed by
+the config editor) and pum/index.css is the entry (@layer directive) that
+PostCSS processes into styled-system/styles.css.
 
 Prerequisites (Quick Start steps):
   bun add -d @pandacss/dev @pandacss/preset-panda
   bun add https://github.com/carlos-sweb/panda-ui-mithril.git mithril
 
 After init:
-  bunx panda codegen && bunx panda cssgen
-  bun index.html            # opens http://localhost:3000
+  bunx panda-ui-mithril config         # theme + Postcss → Configure (builds CSS)
+  bunx panda codegen                   # generates Panda assets (helpers)
+  bun index.html                       # opens http://localhost:3000
 `
 
 /** Merges the Mithril JSX fields into tsconfig.json (creates one if missing). */
@@ -300,11 +369,14 @@ async function main() {
   writeFileSync(target, CONFIG_TEMPLATE)
   console.log(`✔ Created ${CONFIG_NAME}`)
   ensureJsxConfig(cwd)
+  writePostcssScaffold(cwd, force)
   console.log('')
   console.log('The editable theme is in pum/theme/*.ts (colors/fonts/spacing/radii/keyframes).')
+  console.log('The CSS pipeline is postcss.config.cjs (Panda via PostCSS) + pum/index.css (entry with @layer).')
   console.log('Next steps:')
-  console.log('  bunx panda codegen && bunx panda cssgen')
-  console.log('  bun index.html            # opens http://localhost:3000')
+  console.log('  bunx panda-ui-mithril config   # theme + Postcss → Configure (builds the CSS)')
+  console.log('  bunx panda codegen             # generates Panda assets (helpers)')
+  console.log('  bun index.html                 # opens http://localhost:3000')
 }
 
 await main()
