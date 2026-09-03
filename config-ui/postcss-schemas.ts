@@ -423,20 +423,25 @@ define({
 })
 
 // ── cssnano (instalado en el repo; preset pack) ──────────────────────────────
+// cssnano solo trae `cssnano-preset-default` como dependencia real; los
+// presets 'lite'/'advanced' requieren instalar cssnano-preset-lite/
+// cssnano-preset-advanced aparte (no están en el catálogo postcss.org, así
+// que la UI no puede instalarlos) → el enum solo ofrece lo que funciona.
 define({
   id: 'cssnano',
   description: 'Optimize CSS for production (preset pack).',
+  notes: [
+    'Solo el preset `default` está garantizado (dependencia de cssnano). `lite` y `advanced` requieren instalar el paquete cssnano-preset-lite / cssnano-preset-advanced a mano.',
+  ],
   options: [
     {
       key: 'preset',
       type: 'enum',
       enum: [
         { value: 'default', label: 'default' },
-        { value: 'lite', label: 'lite' },
-        { value: 'advanced', label: 'advanced' },
       ],
       default: 'default',
-      description: 'Preset de optimización de cssnano.',
+      description: 'Preset de optimización de cssnano (default: recomendado).',
     },
   ],
 })

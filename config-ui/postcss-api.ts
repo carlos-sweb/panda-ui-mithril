@@ -354,6 +354,24 @@ function evalManagedBlock(inner: string): Record<string, Record<string, unknown>
 const PANDA_BASE = (): PipelinePluginEntry[] => [{ id: PANDA_PLUGIN_ID, enabled: true, options: {} }]
 
 /**
+ * Localiza el bloque gestionado: el par de markers que está DENTRO del
+ * `module.exports` (el template pone la cabecera —comentarios— ANTES de él).
+ * Buscar el primer marker del archivo sería un bug: si un comentario de
+ * cabecera mencionara los literales, `indexOf` apuntaría ahí y el editor
+ * insertaría plugins en medio del comentario.
+ */
+function findManagedBlock(src: string): { start: number; end: number } | null {
+  // Ancla en module.exports: los markers reales viven en su objeto plugins.
+  const anchor = src.lastIndexOf('module.exports')
+  const from = anchor === -1 ? 0 : anchor
+  const start = src.indexOf(POSTCSS_MARKER, from)
+  if (start === -1) return null
+  const end = src.indexOf(POSTCSS_MARKER_END, start + POSTCSS_MARKER.length)
+  if (end === -1 || end <= start) return null
+  return { start, end }
+}
+
+/**
  * Lee el pipeline del postcss.config.cjs: plugins gestionados en el bloque
  * (Panda base SIEMPRE primero + el resto en orden). Si el archivo no existe o
  * el bloque no se puede leer, devuelve solo la base de Panda.
@@ -367,10 +385,9 @@ export function readPipelineConfig(projectRoot: string): PipelinePluginEntry[] {
   } catch {
     return PANDA_BASE()
   }
-  const start = src.indexOf(POSTCSS_MARKER)
-  const end = src.indexOf(POSTCSS_MARKER_END)
-  if (start === -1 || end === -1 || end <= start) return PANDA_BASE()
-  const inner = src.slice(start + POSTCSS_MARKER.length, end)
+  const block = findManagedBlock(src)
+  if (!block) return PANDA_BASE()
+  const inner = src.slice(block.start + POSTCSS_MARKER.length, block.end)
   const parsed = evalManagedBlock(inner)
   if (!parsed) return PANDA_BASE()
   const out: PipelinePluginEntry[] = []
@@ -442,38 +459,76 @@ function serializeManagedBlock(plugins: PipelinePluginEntry[]): string {
 export function writePipelineConfig(projectRoot: string, plugins: PipelinePluginEntry[]): boolean {
   const p = pipelineConfigPath(projectRoot)
   const block = serializeManagedBlock(plugins)
-  const managed = `  ${POSTCSS_MARKER}\n${block}\n  ${POSTCSS_MARKER_END}`
+  // Indentación canónica de los markers: 4 espacios (igual que init).
+  const managed = `    ${POSTCSS_MARKER}\n${block}\n    ${POSTCSS_MARKER_END}`
 
   let next: string
   if (!existsSync(p)) {
-    next = `// postcss.config.cjs — pipeline postcss del proyecto (Panda es una capa).\n` +
-      `// Gestionado por \`panda-ui-mithril config\` (sección Postcss → Configure).\n` +
-      `module.exports = {\n  plugins: {\n${managed}\n  },\n}\n`
+    next = scaffoldConfigSource(managed)
   } else {
     const src = readFileSync(p, 'utf8')
-    const start = src.indexOf(POSTCSS_MARKER)
-    const end = src.indexOf(POSTCSS_MARKER_END)
-    if (start !== -1 && end !== -1 && end > start) {
-      // Reemplaza SOLO el interior del par de markers.
-      next = src.slice(0, start + POSTCSS_MARKER.length) +
-        '\n' + block + '\n  ' +
-        src.slice(end)
+    // Si el archivo no es CJS válido (p. ej. se corrompió con un guardado
+    // viejo que insertaba el bloque en un comentario de cabecera), se
+    // REGENERA desde el scaffold: no hay forma segura de editarlo por markers.
+    if (!isValidCjs(src)) {
+      next = scaffoldConfigSource(managed)
     } else {
-      // Sin markers: inserta el bloque justo después de `plugins: {`.
-      const anchor = 'plugins: {'
-      const ai = src.indexOf(anchor)
-      if (ai !== -1) {
-        const after = ai + anchor.length
-        next = src.slice(0, after) + '\n' + managed + '\n' + src.slice(after)
+      const loc = findManagedBlock(src)
+      if (loc) {
+        // Reemplaza SOLO el interior del par de markers por el bloque
+        // serializado (`block`, string), nunca por el objeto de índices.
+        // Conserva la indentación de la línea del marker de apertura para
+        // reusarla en el marker de cierre (archivo estéticamente estable).
+        const lineStart = src.lastIndexOf('\n', loc.start - 1) + 1
+        const indent = src.slice(lineStart, loc.start)
+        next = src.slice(0, loc.start) + POSTCSS_MARKER +
+          '\n' + block + '\n' + indent +
+          src.slice(loc.end)
       } else {
-        // Último recurso: anexar module.exports con los plugins.
-        next = src.trimEnd() + '\nmodule.exports = {\n  plugins: {\n' + managed + '\n  },\n}\n'
+        // Sin markers: inserta el bloque justo después de `plugins: {`.
+        const anchor = 'plugins: {'
+        const ai = src.indexOf(anchor)
+        if (ai !== -1) {
+          const after = ai + anchor.length
+          next = src.slice(0, after) + '\n' + managed + '\n' + src.slice(after)
+        } else {
+          // Último recurso: anexar module.exports con los plugins.
+          next = src.trimEnd() + '\nmodule.exports = {\n  plugins: {\n' + managed + '\n  },\n}\n'
+        }
       }
     }
   }
   if (next === readPipelineConfigSource(p)) return false
   writeFileSync(p, next, 'utf8')
   return true
+}
+
+/** Cabecera + module.exports del archivo gestionado (para crear/regenerar). */
+function scaffoldConfigSource(managed: string): string {
+  return `// postcss.config.cjs — pipeline postcss del proyecto (Panda es una capa).
+// La sección gestionada por \`panda-ui-mithril config\` (Postcss → Configure)
+// es el bloque entre los dos comentarios pum:postcss dentro de plugins —
+// no edites su interior a mano. Las entradas que añadas fuera del bloque se
+// conservan al guardar desde el editor.
+module.exports = {
+  plugins: {
+${managed}
+  },
+}
+`
+}
+
+/**
+ * true si el texto es un módulo CommonJS sintácticamente válido (sin
+ * ejecutarlo). Usado para detectar archivos corruptos y regenerarlos.
+ */
+function isValidCjs(src: string): boolean {
+  try {
+    new Function('module', 'exports', 'require', src)
+    return true
+  } catch {
+    return false
+  }
 }
 
 /** Lee el contenido actual del archivo ('' si no existe). */

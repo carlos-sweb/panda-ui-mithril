@@ -81,15 +81,16 @@ const POSTCSS_MARKER = '/* pum:postcss */'
 const POSTCSS_MARKER_END = '/* /pum:postcss */'
 
 // postcss.config.cjs base: Panda como plugin de PostCSS (vía recomendada por
-// panda-css.com/docs/installation/postcss). El bloque entre markers lo
-// gestiona config-ui (sección Postcss → Configure): añade/quita plugins
-// instalados con sus opciones. Todo lo que escribas FUERA del bloque (p. ej.
-// más entradas en `plugins` antes/después del par) se conserva al guardar.
+// panda-css.com/docs/installation/postcss). El bloque gestionado por el editor
+// (el par de comentarios pum:postcss que ves dentro de plugins) lo añade/quita
+// config-ui (sección Postcss → Configure). Las entradas manuales fuera del par
+// se conservan al guardar. NOTA: la cabecera NO debe escribir los literales de
+// los markers (/* pum:postcss */) — rompería la localización del editor.
 const POSTCSS_CONFIG_TEMPLATE = `// postcss.config.cjs — pipeline postcss del proyecto (Panda es una capa).
-// El bloque entre ${POSTCSS_MARKER} y ${POSTCSS_MARKER_END} lo gestiona
-// \`panda-ui-mithril config\` (sección Postcss → Configure). No edites su
-// interior a mano si usas el editor; sí puedes añadir plugins manuales fuera
-// del par de markers (se conservan al guardar).
+// La sección gestionada por \`panda-ui-mithril config\` (Postcss → Configure)
+// es el bloque entre los dos comentarios pum:postcss dentro de plugins —
+// no edites su interior a mano. Las entradas que añadas fuera del bloque se
+// conservan al guardar desde el editor.
 module.exports = {
   plugins: {
     ${POSTCSS_MARKER}

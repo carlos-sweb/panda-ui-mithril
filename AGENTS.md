@@ -565,6 +565,15 @@ last token per category); `extractBalanced` must match `marker` followed by
   serializa con `JSON.stringify` por entrada (claves con comillas dobles,
   válido como JS y parseable envolviéndolo en `({ ... })`); el interior del
   par de markers se evalúa con `new Function('return ({ ' + src + ' })')`.
+  La CABECERA del archivo gestionado NO debe contener los literales de los
+  markers (`/* pum:postcss */` / `/* /pum:postcss */`) — ni siquiera en un
+  comentario — o `indexOf`/`findManagedBlock` apuntarían al comentario y el
+  editor insertaría plugins fuera de `module.exports`. `findManagedBlock`
+  localiza el par tras `module.exports`; `writePipelineConfig` regenera el
+  archivo desde el scaffold si no es CJS válido (`isValidCjs`); y en la rama
+  con markers el reemplazo usa el STRING serializado (`managed`), nunca el
+  objeto de índices de `findManagedBlock` (sombreado de `block` → bug
+  `[object Object]`, corregido).
   `postcss-schemas.ts` NO importa node (se bundlea en la SPA); `postcss-api.ts`
   y `server.ts` sí. El runner nunca se ejecuta contra el propio repo por
   defecto: el repo no tiene `postcss.config.cjs` (usa `scripts/build-css.ts`).
