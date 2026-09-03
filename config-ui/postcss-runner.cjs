@@ -47,24 +47,45 @@ try {
 
 const config = req(configPath)
 
+const PANDA_PLUGIN = '@pandacss/dev/postcss'
+
+/** Resuelve configPath/cwd del plugin de Panda a rutas absolutas. */
+function pandaOptions(opts) {
+  const o = { ...(opts || {}) }
+  const cwd = o.cwd
+    ? path.resolve(projectRoot, o.cwd)
+    : projectRoot
+  o.cwd = cwd
+  o.configPath = o.configPath
+    ? path.resolve(cwd, o.configPath)
+    // Default explícito: panda.config.ts de la raíz (igual que build-css.ts
+    // con resolve(ROOT, 'panda.config.ts')). Sin él, Panda auto-detecta con
+    // findConfig({ cwd }) — funciona, pero explícito es determinista y
+    // permite apuntar a otro archivo (config file panda manual).
+    : path.join(cwd, 'panda.config.ts')
+  return o
+}
+
 /** Instancia plugins desde el formato de postcss-load-config. */
 function resolvePlugins(raw) {
   const out = []
+  const pushPlugin = (name, opts) => {
+    const pluginOpts = name === PANDA_PLUGIN ? pandaOptions(opts) : (opts === undefined ? {} : opts)
+    out.push(req(name)(pluginOpts))
+  }
   if (Array.isArray(raw)) {
     for (const item of raw) {
       if (typeof item === 'function') out.push(item)
       else if (typeof item === 'string') out.push(req(item)())
-      else if (Array.isArray(item)) out.push(req(item[0])(item[1]))
+      else if (Array.isArray(item)) pushPlugin(item[0], item[1])
       else if (item && typeof item === 'object') {
-        for (const [name, opts] of Object.entries(item)) out.push(req(name)(opts))
+        for (const [name, opts] of Object.entries(item)) pushPlugin(name, opts)
       }
     }
     return out
   }
   if (raw && typeof raw === 'object') {
-    for (const [name, opts] of Object.entries(raw)) {
-      out.push(req(name)(opts === undefined ? {} : opts))
-    }
+    for (const [name, opts] of Object.entries(raw)) pushPlugin(name, opts)
     return out
   }
   return out

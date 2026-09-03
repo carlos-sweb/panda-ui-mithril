@@ -435,12 +435,15 @@ export function sanitizePipelineConfig(pluginsRaw: unknown): { ok: true; plugins
 
 /**
  * Serializa la lista de plugins a entradas JS del bloque gestionado.
- * Panda base SIEMPRE primero; los deshabilitados se omiten del .cjs.
+ * Panda base SIEMPRE primero (con sus options si la lista las trae — p. ej.
+ * configPath/cwd fijados desde la UI); los deshabilitados se omiten del .cjs.
  */
 function serializeManagedBlock(plugins: PipelinePluginEntry[]): string {
   const lines: string[] = []
+  const panda = plugins.find((p) => p.id === PANDA_PLUGIN_ID)
   const ordered = [
-    { id: PANDA_PLUGIN_ID, options: {} },
+    // Options reales del panda (configPath/cwd) o {} si no se fijaron.
+    { id: PANDA_PLUGIN_ID, options: panda?.options ?? {} },
     ...plugins.filter((p) => p.id !== PANDA_PLUGIN_ID),
   ]
   for (const pl of ordered) {

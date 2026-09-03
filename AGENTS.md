@@ -555,8 +555,14 @@ last token per category); `extractBalanced` must match `marker` followed by
 - **Runner**: `config-ui/postcss-runner.cjs` ejecuta el pipeline declarado en
   el `postcss.config.cjs` del proyecto (require de `postcss` y de cada plugin
   desde el node_modules del PROYECTO vía createRequire; soporta objeto
-  name→opts, arrays [name, opts] y funciones). `runRebuild` lo usa cuando
-  `hasPostcssConfig(projectRoot)` (tras `panda codegen`); si no, `cssgen`.
+  name→opts, arrays [name, opts] y funciones). Para el plugin de Panda fija
+  SIEMPRE `configPath`/`cwd` explícitos: si no vienen en el bloque, usa
+  `{ configPath: <projectRoot>/panda.config.ts, cwd: <projectRoot> }` (igual
+  que build-css.ts); si vienen relativos, los resuelve contra projectRoot —
+  así se puede apuntar a un config file panda distinto (esquema del plugin
+  con `configPath`/`cwd`, persistidos por serializeManagedBlock).
+  `runRebuild` lo usa cuando `hasPostcssConfig(projectRoot)` (tras `panda
+  codegen`); si no, `cssgen`.
 - **Endpoints**: `GET/POST /api/postcss/config` (plugins del .cjs + build
   config), `GET /api/postcss/catalog?q=`, `GET /api/postcss/available`,
   `POST /api/postcss/install|remove`. Mismo contrato de error que /api/theme.

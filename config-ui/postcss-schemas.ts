@@ -89,6 +89,34 @@ function define(schema: PostcssPluginSchema): PostcssPluginSchema {
   return schema
 }
 
+// ── @pandacss/dev/postcss (base de Panda, siempre primera) ───────────────────
+// El plugin de Panda acepta configPath + cwd (igual que build-css.ts del repo
+// con resolve(ROOT, 'panda.config.ts') / ROOT). El runner los resuelve contra
+// el projectRoot; aquí se exponen para fijar manualmente un config file panda
+// distinto del panda.config.ts de la raíz.
+define({
+  id: '@pandacss/dev/postcss',
+  name: 'Panda (base)',
+  description: 'Panda CSS as a PostCSS plugin — emits preflight, tokens, recipes and utilities into the @layer directive.',
+  notes: [
+    'Base del pipeline: no se puede quitar. Sin configPath, Panda busca panda.config.{ts,js,mts} en cwd automáticamente.',
+  ],
+  options: [
+    {
+      key: 'configPath',
+      type: 'string',
+      placeholder: 'panda.config.ts',
+      description: 'Ruta al config de Panda (relativa al cwd). Vacío = auto-detección en la raíz del proyecto.',
+    },
+    {
+      key: 'cwd',
+      type: 'string',
+      placeholder: '.',
+      description: 'Directorio base del proyecto de Panda (relativo a la raíz). Vacío = raíz del proyecto.',
+    },
+  ],
+})
+
 // ── postcss-url ──────────────────────────────────────────────────────────────
 // Modos: url: 'rebase' (default) | 'inline' | 'copy' | función (no editable).
 // Filtro: string minimatch | RegExp | función (no editable). copy usa
