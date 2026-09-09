@@ -35,4 +35,10 @@ export const linkRecipe = defineRecipe({
       false: {},
     },
   },
+  defaultVariants: {
+    // El componente Link defaultea hover=true en JS (ver src/components/Link);
+    // se refleja aquí para que una llamada directa a link({}) coincida.
+    hover: true,
+    noUnderline: false,
+  },
 })

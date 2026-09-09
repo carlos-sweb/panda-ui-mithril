@@ -1,7 +1,9 @@
 import { memo, splitProps } from '../helpers.mjs';
 import { createRecipe, mergeRecipes } from './create-recipe.mjs';
 
-const dividerPUMFn = /* @__PURE__ */ createRecipe('divider', {}, [])
+const dividerPUMFn = /* @__PURE__ */ createRecipe('divider', {
+  "direction": "horizontal"
+}, [])
 
 const dividerPUMVariantMap = {
   "color": [

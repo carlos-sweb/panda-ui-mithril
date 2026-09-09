@@ -253,6 +253,10 @@ export const modalRecipe = defineSlotRecipe({
       },
     },
   },
+  defaultVariants: {
+    position: 'middle',
+    size: 'md',
+  },
 })
 
 

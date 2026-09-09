@@ -46,4 +46,7 @@ export const dividerRecipe = defineRecipe({
       end: { _after: { display: 'none' } },
     },
   },
+  defaultVariants: {
+    direction: 'horizontal',
+  },
 })

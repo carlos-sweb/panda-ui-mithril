@@ -4,6 +4,9 @@ import type { DistributiveOmit, Pretty } from '../types/system-types';
 
 interface DrawerVariant {
   position: "top" | "bottom" | "start" | "end"
+/**
+ * @default "md"
+ */
 size: "xs" | "sm" | "md" | "lg" | "xl" | "full"
 }
 

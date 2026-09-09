@@ -220,6 +220,9 @@ export const drawerRecipe = defineSlotRecipe({
       full: { drawer: { '--drawer-size': '100%' } },
     },
   },
+  defaultVariants: {
+    size: 'md',
+  },
 })
 
 export const drawerCloseButtonRecipe = defineRecipe({

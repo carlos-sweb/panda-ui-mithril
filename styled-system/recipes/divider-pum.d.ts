@@ -4,6 +4,9 @@ import type { DistributiveOmit, Pretty } from '../types/system-types';
 
 interface DividerPUMVariant {
   color: "neutral" | "primary" | "secondary" | "accent" | "info" | "success" | "warning" | "error"
+/**
+ * @default "horizontal"
+ */
 direction: "horizontal" | "vertical"
 placement: "start" | "end"
 }

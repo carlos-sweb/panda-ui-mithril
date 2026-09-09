@@ -1,7 +1,10 @@
 import { compact, getSlotCompoundVariant, memo, splitProps } from '../helpers.mjs';
 import { createRecipe } from './create-recipe.mjs';
 
-const modalDefaultVariants = {}
+const modalDefaultVariants = {
+  "position": "middle",
+  "size": "md"
+}
 const modalCompoundVariants = []
 
 const modalSlotNames = [

@@ -1,7 +1,9 @@
 import { memo, splitProps } from '../helpers.mjs';
 import { createRecipe, mergeRecipes } from './create-recipe.mjs';
 
-const labelFn = /* @__PURE__ */ createRecipe('label', {}, [])
+const labelFn = /* @__PURE__ */ createRecipe('label', {
+  "floating": false
+}, [])
 
 const labelVariantMap = {
   "floating": [

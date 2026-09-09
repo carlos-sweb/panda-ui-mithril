@@ -4,7 +4,13 @@ import type { DistributiveOmit, Pretty } from '../types/system-types';
 
 interface LinkVariant {
   color: "neutral" | "primary" | "secondary" | "accent" | "info" | "success" | "warning" | "error"
+/**
+ * @default true
+ */
 hover: boolean
+/**
+ * @default false
+ */
 noUnderline: boolean
 }
 

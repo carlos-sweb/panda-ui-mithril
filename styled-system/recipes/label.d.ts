@@ -3,7 +3,10 @@ import type { ConditionalValue } from '../types/index';
 import type { DistributiveOmit, Pretty } from '../types/system-types';
 
 interface LabelVariant {
-  floating: boolean
+  /**
+ * @default false
+ */
+floating: boolean
 }
 
 type LabelVariantMap = {

@@ -45,4 +45,7 @@ export const labelRecipe = defineRecipe({
       },
     },
   },
+  defaultVariants: {
+    floating: false,
+  },
 })

@@ -1,7 +1,9 @@
 import { compact, getSlotCompoundVariant, memo, splitProps } from '../helpers.mjs';
 import { createRecipe } from './create-recipe.mjs';
 
-const drawerDefaultVariants = {}
+const drawerDefaultVariants = {
+  "size": "md"
+}
 const drawerCompoundVariants = []
 
 const drawerSlotNames = [

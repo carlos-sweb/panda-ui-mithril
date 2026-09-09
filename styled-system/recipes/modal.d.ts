@@ -3,7 +3,13 @@ import type { ConditionalValue } from '../types/index';
 import type { DistributiveOmit, Pretty } from '../types/system-types';
 
 interface ModalVariant {
-  position: "top" | "middle" | "bottom" | "start" | "end"
+  /**
+ * @default "middle"
+ */
+position: "top" | "middle" | "bottom" | "start" | "end"
+/**
+ * @default "md"
+ */
 size: "xs" | "sm" | "md" | "lg"
 }
 
