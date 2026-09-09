@@ -34,6 +34,7 @@ sidebar:
     postcss: Postcss
     lightningcss: Lightningcss
     staticcss: Static Css Recipes
+    advanced: Advanced
 navbar:
   themeLabels:
     light: 🌞 Claro

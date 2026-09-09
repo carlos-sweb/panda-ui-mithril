@@ -22,6 +22,7 @@ import RadiiPage from './pages/radii/index.jsx'
 import PostcssPage from './pages/postcss/index.jsx'
 import LightningcssPage from './pages/lightningcss/index.jsx'
 import StaticCssPage from './pages/staticcss/index.jsx'
+import AdvancedPage from './pages/advanced/index.jsx'
 
 // Build routes - only page components, no layout wrapper.
 // Sin landing propia: el hash por defecto es /colors (Home se eliminó del
@@ -35,6 +36,7 @@ const routes = {
   '/postcss': PostcssPage,
   '/lightningcss': LightningcssPage,
   '/staticcss': StaticCssPage,
+  '/advanced': AdvancedPage,
 }
 
 routes['/:component...'] = {

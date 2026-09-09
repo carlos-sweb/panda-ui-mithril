@@ -55,6 +55,7 @@ import {
 import { schemaFor, PANDA_PLUGIN_ID } from './postcss-schemas'
 import { readLightningcss, resolveTargets, writeLightningcss } from './lightningcss-api'
 import { readStaticCssState, scanProject, writeStaticCssState } from './staticcss-scan-api'
+import { readAdvancedState, writeAdvancedState } from './advanced-config-api'
 
 const PORT = portFromArgv() ?? 1234
 const CLI_DIR = dirname(fileURLToPath(import.meta.url))
@@ -716,6 +717,54 @@ app.post('/api/staticcss/config', async ({ request }) => {
       manual: Array.isArray(body.manual) ? body.manual.map(String) : [],
     }
     const changed = writeStaticCssState(projectRoot, dirname(found.themeDir!), opts)
+    return { ok: true, changed }
+  } catch (e) {
+    return { ok: false, error: String(e) }
+  }
+})
+
+// ── API: Advanced (subconjunto curado de panda.config.ts sin UI propia) ─────
+// preflight/strictTokens/strictPropertyValues/hash/clean (bloque aditivo,
+// mismo mecanismo que lightningcss) + include/exclude (reemplazo quirúrgico,
+// ya existen sin marcar en el scaffold de cli.ts). Ver advanced-config-api.ts
+// para qué campos de defineConfig quedaron deliberadamente afuera
+// (jsxFramework/jsxFactory fijos a Mithril, outdir fijo a styled-system,
+// layers/separator requieren regenerar pum/index.css, hooks/plugins no son
+// serializables, prefix SUSPENDIDO — riesgo verificado, rompe TODO el
+// paquete, no solo selectores puntuales).
+// Mismo contrato de error que /api/theme (legacy / sin theme).
+
+/** Lee el estado actual — { preflight, strictTokens, strictPropertyValues, hash, clean, include, exclude }. */
+app.get('/api/advanced/config', () => {
+  const found = resolveTheme(process.cwd())
+  const err = themeError(found)
+  if (err) return err
+  const projectRoot = found.projectRoot || dirname(found.themeDir!)
+  try {
+    return { ok: true, config: readAdvancedState(projectRoot) }
+  } catch (e) {
+    return { ok: false, error: String(e) }
+  }
+})
+
+/** Guarda el estado — ver AdvancedState en advanced-config-api.ts. */
+app.post('/api/advanced/config', async ({ request }) => {
+  const found = resolveTheme(process.cwd())
+  const err = themeError(found)
+  if (err) return err
+  const projectRoot = found.projectRoot || dirname(found.themeDir!)
+  const body = await request.json().catch(() => ({})) as Record<string, unknown>
+  try {
+    const state = {
+      preflight: !!body.preflight,
+      strictTokens: !!body.strictTokens,
+      strictPropertyValues: !!body.strictPropertyValues,
+      hash: !!body.hash,
+      clean: !!body.clean,
+      include: Array.isArray(body.include) ? body.include.map(String) : [],
+      exclude: Array.isArray(body.exclude) ? body.exclude.map(String) : [],
+    }
+    const changed = writeAdvancedState(projectRoot, state)
     return { ok: true, changed }
   } catch (e) {
     return { ok: false, error: String(e) }

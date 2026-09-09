@@ -1,0 +1,27 @@
+title: Advanced
+intro: Un subconjunto curado de las opciones de nivel superior de panda.config.ts que aún no tienen página propia — ver el código fuente para qué quedó afuera a propósito (campos fijos al framework, campos que necesitan regenerar el CSS de entrada, hooks/plugins no serializables).
+errorPrefix: 'Error: '
+preflight: Preflight (reset de CSS)
+preflightHint: El reset de CSS propio de Panda. Desactívalo si tu proyecto ya tiene el suyo.
+strictTokens: Tokens estrictos
+strictTokensHint: Solo permite valores de tokens de diseño en llamadas a css() — sin valores crudos arbitrarios.
+strictPropertyValues: Valores de propiedad estrictos
+strictPropertyValuesHint: Rechaza valores inválidos para propiedades CSS que Panda conoce.
+hash: Hashear nombres de clase
+hashHint: Acorta los nombres de clase/variable generados — normalmente un toggle solo de producción.
+clean: Limpiar directorio de salida
+cleanHint: Borra el outdir antes de cada generación.
+include: Globs de include
+includeHint: Archivos que Panda escanea buscando uso de css()/recipes. Es la misma lista que reusa el scanner de Static Css Recipes.
+exclude: Globs de exclude
+excludeHint: Archivos a saltar incluso si calzan con "include".
+addGlob: Añadir glob
+removeItem: Quitar elemento
+saving: Guardando…
+save: Guardar
+saved: Guardado ✓
+rebuild: Reconstruir CSS
+rebuilding: Reconstruyendo…
+rebuiltPostcss: Reconstruido (pipeline postcss) ✓
+rebuiltCssgen: Reconstruido (codegen + cssgen) ✓
+reload: Recargar

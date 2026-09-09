@@ -712,6 +712,62 @@ que solo usa `Button`) a solo los que el consumidor realmente usa.
   siempre muestra preview (componentes detectados + recipes resultantes)
   antes de guardar, y el campo manual existe como red de seguridad explícita.
 
+**Advanced section** (`config-ui/advanced-config-api.ts` + página
+`config-ui/pages/advanced/`): subconjunto CURADO de campos de nivel superior
+de `defineConfig` que no tenían página propia — `preflight`, `strictTokens`,
+`strictPropertyValues`, `hash`, `clean` (bloque aditivo `/* pum:advanced */`,
+mismo mecanismo que `/* pum:lightningcss */`) + `include`/`exclude`
+(reemplazo quirúrgico, mismo balanced-brace scan que `staticCss.recipes` —
+`include` YA existe sin marcar en el scaffold de `cli.ts`, así que no puede
+ser un bloque aditivo nuevo). `polyfill` (Panda) vive en la página
+Lightningcss en vez de aquí — es del mismo tema (targets de navegadores
+viejos) y, a diferencia de `lightningcss`/`browserslist`/`minify`, es
+**independiente** de si lightningcss está activo: `writeLightningcssConfig`
+solo agrega las líneas `lightningcss`/`browserslist`/`minify` cuando
+`enabled` es `true`, pero `polyfill` se escribe siempre que sea `true`, y el
+bloque entero solo se borra cuando AMBOS (`enabled` y `polyfill`) están en
+su default — verificado con un `polyfill: true` + `enabled: false` real
+contra `example-pum1`.
+- **Deliberadamente excluidos** de esta página (ver el header del archivo
+  para el razonamiento completo por campo): `jsxFramework`/`jsxFactory`
+  (fijos a Mithril por el scaffold — exponerlos rompe el paquete),
+  `outdir` (ya documentado como footgun si no es `styled-system`),
+  `layers`/`separator` (necesitan regenerar `pum/index.css` también, que
+  hoy hardcodea `@layer reset, base, tokens, recipes, utilities;`),
+  `hooks`/`plugins`/`presets`/`eject` (funciones JS o demasiado estructural,
+  no serializable a un formulario), `studio` (una herramienta visual
+  DISTINTA que ya trae Panda), `themes`/`utilities`/
+  `patterns` custom (PUM ya resuelve esos casos con su propio sistema).
+- **`prefix` — SUSPENDIDO a pedido del usuario** (`{ cssVar, className }`,
+  NO un string único aunque Panda también acepta esa forma corta): se
+  implementó, se probó y luego se retiró de la UI/API tras verificar
+  empíricamente que el riesgo es **mucho más grave que un selector
+  suelto** — `prefix.className` rompe el **paquete completo**, no solo los
+  17 recipes que referencian clases de OTROS componentes como selector CSS
+  literal (`'& > .button:not(:first-child)'` en `buttonGroup.ts`/
+  `join.ts`, `'& > .drawer-box'` en `drawer.ts`, etc.). Causa raíz: cada
+  componente de PUM importa su recipe (nombres de clase incluidos) desde
+  el `styled-system/recipes` PROPIO de panda-ui-mithril, precompilado y
+  congelado al publicar el paquete en npm — el `prefix` del
+  `panda.config.ts` del CONSUMIDOR solo puede reprefijar el CSS que genera
+  la corrida de Panda del consumidor, nunca ese JS ya compilado y
+  distribuido. Verificado end-to-end contra el paquete real instalado en
+  `example-pum1` (no contra el repo de panda-ui-mithril, cuyo propio build
+  sí quedaría consistente): con `prefix.className: 'pum'` guardado y
+  reconstruido vía la UI real (Save → Rebuild CSS → `bunx panda codegen` +
+  pipeline postcss), el CSS generado queda con clases como
+  `.pum-button--size_md{...}` y `.pum-button-group>.button:not(:first-
+  child){margin-inline-start:...}`, pero el `<button>` renderizado por el
+  `Button` importado de `node_modules/panda-ui-mithril` sigue con la clase
+  SIN prefijo (`class="button button--size_md ..."`) — desajuste total, cero
+  reglas matchean, el componente pierde TODO su estilo (no solo el
+  fusionado de bordes de `ButtonGroup`). `cssVar` NO tiene este problema —
+  todo consumo de tokens pasa por el macro `token()` que Panda resuelve en
+  compile-time independientemente del prefijo, así que namespacea
+  correctamente las custom properties (`--pum-colors-primary`) sin tocar
+  ningún nombre de clase — si se retoma este campo en el futuro, debe ser
+  **cssVar-only**, nunca className.
+
 ## Commit Conventions
 
 - Stage everything (`dist-playground/` and `styled-system/styles.css` are

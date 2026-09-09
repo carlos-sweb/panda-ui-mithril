@@ -10,7 +10,7 @@ const categories = [
   { i18n: 'sidebar.categories.typography', icon: Type, items: ['fonts'] },
   { i18n: 'sidebar.categories.spacing', icon: Ruler, items: ['spacing'] },
   { i18n: 'sidebar.categories.radii', icon: CircleDot, items: ['radii'] },
-  { i18n: 'sidebar.categories.build', icon: Wind, items: ['postcss', 'lightningcss', 'staticcss'] },
+  { i18n: 'sidebar.categories.build', icon: Wind, items: ['postcss', 'lightningcss', 'staticcss', 'advanced'] },
 ]
 
 const menu = css({ width: '100%', padding: '0'})

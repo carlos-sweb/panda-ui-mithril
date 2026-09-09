@@ -1,4 +1,6 @@
 // Auto-generated: static import map of all per-page translations.
+import pageadvancedEn from '../pages/advanced/i18n/en.yml'
+import pageadvancedEs from '../pages/advanced/i18n/es.yml'
 import pagecolorsEn from '../pages/colors/i18n/en.yml'
 import pagecolorsEs from '../pages/colors/i18n/es.yml'
 import pagefontsEn from '../pages/fonts/i18n/en.yml'
@@ -15,6 +17,8 @@ import pagestaticcssEn from '../pages/staticcss/i18n/en.yml'
 import pagestaticcssEs from '../pages/staticcss/i18n/es.yml'
 
 export const pageI18n = { en: {}, es: {} }
+pageI18n.en['advanced'] = pageadvancedEn
+pageI18n.es['advanced'] = pageadvancedEs
 pageI18n.en['colors'] = pagecolorsEn
 pageI18n.es['colors'] = pagecolorsEs
 pageI18n.en['fonts'] = pagefontsEn
