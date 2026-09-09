@@ -1,6 +1,6 @@
 import m from 'mithril'
 import { Copy, Check } from 'lucide-mithril'
-import { Button } from '../Button/index.jsx'
+import { Button } from '../Button/index.js'
 import { Tooltip } from '../Tooltip/index.js'
 import { cx } from '../../../styled-system/css'
 

@@ -1,7 +1,7 @@
 import m from 'mithril'
 import { dropdown } from '../../../styled-system/recipes'
 import { cx } from '../../../styled-system/css'
-import { Button } from '../Button/index.jsx'
+import { Button } from '../Button/index.js'
 
 // Estilos por defecto (sin variantes) para los subcomponentes usados fuera de
 // un root Dropdown o como fallback. Evita llamar al sva en cada render.

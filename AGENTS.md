@@ -45,8 +45,7 @@ minimal pointer to the site).
 
 ```
 src/components/    72 components, one folder each: index.js + index.d.ts
-                    (Button and Alert are .jsx — JSX with Mithril's factory;
-                     the other 70 are .js using direct m() hyperscript)
+                    (all use direct m() hyperscript — no .jsx in src/)
 src/recipes/       68 Panda recipes in TypeScript (cva/sva) — single source of
                     truth for every visual variant
 src/index.js       Barrel file re-exporting all components
@@ -95,7 +94,7 @@ transform: `jsx: "react"`, `jsxFactory: "m"`, `jsxFragmentFactory: "m.Fragment"`
 
 Each component folder contains:
 
-- `index.js` (or `index.jsx` for Button/Alert) — Mithril component(s)
+- `index.js` — Mithril component(s)
 - `index.d.ts` — TypeScript declarations
 - The recipe lives in `src/recipes/{name}.ts`, NOT in the component folder
 
@@ -435,12 +434,11 @@ which is what `init` scaffolds since it matches the repo's own build
   (reads the config, instantiates each plugin from the project's node_modules
   and processes entry → output); otherwise it falls back to `codegen + cssgen`.
 
-Consumer JSX for the `.jsx` components: only `Button` and `Alert` are `.jsx`;
-importing them requires Mithril's classic JSX transform in the consumer's
-bundler (`jsx: "react"`, `jsxFactory: "m"`, `jsxFragmentFactory: "m.Fragment"`
-in `bunfig.toml` top-level keys or tsconfig `compilerOptions`). Import
-subpaths in the exports map are lowercase kebab: `panda-ui-mithril/button`,
-`panda-ui-mithril/alert` — not the PascalCase folder names.
+All `src/components/*` files are plain `.js` using direct `m()` hyperscript —
+no JSX transform is required to import any component (including `Button`/
+`Alert`, formerly the only `.jsx` exception). Import subpaths in the exports
+map are lowercase kebab: `panda-ui-mithril/button`, `panda-ui-mithril/alert`
+— not the PascalCase folder names.
 
 ## Config UI (theme editor) — `bunx panda-ui-mithril config`
 

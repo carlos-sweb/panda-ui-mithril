@@ -2,7 +2,7 @@ import m from 'mithril'
 import { Menu as MenuIcon, X } from 'lucide-mithril'
 import { navbar } from '../../../styled-system/recipes'
 import { cx } from '../../../styled-system/css'
-import { Button } from '../Button/index.jsx'
+import { Button } from '../Button/index.js'
 import { Link } from '../Link/index.js'
 
 /**

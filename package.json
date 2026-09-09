@@ -29,7 +29,7 @@
     },
     "./alert": {
       "types": "./src/components/Alert/index.d.ts",
-      "import": "./src/components/Alert/index.jsx"
+      "import": "./src/components/Alert/index.js"
     },
     "./aura": {
       "types": "./src/components/Aura/index.d.ts",
@@ -57,7 +57,7 @@
     },
     "./button": {
       "types": "./src/components/Button/index.d.ts",
-      "import": "./src/components/Button/index.jsx"
+      "import": "./src/components/Button/index.js"
     },
     "./button-close": {
       "types": "./src/components/ButtonClose/index.d.ts",

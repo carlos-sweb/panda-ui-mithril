@@ -14,7 +14,7 @@ export const Button = {
     const { color, variant, size, active, disabled, block, wide, square, circle, borderWidth, className, ...rest } = vnode.attrs
     const isLink = !!vnode.attrs.href
 
-    const styles = cx(      
+    const styles = cx(
       button({
         color,
         variant,
@@ -28,17 +28,9 @@ export const Button = {
     )
 
     if (isLink) {
-      return (
-        <a className={styles} data-active={active || undefined} {...rest}>
-          {vnode.children}
-        </a>
-      )
+      return m('a', { className: styles, 'data-active': active || undefined, ...rest }, vnode.children)
     }
 
-    return (
-      <button className={styles} disabled={disabled} data-active={active || undefined} {...rest}>
-        {vnode.children}
-      </button>
-    )
+    return m('button', { className: styles, disabled, 'data-active': active || undefined, ...rest }, vnode.children)
   }
 }

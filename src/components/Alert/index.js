@@ -31,7 +31,7 @@ import { cx } from '../../../styled-system/css'
 export const Alert = {
   view(vnode) {
     const { variant, color, direction, className, ...rest } = vnode.attrs
-    
+
     return m('div', {
       role: 'alert',
       className: cx( alert({ variant, color, direction }), className ),
