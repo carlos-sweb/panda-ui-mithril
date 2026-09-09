@@ -21,7 +21,7 @@ minimal pointer to the site).
 
 | Command | What it does |
 |---|---|
-| `bun run dev` | Dev server (`bun playground/index.html`), serves on **port 3000**. Not Vite. Requires `styled-system/styles.css` to exist — run `bun run codegen && bun run scripts/build-css.ts` first on a fresh clone. |
+| `bun run dev` | Dev server (`bun playground/index.html --port=4300`), serves on **port 4300** (pinned in `package.json` — a plain `bun playground/index.html` would fall back to Bun's own default and risk colliding with another local process). Not Vite. Requires `styled-system/styles.css` to exist — run `bun run codegen && bun run scripts/build-css.ts` first on a fresh clone. Bun's HTML dev server binds `localhost` (IPv6 `::1`) only — `http://127.0.0.1:4300` will NOT connect; always use `http://localhost:4300`. |
 | `bun run codegen` | Regenerates `styled-system/` JS/TS helpers (`css()`, tokens, recipes, patterns). |
 | `bun run scripts/build-css.ts` | Regenerates the **minified** `styled-system/styles.css` (a **generated artifact — gitignored**; CI's `bun run build` regenerates it on every deploy). |
 | `npm run typecheck` | `tsc --noEmit --project tsconfig.lib.json` (src + styled-system, excludes playground). |
@@ -290,7 +290,7 @@ URL — verified: `buildPathname('/button', {})` → `/button`, while
 `buildPathname('/button', { lang: 'es' })` → `/button?lang=es`.
 
 Consequence for testing: if you open the playground with `?lang=en` in the URL
-(e.g. `http://127.0.0.1:3000/#!/button?lang=en`), `currentLang()` reads the
+(e.g. `http://localhost:4300/#!/button?lang=en`), `currentLang()` reads the
 route param and **ignores localStorage**, so switching language "appears
 broken" (trigger stays `En`, page stays English) even though `pum-lang` was
 written. In normal navigation (no `?lang` in the URL) the param is null and

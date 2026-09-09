@@ -1,24 +1,25 @@
 @layer reset, base, tokens, recipes, utilities;
-@import 'highlight.js/styles/atom-one-dark-reasonable.css';
-@import '@fontsource/ubuntu/400.css';
-@import '@fontsource/ubuntu/500.css';
-@import '@fontsource/ubuntu/700.css';
-@import '@fontsource/ubuntu/400-italic.css';
-@import '@fontsource/ubuntu-mono/400.css';
-@import '@fontsource/jetbrains-mono/400.css';
-@import '@fontsource/jetbrains-mono/500.css';
-@import '@fontsource/jetbrains-mono/600.css';
-@import '@fontsource/jetbrains-mono/700.css';
+
+@import url('highlight.js/styles/atom-one-dark-reasonable.css');
+@import url('@fontsource/ubuntu/400.css');
+@import url('@fontsource/ubuntu/500.css');
+@import url('@fontsource/ubuntu/700.css');
+@import url('@fontsource/ubuntu/400-italic.css');
+@import url('@fontsource/ubuntu-mono/400.css');
+@import url('@fontsource/jetbrains-mono/400.css');
+@import url('@fontsource/jetbrains-mono/500.css');
+@import url('@fontsource/jetbrains-mono/600.css');
+@import url('@fontsource/jetbrains-mono/700.css');
 
 body {
-  font-family: 'Ubuntu', system-ui, -apple-system, sans-serif;
+  font-family: Ubuntu, system-ui, -apple-system, sans-serif;
   line-height: 1.6;
   color: var(--colors-base-content);
   background-color: var(--colors-base-100);
 }
 
 aside{
-  border-width:0px;
+  border-width:0;
 }
 
 ::selection {
@@ -31,7 +32,7 @@ aside{
 }
 
 ::-webkit-scrollbar-track {
-  /*background: #eaeaea;*/
+  /* background: #eaeaea; */
   background: transparent;
   border-radius: 6px;
 }

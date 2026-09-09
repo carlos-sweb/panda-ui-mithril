@@ -1,4 +1,4 @@
-import { defineTokens, defineSemanticTokens } from '@pandacss/dev'
+import { defineTokens } from '@pandacss/dev'
 import { colorsTokens, colorsSemanticTokens } from './theme/colors'
 import { fontsTokens } from './theme/fonts'
 import { spacingTokens } from './theme/spacing'

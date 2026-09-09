@@ -5,7 +5,7 @@ import { pumPreset } from './src/preset'
 
 export default defineConfig({
   preflight: true,
-  include: ['./src/components/*/*.jsx', './playground/**/*.{js,jsx}'],
+  include: ['./playground/**/*.{js,jsx}'],
   exclude: [],
   outdir: 'styled-system',  
   jsxFramework: 'mithril',
