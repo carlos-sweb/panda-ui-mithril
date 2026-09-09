@@ -129,6 +129,7 @@ export const ChatReactions = {
       ...rest
     }, (reactions || []).map(r =>
       m('button', {
+        key: r.emoji,
         className: cx('chat-reaction', r.reacted && 'chat-reaction-reacted'),
         onclick: () => onReact && onReact(r.emoji),
         type: 'button'

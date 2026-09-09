@@ -21,7 +21,7 @@ export const buttonRecipe = defineRecipe({
     },
     fontWeight: 'token(fontWeights.normal)',
     borderRadius: 'var(--radius-field)',
-    borderWidth: 'var(--border, 1px)',
+    borderWidth: 'var(--btn-border-width, 1px)',
     touchAction: 'manipulation',
     transitionProperty: 'color, background-color, border-color, box-shadow, transform',
     transitionTimingFunction: 'cubic-bezier(0, 0, 0.2, 1)',
@@ -39,7 +39,7 @@ export const buttonRecipe = defineRecipe({
 
     height: 'var(--btn-size)',
     paddingInline: 'var(--btn-p)',
-    fontSize: 'var(--fontsize, 0.875rem)',
+    fontSize: 'var(--btn-fontsize, 0.875rem)',
     backgroundColor: 'var(--btn-bg)',
     color: 'var(--btn-fg)',
     borderColor: 'var(--btn-border)',
@@ -150,11 +150,11 @@ export const buttonRecipe = defineRecipe({
       },
     },
     size: {
-      xs: { '--fontsize': 'token(fontSizes.xs)', '--btn-p': 'token(spacing.2)', '--btn-size': 'token(spacing.6)' },
-      sm: { '--fontsize': 'token(fontSizes.sm)', '--btn-p': 'token(spacing.3)', '--btn-size': 'token(spacing.8)' },
-      md: { '--fontsize': 'token(fontSizes.md)', '--btn-p': 'token(spacing.4)', '--btn-size': 'token(spacing.10)' },
-      lg: { '--fontsize': 'token(fontSizes.xl)', '--btn-p': 'token(spacing.5)', '--btn-size': 'token(spacing.12)' },
-      xl: { '--fontsize': 'token(fontSizes.3xl)', '--btn-p': 'token(spacing.6)', '--btn-size': 'token(spacing.14)' },
+      xs: { '--btn-fontsize': 'token(fontSizes.xs)', '--btn-p': 'token(spacing.2)', '--btn-size': 'token(spacing.6)' },
+      sm: { '--btn-fontsize': 'token(fontSizes.sm)', '--btn-p': 'token(spacing.3)', '--btn-size': 'token(spacing.8)' },
+      md: { '--btn-fontsize': 'token(fontSizes.md)', '--btn-p': 'token(spacing.4)', '--btn-size': 'token(spacing.10)' },
+      lg: { '--btn-fontsize': 'token(fontSizes.xl)', '--btn-p': 'token(spacing.5)', '--btn-size': 'token(spacing.12)' },
+      xl: { '--btn-fontsize': 'token(fontSizes.3xl)', '--btn-p': 'token(spacing.6)', '--btn-size': 'token(spacing.14)' },
     },
     active: {
       true: {
@@ -176,9 +176,9 @@ export const buttonRecipe = defineRecipe({
       wide: { width: '100%', maxWidth: 'token(spacing.64)' },
     },
     borderWidth: {
-      '1': { '--border': '1px' },
-      '2': { '--border': '2px' },
-      '3': { '--border': '3px' },
+      '1': { '--btn-border-width': '1px' },
+      '2': { '--btn-border-width': '2px' },
+      '3': { '--btn-border-width': '3px' },
     },
   },
   defaultVariants: {
