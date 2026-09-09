@@ -5,6 +5,8 @@ enable: Activar lightningcss
 enableHint: Usa lightningcss en vez de PostCSS para el propio paso de optimización de CSS de Panda (downleveling de nesting/media, prefijos de proveedor, minificación) — funciona igual con panda cssgen que con el pipeline de Postcss.
 minify: Minificar
 minifyHint: Minifica el CSS que emite lightningcss.
+polyfill: Polyfill de @layer
+polyfillHint: Rellena (polyfill) las cascade layers de CSS para navegadores viejos que no soportan @layer nativamente. Independiente del toggle de arriba — funciona con o sin lightningcss activo.
 browserslist: Navegadores objetivo
 browserslistHint: Marca un navegador y fija su versión mínima — sin escribir sintaxis. Ninguno marcado = la config de browserslist propia del proyecto, o los defaults de lightningcss.
 advanced: Avanzado (queries de browserslist en texto)

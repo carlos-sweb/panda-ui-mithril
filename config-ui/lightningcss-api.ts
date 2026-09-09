@@ -37,9 +37,11 @@ export interface LightningcssConfig {
   enabled: boolean
   browserslist: string[]
   minify: boolean
+  /** Polyfillea @layer para navegadores viejos que no lo soportan nativamente — mismo tema que browserslist (targets viejos), campo independiente de Panda (funciona con o sin lightningcss). */
+  polyfill: boolean
 }
 
-const DEFAULTS: LightningcssConfig = { enabled: false, browserslist: [], minify: false }
+const DEFAULTS: LightningcssConfig = { enabled: false, browserslist: [], minify: false, polyfill: false }
 
 /** Localiza el par de markers dentro de panda.config.ts. */
 function findBlock(src: string): { start: number; end: number } | null {
@@ -65,32 +67,42 @@ export function readLightningcssConfig(pandaConfigSrc: string): LightningcssConf
       enabled: value.lightningcss === true,
       browserslist: Array.isArray((value as any).browserslist) ? (value as any).browserslist.map(String) : [],
       minify: value.minify === true,
+      polyfill: value.polyfill === true,
     }
   } catch {
     return { ...DEFAULTS }
   }
 }
 
-/** Serializa el bloque gestionado (3 campos planos, misma indentación que fontfaces/postcss). */
+/**
+ * Serializa el bloque gestionado. `polyfill` es independiente de
+ * `lightningcss`/`browserslist`/`minify` (Panda lo aplica igual sin
+ * lightningcss activo) — se escribe solo si está en `true`, sin arrastrar
+ * las otras 3 líneas cuando `enabled` es `false`.
+ */
 function serializeBlock(cfg: LightningcssConfig): string {
-  const lines = [
-    `  ${LIGHTNINGCSS_MARKER}`,
-    `  lightningcss: true,`,
-    `  browserslist: ${JSON.stringify(cfg.browserslist)},`,
-    `  minify: ${cfg.minify ? 'true' : 'false'},`,
-    `  ${LIGHTNINGCSS_MARKER_END}`,
-  ]
+  const lines = [`  ${LIGHTNINGCSS_MARKER}`]
+  if (cfg.enabled) {
+    lines.push(
+      `  lightningcss: true,`,
+      `  browserslist: ${JSON.stringify(cfg.browserslist)},`,
+      `  minify: ${cfg.minify ? 'true' : 'false'},`,
+    )
+  }
+  if (cfg.polyfill) lines.push(`  polyfill: true,`)
+  lines.push(`  ${LIGHTNINGCSS_MARKER_END}`)
   return lines.join('\n') + '\n'
 }
 
 /**
- * Inserta/actualiza/elimina el bloque marcado en panda.config.ts.
- * `enabled: false` elimina el bloque entero (config.ts queda limpio, igual
- * que writeFontfaceConfig cuando no hay familias que emitir). Devuelve el src
+ * Inserta/actualiza/elimina el bloque marcado en panda.config.ts. El bloque
+ * existe si `enabled` o `polyfill` están activos (son independientes); se
+ * elimina entero solo cuando AMBOS quedan en su default (`false`) — igual
+ * que writeFontfaceConfig cuando no hay familias que emitir. Devuelve el src
  * nuevo (igual al original si no se pudo editar).
  */
 export function writeLightningcssConfig(pandaConfigSrc: string, cfg: LightningcssConfig): string {
-  const managed = cfg.enabled ? serializeBlock(cfg) : ''
+  const managed = (cfg.enabled || cfg.polyfill) ? serializeBlock(cfg) : ''
   const block = findBlock(pandaConfigSrc)
 
   if (block) {

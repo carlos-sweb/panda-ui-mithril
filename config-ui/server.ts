@@ -652,6 +652,7 @@ app.post('/api/lightningcss/config', async ({ request }) => {
       enabled: !!body.enabled,
       browserslist: Array.isArray(body.browserslist) ? body.browserslist.map(String) : [],
       minify: !!body.minify,
+      polyfill: !!body.polyfill,
     }
     const changed = writeLightningcss(projectRoot, cfg)
     return { ok: true, changed, config: cfg }

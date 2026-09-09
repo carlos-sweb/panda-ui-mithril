@@ -139,6 +139,7 @@ function loadConfig(s) {
       if (d.ok) {
         s.enabled = !!d.config.enabled
         s.minify = !!d.config.minify
+        s.polyfill = !!d.config.polyfill
         const { perBrowser, extra } = parseBrowserslist(d.config.browserslist)
         s.perBrowser = perBrowser
         s.extraQueries = extra
@@ -162,7 +163,7 @@ function saveConfig(s) {
   fetch('/api/lightningcss/config', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ enabled: s.enabled, browserslist, minify: s.minify }),
+    body: JSON.stringify({ enabled: s.enabled, browserslist, minify: s.minify, polyfill: s.polyfill }),
   })
     .then((r) => r.json())
     .then((d) => {
@@ -319,6 +320,7 @@ const page = {
     s.perBrowser = {}
     s.extraQueries = []
     s.minify = false
+    s.polyfill = false
     s.saving = false
     s.saved = false
     s.rebuilding = false
@@ -360,6 +362,19 @@ const page = {
                     aria-label={t('enable')}
                     checked={s.enabled}
                     onchange={(e) => { s.enabled = !!e.target.checked }}
+                  />
+                </div>
+
+                <div className={optionRow}>
+                  <Stack gap="0">
+                    <Text weight="bold" size="sm">{t('polyfill')}</Text>
+                    <Text color="neutral" size="sm" className={optionHelp}>{t('polyfillHint')}</Text>
+                  </Stack>
+                  <Checkbox
+                    size="md"
+                    aria-label={t('polyfill')}
+                    checked={s.polyfill}
+                    onchange={(e) => { s.polyfill = !!e.target.checked }}
                   />
                 </div>
 
