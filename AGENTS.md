@@ -98,8 +98,8 @@ Each component folder contains:
 - `index.d.ts` — TypeScript declarations
 - The recipe lives in `src/recipes/{name}.ts`, NOT in the component folder
 
-Canonical single-element component body (the `cx` order matters: base class
-first, then recipe styles, then user className):
+Canonical single-element component body (the `cx` order matters: recipe
+styles first, then user className):
 
 ```js
 import m from 'mithril'
@@ -111,12 +111,21 @@ export const Button = {
     const { color, variant, size, className, ...rest } = vnode.attrs
 
     return m('button', {
-      className: cx('btn', button({ color, variant, size }), className),
+      className: cx(button({ color, variant, size }), className),
       ...rest
     }, vnode.children)
   }
 }
 ```
+
+Don't hardcode the recipe's own base class as a literal (`cx('button', button(...), className)`):
+every `defineRecipe({ className: 'button', ... })` already prepends `button` to
+whatever `button(...)` returns (verified in `styled-system/recipes/create-recipe.mjs`),
+so a literal duplicate just adds a redundant token to the DOM's `class`
+attribute. Only add a literal when it's a class the recipe does **not** already
+emit — e.g. an extra semantic class (`cx(text && 'skeleton-text', skeleton(...), className)`
+in `Skeleton`) or a conditional alternate class (`cx(floating && 'floating-label', label(...), className)`
+in `Label`).
 
 Multi-slot components use `sva()` with slots and sub-components that each apply
 their own slot class (see `src/recipes/megamenu.ts` + `src/components/Megamenu/`).

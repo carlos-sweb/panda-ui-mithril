@@ -14,7 +14,7 @@ export const Label = {
     const { floating, className, ...rest } = vnode.attrs
 
     return m(floating ? 'label' : 'span', {
-      className: cx(floating ? 'floating-label' : 'label', label({ floating: !!floating }), className),
+      className: cx(floating && 'floating-label', label({ floating: !!floating }), className),
       ...rest
     }, vnode.children)
   }
