@@ -606,6 +606,48 @@ last token per category); `extractBalanced` must match `marker` followed by
   y `server.ts` sí. El runner nunca se ejecuta contra el propio repo por
   defecto: el repo no tiene `postcss.config.cjs` (usa `scripts/build-css.ts`).
 
+**Lightningcss section — soporte NATIVO de Panda, NO un plugin PostCSS**
+(`config-ui/lightningcss-api.ts` + página `config-ui/pages/lightningcss/`):
+gestiona 3 campos de nivel superior de `panda.config.ts` — `lightningcss:
+boolean`, `browserslist: string[]`, `minify: boolean` — verificados contra el
+código fuente instalado (`@pandacss/node`, `@pandacss/core`, versión 1.12.0):
+- **Por qué NO vive en el pipeline PostCSS**: `lightningcss` no es un plugin
+  PostCSS. Cuando `lightningcss: true`, Panda auto-registra internamente
+  `@pandacss/plugin-lightningcss` (`@pandacss/node`'s `applyAutoPlugins`,
+  llamada desde `loadConfigAndCreateContext`) para su propio hook interno
+  `css:optimize` (`@pandacss/core`'s `optimizeCss`) — el paso final donde
+  Panda pule el CSS que emite (unwrap de nesting, dedup, minify/prettify).
+  Ese hook se invoca igual vía `panda cssgen` (CLI) que dentro de
+  `@pandacss/dev/postcss` (el `Builder.emit()` que usa la página Postcss),
+  así que activar lightningcss **no requiere tocar `runRebuild` ni
+  `postcss-runner.cjs`** — el rebuild existente ya lo respeta.
+- **Cero instalación**: `@pandacss/plugin-lightningcss`, `lightningcss`
+  (binario nativo) y `browserslist` son dependencias DIRECTAS de
+  `@pandacss/node` (ver su `package.json`) — vienen transitivamente con
+  cualquier `@pandacss/dev` ya instalado, nunca hace falta `bun add`.
+- **"Targets" = queries de browserslist**, no el objeto `Targets` crudo de
+  lightningcss: la implementación real de `@pandacss/plugin-lightningcss`
+  hace `browserslistToTargets(browserslist(config.browserslist))` — mismo
+  formato que `overrideBrowserslist` de `autoprefixer` en el esquema curado
+  de Postcss. El editor reusa el mismo widget de array que esa página.
+- **Preview de targets resueltos** (`GET /api/lightningcss/preview`): resuelve
+  el `browserslist`/`lightningcss` **del proyecto consumidor** (nunca los de
+  config-ui) vía `require.resolve('@pandacss/plugin-lightningcss/package.json',
+  { paths: [projectRoot] })` — no asume hoisting, funciona con node_modules
+  anidado. El objeto `Targets` real (verificado en runtime contra
+  lightningcss 1.31.1) trae 3 claves más de las 9 documentadas en su `.d.ts`
+  (`and_chr`, `and_ff`, `op_mob` — variantes móviles); versión decodificada
+  del entero de lightningcss (`major<<16 | minor<<8 | patch`).
+- **Bloque gestionado** (`/* pum:lightningcss */` … `/* /pum:lightningcss */`)
+  dentro de `defineConfig({...})` en `panda.config.ts` — mismo mecanismo de
+  markers que `/* pum:fontfaces */` (`fonts-api.ts`), coexisten sin conflicto
+  porque cada uno usa su propio marker único. `enabled: false` borra el
+  bloque entero (config.ts queda limpio), igual que `writeFontfaceConfig`
+  cuando no hay caras que emitir.
+- Si `autoprefixer`/`cssnano` siguen activos en el pipeline PostCSS, la
+  página avisa (solo texto, no toca su config) de que pueden ser redundantes
+  — lightningcss ya prefija (según targets) y minifica.
+
 ## Commit Conventions
 
 - Stage everything (`dist-playground/` and `styled-system/styles.css` are

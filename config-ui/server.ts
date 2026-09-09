@@ -53,6 +53,7 @@ import {
   writeBuildConfig, writePipelineConfig,
 } from './postcss-api'
 import { schemaFor, PANDA_PLUGIN_ID } from './postcss-schemas'
+import { readLightningcss, resolveTargets, writeLightningcss } from './lightningcss-api'
 
 const PORT = portFromArgv() ?? 1234
 const CLI_DIR = dirname(fileURLToPath(import.meta.url))
@@ -615,6 +616,58 @@ app.post('/api/postcss/config', async ({ request }) => {
   } catch (e) {
     return { ok: false, error: String(e) }
   }
+})
+
+// ── API: lightningcss (soporte NATIVO de Panda — NO es un plugin PostCSS) ───
+// panda.config.ts expone `lightningcss`/`browserslist`/`minify` de nivel
+// superior; Panda auto-registra @pandacss/plugin-lightningcss internamente
+// cuando lightningcss=true (ver applyAutoPlugins en @pandacss/node), tanto
+// para `panda cssgen` como dentro de `@pandacss/dev/postcss` — por eso NO
+// hace falta runner propio ni tocar runRebuild. Mismo contrato de error que
+// /api/theme (legacy / sin theme).
+
+/** Lee { enabled, browserslist, minify } de panda.config.ts. */
+app.get('/api/lightningcss/config', () => {
+  const found = resolveTheme(process.cwd())
+  const err = themeError(found)
+  if (err) return err
+  const projectRoot = found.projectRoot || dirname(found.themeDir!)
+  try {
+    return { ok: true, config: readLightningcss(projectRoot) }
+  } catch (e) {
+    return { ok: false, error: String(e) }
+  }
+})
+
+/** Escribe { enabled, browserslist, minify } en panda.config.ts (bloque marcado). */
+app.post('/api/lightningcss/config', async ({ request }) => {
+  const found = resolveTheme(process.cwd())
+  const err = themeError(found)
+  if (err) return err
+  const projectRoot = found.projectRoot || dirname(found.themeDir!)
+  const body = await request.json().catch(() => ({})) as Record<string, unknown>
+  try {
+    const cfg = {
+      enabled: !!body.enabled,
+      browserslist: Array.isArray(body.browserslist) ? body.browserslist.map(String) : [],
+      minify: !!body.minify,
+    }
+    const changed = writeLightningcss(projectRoot, cfg)
+    return { ok: true, changed, config: cfg }
+  } catch (e) {
+    return { ok: false, error: String(e) }
+  }
+})
+
+/** Resuelve las queries de browserslist a targets reales (preview) — usa lightningcss/browserslist DEL proyecto consumidor. */
+app.get('/api/lightningcss/preview', ({ query }) => {
+  const found = resolveTheme(process.cwd())
+  const err = themeError(found)
+  if (err) return err
+  const projectRoot = found.projectRoot || dirname(found.themeDir!)
+  const raw = query.q
+  const queries = (Array.isArray(raw) ? raw : raw ? [raw] : []).flatMap((s) => String(s).split(','))
+  return resolveTargets(projectRoot, queries)
 })
 
 // El CSS inline (config-ui.css) referencia las fuentes como rutas relativas

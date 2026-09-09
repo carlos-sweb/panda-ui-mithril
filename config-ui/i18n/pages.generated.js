@@ -3,6 +3,8 @@ import pagecolorsEn from '../pages/colors/i18n/en.yml'
 import pagecolorsEs from '../pages/colors/i18n/es.yml'
 import pagefontsEn from '../pages/fonts/i18n/en.yml'
 import pagefontsEs from '../pages/fonts/i18n/es.yml'
+import pagelightningcssEn from '../pages/lightningcss/i18n/en.yml'
+import pagelightningcssEs from '../pages/lightningcss/i18n/es.yml'
 import pagepostcssEn from '../pages/postcss/i18n/en.yml'
 import pagepostcssEs from '../pages/postcss/i18n/es.yml'
 import pageradiiEn from '../pages/radii/i18n/en.yml'
@@ -15,6 +17,8 @@ pageI18n.en['colors'] = pagecolorsEn
 pageI18n.es['colors'] = pagecolorsEs
 pageI18n.en['fonts'] = pagefontsEn
 pageI18n.es['fonts'] = pagefontsEs
+pageI18n.en['lightningcss'] = pagelightningcssEn
+pageI18n.es['lightningcss'] = pagelightningcssEs
 pageI18n.en['postcss'] = pagepostcssEn
 pageI18n.es['postcss'] = pagepostcssEs
 pageI18n.en['radii'] = pageradiiEn

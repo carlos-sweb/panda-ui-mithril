@@ -25,13 +25,14 @@ sidebar:
     typography: Tipografía
     spacing: Espaciado
     radii: Radios
-    postcss: Postcss
+    build: Build
   items:
     colors: Colores
     fonts: Fuentes
     spacing: Espaciado
     radii: Radios
     postcss: Postcss
+    lightningcss: Lightningcss
 navbar:
   themeLabels:
     light: 🌞 Claro

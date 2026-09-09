@@ -25,13 +25,14 @@ sidebar:
     typography: Typography
     spacing: Spacing
     radii: Radii
-    postcss: Postcss
+    build: Build
   items:
     colors: Colors
     fonts: Fonts
     spacing: Spacing
     radii: Radii
     postcss: Postcss
+    lightningcss: Lightningcss
 navbar:
   themeLabels:
     light: 🌞 Light

@@ -1,0 +1,24 @@
+title: Lightningcss
+intro: Soporte nativo de Panda para lightningcss (targets vía browserslist, minify) — no es un plugin de PostCSS, funciona junto al pipeline de Postcss sin tocar postcss.config.cjs.
+errorPrefix: 'Error: '
+enable: Activar lightningcss
+enableHint: Usa lightningcss en vez de PostCSS para el propio paso de optimización de CSS de Panda (downleveling de nesting/media, prefijos de proveedor, minificación) — funciona igual con panda cssgen que con el pipeline de Postcss.
+minify: Minificar
+minifyHint: Minifica el CSS que emite lightningcss.
+browserslist: Navegadores objetivo
+browserslistHint: Marca un navegador y fija su versión mínima — sin escribir sintaxis. Ninguno marcado = la config de browserslist propia del proyecto, o los defaults de lightningcss.
+advanced: Avanzado (queries de browserslist en texto)
+advancedHint: Para lo que un checkbox por navegador no puede expresar (p. ej. "> 0.5%", "not dead", "cover 99.5%"). Una query por fila.
+addQuery: Añadir query
+removeItem: Quitar elemento
+resolveTargets: Resolver targets
+resolving: Resolviendo…
+redundancyHint: Si autoprefixer y/o cssnano están activos en el pipeline de Postcss, pueden ser redundantes ahora — lightningcss ya gestiona prefijos de proveedor (según tus targets) y minificación.
+saving: Guardando…
+save: Guardar
+saved: Guardado ✓
+rebuild: Reconstruir CSS
+rebuilding: Reconstruyendo…
+rebuiltPostcss: Reconstruido (pipeline postcss) ✓
+rebuiltCssgen: Reconstruido (codegen + cssgen) ✓
+reload: Recargar
