@@ -33,6 +33,7 @@ sidebar:
     radii: Radios
     postcss: Postcss
     lightningcss: Lightningcss
+    staticcss: Static Css Recipes
 navbar:
   themeLabels:
     light: 🌞 Claro

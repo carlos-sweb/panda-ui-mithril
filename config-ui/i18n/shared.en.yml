@@ -33,6 +33,7 @@ sidebar:
     radii: Radii
     postcss: Postcss
     lightningcss: Lightningcss
+    staticcss: Static Css Recipes
 navbar:
   themeLabels:
     light: 🌞 Light

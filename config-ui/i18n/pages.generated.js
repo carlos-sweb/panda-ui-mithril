@@ -11,6 +11,8 @@ import pageradiiEn from '../pages/radii/i18n/en.yml'
 import pageradiiEs from '../pages/radii/i18n/es.yml'
 import pagespacingEn from '../pages/spacing/i18n/en.yml'
 import pagespacingEs from '../pages/spacing/i18n/es.yml'
+import pagestaticcssEn from '../pages/staticcss/i18n/en.yml'
+import pagestaticcssEs from '../pages/staticcss/i18n/es.yml'
 
 export const pageI18n = { en: {}, es: {} }
 pageI18n.en['colors'] = pagecolorsEn
@@ -25,3 +27,5 @@ pageI18n.en['radii'] = pageradiiEn
 pageI18n.es['radii'] = pageradiiEs
 pageI18n.en['spacing'] = pagespacingEn
 pageI18n.es['spacing'] = pagespacingEs
+pageI18n.en['staticcss'] = pagestaticcssEn
+pageI18n.es['staticcss'] = pagestaticcssEs

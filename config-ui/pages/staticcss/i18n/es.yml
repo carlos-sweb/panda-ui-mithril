@@ -1,0 +1,26 @@
+title: Static Css Recipes
+intro: Reduce staticCss.recipes de "*" (todos los recipes de la librería) a solo lo que tu proyecto realmente usa — escanea tu uso de componentes más las dependencias internas de wrapper de la librería (p. ej. Table arrastra a Pagination, que a su vez arrastra a Button).
+errorPrefix: 'Error: '
+enable: Activar
+enableHint: Apagado mantiene el default seguro (staticCss.recipes = "*", se generan todos los recipes). Encendido lo reemplaza por el set escaneado + manual de abajo.
+scan: Scan
+scanButton: Escanear proyecto
+scanning: Escaneando…
+scanHint: Escanea los mismos archivos que el glob "include" de tu panda.config.ts ({include}) buscando imports de componentes de panda-ui-mithril.
+filesScanned: archivos escaneados
+noComponentsDetected: No se encontraron imports de componentes de panda-ui-mithril en los archivos escaneados — revisa tu glob "include", o puede que este proyecto aún no use ningún componente.
+manual: Recipes manuales
+manualHint: El Scan nunca los toca — siempre se incluyen en la lista final, además de lo que encuentre el scan. Úsalo para tus propios recipes custom, o cualquier cosa que el scan no pueda ver (imports dinámicos, re-exports indirectos a través de un barrel propio).
+addRecipe: Añadir recipe
+removeItem: Quitar elemento
+finalRecipes: staticCss.recipes final
+finalRecipesEmpty: Nada todavía — escanea el proyecto o agrega un recipe manual.
+limitationsHint: Scan es análisis estático — no puede ver referencias a componentes calculadas dinámicamente, ni imports que pasan por un barrel propio en vez de importar directo de panda-ui-mithril. Si algo se ve sin estilo tras activarlo, agrega su recipe en Manual.
+saving: Guardando…
+save: Guardar
+saved: Guardado ✓
+rebuild: Reconstruir CSS
+rebuilding: Reconstruyendo…
+rebuiltPostcss: Reconstruido (pipeline postcss) ✓
+rebuiltCssgen: Reconstruido (codegen + cssgen) ✓
+reload: Recargar

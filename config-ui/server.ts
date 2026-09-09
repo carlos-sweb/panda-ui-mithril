@@ -54,6 +54,7 @@ import {
 } from './postcss-api'
 import { schemaFor, PANDA_PLUGIN_ID } from './postcss-schemas'
 import { readLightningcss, resolveTargets, writeLightningcss } from './lightningcss-api'
+import { readStaticCssState, scanProject, writeStaticCssState } from './staticcss-scan-api'
 
 const PORT = portFromArgv() ?? 1234
 const CLI_DIR = dirname(fileURLToPath(import.meta.url))
@@ -668,6 +669,56 @@ app.get('/api/lightningcss/preview', ({ query }) => {
   const raw = query.q
   const queries = (Array.isArray(raw) ? raw : raw ? [raw] : []).flatMap((s) => String(s).split(','))
   return resolveTargets(projectRoot, queries)
+})
+
+// ── API: Static Css Recipes (reduce staticCss.recipes de '*' a lo usado) ────
+// Escanea el CÓDIGO FUENTE del propio paquete instalado (PKG_DIR, el mismo
+// panda-ui-mithril del que corre config-ui — no hace falta resolverlo del
+// consumidor) para construir el grafo componente->recipes / componente->
+// componente (wrappers), y el código del CONSUMIDOR (glob `include` de su
+// panda.config.ts) para saber qué componentes usa. Ver staticcss-scan-api.ts.
+// Mismo contrato de error que /api/theme (legacy / sin theme).
+
+/** Lee el estado actual (sin re-escanear) — { enabled, recipes, manual, include }. */
+app.get('/api/staticcss/config', () => {
+  const found = resolveTheme(process.cwd())
+  const err = themeError(found)
+  if (err) return err
+  const projectRoot = found.projectRoot || dirname(found.themeDir!)
+  try {
+    return { ok: true, ...readStaticCssState(projectRoot, dirname(found.themeDir!)) }
+  } catch (e) {
+    return { ok: false, error: String(e) }
+  }
+})
+
+/** Escanea el proyecto (no guarda) — preview de componentes detectados + recipes resultantes. */
+app.post('/api/staticcss/scan', () => {
+  const found = resolveTheme(process.cwd())
+  const err = themeError(found)
+  if (err) return err
+  const projectRoot = found.projectRoot || dirname(found.themeDir!)
+  return scanProject(projectRoot, PKG_DIR)
+})
+
+/** Guarda { enabled, recipes, manual } — enabled=false restaura '*' (revierte todo). */
+app.post('/api/staticcss/config', async ({ request }) => {
+  const found = resolveTheme(process.cwd())
+  const err = themeError(found)
+  if (err) return err
+  const projectRoot = found.projectRoot || dirname(found.themeDir!)
+  const body = await request.json().catch(() => ({})) as Record<string, unknown>
+  try {
+    const opts = {
+      enabled: !!body.enabled,
+      recipes: Array.isArray(body.recipes) ? body.recipes.map(String) : [],
+      manual: Array.isArray(body.manual) ? body.manual.map(String) : [],
+    }
+    const changed = writeStaticCssState(projectRoot, dirname(found.themeDir!), opts)
+    return { ok: true, changed }
+  } catch (e) {
+    return { ok: false, error: String(e) }
+  }
 })
 
 // El CSS inline (config-ui.css) referencia las fuentes como rutas relativas

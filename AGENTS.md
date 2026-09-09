@@ -648,6 +648,55 @@ código fuente instalado (`@pandacss/node`, `@pandacss/core`, versión 1.12.0):
   página avisa (solo texto, no toca su config) de que pueden ser redundantes
   — lightningcss ya prefija (según targets) y minifica.
 
+**Static Css Recipes section** (`config-ui/staticcss-scan-api.ts` + página
+`config-ui/pages/staticcss/`): reduce `staticCss.recipes` de `'*'` (default
+de Panda — genera TODOS los recipes de la librería, ~157 KB en un proyecto
+que solo usa `Button`) a solo los que el consumidor realmente usa.
+- **Grafo del paquete, calculado en vivo, nunca shippeado**: `buildComponentGraph(libRoot)`
+  parsea `src/index.js` (barrel: símbolo exportado → carpeta, soporta que una
+  carpeta exporte varios símbolos como `CardBody`/`CardTitle` → `Card`),
+  `package.json`'s `exports` (subpath kebab → carpeta), y cada
+  `src/components/*/index.js` (qué recipes importa + de qué OTRAS carpetas
+  depende). `libRoot` es `PKG_DIR` del propio `server.ts` — config-ui corre
+  DESDE el paquete que hay que escanear, no hace falta resolverlo aparte.
+- **Cierre transitivo de wrappers** (`closureRecipes`): 10 de los 72
+  componentes importan otros componentes de la librería, no solo su propio
+  recipe — verificado, no es hipotético: `ButtonClose→Button`,
+  `ButtonCopy→Button,Tooltip`, `ColorPicker→Button,ButtonClose,Dropdown,Menu`,
+  `Drawer→ButtonClose`, `Dropdown→Button`, `List→Skeleton`,
+  `Modal→ButtonClose`, `Navbar→Button,Link`, `RatingGroup→Rating`,
+  `Table→Pagination,Select,Skeleton`. Ejemplo real: si el consumidor solo
+  importa `Table`, el cierre correcto es `table, tableOverflow, pagination,
+  select, skeleton, button` (el último porque `Pagination` a su vez usa
+  `button`) — un cierre no transitivo dejaría partes de la tabla sin estilo,
+  en silencio.
+- **Escaneo del consumidor** reusa el mismo glob `include` que ya tiene su
+  `panda.config.ts` (vía `fast-glob`, resuelto con `require.resolve` desde
+  `@pandacss/node` — mismo patrón robusto a node_modules anidado que
+  `lightningcss-api.ts`), buscando `import {...} from 'panda-ui-mithril'`
+  (resuelto símbolo a símbolo contra el barrel) y `from
+  'panda-ui-mithril/{subpath}'` (resuelto contra el exports map).
+- **Recipes manuales** (`{raiz}/staticcss.json`, mismo patrón que
+  `postcss.build.json`/`fonts-loaded.json`) — **el Scan nunca los toca ni
+  los borra**: son la respuesta a "¿cómo agrego mi propio recipe custom, o
+  algo que el análisis estático no puede ver (import dinámico, re-export
+  indirecto por un barrel propio del consumidor)?". El valor final escrito
+  en `staticCss.recipes` es siempre `scan ∪ manual`, nunca solo uno de los
+  dos.
+- **Escritura quirúrgica de `panda.config.ts`**: `writeStaticCssRecipes`
+  localiza `staticCss: {...}` por balanced-brace scan (mismo técnica que
+  `writeFontfaceConfig` en `fonts-api.ts`) y reemplaza SOLO el valor de
+  `recipes:` dentro de ese span — nunca toca `css`/`patterns`/`themes` si el
+  consumidor ya los tiene configurados. `enabled: false` restaura el string
+  `'*'` literal (revierte todo al default seguro de Panda, un click).
+- **Riesgo explícito, no oculto**: a diferencia de fonts/postcss/lightningcss
+  (aditivos, revertir es solo borrar un bloque), esto reemplaza el valor de
+  un campo que YA EXISTÍA con contenido funcional — un análisis estático
+  incompleto significa CSS roto en producción (componente sin estilo, en
+  silencio). Por eso el toggle es `enabled: false` por defecto, el Scan
+  siempre muestra preview (componentes detectados + recipes resultantes)
+  antes de guardar, y el campo manual existe como red de seguridad explícita.
+
 ## Commit Conventions
 
 - Stage everything (`dist-playground/` and `styled-system/styles.css` are
