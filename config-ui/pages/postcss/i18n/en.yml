@@ -41,6 +41,7 @@ configure:
   enabled: Enabled
   disabled: Disabled
   removeFromPipeline: Remove from pipeline
+  dragToReorder: Drag to reorder
   noSchema: No curated schema for this plugin — edit options as free JSON.
   enumDefault: '(default)'
   addItem: Add item

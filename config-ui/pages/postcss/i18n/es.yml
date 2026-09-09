@@ -41,6 +41,7 @@ configure:
   enabled: Activo
   disabled: Inactivo
   removeFromPipeline: Quitar del pipeline
+  dragToReorder: Arrastrar para reordenar
   noSchema: No hay esquema curado para este plugin — edita las opciones como JSON libre.
   enumDefault: '(por defecto)'
   addItem: Añadir elemento

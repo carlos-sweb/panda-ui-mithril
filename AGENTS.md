@@ -218,6 +218,21 @@ future data-driven `Table`:
   the node AFTER `onEnd`, so the reorder runs on a deferred tick
   (`setTimeout(finishSort, 0)`) with the guard still up — then `onReorder(next)`
   + `m.redraw()` reconcile.
+  **Known bug — `sortable` + `header` (or `footer`) together**: verified with
+  real drags (config-ui's Postcss pipeline editor) that `onReorder` silently
+  never fires when a static `header`/`footer` row is present alongside
+  `sortable` — the drag still visually reorders the DOM (SortableJS moving
+  nodes directly), but `finishSort`'s index guard
+  (`from < data.length && to < data.length`) rejects it, most likely because
+  `evt.oldDraggableIndex`/`newDraggableIndex` come back unreliable with a
+  filtered (`list-static`) sibling present, falling back to
+  `oldIndex`/`newIndex` — which count the header, off-by-one against `data`.
+  No console error, no exception — the array update is just dropped. Until
+  fixed in `List`/`sortable.js`, **do not combine `sortable` with
+  `header`/`footer`**: render the pinned/static row as a plain sibling
+  element OUTSIDE the `List` instead (see `config-ui/pages/postcss/index.jsx`'s
+  Configure tab: the Panda base plugin renders above the sortable `List`, not
+  as its `header`).
 - `Pagination`: `page` + `pageCount` + `onchange(page)`; `variant`
   (joined/separated), `shape` (square/circle), `siblings`, `boundaries`,
   `withControls`/`withEdges`, `getHref`, controlled (`page`) or uncontrolled

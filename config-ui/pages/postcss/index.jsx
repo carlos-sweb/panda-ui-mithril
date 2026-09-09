@@ -2,7 +2,7 @@ import m from 'mithril'
 import { css } from '../../../styled-system/css'
 import {
   Stack, Title, Text, Button, Card, CardBody, TextInput, Alert, Block,
-  Tag, Tabs, Tab, TabContent, Loading, List, ListRow, ListCol,
+  Tag, Tabs, Tab, TabContent, Loading, List, ListRow, ListCol, ListDragHandle,
   Select, Checkbox, Textarea,
   Collapse, CollapseTitle, CollapseContent,
 } from '../../../src/index.js'
@@ -239,6 +239,18 @@ function removeFromPipeline(s, id) {
   if (id === PANDA_PLUGIN_ID) return
   s.plugins = s.plugins.filter((x) => x.id !== id)
   m.redraw()
+}
+
+/**
+ * Reordena el pipeline tras un drag (List `sortable`, controlado): `next` es
+ * el nuevo orden SOLO de los plugins no-Panda (Panda es la fila estática
+ * `header`, fuera del array `data` que List reordena). Panda se antepone de
+ * nuevo — el orden aquí es el que `serializeManagedBlock` (postcss-api.ts)
+ * escribe tal cual en postcss.config.cjs, así que este array ES el orden de
+ * ejecución real del pipeline.
+ */
+function reorderPipeline(s, next) {
+  s.plugins = [s.plugins.find((p) => p.id === PANDA_PLUGIN_ID), ...next].filter(Boolean)
 }
 
 /** Opciones editables del esquema; null si el plugin no tiene esquema curado. */
@@ -552,6 +564,55 @@ function pluginEditor(s, pl) {
   )
 }
 
+/**
+ * Collapse de un plugin del pipeline (título con tags + editor de opciones).
+ * Compartido entre la fila estática de Panda (`header`, no arrastrable) y
+ * cada fila arrastrable de List — mismo contenido, la diferencia es que
+ * Panda no tiene checkbox de enabled ni botón de quitar (es la base).
+ */
+function pluginCollapse(s, pl, defaultOpen) {
+  const isPanda = pl.id === PANDA_PLUGIN_ID
+  return (
+    <Collapse arrow border defaultChecked={defaultOpen}>
+      <CollapseTitle>
+        <Stack direction="row" gap="sm" align="center" className={css({ flexWrap: 'wrap' })}>
+          <Text weight="bold" className={pluginName}>{pl.id}</Text>
+          {isPanda
+            ? <Tag size="md" variant="info">{t('configure.pandaBase')}</Tag>
+            : pl.enabled
+              ? <Tag size="md" variant="success">{t('configure.enabled')}</Tag>
+              : <Tag size="md" variant="ghost">{t('configure.disabled')}</Tag>}
+          {!schemaFor(pl.id) && (
+            <Tag size="md" variant="ghost">{t('configure.noSchema')}</Tag>
+          )}
+        </Stack>
+      </CollapseTitle>
+      <CollapseContent>
+        <Stack gap="md" className={css({ paddingTop: '0.5rem' })}>
+          {!isPanda && (
+            <Stack direction="row" gap="sm" align="center">
+              <Checkbox
+                checked={pl.enabled}
+                onchange={(e) => { pl.enabled = !!e.target.checked }}
+              >
+                {t('configure.enabled')}
+              </Checkbox>
+              <Button
+                size="sm"
+                variant="ghost"
+                onclick={() => removeFromPipeline(s, pl.id)}
+              >
+                {t('configure.removeFromPipeline')}
+              </Button>
+            </Stack>
+          )}
+          {pluginEditor(s, pl)}
+        </Stack>
+      </CollapseContent>
+    </Collapse>
+  )
+}
+
 /** Fila de la viñeta Configure ("Añadir desde Available"). */
 function availableRow(s, p) {
   const id = p.pkg || p.name
@@ -812,46 +873,32 @@ const page = {
                           <Text color="neutral">{t('configure.empty')}</Text>
                         )}
 
+                        {/* Panda va FUERA del List sortable — no como `header` (List
+                            sortable+header tiene un bug: SortableJS reporta índices que
+                            cuentan la fila estática, finishSort los compara contra `data`
+                            —que no la incluye— y descarta el reorder en silencio; onReorder
+                            nunca llega a llamarse. Verificado con drags reales antes de
+                            elegir este enfoque. Panda fijo arriba logra el mismo resultado
+                            visual sin depender de esa combinación.) */}
+                        {s.plugins.find((pl) => pl.id === PANDA_PLUGIN_ID) && (
+                          <div className={css({ marginBottom: '0.5rem' })}>
+                            {pluginCollapse(s, s.plugins.find((pl) => pl.id === PANDA_PLUGIN_ID), true)}
+                          </div>
+                        )}
+
                         <div>
-                          {s.plugins.map((pl, i) => (
-                            <Collapse key={pl.id} arrow border className={css({ marginBottom: '0.5rem' })} defaultChecked={i === 0}>
-                              <CollapseTitle>
-                                <Stack direction="row" gap="sm" align="center" className={css({ flexWrap: 'wrap' })}>
-                                  <Text weight="bold" className={pluginName}>{pl.id}</Text>
-                                  {pl.id === PANDA_PLUGIN_ID
-                                    ? <Tag size="md" variant="info">{t('configure.pandaBase')}</Tag>
-                                    : pl.enabled
-                                      ? <Tag size="md" variant="success">{t('configure.enabled')}</Tag>
-                                      : <Tag size="md" variant="ghost">{t('configure.disabled')}</Tag>}
-                                  {!schemaFor(pl.id) && (
-                                    <Tag size="md" variant="ghost">{t('configure.noSchema')}</Tag>
-                                  )}
-                                </Stack>
-                              </CollapseTitle>
-                              <CollapseContent>
-                                <Stack gap="md" className={css({ paddingTop: '0.5rem' })}>
-                                  {pl.id !== PANDA_PLUGIN_ID && (
-                                    <Stack direction="row" gap="sm" align="center">
-                                      <Checkbox
-                                        checked={pl.enabled}
-                                        onchange={(e) => { pl.enabled = !!e.target.checked }}
-                                      >
-                                        {t('configure.enabled')}
-                                      </Checkbox>
-                                      <Button
-                                        size="sm"
-                                        variant="ghost"
-                                        onclick={() => removeFromPipeline(s, pl.id)}
-                                      >
-                                        {t('configure.removeFromPipeline')}
-                                      </Button>
-                                    </Stack>
-                                  )}
-                                  {pluginEditor(s, pl)}
-                                </Stack>
-                              </CollapseContent>
-                            </Collapse>
-                          ))}
+                          <List
+                            data={s.plugins.filter((pl) => pl.id !== PANDA_PLUGIN_ID)}
+                            key={(pl) => pl.id}
+                            sortable
+                            onReorder={(next) => reorderPipeline(s, next)}
+                            render={(pl) => (
+                              <ListRow>
+                                <ListDragHandle aria-label={t('configure.dragToReorder')} />
+                                <ListCol grow>{pluginCollapse(s, pl, false)}</ListCol>
+                              </ListRow>
+                            )}
+                          />
                         </div>
 
                         {s.available.length > 0 && (
