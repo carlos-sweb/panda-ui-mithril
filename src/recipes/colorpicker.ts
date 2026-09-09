@@ -63,8 +63,12 @@ export const colorPickerRecipe = defineSlotRecipe({
         background: 'linear-gradient(to top, black, transparent)',
       },
     },
+    // left/top: posición dinámica del cursor 2D, vía --colorpicker-cursor-*
+    // (depende de saturación/brillo actuales, se fija inline desde el componente).
     cursor: {
       position: 'absolute',
+      left: 'var(--colorpicker-cursor-left)',
+      top: 'var(--colorpicker-cursor-top)',
       width: '1rem',
       height: '1rem',
       borderRadius: '50%',
@@ -123,8 +127,11 @@ export const colorPickerRecipe = defineSlotRecipe({
     hueTrack: {
       marginTop: 'token(spacing.3)',
     },
+    // left: posición dinámica del thumb en la pista, vía --colorpicker-thumb-left
+    // (depende del valor actual del canal, se fija inline desde el componente).
     thumb: {
       position: 'absolute',
+      left: 'var(--colorpicker-thumb-left)',
       top: '50%',
       width: '0.875rem',
       height: '0.875rem',
@@ -162,12 +169,15 @@ export const colorPickerRecipe = defineSlotRecipe({
         borderColor: 'primary',
       },
     },
+    // backgroundColor: hex actual, vía --colorpicker-swatch-color (compartida
+    // con triggerSwatch, se fija inline desde el componente en cada render).
     swatch: {
       width: '2.25rem',
       height: '2.25rem',
       borderRadius: '0.375rem',
       border: '1px solid',
       borderColor: 'base-300',
+      backgroundColor: 'var(--colorpicker-swatch-color)',
       flexShrink: '0',
     },
     footer: {
@@ -190,6 +200,9 @@ export const colorPickerRecipe = defineSlotRecipe({
       cursor: 'pointer',
       '& svg': {
         transition: 'transform 0.15s ease',
+      },
+      '&[aria-expanded="true"] svg': {
+        transform: 'rotate(180deg)',
       },
     },
     copyButton: {
@@ -217,6 +230,7 @@ export const colorPickerRecipe = defineSlotRecipe({
       borderRadius: '0.25rem',
       border: '1px solid',
       borderColor: 'base-300',
+      backgroundColor: 'var(--colorpicker-swatch-color)',
       flexShrink: '0',
     },
     // Contenedor del panel dentro del DropdownContent: ancla el ButtonClose

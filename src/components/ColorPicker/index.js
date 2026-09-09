@@ -5,7 +5,7 @@ import { cx } from '../../../styled-system/css'
 import { t } from '../../i18n'
 import { Dropdown, DropdownTrigger, DropdownContent } from '../Dropdown/index.js'
 import { Menu, MenuItem } from '../Menu/index.js'
-import { Button } from '../Button/index.jsx'
+import { Button } from '../Button/index.js'
 import { ButtonClose } from '../ButtonClose/index.js'
 import {
   clamp, hexToRgb, rgbToHex, rgbToHsb, hsbToRgb, rgbToHsl, hslToRgb,
@@ -256,7 +256,7 @@ export const ColorPicker = {
         onkeydown: (e) => onTrackKey(e, channelDef.key, channelDef.min, channelDef.max),
       }, m('span', {
         className: cx('colorpicker-thumb', styles.thumb),
-        style: { left: `${pct}%` },
+        style: { '--colorpicker-thumb-left': `${pct}%` },
       }))
 
       // Modo "bare" (hue del Picker): solo la pista con su thumb, sin label ni
@@ -297,7 +297,7 @@ export const ColorPicker = {
               onkeydown: (e) => onGradientKey(e),
             }, m('span', {
               className: cx('colorpicker-cursor', styles.cursor),
-              style: { left: gradientCursorLeft, top: gradientCursorTop },
+              style: { '--colorpicker-cursor-left': gradientCursorLeft, '--colorpicker-cursor-top': gradientCursorTop },
             })),
             // Slider de hue — solo la pista (bare): el usuario entiende que es
             // el tono, sin etiqueta ni valor numérico.
@@ -316,7 +316,7 @@ export const ColorPicker = {
         ? trigger(hex)
         : typeof trigger === 'string'
           ? m(Button, { variant: 'ghost', size: 'sm', className: cx('colorpicker-trigger-button', styles.triggerButton) }, [
-              m('span', { className: cx('colorpicker-trigger-swatch', styles.triggerSwatch), style: { backgroundColor: hex } }),
+              m('span', { className: cx('colorpicker-trigger-swatch', styles.triggerSwatch), style: { '--colorpicker-swatch-color': hex } }),
               trigger,
             ])
           : trigger // Vnode: lo clona DropdownTrigger con aria + toggle
@@ -428,7 +428,7 @@ export const ColorPicker = {
         }),
         m('span', {
           className: cx('colorpicker-swatch', styles.swatch),
-          style: { backgroundColor: hex },
+          style: { '--colorpicker-swatch-color': hex },
           'aria-hidden': 'true',
         }),
       ])
@@ -456,7 +456,6 @@ export const ColorPicker = {
                 m(ChevronDown, {
                   size: 14,
                   'aria-hidden': 'true',
-                  style: { transform: state.menuOpen ? 'rotate(180deg)' : undefined },
                 }),
               ])),
             m(DropdownContent, {},
