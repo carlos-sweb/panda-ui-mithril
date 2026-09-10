@@ -5,6 +5,8 @@ export interface CardAttrs extends ComponentAttrs {
   size?: PumSize
   border?: boolean
   dash?: boolean
+  /** Drop shadow — opt-in, composes with border/dash. @default false */
+  shadow?: boolean
   side?: boolean
   imageFull?: boolean
   children?: Vnode | Vnode[] | string | null
@@ -12,6 +14,8 @@ export interface CardAttrs extends ComponentAttrs {
 }
 
 export interface CardBodyAttrs extends ComponentAttrs {
+  /** Divided side compartment for `<Card side>` — divider border + centered content. @default false */
+  rail?: boolean
   children?: Vnode | Vnode[] | string | null
   [key: string]: unknown
 }

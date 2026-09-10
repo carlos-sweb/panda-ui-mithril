@@ -9,9 +9,11 @@ interface CardVariant {
 size: "xs" | "sm" | "md" | "lg" | "xl"
 border: boolean
 dash: boolean
+shadow: boolean
 side: boolean
 imageFull: boolean
 justify: "start" | "center" | "end" | "between"
+rail: boolean
 }
 
 type CardVariantMap = {

@@ -11,19 +11,27 @@ import image_card1 from './../../assets/card/card1.jpg'
 import image_card2 from './../../assets/card/card2.jpg'
 import image_card3 from './../../assets/card/card3.jpg'
 
-const surface = css({ background: 'token(colors.base-100)', boxShadow: '0 1px 3px color-mix(in oklab, black 15%, transparent)', width: '20rem' })
-const surfaceSide = css({ background: 'token(colors.base-100)', boxShadow: '0 1px 3px color-mix(in oklab, black 15%, transparent)' })
+// Card ya trae background: token(colors.base-100) por defecto (su propio
+// recipe) — acá solo se agrega la sombra, que sigue siendo decisión de
+// cada consumidor (no todo Card debería verse "flotante").
+const surface = css({ boxShadow: '0 1px 3px color-mix(in oklab, black 15%, transparent)', width: '20rem' })
+const surfaceSide = css({ boxShadow: '0 1px 3px color-mix(in oklab, black 15%, transparent)' })
 const img200 = css({ width: '100%', height: '10rem', objectFit: 'cover' })
 const imgSide = css({ width: '12rem', height: '100%', objectFit: 'cover' })
 
 const usageCodeJsx = `import m from 'mithril'
 import { Card, CardFigure, CardBody, CardTitle, CardActions, Button } from 'panda-ui-mithril'
+import { css } from 'panda-ui-mithril/styled-system/css'
+
+// Card already ships with a background (its own recipe) — className here
+// is only for layout (width), not for re-adding a color Card already has.
+const wide = css({ width: '24rem' })
 
 export const MyPage = {
   view() {
     return (
       <div>
-        <Card className="bg-base-100 shadow-sm w-96">
+        <Card className={wide}>
           <CardFigure><img src="..." alt="..." /></CardFigure>
           <CardBody>
             <CardTitle>Card Title</CardTitle>
@@ -40,10 +48,13 @@ export const MyPage = {
 
 const usageCodeJavascript = `import m from 'mithril'
 import { Card, CardFigure, CardBody, CardTitle, CardActions, Button } from 'panda-ui-mithril'
+import { css } from 'panda-ui-mithril/styled-system/css'
+
+const wide = css({ width: '24rem' })
 
 export const MyPage = {
   view() {
-    return m(Card, { className: 'bg-base-100 shadow-sm w-96' }, [
+    return m(Card, { className: wide }, [
       m(CardFigure, null, m('img', { src: '...', alt: '...' })),
       m(CardBody, null, [
         m(CardTitle, null, 'Card Title'),
@@ -84,7 +95,7 @@ export default {
               </CardBody>
             </Card>
 
-            <Card border className={css({ width: '20rem', background: 'token(colors.base-100)' })}>
+            <Card border className={css({ width: '20rem' })}>
               <CardBody>
                 <CardTitle>Bordered</CardTitle>
                 <p>This card has a border and no shadow.</p>
@@ -94,7 +105,7 @@ export default {
               </CardBody>
             </Card>
 
-            <Card dash className={css({ width: '20rem', background: 'token(colors.base-100)' })}>
+            <Card dash className={css({ width: '20rem' })}>
               <CardBody>
                 <CardTitle>Dashed</CardTitle>
                 <p>This card uses a dashed border style.</p>
@@ -134,10 +145,10 @@ export default {
         <Block spacing="lg">
           <Title as="h3" size="5">{t('common.subtitles.sizes')}</Title>
           <Stack direction="row" gap="sm">
-            <Card size="xs" border className={css({ width: '12rem', background: 'token(colors.base-100)' })}>
+            <Card size="xs" border className={css({ width: '12rem' })}>
               <CardBody><CardTitle>XS</CardTitle><p>Extra small</p></CardBody>
             </Card>
-            <Card size="lg" border className={css({ width: '16rem', background: 'token(colors.base-100)' })}>
+            <Card size="lg" border className={css({ width: '16rem' })}>
               <CardBody><CardTitle>LG</CardTitle><p>Large size</p></CardBody>
             </Card>
           </Stack>

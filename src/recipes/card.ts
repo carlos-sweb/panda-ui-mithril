@@ -8,6 +8,7 @@ export const cardRecipe = defineSlotRecipe({
       position: 'relative',
       display: 'flex',
       flexDirection: 'column',
+      backgroundColor: 'token(colors.base-100)',
       borderRadius: 'var(--radius-box)',
 
       '& figure': {
@@ -83,6 +84,12 @@ export const cardRecipe = defineSlotRecipe({
     dash: {
       true: { card: { border: 'var(--border, 1px) dashed token(colors.base-200)' } },
     },
+    // Elevation — independent of border/dash, composes with either (or
+    // neither). Not every Card should look "elevated", so this stays opt-in
+    // rather than living in `base`.
+    shadow: {
+      true: { card: { boxShadow: '0 4px 12px color-mix(in oklab, black 15%, transparent)' } },
+    },
     side: {
       true: {
         card: {
@@ -127,6 +134,17 @@ export const cardRecipe = defineSlotRecipe({
       center: { actions: { justifyContent: 'center' } },
       end: { actions: { justifyContent: 'flex-end' } },
       between: { actions: { justifyContent: 'space-between' } },
+    },
+    // A CardBody as a divided side compartment — meant for `<Card side>`,
+    // e.g. a vertical rail of quick actions/presets next to the card's main
+    // content, with a divider border and its content centered along the row.
+    rail: {
+      true: {
+        body: {
+          justifyContent: 'center',
+          borderInlineStart: 'var(--border, 1px) solid token(colors.base-200)',
+        },
+      },
     },
   },
   defaultVariants: {

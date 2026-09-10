@@ -405,6 +405,49 @@ example; adapt the repo path to whichever reference the component draws from):
    `globalCss: { ':root': {...} }` is shared infrastructure; grep which
    recipes reference it (`grep -rl "radius-box" src/recipes/`) first.
 
+**Case study — `Card` shipped with no background (fixed).** `src/recipes/card.ts`
+had zero `backgroundColor`/`boxShadow` anywhere (base, `border`, `dash`) —
+unlike the real daisyUI `.card`, which DOES default to
+`background-color: var(--color-base-100)`. Found because EVERY real usage of
+`Card` across the playground (`playground/pages/card/index.jsx`,
+`playground/pages/aura/index.jsx`, `playground/pages/landing/index.jsx`, and
+the Calendar preset sections) manually re-added
+`background: 'token(colors.base-100)'` via `className` — a systematic
+workaround, not a one-off. Fixed by adding `backgroundColor:
+'token(colors.base-100)'` to the recipe's `card` slot base (deliberately NOT
+`boxShadow` — not every `Card` should look "elevated"; that's now the
+`shadow` boolean variant below, still opt-in).
+Existing consumers cleaned up to drop the now-redundant `background` from
+their `className`s.
+
+**Follow-up — `shadow`/`rail` promoted from ad-hoc `className` to real
+variants.** The Calendar preset sections above were composing `<Card side
+border>` with a hand-written `className` for elevation + `alignSelf`, and a
+hand-written `className` on `CardBody` for a bordered/centered side
+compartment. Since that's a generically reusable pattern (not
+Calendar-specific), both became first-class props instead of staying
+per-page boilerplate: `Card`'s `shadow?: boolean` (`card` slot,
+`boxShadow: '0 4px 12px color-mix(in oklab, black 15%, transparent)'`,
+composes with `border`/`dash`/`side`) and `CardBody`'s `rail?: boolean`
+(`body` slot, `borderInlineStart` divider + `justifyContent: 'center'`,
+meant for `<Card side>`). `CardBody`'s `defaultStyles` fast-path (module-level
+cached `card({})`, see the component's own comment) only applies when `rail`
+is falsy — pass it and the component calls `card({ rail })` fresh instead.
+**Deliberately NOT folded in**: `alignSelf: 'flex-start'` — that only exists
+because the Calendar page nests `Card` inside a `<Stack align="stretch">`;
+it's a property of THIS page's layout choice, not something `Card` should
+assume for every consumer (a `Card` in a CSS grid may well want to stretch).
+It stays a small per-page `className`, same as before. **Still open**
+(found but out of the agreed fix scope):
+`playground/pages/aura/index.jsx`'s own usage-code examples (lines ~25, ~45)
+pass `className="bg-base-100"` — a literal daisyUI/Tailwind class name that
+resolves to nothing in this project's generated CSS (0 matches in
+`styled-system/styles.css`, verified same way as the Card page's now-fixed
+`bg-base-100 shadow-sm w-96` example) — a leftover from an incomplete port,
+never adapted to Panda's `css()`. Flag before trusting any literal
+Tailwind/daisyUI-style `className` string found elsewhere in this codebase;
+`grep -c '\.{class}\b' styled-system/styles.css` confirms whether it's real.
+
 ## Consumer preset/source model
 
 The package ships **source only** (`files: ["src", "styled-system"]` — no

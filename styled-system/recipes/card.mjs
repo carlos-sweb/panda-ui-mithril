@@ -34,9 +34,11 @@ const cardVariantKeys = [
   "size",
   "border",
   "dash",
+  "shadow",
   "side",
   "imageFull",
-  "justify"
+  "justify",
+  "rail"
 ]
 const getVariantProps = (variants) => ({ ...cardDefaultVariants, ...compact(variants) })
 
@@ -60,6 +62,9 @@ export const card = /* @__PURE__ */ Object.assign(cardFn, {
   "dash": [
     "true"
   ],
+  "shadow": [
+    "true"
+  ],
   "side": [
     "true"
   ],
@@ -71,6 +76,9 @@ export const card = /* @__PURE__ */ Object.assign(cardFn, {
     "center",
     "end",
     "between"
+  ],
+  "rail": [
+    "true"
   ]
 },
   splitVariantProps(props) {
