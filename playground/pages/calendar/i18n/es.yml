@@ -1,1 +1,45 @@
 paragraph: Componente de calendario para seleccionar fechas. Al tener JS real vía Mithril, es un calendario de cuadrícula mensual completamente funcional (navegación, hoy, selección), sin dependencias externas.
+status:
+  selected: 'Seleccionado:'
+  noRangeSelected: Ningún rango seleccionado
+  noDatesSelected: Ninguna fecha seleccionada
+  at: a las
+basic:
+  title: Calendario básico
+  desc: Selección de una sola fecha — value es un Date, onchange se dispara con el día elegido.
+range:
+  title: Calendario de rango
+  desc: mode="range" convierte value en { start, end }. Elegí el primer día, pasá el mouse para previsualizar el rango, hacé click en un segundo día para confirmarlo — elegir un tercer día empieza un rango nuevo.
+disabled:
+  title: Fechas deshabilitadas
+  desc: isDateDisabled(date) recibe cada día renderizado y devuelve si debe quedar inhabilitado — acá deshabilita los fines de semana, pero puede validar contra cualquier lista, rango o regla.
+multiple:
+  title: Selección de múltiples días
+  desc: mode="multiple" convierte value en un Date[] — cada click agrega o quita ese día del arreglo.
+monthYear:
+  title: Selección de mes y año
+  desc: El título de mes/año en el header es clickeable — hace drill-down a una grilla de meses y luego una de años, en vez de ir de a un paso con prev/next.
+yearNav:
+  title: Selección de año con navegación
+  desc: initialView="year" abre el calendario directo en la grilla de años, paginada de a 12 años con las mismas flechas prev/next — útil para un selector estilo fecha de nacimiento.
+weekNumbers:
+  title: Mostrar números de semana
+  desc: showWeekNumbers agrega una columna extra con el número de semana ISO-8601 de cada fila.
+customNav:
+  title: Navegación personalizada con vista de año
+  desc: El recorrido completo — click en el header para ir día → mes → año, elegí un año para volver a mes, elegí un mes para volver a día.
+presetTime:
+  title: Selección de hora predefinida
+  desc: Una composición, no una prop nueva — Calendar elige la fecha, una lista simple de botones elige la hora del día. La selección de hora queda fuera del estado propio del componente.
+presets:
+  title: Calendario con preajustes
+  desc: Otra composición — botones de acceso rápido llaman a onchange con una fecha calculada (Hoy, Mañana, ...), igual que si se hubiera clickeado ese día.
+rangePresets:
+  title: Calendario de rango con preajustes
+  desc: La misma idea aplicada a un Calendar en modo rango — cada botón de preset calcula un { start, end } completo y se lo pasa a onchange.
+customLocale:
+  title: Locale personalizado
+  desc: La prop locale es independiente del setLocale('en'|'es') propio de la librería — le pasás tu propio { months, weekdaysShort } y el calendario se renderiza en cualquier idioma, sin esperar soporte nativo de la librería. Este ejemplo está en francés.
+weekStart:
+  title: La semana empieza en lunes
+  desc: weekStartsOn define qué día cae en la primera columna — 0 es domingo (el default de EE.UU.), 1 es lunes (la mayoría de países fuera de EE.UU.), hasta 6 para sábado. Solo cambia el orden de las columnas, cada celda mantiene su fecha real.

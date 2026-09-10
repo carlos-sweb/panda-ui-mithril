@@ -18,6 +18,10 @@ const calendarSlotNames = [
     "calendar__nav"
   ],
   [
+    "navLabel",
+    "calendar__navLabel"
+  ],
+  [
     "grid",
     "calendar__grid"
   ],
@@ -26,8 +30,20 @@ const calendarSlotNames = [
     "calendar__weekday"
   ],
   [
+    "weeknum",
+    "calendar__weeknum"
+  ],
+  [
     "day",
     "calendar__day"
+  ],
+  [
+    "pickerGrid",
+    "calendar__pickerGrid"
+  ],
+  [
+    "pickerCell",
+    "calendar__pickerCell"
   ]
 ]
 const calendarSlotFns = /* @__PURE__ */ calendarSlotNames.map(([slotName, slotKey]) => [slotName, createRecipe(slotKey, calendarDefaultVariants, getSlotCompoundVariant(calendarCompoundVariants, slotName))])
@@ -40,7 +56,12 @@ const calendarVariantKeys = [
   "outside",
   "today",
   "selected",
-  "disabled"
+  "disabled",
+  "rangeStart",
+  "rangeEnd",
+  "inRange",
+  "active",
+  "withWeeknum"
 ]
 const getVariantProps = (variants) => ({ ...calendarDefaultVariants, ...compact(variants) })
 
@@ -61,6 +82,21 @@ export const calendar = /* @__PURE__ */ Object.assign(calendarFn, {
     "true"
   ],
   "disabled": [
+    "true"
+  ],
+  "rangeStart": [
+    "true"
+  ],
+  "rangeEnd": [
+    "true"
+  ],
+  "inRange": [
+    "true"
+  ],
+  "active": [
+    "true"
+  ],
+  "withWeeknum": [
     "true"
   ]
 },

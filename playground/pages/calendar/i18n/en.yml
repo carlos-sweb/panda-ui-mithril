@@ -1,1 +1,45 @@
 paragraph: Calendar component for selecting dates. Since this project has real JS via Mithril, this is a fully working month-grid calendar (navigation, today, selection), no external dependency.
+status:
+  selected: 'Selected:'
+  noRangeSelected: No range selected
+  noDatesSelected: No dates selected
+  at: at
+basic:
+  title: Basic Calendar
+  desc: Single date selection — value is a Date, onchange fires with the picked day.
+range:
+  title: Range Calendar
+  desc: mode="range" turns value into { start, end }. Pick the first day, hover to preview the span, click a second day to confirm — picking a third day starts a new range.
+disabled:
+  title: Disabled Dates
+  desc: isDateDisabled(date) receives every rendered day and returns whether it should be unclickable — here it disables weekends, but it can check against any list, range, or rule.
+multiple:
+  title: Multiple day selection
+  desc: mode="multiple" turns value into a Date[] — clicking a day toggles it in or out of the array.
+monthYear:
+  title: Month and year selection
+  desc: The month/year label in the header is clickable — it drills down into a month grid, then a year grid, instead of clicking prev/next one step at a time.
+yearNav:
+  title: Year select with navigation
+  desc: initialView="year" opens the calendar straight into the year grid, paginated 12 years at a time with the same prev/next arrows — useful for a date-of-birth style picker.
+weekNumbers:
+  title: Display week numbers
+  desc: showWeekNumbers adds an extra column with the ISO-8601 week number of each row.
+customNav:
+  title: Custom navigation with year view
+  desc: The full round trip — click the header to go day → month → year, pick a year to land back on month, pick a month to land back on day.
+presetTime:
+  title: Preset time selection
+  desc: A composition, not a new prop — Calendar picks the date, a plain button list picks the time of day. Keeps time selection outside the component's own state.
+presets:
+  title: Calendar with presets
+  desc: Another composition — quick-pick buttons call onchange with a computed date (Today, Tomorrow, ...), same as clicking a day would.
+rangePresets:
+  title: Range calendar with presets
+  desc: Same idea applied to a range Calendar — each preset button computes a full { start, end } and hands it to onchange.
+customLocale:
+  title: Custom locale
+  desc: The locale prop is independent of the library's own setLocale('en'|'es') — pass your own { months, weekdaysShort } and the calendar renders in any language, no waiting on native library support. This example is French.
+weekStart:
+  title: Week starts on Monday
+  desc: weekStartsOn sets which weekday lands in the first column — 0 is Sunday (the US default), 1 is Monday (most countries outside the US), up to 6 for Saturday. Only the column order changes, each cell keeps its real date.

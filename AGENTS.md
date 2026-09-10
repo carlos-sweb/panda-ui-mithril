@@ -196,6 +196,27 @@ When building dynamic rows (e.g. List loading skeletons), give every row a
 key: `m(ListRow, { key: '__loading-' + i + '__', ... })`. Mixing keyed and
 unkeyed siblings silently breaks diffing.
 
+### Never name a state field `view` (found in Calendar, fixed)
+
+Mithril's `initComponent` reads `vnode.state.view` **twice**: once BEFORE
+`oninit` runs (to capture the real render function into a local it calls
+after lifecycle hooks), and again AFTER `oninit` runs, to actually invoke it
+(`callHook.call(vnode.state.view, vnode)`). If a component's own `oninit`
+sets `vnode.state.view = <anything other than the render function>` — e.g. a
+plain state field happening to be named `view` — that second read gets the
+overwritten value instead. Calendar's day/month/year drill-down originally
+stored its current panel as `vnode.state.view = 'day'`, which silently
+replaced the component's own render function with the string `'day'`, and
+every instance crashed with `TypeError: this.apply is not a function`
+(`this` = the string) the moment Mithril tried to call it — not a
+Panda/CSS/build issue, a pure Mithril internals collision, invisible until
+you read `node_modules/mithril/render/render.js`'s `initComponent` source.
+Fixed by renaming the field to `panel`. Rule: never give component state a
+field named `view` (or `oninit`/`oncreate`/`onupdate`/`onbeforeupdate`/
+`onremove`/`onbeforeremove` — same class of collision with Mithril's own
+lifecycle dispatch) — grep your own component for the name before adding
+new state fields.
+
 ### Data-driven components
 
 `List`, `Pagination`, and `Dropdown` follow the same contract, ready for the
@@ -242,6 +263,32 @@ future data-driven `Table`:
   `offset`, `width`, `closeOnSelect`/`closeOnOutside`/`closeOnEscape`.
   The content expects `Menu`/`MenuItem`/`MenuTitle` inside. Reuses `Button`
   for the trigger.
+
+### Calendar (`src/components/Calendar/`, recipe `src/recipes/calendar.ts`)
+
+Real month-grid date math (no external calendar library — see the recipe
+file's header comment for why), with three selection modes and a
+day→month→year drill-down, all covered by playground demos
+(`playground/pages/calendar/index.jsx`, 13 sections):
+- `mode`: `'single'` (default, `value`/`onchange` are a plain `Date`),
+  `'range'` (`{ start, end }`, with a hover preview of the span before the
+  second click confirms it — `vnode.state.hoverDate`), `'multiple'`
+  (`Date[]`, each click toggles membership). Day-cell variants:
+  `selected`/`rangeStart`/`rangeEnd`/`inRange`/`today`/`outside`/`disabled`
+  (`isDateDisabled(date)`).
+- Header title is clickable and drills `day → month → year` (internal state
+  `panel`, NEVER name it `view` — see the Mithril gotcha above) — picking a
+  year lands back on month, picking a month lands back on day.
+  `initialView?: 'day'|'month'|'year'` (default `'day'`) sets the starting
+  panel, read once in `oninit` — useful for a date-of-birth style picker that
+  should open straight into the year grid.
+  `showWeekNumbers` adds an ISO-8601 week-number column — always
+  Monday-first per the ISO spec, independent of `weekStartsOn` below.
+- `weekStartsOn` and `locale` (custom month/weekday names, independent of
+  the library's own `setLocale('en'|'es')`) — see their own writeups
+  further down this doc for the full detail; both compose correctly with
+  `mode` and with each other (the day grid and its header row are built
+  from the same `weekStartsOn`-shifted index).
 
 ## Naming Convention
 
@@ -305,6 +352,43 @@ button does `PumSetLocale(next)` **and** `setLang(next)`:
 2. **Library component strings** (empty state, aria-labels) — `src/i18n.js`:
    - `setLocale('en'|'es')`, `getLocale()`, `t(key)` (flat keys with en
      fallback). Exported from the barrel as `setLocale`/`getLocale`.
+   - Consumers so far: `Table` (`table.empty`, `table.rowsPerPage`),
+     `Pagination` (`pagination.ariaLabel`), `ColorPicker`
+     (`colorpicker.*`), and `Calendar` (`calendar.previous`/`calendar.next`
+     nav aria-labels + `calendar.month.*`/`calendar.weekdayShort.*` as the
+     en/es FALLBACK — see `locale` prop below for anything beyond that).
+
+**`Calendar`'s `locale` prop is a THIRD, separate mechanism** — deliberately
+NOT part of `src/i18n.js`. `setLocale('en'|'es')` only ever covers two
+languages (it's for the library's own UI chrome), so a consumer whose app is
+in French, Portuguese, German, etc. can't wait on the library adding native
+support for their language one at a time. Instead `Calendar` accepts
+`locale?: { months?: string[]; weekdaysShort?: string[] }`
+(`src/components/Calendar/index.d.ts`) — 12 month names from January, 7
+short weekday labels from Sunday, passed directly by the consumer. Verified
+independent from `setLocale`: a `<Calendar locale={fr} />` keeps rendering
+"septembre 2026" / "di lu ma me je ve sa" even after the playground's own
+language switcher (which calls the library's `setLocale`) is flipped to
+English — only calendars WITHOUT a `locale` prop follow the `t()` en/es
+fallback. `src/components/Calendar/index.js`'s `monthName(locale, i)` /
+`weekdayShort(locale, i)` check the custom array first, per-index, falling
+back to `t()` only for missing entries. See
+`playground/pages/calendar/index.jsx`'s "Custom locale" section
+(`FRENCH_LOCALE`) for a working reference. Not yet built: a bundled preset
+locales folder or `Intl.DateTimeFormat`-based auto-detection — this manual
+`locale` prop was step one, deliberately scoped down at the user's request.
+
+**`weekStartsOn`** (separate prop, same file): `0`=Sunday (US default) up to
+`6`=Saturday, default `0` — shifts which weekday lands in the grid's first
+column, in both the day cells AND the weekday header row. Implementation:
+`getMonthGrid(year, month, weekStartsOn)` offsets `1 - (firstDay -
+weekStartsOn + 7) % 7` instead of assuming Sunday-first; the header row maps
+each displayed position back to its real weekday index
+(`(weekStartsOn + pos) % 7`) before calling `monthName`/`weekdayShort`, so a
+custom `locale` and a non-default `weekStartsOn` compose correctly together.
+`showWeekNumbers`'s ISO-8601 week number is DELIBERATELY unaffected by this
+prop — ISO weeks are always Monday-first by spec, regardless of which day
+the calendar visually displays first.
 
 **Critical gotcha — `m.route.set` query params go in the SECOND argument, not
 the third.** The signature is `m.route.set(path, data, options)` where

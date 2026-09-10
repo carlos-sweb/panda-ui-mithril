@@ -7,13 +7,18 @@ interface CalendarVariant {
 today: boolean
 selected: boolean
 disabled: boolean
+rangeStart: boolean
+rangeEnd: boolean
+inRange: boolean
+active: boolean
+withWeeknum: boolean
 }
 
 type CalendarVariantMap = {
   [key in keyof CalendarVariant]: Array<CalendarVariant[key]>
 }
 
-type CalendarSlot = "calendar" | "header" | "nav" | "grid" | "weekday" | "day"
+type CalendarSlot = "calendar" | "header" | "nav" | "navLabel" | "grid" | "weekday" | "weeknum" | "day" | "pickerGrid" | "pickerCell"
 
 export type CalendarVariantProps = {
   [key in keyof CalendarVariant]?: ConditionalValue<CalendarVariant[key]> | undefined
