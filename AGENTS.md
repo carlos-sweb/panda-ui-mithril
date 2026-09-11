@@ -621,6 +621,21 @@ so it never clobbers the playground's `styled-system/`).
 - `GET /api/theme` also returns `themeRel` (e.g. `pum/theme` or `src/theme`)
   so the pages show the real edited path instead of a hardcoded one.
 
+**`init` now shares the same `--dir`/`-d` flag** (`scripts/cli.ts`,
+`dirFromArgv` — literal copy of `config`'s `themeDirFromArgv` parsing:
+`--dir <ruta>`/`-d <ruta>`, space-separated, resolved to absolute against
+cwd). Unlike `config --dir` (which only READS an existing project),
+`init --dir <ruta>` WRITES everything there — `pum/`, `panda.config.ts`,
+`tsconfig.json`, `postcss.config.cjs`, `pum/index.css` — creating `<ruta>`
+first via `mkdirSync(..., { recursive: true })` if it doesn't exist yet.
+Deliberately symmetric with `config --dir`: `init --dir mi-app` then later
+`config --dir mi-app` land on the same project root. Without `--dir`, `init`
+still resolves everything against `process.cwd()`, unchanged. Caveat carried
+over either way: the generated `panda.config.ts`'s `include` glob
+(`./src/**/*...`) is relative to wherever `panda.config.ts` itself ends up —
+if the consumer's real `src/` isn't a sibling of `<ruta>`, `include` needs a
+manual edit after `init`.
+
 **Legacy layout migration** (critical): consumers initialized with an OLD
 `init` have `pum/theme.ts` as a single file (no `pum/theme/` folder). The
 editor cannot edit that layout: `GET/POST /api/theme` respond

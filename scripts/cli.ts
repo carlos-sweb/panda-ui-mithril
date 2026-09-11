@@ -25,14 +25,27 @@
  * Usage:
  *   bunx panda-ui-mithril init           # crea pum/ + config (no overwrite)
  *   bunx panda-ui-mithril init --force   # force overwrite
+ *   bunx panda-ui-mithril init --dir <ruta>     # escribe todo dentro de <ruta>
+ *                                          en vez de cwd (misma raíz que
+ *                                          después necesita `config --dir`)
  *   bunx panda-ui-mithril config         # editor visual (Elysia) en :1234,
  *                                          abre el navegador automáticamente
  *   bunx panda-ui-mithril config --port 5000    # puerto custom (--port=5000 ok)
  *   bunx panda-ui-mithril config --dir <ruta>   # apunta el editor a otra raíz
  *   bunx panda-ui-mithril --help
+ *
+ * `--dir`/`-d` en `init`: trata `<ruta>` como la raíz efectiva del proyecto
+ * para TODO lo que `init` escribe (pum/, panda.config.ts, tsconfig.json,
+ * postcss.config.cjs, pum/index.css) — se crea si no existe. Mismo flag y
+ * misma semántica que ya tiene `config --dir` (ver themeDirFromArgv en
+ * config-ui/server.ts), a propósito: `init --dir mi-app && config --dir
+ * mi-app` apuntan al mismo lugar. El `panda.config.ts` generado sigue
+ * trayendo `include: ['./src/**\/*...']` relativo a SU PROPIA carpeta — si
+ * el código fuente real no vive dentro de `<ruta>`, hay que editar ese
+ * include a mano después.
  */
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
-import { dirname, join } from 'node:path'
+import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import {
   extractBalanced,
@@ -152,12 +165,24 @@ Usage:
                                          layout automatically (values preserved).
   bunx panda-ui-mithril init --force    Overwrites if pum/ or panda.config.ts
                                          already exist.
+  bunx panda-ui-mithril init --dir <path>     Writes everything (pum/,
+                                         panda.config.ts, tsconfig.json,
+                                         postcss.config.cjs) under <path>
+                                         instead of the current directory —
+                                         creates it if it doesn't exist. The
+                                         generated panda.config.ts's include
+                                         glob is relative to THAT folder, so
+                                         if your real source lives elsewhere,
+                                         edit include afterward. Same flag/
+                                         semantics as config --dir below, on
+                                         purpose: init --dir X later needs
+                                         config --dir X to find it.
   bunx panda-ui-mithril config          Opens the interactive theme editor
                                          (Elysia server) at http://localhost:1234
                                          and opens it in the browser.
   bunx panda-ui-mithril config --port 5000    Serves the editor on :5000
                                          (also --port=5000 or -p 5000).
-  bunx panda-ui-mithril config --dir <ruta>   Points the editor at another
+  bunx panda-ui-mithril config --dir <path>   Points the editor at another
                                          project root (or a theme dir directly);
                                          without it, it searches upward from
                                          the current directory (pum/theme, then
@@ -325,6 +350,22 @@ function writeFlatSrcTo(themeDir: string, file: string, values: Record<string, s
   writeFileSync(path, writeFlatSrc(readFileSync(path, 'utf8'), values))
 }
 
+/**
+ * Lee `--dir <ruta>` / `-d <ruta>` de process.argv — mismo formato que
+ * `themeDirFromArgv` en config-ui/server.ts (espacio, no `--dir=ruta`;
+ * resuelto a absoluta contra cwd). Usado tanto por `init` como por `config`.
+ */
+function dirFromArgv(): string | null {
+  const argv = process.argv
+  for (let i = 2; i < argv.length - 1; i++) {
+    if (argv[i] === '--dir' || argv[i] === '-d') {
+      const v = argv[i + 1]
+      if (v && !v.startsWith('-')) return resolve(v)
+    }
+  }
+  return null
+}
+
 async function main() {
   const args = process.argv.slice(2)
 
@@ -347,7 +388,9 @@ async function main() {
     process.exit(args[0] !== 'init' ? 1 : 0)
   }
 
-  const cwd = process.cwd()
+  const explicitDir = dirFromArgv()
+  const cwd = explicitDir ?? process.cwd()
+  if (explicitDir) mkdirSync(explicitDir, { recursive: true })
   const force = args.includes('--force')
   const target = join(cwd, CONFIG_NAME)
   const legacy = isLegacyTheme(cwd)
@@ -368,16 +411,23 @@ async function main() {
     copyPum(cwd, force)
   }
   writeFileSync(target, CONFIG_TEMPLATE)
-  console.log(`✔ Created ${CONFIG_NAME}`)
+  console.log(`✔ Created ${CONFIG_NAME}${explicitDir ? ` in ${cwd}` : ''}`)
   ensureJsxConfig(cwd)
   writePostcssScaffold(cwd, force)
   console.log('')
   console.log('The editable theme is in pum/theme/*.ts (colors/fonts/spacing/radii/keyframes).')
   console.log('The CSS pipeline is postcss.config.cjs (Panda via PostCSS) + pum/index.css (entry with @layer).')
   console.log('Next steps:')
-  console.log('  bunx panda-ui-mithril config   # theme + Postcss → Configure (builds the CSS)')
-  console.log('  bunx panda codegen             # generates Panda assets (helpers)')
-  console.log('  bun index.html                 # opens http://localhost:3000')
+  if (explicitDir) {
+    console.log(`  cd ${cwd}`)
+    console.log(`  bunx panda-ui-mithril config --dir ${cwd}   # theme + Postcss → Configure (builds the CSS)`)
+    console.log('  bunx panda codegen                          # generates Panda assets (helpers), run from inside the dir')
+    console.log('  bun index.html                              # opens http://localhost:3000, run from inside the dir')
+  } else {
+    console.log('  bunx panda-ui-mithril config   # theme + Postcss → Configure (builds the CSS)')
+    console.log('  bunx panda codegen             # generates Panda assets (helpers)')
+    console.log('  bun index.html                 # opens http://localhost:3000')
+  }
 }
 
 await main()
