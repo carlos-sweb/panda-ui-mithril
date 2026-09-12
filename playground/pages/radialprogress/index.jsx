@@ -43,7 +43,7 @@ export default {
           {t('paragraph')}
         </Text>
 
-        <Stack direction="row" gap="md">
+        <Stack direction="row" gap="md" align="center">
           <RadialProgress value={0}>0%</RadialProgress>
           <RadialProgress value={25}>25%</RadialProgress>
           <RadialProgress value={50}>50%</RadialProgress>

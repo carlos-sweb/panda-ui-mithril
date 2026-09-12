@@ -83,7 +83,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h3" size="5">{t('withFigureActions')}</Title>
-          <Stack direction="row" gap="sm">
+          <Stack direction="row" gap="sm" align="center">
             <Card className={surface}>
               <CardFigure><img className={img200} src={image_card1} alt="Random" /></CardFigure>
               <CardBody>
@@ -144,7 +144,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h3" size="5">{t('common.subtitles.sizes')}</Title>
-          <Stack direction="row" gap="sm">
+          <Stack direction="row" gap="sm" align="center">
             <Card size="xs" border className={css({ width: '12rem' })}>
               <CardBody><CardTitle>XS</CardTitle><p>Extra small</p></CardBody>
             </Card>

@@ -233,7 +233,7 @@ export const Landing = {
             <Title as="p" size="5" className={css({ opacity: 0.6, maxWidth: '600px', margin: '0 auto 2rem' })}>
               {t('hero')}
             </Title>
-            <Stack direction="row" gap="sm" justify="center">
+            <Stack direction="row" gap="sm" justify="center" align="center">
               <Button color="primary" size="lg" href="#quick-start">Get Started</Button>
               <Button variant="outline" size="lg" onclick={() => window.open('https://github.com/carlos-sweb/panda-ui-mithril', '_blank')}>GitHub</Button>
             </Stack>
@@ -365,14 +365,14 @@ export const Landing = {
           <Alert color="warning">This action cannot be undone.</Alert>
           <Alert color="error">Something went wrong. Please try again.</Alert>
         </Stack>
-        <Stack direction="row" gap="md" className={css({ marginBottom: '2rem' })}>
+        <Stack direction="row" gap="md" className={css({ marginBottom: '2rem' })} align="center">
           <Button color="primary">Primary</Button>
           <Button color="secondary">Secondary</Button>
           <Button color="accent">Accent</Button>
           <Button variant="outline">Outline</Button>
           <Button variant="ghost">Ghost</Button>
         </Stack>
-        <Stack direction="row" gap="sm" className={css({ marginBottom: '1rem' })}>
+        <Stack direction="row" gap="sm" className={css({ marginBottom: '1rem' })} align="center">
           <Badge color="primary">Primary</Badge>
           <Badge color="secondary">Secondary</Badge>
           <Badge color="accent">Accent</Badge>
@@ -394,7 +394,7 @@ export const Landing = {
           <Loading variant="bars" />
           <Loading variant="infinity" />
         </Stack>
-        <Stack direction="row" gap="sm" className={css({ marginBottom: '2rem' })}>
+        <Stack direction="row" gap="sm" className={css({ marginBottom: '2rem' })} align="center">
           <TextInput placeholder="Enter text..." className={css({ maxWidth: '300px' })} />
           <Button color="primary">Submit</Button>
         </Stack>
@@ -413,7 +413,7 @@ export const Landing = {
                   <Badge size="sm" variant="soft">{cat.items.length}</Badge>
                 </Stack>
                 <p className={css({ fontSize: '0.8125rem', color: 'token(colors.base-content)', opacity: 0.5, margin: '0.5rem 0 0.75rem' })}>{cat.desc}</p>
-                <Stack direction="row" gap="sm">
+                <Stack direction="row" gap="sm" align="center">
                   {cat.items.map((item) => (
                     <Button
                       key={item.name}

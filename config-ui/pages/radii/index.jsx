@@ -101,7 +101,7 @@ const page = {
                   </div>
                 ))}
                 <Block spacing="sm" />
-                <Stack direction="row" gap="sm">
+                <Stack direction="row" gap="sm" align="center">
                   <Button color="primary" onclick={save} disabled={s.saving}>{s.saving ? t('saving') : t('save')}</Button>
                   <Button variant="ghost" onclick={() => location.reload()}>{t('reload')}</Button>
                 </Stack>

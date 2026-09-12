@@ -55,7 +55,7 @@ export default {
           {t('paragraph')}
         </Text>
 
-        <Stack direction="row" gap="sm">
+        <Stack direction="row" gap="sm" align="center">
           <Tooltip tip="Top" position="top"><Button>Top</Button></Tooltip>
           <Tooltip tip="Bottom" position="bottom"><Button>Bottom</Button></Tooltip>
           <Tooltip tip="Left" position="left"><Button>Left</Button></Tooltip>

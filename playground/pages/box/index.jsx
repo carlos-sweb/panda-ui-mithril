@@ -51,7 +51,7 @@ export default {
       </Block>
       <Block spacing="lg">
         <Title as="h2" size="3">{t('padding')}</Title>
-        <Stack direction="row" gap="sm">
+        <Stack direction="row" gap="sm" align="center">
           <Box padding="sm">Small padding</Box>
           <Box>Medium (default)</Box>
           <Box padding="lg">Large padding</Box>
@@ -59,7 +59,7 @@ export default {
       </Block>
       <Block spacing="lg">
         <Title as="h2" size="3">{t('shadow')}</Title>
-        <Stack direction="row" gap="sm">
+        <Stack direction="row" gap="sm" align="center">
           <Box shadow="none">No shadow</Box>
           <Box shadow="sm">Small shadow</Box>
           <Box>Medium (default)</Box>

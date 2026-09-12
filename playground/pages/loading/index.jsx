@@ -47,7 +47,7 @@ export default {
           {t('paragraph')}
         </Text>
 
-        <Stack direction="row" gap="md">
+        <Stack direction="row" gap="md" align="center">
           <Loading variant="spinner" />
           <Loading variant="ring" />
           <Loading variant="ball" />

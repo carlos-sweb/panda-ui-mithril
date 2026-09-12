@@ -74,7 +74,7 @@ export default {
         <Title as="h1" size="2">Button</Title>
         <Text color="neutral" >{t('paragraph')}</Text>        
         <Title as="h3" size="5">{t('common.subtitles.default')}</Title>
-        <Stack direction="row" >
+        <Stack direction="row"  align="center">
           <Button>Default</Button>
         </Stack>
         <Divider/>
@@ -92,14 +92,14 @@ export default {
           <Text size="sm" color="neutral">
             {t('responsiveNote')}
           </Text>
-          <Stack direction="row" gap="sm">
+          <Stack direction="row" gap="sm" align="center">
             <Button size="xs">Responsive (xs)</Button>
           </Stack>
         </Block>
         <Divider/>
         <Block spacing="lg">
           <Title as="h3" size="5">{t('common.subtitles.colors')}</Title>
-          <Stack direction="row" gap="sm">
+          <Stack direction="row" gap="sm" align="center">
             <Button color="neutral">Neutral</Button>
             <Button color="primary">Primary</Button>
             <Button color="secondary">Secondary</Button>
@@ -113,7 +113,7 @@ export default {
         <Divider/>
         <Block spacing="lg">
           <Title as="h3" size="5">{t('common.subtitles.softColors')}</Title>
-          <Stack direction="row" gap="sm">
+          <Stack direction="row" gap="sm" align="center">
             <Button variant="soft" color="neutral">Neutral</Button>
             <Button variant="soft" color="primary">Primary</Button>
             <Button variant="soft" color="secondary">Secondary</Button>
@@ -127,7 +127,7 @@ export default {
         <Divider/>
         <Block spacing="lg">
           <Title as="h3" size="5">{t('common.subtitles.outlineColors')}</Title>
-          <Stack direction="row" gap="sm">
+          <Stack direction="row" gap="sm" align="center">
             <Button variant="outline" color="neutral">Neutral</Button>
             <Button variant="outline" color="primary">Primary</Button>
             <Button variant="outline" color="secondary">Secondary</Button>
@@ -141,7 +141,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h3" size="5">{t('dashColors')}</Title>
-          <Stack direction="row" gap="sm">
+          <Stack direction="row" gap="sm" align="center">
             <Button variant="dash" color="neutral">Neutral</Button>
             <Button variant="dash" color="primary">Primary</Button>
             <Button variant="dash" color="secondary">Secondary</Button>
@@ -156,7 +156,7 @@ export default {
         <Block spacing="lg">
           <Title as="h3" size="5">{t('neutralOnLight')}</Title>
           <div className={whiteSurface}>
-            <Stack direction="row" gap="sm">
+            <Stack direction="row" gap="sm" align="center">
               <Button variant="outline">Outline</Button>
               <Button variant="dash">Dash</Button>
             </Stack>
@@ -165,7 +165,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h3" size="5">{t('activeColors')}</Title>
-          <Stack direction="row" gap="sm">
+          <Stack direction="row" gap="sm" align="center">
             <Button active color="neutral">Neutral</Button>
             <Button active color="primary">Primary</Button>
             <Button active color="secondary">Secondary</Button>
@@ -179,7 +179,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h3" size="5">{t('common.subtitles.ghostLink')}</Title>
-          <Stack direction="row" gap="sm">
+          <Stack direction="row" gap="sm" align="center">
             <Button variant="ghost">Ghost</Button>
             <Button variant="link">Link</Button>
           </Stack>
@@ -191,28 +191,28 @@ export default {
             <Button wide>Wide</Button>
           </Stack>                
           <Title as="h3" size="5">{t('common.subtitles.disabled')}</Title>
-          <Stack direction="row" gap="xs" >
+          <Stack direction="row" gap="xs"  align="center">
             <Button disabled>Disabled (attribute)</Button>
             <Button className="btn-disabled">Disabled (class)</Button>
           </Stack>                
           <Title as="h3" size="5">{t('common.subtitles.squareCircle')}</Title>
-          <Stack direction="row" gap="xs" >
+          <Stack direction="row" gap="xs"  align="center">
             <Button square><Heart size={20} /></Button>
             <Button circle><Heart size={20} /></Button>
           </Stack>
         <Title as="h3" size="5">{t('common.subtitles.borderWidth')}</Title>        
-        <Stack direction="row" gap="xs">
+        <Stack direction="row" gap="xs" align="center">
           <Button variant="outline" borderWidth={1}>border 1</Button>
               <Button variant="outline" borderWidth={2}>border 2</Button>
               <Button variant="outline" borderWidth={3}>border 3</Button>
         </Stack>
-        <Stack direction="row" gap="xs">
+        <Stack direction="row" gap="xs" align="center">
           <Button variant="dash" borderWidth={1}>border 1</Button>
               <Button variant="dash" borderWidth={2}>border 2</Button>
               <Button variant="dash" borderWidth={3}>border 3</Button>
         </Stack>                
         <Title as="h3" size="5">{t('buttonWithIcon')}</Title>        
-        <Stack direction="row" gap="xs">
+        <Stack direction="row" gap="xs" align="center">
           <Button><Heart size={20} /> Like</Button>
             <Button>Like <Heart size={20} /></Button>
         </Stack>        
@@ -221,7 +221,7 @@ export default {
           <Button block>Block</Button>
         </Stack>              
         <Title as="h3" size="5">{t('loadingSpinner')}</Title>
-        <Stack direction="row" gap="xs">
+        <Stack direction="row" gap="xs" align="center">
             <Button square><Loading /></Button>
             <Button><Loading /> Loading</Button>
         </Stack>                    

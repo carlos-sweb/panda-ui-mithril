@@ -463,7 +463,7 @@ function optionEditor(s, pl, opt) {
     return (
       <Stack gap="xs">
         {arr.map((item, i) => (
-          <Stack key={i} direction="row" gap="sm">
+          <Stack key={i} direction="row" gap="sm" align="center">
             <TextInput
               size="md"
               value={String(item)}

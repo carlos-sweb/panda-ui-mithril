@@ -49,7 +49,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h3" size="5">{t('common.subtitles.colors')}</Title>
-          <Stack direction="row" gap="sm">
+          <Stack direction="row" gap="sm" align="center">
             <Radio name="r1" checked />
             <Radio name="r1" color="primary" checked />
             <Radio name="r1" color="secondary" checked />
@@ -59,7 +59,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h3" size="5">{t('common.subtitles.sizes')}</Title>
-          <Stack direction="row" gap="sm">
+          <Stack direction="row" gap="sm" align="center">
             <Radio name="r2" size="xs" checked />
             <Radio name="r2" size="sm" checked />
             <Radio name="r2" size="md" checked />

@@ -92,7 +92,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.subtitles.colors')}</Title>
-          <Stack direction="row" gap="sm">
+          <Stack direction="row" gap="sm" align="center">
             <Title as="h3" color="primary">Primary</Title>
             <Title as="h3" color="secondary">Secondary</Title>
             <Title as="h3" color="accent">Accent</Title>
@@ -115,7 +115,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('transform')}</Title>
-          <Stack direction="row" gap="sm">
+          <Stack direction="row" gap="sm" align="center">
             <Title as="h4" transform="capitalize">capitalize me</Title>
             <Title as="h4" transform="uppercase">uppercase me</Title>
             <Title as="h4" transform="lowercase">LOWERCASE ME</Title>

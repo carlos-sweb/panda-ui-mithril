@@ -95,7 +95,7 @@ export default {
           <Footer center className={surface}>
             <div>
               <FooterTitle>panda-ui-mithril</FooterTitle>
-              <Stack direction="row" gap="sm">
+              <Stack direction="row" gap="sm" align="center">
                 <Link href="#">GitHub</Link>
                 <Link href="#">npm</Link>
                 <Link href="#">Docs</Link>

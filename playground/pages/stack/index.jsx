@@ -76,7 +76,7 @@ export default {
       </Block>
 
       <Block spacing="lg"><Title as="h2" size="3">{t('hstackHorizontal')}</Title>
-        <Stack direction="row" gap="md">
+        <Stack direction="row" gap="md" align="center">
           <Button>Save</Button>
           <Button variant="outline">Cancel</Button>
           <Button variant="ghost">Help</Button>
@@ -105,7 +105,7 @@ export default {
 
       <Block spacing="lg"><Title as="h2" size="3">{t('justify')}</Title>
         <Box>
-          <Stack direction="row" gap="sm" justify="between">
+          <Stack direction="row" gap="sm" justify="between" align="center">
             <div className={item}>left</div><div className={item}>right</div>
           </Stack>
         </Box>

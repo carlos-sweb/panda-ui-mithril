@@ -71,7 +71,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h3" size="5">{t('common.subtitles.sizes')}</Title>
-          <Stack direction="row" gap="sm">
+          <Stack direction="row" gap="sm" align="center">
             <Avatar src={avatar1} size="xs" />
             <Avatar src={avatar2} size="sm" />
             <Avatar src={avatar3} size="md" />
@@ -82,7 +82,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h3" size="5">{t('shape')}</Title>
-          <Stack direction="row" gap="sm">
+          <Stack direction="row" gap="sm" align="center">
             <Avatar src={avatar7} size="lg" shape="circle" />
             <Avatar src={avatar8} size="lg" shape="square" />
           </Stack>
@@ -90,7 +90,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h3" size="5">{t('statusIndicator')}</Title>
-          <Stack direction="row" gap="sm">
+          <Stack direction="row" gap="sm" align="center">
             <Avatar src={avatar6} status="online" />
             <Avatar src={avatar9} status="offline" />
           </Stack>
@@ -98,7 +98,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h3" size="5">{t('placeholderNoImage')}</Title>
-          <Stack direction="row" gap="sm">
+          <Stack direction="row" gap="sm" align="center">
             <Avatar placeholder>AB</Avatar>
             <Avatar placeholder size="lg">CD</Avatar>
           </Stack>

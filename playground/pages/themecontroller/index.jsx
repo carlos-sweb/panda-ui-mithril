@@ -72,7 +72,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h3" size="5">{t('asToggle')}</Title>
-          <Stack direction="row" gap="md">
+          <Stack direction="row" gap="md" align="center">
             <label className={label}>
               <ThemeController theme="dark" checked={isDark} onchange={change} />
               <span>Dark mode</span>
@@ -82,7 +82,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h3" size="5">{t('asCheckbox')}</Title>
-          <Stack direction="row" gap="md">
+          <Stack direction="row" gap="md" align="center">
             <label className={label}>
               <ThemeController variant="checkbox" theme="dark" checked={isDark} onchange={change} color="primary" />
               <span>Dark mode</span>
@@ -92,7 +92,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h3" size="5">{t('asSwapSunMoon')}</Title>
-          <Stack direction="row" gap="md">
+          <Stack direction="row" gap="md" align="center">
             <Swap
               style="rotate"
               checked={isDark}

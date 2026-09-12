@@ -117,7 +117,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h3" size="5">{t('readonlyStatic')}</Title>
-          <Stack direction="row" gap="sm">
+          <Stack direction="row" gap="sm" align="center">
             <Rating value={4} max={5} readonly />
             <Rating value={3} max={5} readonly />
             <Rating value={2} max={3} readonly />
@@ -127,7 +127,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h3" size="5">{t('common.subtitles.sizes')}</Title>
-          <Stack direction="row" gap="sm">
+          <Stack direction="row" gap="sm" align="center">
             <Rating value={3} size="xs" readonly />
             <Rating value={3} size="sm" readonly />
             <Rating value={3} size="md" readonly />
@@ -138,7 +138,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h3" size="5">{t('common.subtitles.colors')}</Title>
-          <Stack direction="row" gap="sm">
+          <Stack direction="row" gap="sm" align="center">
             <Rating value={4} readonly />
             <Rating value={4} color="warning" readonly />
             <Rating value={4} color="success" readonly />
@@ -165,7 +165,7 @@ export default {
         <Block spacing="lg">
           <Title as="h2" size="3">{t('withRatingGroup')}</Title>
           <h4 className={heading}>{t('withRatingGroupNote')}</h4>
-          <Stack direction="row" gap="sm">
+          <Stack direction="row" gap="sm" align="center">
             <RatingGroup label="Quality" defaultValue={4} />
             <RatingGroup label="Difficulty" defaultValue={2} color="info" size="lg" />
           </Stack>

@@ -51,7 +51,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h3" size="5">{t('common.subtitles.colors')}</Title>
-          <Stack direction="row" gap="sm">
+          <Stack direction="row" gap="sm" align="center">
             <Badge color="neutral">Neutral</Badge>
             <Badge color="primary">Primary</Badge>
             <Badge color="secondary">Secondary</Badge>
@@ -65,7 +65,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h3" size="5">{t('common.subtitles.variants')}</Title>
-          <Stack direction="row" gap="sm">
+          <Stack direction="row" gap="sm" align="center">
             <Badge variant="outline">Outline</Badge>
             <Badge variant="dash">Dash</Badge>
             <Badge variant="ghost">Ghost</Badge>
@@ -74,7 +74,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h3" size="5">{t('common.subtitles.sizes')}</Title>
-          <Stack direction="row" gap="sm">
+          <Stack direction="row" gap="sm" align="center">
             <Badge size="xs">XS</Badge>
             <Badge size="sm">SM</Badge>
             <Badge size="md">MD</Badge>

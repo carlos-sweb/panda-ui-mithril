@@ -183,7 +183,7 @@ const page = {
                 })}
 
                 <Block spacing="sm" />
-                <Stack direction="row" gap="sm">
+                <Stack direction="row" gap="sm" align="center">
                   <Button color="primary" onclick={save} disabled={s.saving}>
                     {s.saving ? t('saving') : t('save')}
                   </Button>

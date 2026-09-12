@@ -87,7 +87,7 @@ export default {
         </Text>
 
         <Title as="h2" size="3">{t('common.subtitles.sizes')}</Title>
-        <Stack direction="row" gap="sm">
+        <Stack direction="row" gap="sm" align="center">
           {sizes.map((s) => (
             <Button key={s} onclick={() => { vnode.state.sizeFor = s; vnode.state.sizeOpen = true }}>
               Open ({s.toUpperCase()})
@@ -121,7 +121,7 @@ export default {
         <Text color="neutral">
           {t('persistentDescription')}
         </Text>
-        <Stack direction="row" gap="sm">
+        <Stack direction="row" gap="sm" align="center">
           <Button onclick={() => { vnode.state.persistentOpen = true }}>
             Open persistent modal
           </Button>
@@ -140,7 +140,7 @@ export default {
           </ModalBox>
         </Modal>
 
-        <Stack direction="row" gap="sm">
+        <Stack direction="row" gap="sm" align="center">
           {positions.map((p) => (
             <Button key={p} onclick={() => { vnode.state.openFor = p }}>
               Open ({p})

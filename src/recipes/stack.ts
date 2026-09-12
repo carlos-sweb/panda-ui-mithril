@@ -12,7 +12,7 @@ export const stackRecipe = defineRecipe({
   variants: {
     direction: {
       column: { flexDirection: 'column' },
-      row: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center' },
+      row: { flexDirection: 'row', flexWrap: 'wrap' },
     },
     gap: {
       xs: {

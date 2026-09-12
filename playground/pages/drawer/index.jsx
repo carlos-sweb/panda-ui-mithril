@@ -119,7 +119,7 @@ export default {
         </Text>
 
         <Title as="h2" size="3">{t('positions')}</Title>
-        <Stack direction="row" gap="sm">
+        <Stack direction="row" gap="sm" align="center">
           {positions.map((p) => (
             <Button key={p} onclick={() => { vnode.state.openFor = p }}>
               Open ({p})
@@ -151,7 +151,7 @@ export default {
         <Text color="neutral">
           {m.trust(t('sizeProp'))}
         </Text>
-        <Stack direction="row" gap="sm">
+        <Stack direction="row" gap="sm" align="center">
           {sizes.map((s) => (
             <Button key={s} onclick={() => { vnode.state.sizeFor = s; vnode.state.sizeOpen = true }}>
               Open ({s.toUpperCase()})
@@ -184,7 +184,7 @@ export default {
           <DrawerBackdrop onclick={closeSize} />
         </Drawer>
 
-        <Stack direction="row" gap="sm">
+        <Stack direction="row" gap="sm" align="center">
           <Button onclick={() => { vnode.state.customOpen = true }}>
             Open (55%)
           </Button>
@@ -259,7 +259,7 @@ export default {
         <Text color="neutral">
           {m.trust(t('persistentBehavior'))}
         </Text>
-        <Stack direction="row" gap="sm">
+        <Stack direction="row" gap="sm" align="center">
           <Button onclick={() => { vnode.state.persistentOpen = true }}>
             Open persistent drawer
           </Button>
@@ -286,7 +286,7 @@ export default {
         <Text color="neutral">
           {m.trust(t('buttonCloseBehavior'))}
         </Text>
-        <Stack direction="row" gap="sm">
+        <Stack direction="row" gap="sm" align="center">
           <Button onclick={() => { vnode.state.autoCloseOpen = true }}>
             Open with buttonClose
           </Button>

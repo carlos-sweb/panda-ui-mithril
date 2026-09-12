@@ -669,7 +669,7 @@ const page = {
               {f.variable ? (
                 <Text color="neutral" size="sm">{t('available.variableHint')}</Text>
               ) : (
-                <Stack direction="row" gap="md">
+                <Stack direction="row" gap="md" align="center">
                   {f.weights.map((w) => (
                     <label key={w} className={weightOption}>
                       <Checkbox size="sm" checked={s.assignWeights.includes(w)} onchange={() => toggleWeight(s, w)} />
@@ -796,7 +796,7 @@ const page = {
                     {s.roleError && <Alert color="error">{s.roleError}</Alert>}
                     {s.roleMsg && <Alert color="success">{s.roleMsg}</Alert>}
                     <Block spacing="sm" />
-                    <Stack direction="row" gap="sm">
+                    <Stack direction="row" gap="sm" align="center">
                       <Button color="primary" onclick={save} disabled={s.saving}>{s.saving ? t('token.saving') : t('token.save')}</Button>
                       <Button variant="ghost" onclick={() => location.reload()}>{t('token.reload')}</Button>
                     </Stack>

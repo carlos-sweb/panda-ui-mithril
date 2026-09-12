@@ -81,7 +81,7 @@ export default {
           {t('paragraph')}
         </Text>
 
-        <Stack direction="row" gap="sm">
+        <Stack direction="row" gap="sm" align="center">
           <Swap on="On" off="Off" style="rotate" />
           <Swap on="On" off="Off" style="flip" />
           <Swap on={<Sun size={20} />} off={<Moon size={20} />} style="rotate" />
@@ -95,7 +95,7 @@ export default {
 
         <Title as="h3" size="5">{t('common.subtitles.sizes')}</Title>
         <Text size="sm" color="neutral" className={heading}>XS · SM · MD · LG · XL</Text>
-        <Stack direction="row" gap="sm">
+        <Stack direction="row" gap="sm" align="center">
           <Swap size="xs" on="XS" off="XS" style="flip" />
           <Swap size="sm" on="SM" off="SM" style="flip" />
           <Swap size="md" on="MD" off="MD" style="flip" />
