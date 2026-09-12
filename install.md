@@ -104,8 +104,9 @@ grep -c "var(--colors-primary)" styled-system/styles.css  # > 0 (token del prese
 
 ### 6. JSX clásico de Mithril
 
-`Button` y `Alert` son los únicos componentes `.jsx` y requieren el transform
-JSX con la factory de Mithril (el `bun init -y` deja `jsx: react-jsx` y rompe
+Ningún componente requiere un transform especial — todos son `.js` con
+hyperscript `m()`; el transform JSX con la factory de Mithril solo lo necesitas
+tú si escribes JSX en tu app (el `bun init -y` deja `jsx: react-jsx` y rompe
 con `Cannot find module 'react/jsx-dev-runtime'`). Crea `bunfig.toml`:
 
 ```toml
@@ -153,6 +154,40 @@ bun index.html
 Abre **`http://localhost:3000/`** (Bun escucha en `localhost`, no en
 `127.0.0.1`).
 
+## CLI (`init` y `config`)
+
+El paquete trae dos comandos. **Ambos aceptan `--dir`** (y la forma
+`--dir=<ruta>`); una ruta relativa se resuelve contra el directorio desde el
+que lanzas el comando.
+
+| Comando | Qué hace |
+|---|---|
+| `bunx panda-ui-mithril init` | Crea `pum/` (preset + theme editable), `panda.config.ts`, los campos JSX de `tsconfig.json` y el pipeline postcss (`postcss.config.cjs` + `pum/index.css`). |
+| `init --dir <ruta>` · `--dir=<ruta>` | Lo mismo pero en `<ruta>` (la crea si no existe). |
+| `init --force` | Regenera un proyecto existente. ⚠️ **Sobrescribe `pum/theme/*.ts`** con los valores del paquete: pierdes tus colores/fuentes. |
+| `bunx panda-ui-mithril config` | Abre el editor de theme (servidor Elysia) en `http://localhost:1234`. |
+| `config --dir=<ruta>` | Apunta el editor a ese proyecto (o sub-proyecto). |
+| `config --init --dir=<ruta>` | Inicializa el proyecto si falta **y** abre el editor en un paso. Nunca sobrescribe: si ya existe, solo lo abre. |
+| `config --port 5000` · `--port=5000` · `-p 5000` | Sirve el editor en otro puerto. |
+| `config --no-open` | Arranca **sin abrir el navegador** (la URL se imprime igual). Útil para revisiones repetidas, scripts y CI. También vale `BROWSER=none`. |
+
+### Varias SPAs independientes (login, dashboard por rol)
+
+Si tu app tiene SPAs separadas que comparten repo, dale a **cada una su propio
+proyecto** — así cada SPA tiene su `pum/theme`, su `panda.config.ts` y su
+`styled-system/styles.css`, y el editor trabaja solo sobre la que le indiques:
+
+```bash
+bunx panda-ui-mithril config --init --dir=src/pages/login
+bunx panda-ui-mithril config --init --dir=src/pages/dashboard
+```
+
+Cada SPA necesita su `panda.config.ts`: es el archivo que define `include`,
+`staticCss` y `outdir`. Si una SPA solo tiene `pum/theme` pero **no** su
+`panda.config.ts`, su theme no lo usa nadie y un rebuild acabaría escribiendo
+en el proyecto padre; el editor **se niega a escribir** en ese caso y te
+recuerda ejecutar `init --dir=<ruta>`.
+
 ## Verificación en el navegador
 
 El botón debe computar estilos reales del preset (no un botón sin estilo):
@@ -172,3 +207,4 @@ getComputedStyle(document.querySelector('button')).backgroundColor
 | Botón sin estilos (tokens sí, recipes no) | Falta `staticCss: { recipes: '*' }`, o el `include` apunta a las recipes del paquete en vez de a `./src/**` |
 | Postinstall bloqueado por Bun | Inofensivo (el repo trae `styled-system/` en git) |
 | `127.0.0.1:3000` no conecta | Usar `http://localhost:3000/` |
+| `config --dir=<spa>` rechaza escribir ("no es el del proyecto que se recompila") | Esa SPA no tiene `panda.config.ts` propio: ejecuta `bunx panda-ui-mithril init --dir=<spa>` |

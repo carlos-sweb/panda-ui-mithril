@@ -64,6 +64,39 @@
     <code>outdir: styled-system</code>.
   quickStartWhatInit3Title: 3 · Mithril JSX
   quickStartWhatInit3Desc: >-
-    <code>Button</code> and <code>Alert</code> are the only <code>.jsx</code>
-    components; <code>bunx panda-ui-mithril init</code> merges the JSX fields
-    into <code>tsconfig.json</code> (the same fields work in <code>bunfig.toml</code>).
+    No component needs a special transform (every component is plain
+    <code>.js</code>): <code>init</code> merges the classic Mithril JSX fields into
+    <code>tsconfig.json</code> so you can write JSX in your own app (the same fields
+    work in <code>bunfig.toml</code>).
+
+  cli: CLI
+  cliIntro: >-
+    Two commands: <code>init</code> scaffolds the project and <code>config</code>
+    opens the theme editor. Both accept <code>--dir</code> (also
+    <code>--dir=&lt;path&gt;</code>), so they work the same for a single project or for
+    several independent SPAs inside one repo.
+  cliInitTitle: init · scaffold the project
+  cliInitDesc: >-
+    Creates <code>pum/</code> (preset + editable theme),
+    <code>panda.config.ts</code>, the Mithril JSX fields in
+    <code>tsconfig.json</code> and the PostCSS pipeline. <code>--dir &lt;path&gt;</code>
+    writes everything there (creating the directory); <code>--force</code>
+    regenerates an existing project — <strong>it overwrites
+    <code>pum/theme/*.ts</code> with the package defaults</strong>, so your
+    colors/fonts are lost.
+  cliConfigTitle: config · the theme editor
+  cliConfigDesc: >-
+    Opens the editor (Elysia server) on <code>http://localhost:1234</code>;
+    <code>--port</code> changes the port, <code>--dir</code> points it at another
+    project and <code>--no-open</code> starts it without launching the browser
+    (repeated runs, scripts, CI).
+  cliMultiSpaTitle: One repo, several independent SPAs
+  cliMultiSpaDesc: >-
+    Give each SPA (login, dashboard by role…) its own project, so it gets its
+    own <code>pum/theme</code>, <code>panda.config.ts</code> and
+    <code>styled-system/styles.css</code>.
+    <code>config --init --dir=&lt;spa&gt;</code> initializes it if it is missing and
+    opens the editor in one step — <strong>it never overwrites</strong>. A SPA
+    without its own <code>panda.config.ts</code> cannot be built on its own: the
+    editor refuses to write there (the rebuild would land in the parent
+    project) and tells you to run <code>init --dir=&lt;spa&gt;</code>.

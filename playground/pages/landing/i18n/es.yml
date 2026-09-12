@@ -65,7 +65,38 @@
     <code>outdir: styled-system</code>.
   quickStartWhatInit3Title: 3 · JSX de Mithril
   quickStartWhatInit3Desc: >-
-    <code>Button</code> y <code>Alert</code> son los únicos componentes
-    <code>.jsx</code>; <code>bunx panda-ui-mithril init</code> fusiona los
-    campos JSX en <code>tsconfig.json</code> (los mismos campos funcionan en
-    <code>bunfig.toml</code>).
+    Ningún componente necesita un transform especial (todos son <code>.js</code>):
+    <code>init</code> fusiona los campos JSX clásicos de Mithril en
+    <code>tsconfig.json</code> para que escribas JSX en tu app (los mismos campos
+    funcionan en <code>bunfig.toml</code>).
+
+  cli: CLI
+  cliIntro: >-
+    Dos comandos: <code>init</code> crea el proyecto y <code>config</code> abre el
+    editor de theme. Los dos aceptan <code>--dir</code> (y <code>--dir=&lt;ruta&gt;</code>),
+    así que funcionan igual para un proyecto único o para varias SPAs
+    independientes dentro del mismo repo.
+  cliInitTitle: init · crear el proyecto
+  cliInitDesc: >-
+    Crea <code>pum/</code> (preset + theme editable), <code>panda.config.ts</code>,
+    los campos JSX de Mithril en <code>tsconfig.json</code> y el pipeline postcss.
+    <code>--dir &lt;ruta&gt;</code> lo escribe todo ahí (creando el directorio);
+    <code>--force</code> regenera un proyecto existente — <strong>sobrescribe
+    <code>pum/theme/*.ts</code> con los valores del paquete</strong>, así que pierdes
+    tus colores/fuentes.
+  cliConfigTitle: config · el editor de theme
+  cliConfigDesc: >-
+    Abre el editor (servidor Elysia) en <code>http://localhost:1234</code>;
+    <code>--port</code> cambia el puerto, <code>--dir</code> lo apunta a otro
+    proyecto y <code>--no-open</code> arranca sin abrir el navegador
+    (revisiones repetidas, scripts, CI).
+  cliMultiSpaTitle: Un repo, varias SPAs independientes
+  cliMultiSpaDesc: >-
+    Dale a cada SPA (login, dashboard por rol…) su propio proyecto, así tiene
+    su <code>pum/theme</code>, su <code>panda.config.ts</code> y su
+    <code>styled-system/styles.css</code>.
+    <code>config --init --dir=&lt;spa&gt;</code> la inicializa si falta y abre el
+    editor en un paso — <strong>nunca sobrescribe</strong>. Una SPA sin su propio
+    <code>panda.config.ts</code> no puede compilarse sola: el editor se niega a
+    escribir ahí (el rebuild iría al proyecto padre) y te dice que ejecutes
+    <code>init --dir=&lt;spa&gt;</code>.

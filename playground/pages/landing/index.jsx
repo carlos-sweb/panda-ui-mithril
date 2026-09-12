@@ -66,6 +66,28 @@ const quickStartTsconfig = `// tsconfig.json — campos JSX que init fusiona
   }
 }`
 
+// CLI: scaffold (`init`) y editor de theme (`config`). Ver install.md → CLI.
+const cliInit = `# crea pum/ (preset + theme editable) + panda.config.ts
+# + los campos JSX de tsconfig.json + el pipeline postcss
+bunx panda-ui-mithril init
+
+# en otro directorio (una SPA por rol, por ejemplo), creándolo si no existe
+bunx panda-ui-mithril init --dir=src/pages/login`
+
+const cliConfig = `# abre el editor de theme en http://localhost:1234
+bunx panda-ui-mithril config
+
+# apunta a un sub-proyecto concreto (también vale --dir src/pages/login)
+bunx panda-ui-mithril config --dir=src/pages/login
+
+# sin abrir el navegador (revisiones repetidas, scripts, CI)
+bunx panda-ui-mithril config --no-open`
+
+const cliMultiSpa = `# Varias SPAs independientes en un mismo repo: cada una con su
+# pum/theme, su panda.config.ts y su styled-system/styles.css
+bunx panda-ui-mithril config --init --dir=src/pages/login
+bunx panda-ui-mithril config --init --dir=src/pages/dashboard`
+
 // Árbol que init crea en tu proyecto.
 const quickStartPumTree = `pum/
 ├── preset.ts        # registra las recipes + theme (importa panda-ui-mithril/recipes)
@@ -356,6 +378,33 @@ export const Landing = {
             </CardBody>
           </Card>
         </Stack>
+        {/* ── CLI ── */}
+        <Title as="h2" size="3" id="cli" className={css({ marginTop: '2.5rem' })}>{t('cli')}</Title>
+        <Block spacing="sm" />
+        <Text color="neutral" className={css({ marginBottom: '1.5rem' })}>
+          {m.trust(t('cliIntro'))}
+        </Text>
+
+        <Stack gap="lg">
+          <Stack gap="sm">
+            <Text weight="bold">{t('cliInitTitle')}</Text>
+            <Text color="neutral">{m.trust(t('cliInitDesc'))}</Text>
+            <CodeExample code={cliInit} type="bash" copyId="cli-init" />
+          </Stack>
+
+          <Stack gap="sm">
+            <Text weight="bold">{t('cliConfigTitle')}</Text>
+            <Text color="neutral">{m.trust(t('cliConfigDesc'))}</Text>
+            <CodeExample code={cliConfig} type="bash" copyId="cli-config" />
+          </Stack>
+
+          <Stack gap="sm">
+            <Text weight="bold">{t('cliMultiSpaTitle')}</Text>
+            <Text color="neutral">{m.trust(t('cliMultiSpaDesc'))}</Text>
+            <CodeExample code={cliMultiSpa} type="bash" copyId="cli-multi-spa" />
+          </Stack>
+        </Stack>
+
         {/* ── Component Preview ── */}
         <Title as="h2" size="3" className={css({ marginTop: '2.5rem' })}>{t('componentPreview')}</Title>
         <Block spacing="sm" />
