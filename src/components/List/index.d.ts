@@ -14,8 +14,17 @@ export interface ListAttrs<T = unknown> extends ComponentAttrs {
    */
   render?: (item: T, index: number) => Vnode | null
   /**
-   * Accessor de key para el diffing de Mithril al redimensionar/reordenar:
-   * `(item, index) => string | number`. Default: índice.
+   * Accessor de clave de fila para el diffing de Mithril al
+   * redimensionar/reordenar: `(item, index) => string | number`. Default:
+   * índice. Se usa también como firma del modo `sortable` (recrea la instancia
+   * de SortableJS cuando cambia el conjunto de claves).
+   */
+  itemKey?: (item: T, index: number) => string | number
+  /**
+   * @deprecated Alias de `itemKey`, conservado por compatibilidad. En Mithril
+   * `key` ES la clave del vnode: usarlo aquí mete el `<ul>` de List en el diff
+   * keyed y rompe el invariante de fragmento (todas las keys o ninguna) si la
+   * lista convive con hermanos sin key. Migra a `itemKey`.
    */
   key?: (item: T, index: number) => string | number
   /** Fila estática al inicio de la lista (solo modo data-driven). */

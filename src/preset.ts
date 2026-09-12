@@ -191,6 +191,14 @@ export const pumPreset = definePreset({
     'body:has(dialog[open])': {
       overflow: 'hidden',
     },
+    // List en modo `sortable` marca el <body> con `list-dragging` mientras dura
+    // el arrastre (ver setDraggingCursor en src/components/List/index.js): así
+    // el cursor sigue diciendo "arrastrando" aunque el puntero salga de la
+    // fila, de la lista o caiga sobre otro componente. El `!` (important) es
+    // deliberado: gana a cualquier cursor declarado por lo que quede debajo.
+    'body.list-dragging, body.list-dragging *': {
+      cursor: 'grabbing!',
+    },
   },
   // lets the browser smoothly animate the conic-gradient angle instead of
   // snapping to it every keyframe (plain custom properties can't tween)

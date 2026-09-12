@@ -51,3 +51,8 @@ configure:
   buildHint: The entry CSS must contain the @layer directive; the output is what your index.html links.
   entry: Entry CSS
   output: Output CSS
+  sizeWithGzip: '{size} (gzip {gzip})'
+  sizeSuffix: ' · {size}'
+  rebuiltPostcss: 'postcss → {output} ✓{size}'
+  rebuiltCssgen: 'Rebuilt (codegen + cssgen) ✓{size}'
+  outputSizeUnknown: 'Not generated yet — run Rebuild CSS.'

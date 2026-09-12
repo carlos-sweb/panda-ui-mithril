@@ -231,7 +231,7 @@ function findStaticCssBlock(src: string): { braceOpen: number; braceClose: numbe
   return { braceOpen, braceClose }
 }
 
-/** Dentro de [blockStart, blockEnd), localiza el valor de `recipes:` — string '*' u objeto {...}. */
+/** Dentro de [blockStart, blockEnd), localiza el valor de `recipes:` — string '*' u objeto/array {...}. */
 function findRecipesValueSpan(src: string, blockStart: number, blockEnd: number): { valueStart: number; valueEnd: number } | null {
   const slice = src.slice(blockStart, blockEnd)
   const m = /recipes\s*:\s*/.exec(slice)
@@ -246,10 +246,23 @@ function findRecipesValueSpan(src: string, blockStart: number, blockEnd: number)
     const end = scanBalanced(src, valueStart, '{', '}')
     return end === -1 ? null : { valueStart, valueEnd: end }
   }
+  // Forma ARRAY (`recipes: ['tag']`): la escribió a mano algún consumidor o
+  // una versión previa del editor. Panda la IGNORA en silencio (`{...['tag']}`
+  // → `{0: 'tag'}`), así que hay que reconocerla para poder leerla y
+  // reescribirla en la forma canónica en vez de duplicar la clave.
+  if (ch === '[') {
+    const end = scanBalanced(src, valueStart, '[', ']')
+    return end === -1 ? null : { valueStart, valueEnd: end }
+  }
   return null
 }
 
-/** Lee `staticCss.recipes` actual: `'*'` o el array de keys de su objeto. */
+/**
+ * Lee `staticCss.recipes` actual: `'*'`, o la lista de recipes. Acepta las dos
+ * formas que existen en la práctica: objeto `{ tag: ['*'] }` (la que escribe
+ * el editor) y array `['tag']` (escrita a mano — Panda la ignora, pero
+ * leyéndola el editor puede repararla al guardar).
+ */
 export function readStaticCssRecipes(pandaConfigSrc: string): '*' | string[] {
   const block = findStaticCssBlock(pandaConfigSrc)
   if (!block) return '*'
@@ -258,8 +271,10 @@ export function readStaticCssRecipes(pandaConfigSrc: string): '*' | string[] {
   const text = pandaConfigSrc.slice(span.valueStart, span.valueEnd).trim()
   if (text.startsWith("'") || text.startsWith('"')) return '*'
   try {
-    const obj = new Function(`return (${text})`)() as Record<string, unknown>
-    return Object.keys(obj)
+    const obj = new Function(`return (${text})`)() as unknown
+    if (Array.isArray(obj)) return obj.map(String)
+    if (obj && typeof obj === 'object') return Object.keys(obj as Record<string, unknown>)
+    return '*'
   } catch {
     return '*'
   }
@@ -274,17 +289,39 @@ function serializeRecipesObject(recipes: string[]): string {
 
 /**
  * Escribe `staticCss.recipes`: `'*'` (desactivado, vuelve al default seguro
- * de Panda) o un array de recipe keys (se serializa como objeto `{key:
- * ['*']}`). Si `staticCss` no existe, lo crea; si existe sin `recipes`, lo
- * agrega dentro. Nunca toca `css`/`patterns`/`themes` si ya existen.
+ * de Panda) o una lista de recipe keys, serializada como objeto
+ * `{key: ['*']}` (la forma que Panda expande a base + variantes).
+ *
+ * Lanza en vez de escribir algo peligroso:
+ *  - lista vacía → escribiría `{}`, que en Panda significa "ningún recipe"
+ *    (todos los componentes sin CSS). Para desactivar se usa `'*'`.
+ *  - `recipes` existe pero con una forma que no sabemos reemplazar → antes
+ *    insertaba una SEGUNDA clave `recipes:`; en JS gana la última, así que el
+ *    valor viejo (p. ej. el array inválido) seguía mandando y el CSS se caía.
  */
 export function writeStaticCssRecipes(pandaConfigSrc: string, recipes: '*' | string[]): string {
+  if (recipes !== '*' && recipes.length === 0) {
+    throw new Error(
+      'staticCss.recipes quedaría vacío ({} = ningún recipe: todos los componentes sin CSS). ' +
+      "Para desactivar el scan usa el modo '*'.",
+    )
+  }
   const valueText = recipes === '*' ? `'*'` : serializeRecipesObject(recipes)
   const block = findStaticCssBlock(pandaConfigSrc)
   if (block) {
     const span = findRecipesValueSpan(pandaConfigSrc, block.braceOpen, block.braceClose)
     if (span) {
       return pandaConfigSrc.slice(0, span.valueStart) + valueText + pandaConfigSrc.slice(span.valueEnd)
+    }
+    // `staticCss` existe pero no hay un `recipes:` reconocible: puede que no
+    // exista (se agrega) o que su valor sea una expresión rara. Solo se agrega
+    // si de verdad no hay ninguna clave `recipes` en el bloque.
+    const hasRecipesKey = /(^|[{,\s])recipes\s*:/.test(pandaConfigSrc.slice(block.braceOpen + 1, block.braceClose))
+    if (hasRecipesKey) {
+      throw new Error(
+        'staticCss.recipes existe pero con una forma que el editor no sabe reemplazar ' +
+        '(¿una variable o una expresión?). Déjalo como está y edítalo a mano.',
+      )
     }
     const insertAt = block.braceOpen + 1
     return pandaConfigSrc.slice(0, insertAt) + `\n    recipes: ${valueText},` + pandaConfigSrc.slice(insertAt)
@@ -295,7 +332,7 @@ export function writeStaticCssRecipes(pandaConfigSrc: string, recipes: '*' | str
   if (pandaConfigSrc.includes('defineConfig({')) {
     return pandaConfigSrc.replace('defineConfig({', 'defineConfig({\n' + staticCssBlock, 1)
   }
-  return pandaConfigSrc
+  throw new Error('No se encontró defineConfig({...}) en panda.config.ts: no se puede escribir staticCss.')
 }
 
 // ── Recipes manuales — {raiz}/staticcss.json (NUNCA tocado por el scan) ─────

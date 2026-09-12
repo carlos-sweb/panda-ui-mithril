@@ -36,14 +36,29 @@ export const listRecipe = defineSlotRecipe({
       '&.list-sort-whole > li': {
         cursor: 'grab',
       },
+      // Durante el arrastre el cursor debe seguir diciendo "arrastrando" aunque
+      // el puntero salga del asa o de la fila: SortableJS pone estas clases
+      // (chosen = fila origen, ghost = hueco, drag = clon en fallback).
+      '& .list-sort-chosen, & .list-sort-ghost, & .list-sort-drag': {
+        cursor: 'grabbing',
+        userSelect: 'none',
+      },
+      // El asa solo promete arrastre cuando el modo sortable está activo: el
+      // bridge marca el <ul> con list-sort-whole (fila entera) o
+      // list-sort-handle (solo asa). Sin `sortable` es un grip estático y
+      // mostrar la mano sería mentir.
+      '&.list-sort-whole .list-drag-handle, &.list-sort-handle .list-drag-handle': {
+        cursor: 'grab',
+        '&:active': { cursor: 'grabbing' },
+      },
       '& .list-drag-handle': {
         display: 'inline-flex',
         alignItems: 'center',
-        cursor: 'grab',
         color: 'color-mix(in oklab, token(colors.base-content) 45%, transparent)',
         // Crucial para touch: el gesto de arrastre no debe hacer scroll.
         touchAction: 'none',
-        '&:active': { cursor: 'grabbing' },
+        // Sin esto, arrastrar desde el asa selecciona el texto de la fila.
+        userSelect: 'none',
       },
     },
     row: {

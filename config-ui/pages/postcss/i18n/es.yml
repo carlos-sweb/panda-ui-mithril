@@ -51,3 +51,8 @@ configure:
   buildHint: El CSS de entrada debe contener la directiva @layer; el de salida es el que enlaza tu index.html.
   entry: CSS de entrada
   output: CSS de salida
+  sizeWithGzip: '{size} (gzip {gzip})'
+  sizeSuffix: ' · {size}'
+  rebuiltPostcss: 'postcss → {output} ✓{size}'
+  rebuiltCssgen: 'Rebuild (codegen + cssgen) ✓{size}'
+  outputSizeUnknown: 'Aún no generado — pulsa Rebuild CSS.'

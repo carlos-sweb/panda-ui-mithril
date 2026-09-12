@@ -70,6 +70,17 @@ minimal pointer to the site).
 > the minified output of `scripts/build-css.ts`. `styled-system/styles.css` is
 > **gitignored** (generated artifact — CI regenerates it in `bun run build`);
 > never commit it, and never commit an unminified stylesheet.
+>
+> **config-ui has its OWN CSS artifact, and it IS tracked**: after touching a
+> recipe or the preset you must also run `bun run build:config-ui`
+> (`config-ui/config-ui.css`, built from `panda-config-ui.config.ts`) and
+> restart the editor. Skipping this makes the editor render stale component
+> styles with no error anywhere — this is exactly how `list-drag-handle` spent
+> a week in the editor without its `cursor: grab`: the recipe was correct and
+> the playground showed `grab`, while `config-ui.css` predated the recipe
+> change. When a style works in the playground but not in the editor (or vice
+> versa), compare the two artifacts before touching the recipe:
+> `grep -c 'list-drag-handle' config-ui/config-ui.css styled-system/styles.css`.
 
 ## Architecture
 
@@ -252,38 +263,67 @@ new state fields.
 `List`, `Pagination`, and `Dropdown` follow the same contract, ready for the
 future data-driven `Table`:
 - `List`: `data={items}` + `render={(item, index) => vnode}` (or a single
-  child function), `key={(item) => item.id}`, `empty`, `header`, `footer`,
+  child function), `itemKey={(item) => item.id}`, `empty`, `header`, `footer`,
   `loading`, `loadingRows`, `hover`, `ordered`.
   Sortable-self: `sortable` + `onReorder={(next) => ...}` reorder the rows by
   dragging. The drag is NOT hand-rolled: `List` wraps SortableJS (dependency
   `sortablejs`; the only importer is `src/components/List/sortable.js`, the
   bridge). Controlled pattern: List never mutates `data`; on drop it computes
-  the new order from the SortableJS event indices
-  (`oldDraggableIndex`/`newDraggableIndex`) and calls `onReorder(next)`. Whole row
+  the new order and calls `onReorder(next)`. Whole row
   by default; including a `ListDragHandle` (GripVertical grip) in the row
   template restricts dragging to the grip. `header`/`footer` rows get
-  `list-static` (not draggable); the drag classes (`list-sort-ghost`,
+  `list-static` (not draggable) and DO compose with `sortable`: `onStart`
+  records the dragged row's index among draggable rows and the deferred
+  `finishSort` reads its final index from the DOM (`draggableIndexOf` skips
+  `.list-static` siblings), so a pinned row can't shift the result. The drag
+  classes (`list-sort-ghost`,
   `list-sort-chosen`, `list-sort-whole/handle`) are styled in the `list`
   recipe. Guard: `onbeforeupdate` returns false while a drag is active
   (Mithril would fight SortableJS over the DOM). SortableJS finishes moving
   the node AFTER `onEnd`, so the reorder runs on a deferred tick
   (`setTimeout(finishSort, 0)`) with the guard still up — then `onReorder(next)`
   + `m.redraw()` reconcile.
-  **Known bug — `sortable` + `header` (or `footer`) together**: verified with
-  real drags (config-ui's Postcss pipeline editor) that `onReorder` silently
-  never fires when a static `header`/`footer` row is present alongside
-  `sortable` — the drag still visually reorders the DOM (SortableJS moving
-  nodes directly), but `finishSort`'s index guard
-  (`from < data.length && to < data.length`) rejects it, most likely because
-  `evt.oldDraggableIndex`/`newDraggableIndex` come back unreliable with a
-  filtered (`list-static`) sibling present, falling back to
-  `oldIndex`/`newIndex` — which count the header, off-by-one against `data`.
-  No console error, no exception — the array update is just dropped. Until
-  fixed in `List`/`sortable.js`, **do not combine `sortable` with
-  `header`/`footer`**: render the pinned/static row as a plain sibling
-  element OUTSIDE the `List` instead (see `config-ui/pages/postcss/index.jsx`'s
-  Configure tab: the Panda base plugin renders above the sortable `List`, not
-  as its `header`).
+  **`forceFallback: true` is deliberate — do not remove it.** With the default
+  (`forceFallback: false`) desktop uses native HTML5 drag-and-drop
+  (`nativeDraggable = supportDraggable`), and during the flight the BROWSER
+  owns the cursor: it paints its own arrow and ignores CSS `cursor`, so the
+  grab hand disappears the moment the row lifts. Verified in the browser:
+  native mode fires `dragstart` while the element under the pointer computes
+  `cursor: grabbing` and the arrow is still what gets painted — i.e. a
+  `getComputedStyle` check alone cannot catch this regression. With the
+  fallback SortableJS drags a real DOM clone with mouse events; the cursor
+  that gets painted is then the computed one (`body.list-dragging` +
+  the recipe's `grab`/`grabbing`). Two details that keep it correct:
+  `fallbackClass: 'list-sort-drag'` (the clone would otherwise carry
+  SortableJS's own `sortable-fallback` class, outside the recipe) and
+  `fallbackTolerance: 3` (a click with a couple of px of jitter must NOT start
+  a drag — the row's ✕ button still has to work). The flying clone is appended
+  INSIDE the `<ul>` (`fallbackOnBody: false`, the default) so every recipe
+  selector still matches it, and SortableJS gives it `pointer-events: none`,
+  which is exactly why the `body.list-dragging *` cursor lock matters: the
+  pointer is over whatever sits underneath.
+  **Do NOT reorder from the SortableJS event indices**
+  (`oldDraggableIndex`/`newDraggableIndex`): with a static `list-static` row
+  present they are wrong. Root cause, verified in SortableJS 1.15.7's source
+  (`modular/sortable.esm.js`): the default `draggable` for a `<ul>` is `'>li'`
+  and its internal `index(el, selector)` counts EVERY sibling matching that
+  selector — it knows nothing about `filter`, so a filtered `list-static` row
+  still counts. Measured with a real drag (header + 5 rows, dropping row 0
+  onto row 3): `oldDraggableIndex === oldIndex === 1` and
+  `newDraggableIndex === newIndex === 4`, i.e. the header is included. A
+  previous version fed those numbers to `finishSort` as `data` indices: middle
+  drops silently wrote a WRONG permutation (DOM `[B,C,D,A,E]` → `onReorder`
+  got `[A,C,D,E,B]`), and with only 2 rows every legal drop lands in the last
+  slot where the `to < data.length` guard swallowed it, so `onReorder` looked
+  like it never fired. The fix reads the DOM position of `evt.item` in the
+  deferred tick instead (`draggableIndexOf` skips `.list-static`), which is
+  also the user-visible truth.
+  **`itemKey`, not `key`**: Mithril reads `attrs.key` as the vnode key, so
+  passing List's row-key function as `key` pushes the whole `<ul>` through the
+  keyed diff and breaks the "all keys or none" fragment invariant when the
+  list sits next to unkeyed siblings. `itemKey` is the documented prop; `key`
+  still works as a deprecated alias (function values only, anything else falls
+  back to the index).
 - `Pagination`: `page` + `pageCount` + `onchange(page)`; `variant`
   (joined/separated), `shape` (square/circle), `siblings`, `boundaries`,
   `withControls`/`withEdges`, `getHref`, controlled (`page`) or uncontrolled
@@ -748,8 +788,23 @@ last token per category); `extractBalanced` must match `marker` followed by
   min). "Install" ejecuta `bun add {paquete}` en el projectRoot (paquete npm
   RESUELTO contra la registry con candidatos del href: npmjs.com/package,
   último segmento github, nombre, `postcss-`+nombre; caché 1 h).
-- **Viñeta Available**: plugins del catálogo presentes en node_modules (con
-  flag `configurable` si hay esquema curado).
+  **`EXTRA_PLUGINS`** (`config-ui/postcss-api.ts`): lista curada para plugins
+  que postcss.org NO lista (viven solo en GitHub) pero queremos ofrecer igual;
+  hoy contiene `postcss-prune-var`
+  (https://github.com/tomasklaen/postcss-prune-var, que sí tiene esquema en
+  `postcss-schemas.ts`). Se fusionan con el scrapeo vía `withExtras()` bajo la
+  categoría `extras` ("Extras (not listed on postcss.org)") y se deduplican
+  por `name` — si algún día postcss.org lo lista, gana la entrada oficial. El
+  `npm` va fijado a mano (no hay href de npmjs del que deducir candidatos).
+  Añadir un plugin aquí es editar ese array; no hace falta tocar el scrapeo.
+- **Viñeta Available**: plugins del catálogo (oficial + extras) presentes en
+  node_modules (con flag `configurable` si hay esquema curado). Ojo: un plugin
+  puede estar instalado y **no** declarado en `package.json`/`bun.lock` (el
+  caso real de `example-pum1`: autoprefixer, cssnano y postcss-prune-var
+  entraron a node_modules el mismo día y ninguno figura como dependencia) —
+  `availablePlugins` mira node_modules, así que igual aparece; pero
+  "Remove package" (`bun remove`) sobre un paquete no declarado reescribe
+  `package.json`/`bun.lock` sin borrar la carpeta.
 - **Viñeta Configure** (fuente = `postcss.config.cjs` del projectRoot):
   `readPipelineConfig`/`writePipelineConfig` reescriben SOLO el bloque entre
   los markers `/* pum:postcss */` … `/* /pum:postcss */` (plugins manuales
@@ -775,6 +830,16 @@ last token per category); `extractBalanced` must match `marker` followed by
 - **Endpoints**: `GET/POST /api/postcss/config` (plugins del .cjs + build
   config), `GET /api/postcss/catalog?q=`, `GET /api/postcss/available`,
   `POST /api/postcss/install|remove`. Mismo contrato de error que /api/theme.
+- **Tamaño del CSS de salida**: `GET /api/postcss/config` devuelve `outputStat`
+  y `POST /api/rebuild` devuelve `output` — `{ path, bytes, gzipBytes, mtime }`,
+  o `null` si el archivo todavía no existe. `outputCssStat()` (`server.ts`)
+  resuelve la ruta desde `postcss.build.json` cuando el proyecto tiene pipeline
+  postcss, o desde el `outdir` del `panda.config.ts` (default `styled-system`)
+  + `styles.css` en el flujo clásico `codegen + cssgen`; el gzip se calcula del
+  propio archivo porque es lo que realmente viaja por la red. La página lo
+  muestra bajo el campo "Output CSS" y en la alerta del rebuild
+  (`formatBytes`/`outputSizeLabel` en `config-ui/pages/postcss/index.jsx`). Los
+  rebuilds de otras páginas (theme/fonts) ignoran el campo — es aditivo.
 - **Reglas críticas**: NUNCA escribas `*/` dentro de un JSDoc (cierra el
   comentario y rompe el bundle de la SPA en silencio). El bloque gestionado se
   serializa con `JSON.stringify` por entrada (claves con comillas dobles,
@@ -876,6 +941,25 @@ que solo usa `Button`) a solo los que el consumidor realmente usa.
   `recipes:` dentro de ese span — nunca toca `css`/`patterns`/`themes` si el
   consumidor ya los tiene configurados. `enabled: false` restaura el string
   `'*'` literal (revierte todo al default seguro de Panda, un click).
+- **Formas VÁLIDAS de `staticCss.recipes` (verificado contra Panda 1.12 con
+  `panda cssgen` en un consumidor limpio)**: `'*'` → todos los recipes; objeto
+  `{ tag: ['*'] }` → ese recipe completo (base + TODAS las variantes). Las dos
+  formas "naturales" que la gente escribe a mano están **rotas en silencio**:
+  `recipes: ['tag']` (array) → Panda hace `{...['tag']}` = `{0:'tag'}` y no
+  emite NADA; `recipes: {}` → tampoco emite nada. En ambos casos los
+  componentes quedan sin CSS y el síntoma más visible es **Tag sin padding**,
+  porque su padding no está en la base `.tag` sino en la variante de tamaño
+  (`.tag--size_md { padding-inline: … }`): sirve de canario. Diagnóstico en un
+  consumidor: `grep -o '\.tag--size_md{[^}]*}' styled-system/styles.css`.
+- **Guardas del editor** (añadidas tras reproducir lo anterior): la lista vacía
+  con `enabled: true` **se rechaza** (`{}` = ningún recipe; para desactivar está
+  `'*'`); `findRecipesValueSpan` entiende también la forma array, así que
+  `readStaticCssRecipes` la lee (antes la reportaba como `'*'`, mintiendo en la
+  UI) y al guardar se reescribe en la forma canónica; y si `recipes` existe con
+  una forma no reconocible (una variable, una llamada) se **lanza un error** en
+  vez de insertar una SEGUNDA clave `recipes:` — antes eso dejaba el valor viejo
+  ganando (en JS gana la última clave) y rompía el CSS justo después de guardar
+  desde el editor.
 - **Riesgo explícito, no oculto**: a diferencia de fonts/postcss/lightningcss
   (aditivos, revertir es solo borrar un bloque), esto reemplaza el valor de
   un campo que YA EXISTÍA con contenido funcional — un análisis estático

@@ -77,7 +77,7 @@ export const MyPage = {
     return (
       <List
         data={users}
-        key={(item) => item.id}
+        itemKey={(item) => item.id}
         hover
         header={<ListRow><ListCol grow>Name</ListCol><ListCol>Email</ListCol></ListRow>}
         empty={<ListRow><ListCol grow>No users</ListCol></ListRow>}
@@ -138,7 +138,7 @@ const timeStyle = css({ fontSize: '0.75rem', opacity: 0.6, alignSelf: 'center', 
 export const Inbox = {
   view() {
     return (
-      <List data={mails} key={(mail) => mail.id} hover render={(mail) => (
+      <List data={mails} itemKey={(mail) => mail.id} hover render={(mail) => (
         <ListRow>
           <Button variant="ghost" square size="sm" onclick={() => { mail.starred = !mail.starred }}>
             {mail.starred ? <Star size={18} class={starFilled} /> : <Star size={18} />}
@@ -217,7 +217,7 @@ export const Todo = {
           vnode.state.items.push({ id: vnode.state.seq, name: 'Item ' + vnode.state.seq })
         }}>Add</Button>
 
-        <List data={vnode.state.items} key={(item) => item.id} render={(item, index) => (
+        <List data={vnode.state.items} itemKey={(item) => item.id} render={(item, index) => (
           <ListRow>
             <ListCol grow>{item.name}</ListCol>
             <Button variant="ghost" square size="sm" onclick={() => {
@@ -281,7 +281,7 @@ export const Pipeline = {
     return (
       <List
         data={vnode.state.plugins}
-        key={(p) => p.id}
+        itemKey={(p) => p.id}
         sortable
         onReorder={(next) => { vnode.state.plugins = next }}
         render={(p, index) => (
@@ -318,7 +318,7 @@ export const Pipeline = {
   view(vnode) {
     return m(List, {
       data: vnode.state.plugins,
-      key: (p) => p.id,
+      itemKey: (p) => p.id,
       sortable: true,
       onReorder: (next) => { vnode.state.plugins = next },
       render: (p, index) => m(ListRow, null, [
@@ -427,7 +427,7 @@ export default {
             <Text size="sm" color="neutral" className={css({ alignSelf: 'center' })}>{vnode.state.fnItems.length} items</Text>
           </Stack>
           <div className={wrapper}>
-            <List data={vnode.state.fnItems} key={(item) => item.id}>
+            <List data={vnode.state.fnItems} itemKey={(item) => item.id}>
               {(item, index) => (
                 <ListRow hover>
                   <ListCol grow>{item.name}</ListCol>
@@ -463,7 +463,7 @@ export default {
           <div className={wrapper}>
             <List
               data={vnode.state.rpItems}
-              key={(item) => item.id}
+              itemKey={(item) => item.id}
               hover
               loading={vnode.state.rpLoading}
               loadingRows={3}
@@ -504,7 +504,7 @@ export default {
             {m.trust(t('buenUsoDesc'))}
           </Text>
           <div className={wrapper}>
-            <List data={vnode.state.mails} key={(mail) => mail.id} hover render={(mail) => (
+            <List data={vnode.state.mails} itemKey={(mail) => mail.id} hover render={(mail) => (
               <ListRow>
                 <Button variant="ghost" square size="sm" className={css({ alignSelf: 'center' })} onclick={() => { mail.starred = !mail.starred }}>
                   {mail.starred
@@ -578,7 +578,7 @@ export default {
             <div className={wrapper}>
               <List
                 data={vnode.state.soItems}
-                key={(item) => item.id}
+                itemKey={(item) => item.id}
                 sortable
                 hover
                 onReorder={soReorder}
@@ -592,10 +592,37 @@ export default {
             <div className={wrapper}>
               <List
                 data={vnode.state.soItems}
-                key={(item) => item.id}
+                itemKey={(item) => item.id}
                 sortable
                 hover
                 onReorder={soReorder}
+                render={(item, index) => soRow(item, index, true)}
+              />
+            </div>
+
+            {/* Regresión: `header`/`footer` son filas estáticas (list-static) y
+                NO deben contar en el índice reordenado. El pipeline real usa
+                este patrón (Panda pinned arriba + plugins arrastrables). */}
+            <Text size="sm" color="neutral" weight="bold" className={css({ marginTop: '0.75rem' })}>
+              {t('sortableStaticLabel')}
+            </Text>
+            <div className={wrapper}>
+              <List
+                data={vnode.state.soItems}
+                itemKey={(item) => item.id}
+                sortable
+                hover
+                onReorder={soReorder}
+                header={
+                  <ListRow className={css({ fontWeight: '700', opacity: 0.65 })}>
+                    <ListCol grow>{t('sortableStaticHeader')}</ListCol>
+                  </ListRow>
+                }
+                footer={
+                  <ListRow className={css({ fontWeight: '700', opacity: 0.65 })}>
+                    <ListCol grow>{t('sortableStaticFooter')}</ListCol>
+                  </ListRow>
+                }
                 render={(item, index) => soRow(item, index, true)}
               />
             </div>

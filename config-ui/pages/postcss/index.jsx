@@ -88,6 +88,26 @@ function tf(path, vars) {
   return t(path).replace(/\{(\w+)\}/g, (_, k) => (vars && vars[k] !== undefined ? vars[k] : `{${k}}`))
 }
 
+/** Tamaño legible: 512 B · 170.4 KB · 1.2 MB (1 decimal, redondeo hacia arriba). */
+function formatBytes(n) {
+  if (typeof n !== 'number' || !isFinite(n) || n < 0) return ''
+  if (n < 1024) return `${n} B`
+  if (n < 1024 * 1024) return `${(n / 1024).toFixed(1)} KB`
+  return `${(n / (1024 * 1024)).toFixed(2)} MB`
+}
+
+/**
+ * Texto del tamaño del CSS de salida a partir del stat del server
+ * (`{ bytes, gzipBytes }`): "170.4 KB (gzip 24.1 KB)" — el gzip es lo que
+ * realmente viaja por la red. Cadena vacía si no hay stat.
+ */
+function outputSizeLabel(stat) {
+  if (!stat || typeof stat.bytes !== 'number') return ''
+  const raw = formatBytes(stat.bytes)
+  const gz = typeof stat.gzipBytes === 'number' ? formatBytes(stat.gzipBytes) : ''
+  return gz ? tf('configure.sizeWithGzip', { size: raw, gzip: gz }) : raw
+}
+
 // ── estado / acciones: catálogo y available (viñetas install/available) ──────
 function runCatalogSearch(s) {
   const q = s.query.trim()
@@ -212,6 +232,7 @@ function loadConfig(s) {
           options: { ...(pl.options || {}) },
         }))
         s.build = { entry: d.build?.entry || '', output: d.build?.output || '' }
+        s.outputStat = d.outputStat || null
         s.jsonDrafts = {}
       } else {
         s.configError = d.error || 'Failed to load pipeline config'
@@ -243,11 +264,11 @@ function removeFromPipeline(s, id) {
 
 /**
  * Reordena el pipeline tras un drag (List `sortable`, controlado): `next` es
- * el nuevo orden SOLO de los plugins no-Panda (Panda es la fila estática
- * `header`, fuera del array `data` que List reordena). Panda se antepone de
- * nuevo — el orden aquí es el que `serializeManagedBlock` (postcss-api.ts)
- * escribe tal cual en postcss.config.cjs, así que este array ES el orden de
- * ejecución real del pipeline.
+ * el nuevo orden SOLO de los plugins no-Panda (Panda es la base del pipeline,
+ * se renderiza fijo fuera del array `data` que List reordena y aquí se
+ * antepone de nuevo). El orden de este array es el que `serializeManagedBlock`
+ * (postcss-api.ts) escribe tal cual en postcss.config.cjs, así que ES el orden
+ * de ejecución real del pipeline.
  */
 function reorderPipeline(s, next) {
   s.plugins = [s.plugins.find((p) => p.id === PANDA_PLUGIN_ID), ...next].filter(Boolean)
@@ -355,9 +376,12 @@ function rebuild(s) {
     .then((d) => {
       s.rebuilding = false
       if (d.ok) {
+        // El server devuelve el tamaño del CSS de salida ya regenerado.
+        s.outputStat = d.output || null
+        const size = s.outputStat ? tf('configure.sizeSuffix', { size: outputSizeLabel(s.outputStat) }) : ''
         s.rebuildMsg = d.mode === 'postcss'
-          ? `postcss → ${s.build.output} ✓`
-          : 'Rebuilt (codegen + cssgen) ✓'
+          ? tf('configure.rebuiltPostcss', { output: s.build.output, size })
+          : tf('configure.rebuiltCssgen', { size })
       } else {
         s.rebuildError = (d.codegen || d.postcss || d.cssgen || 'Rebuild failed').slice(-300)
       }
@@ -704,6 +728,9 @@ const page = {
     s.hasConfig = false
     s.plugins = []
     s.build = { entry: 'pum/index.css', output: 'styled-system/styles.css' }
+    // Tamaño del CSS de salida en disco (lo devuelve GET /api/postcss/config y
+    // se refresca con cada /api/rebuild).
+    s.outputStat = null
     s.jsonDrafts = {}
     s.savingConfig = false
     s.savedConfig = false
@@ -873,33 +900,28 @@ const page = {
                           <Text color="neutral">{t('configure.empty')}</Text>
                         )}
 
-                        {/* Panda va FUERA del List sortable — no como `header` (List
-                            sortable+header tiene un bug: SortableJS reporta índices que
-                            cuentan la fila estática, finishSort los compara contra `data`
-                            —que no la incluye— y descarta el reorder en silencio; onReorder
-                            nunca llega a llamarse. Verificado con drags reales antes de
-                            elegir este enfoque. Panda fijo arriba logra el mismo resultado
-                            visual sin depender de esa combinación.) */}
+                        {/* Panda es la base del pipeline (PANDA_PLUGIN_ID):
+                            fijo arriba y no arrastrable, así que vive fuera
+                            del List sortable. reorderPipeline lo reinserta
+                            siempre en primera posición al guardar. */}
                         {s.plugins.find((pl) => pl.id === PANDA_PLUGIN_ID) && (
                           <div className={css({ marginBottom: '0.5rem' })}>
                             {pluginCollapse(s, s.plugins.find((pl) => pl.id === PANDA_PLUGIN_ID), true)}
                           </div>
                         )}
 
-                        <div>
-                          <List
-                            data={s.plugins.filter((pl) => pl.id !== PANDA_PLUGIN_ID)}
-                            key={(pl) => pl.id}
-                            sortable
-                            onReorder={(next) => reorderPipeline(s, next)}
-                            render={(pl) => (
-                              <ListRow>
-                                <ListDragHandle aria-label={t('configure.dragToReorder')} />
-                                <ListCol grow>{pluginCollapse(s, pl, false)}</ListCol>
-                              </ListRow>
-                            )}
-                          />
-                        </div>
+                        <List
+                          data={s.plugins.filter((pl) => pl.id !== PANDA_PLUGIN_ID)}
+                          itemKey={(pl) => pl.id}
+                          sortable
+                          onReorder={(next) => reorderPipeline(s, next)}
+                          render={(pl) => (
+                            <ListRow>
+                              <ListDragHandle aria-label={t('configure.dragToReorder')} />
+                              <ListCol grow>{pluginCollapse(s, pl, false)}</ListCol>
+                            </ListRow>
+                          )}
+                        />
 
                         {s.available.length > 0 && (
                           <div>
@@ -936,12 +958,19 @@ const page = {
                               </div>
                               <div className={optionRow}>
                                 <Text weight="bold" size="sm">{t('configure.output')}</Text>
-                                <TextInput
-                                  size="md"
-                                  value={s.build.output}
-                                  placeholder="styled-system/styles.css"
-                                  oninput={(e) => { s.build.output = e.target.value }}
-                                />
+                                <Stack gap="xs">
+                                  <TextInput
+                                    size="md"
+                                    value={s.build.output}
+                                    placeholder="styled-system/styles.css"
+                                    oninput={(e) => { s.build.output = e.target.value }}
+                                  />
+                                  <Text size="sm" color="neutral">
+                                    {s.outputStat
+                                      ? outputSizeLabel(s.outputStat)
+                                      : t('configure.outputSizeUnknown')}
+                                  </Text>
+                                </Stack>
                               </div>
                             </Stack>
                           </CardBody>

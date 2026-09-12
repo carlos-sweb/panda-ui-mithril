@@ -12,7 +12,7 @@ import { createListSortable, destroyListSortable } from './sortable.js'
  * Modos de uso:
  *  - **Compositivo** (sin `data`): children explícitos (`ListRow`/`ListCol`).
  *  - **Data-driven** (con `data`): el template se repite por item vía el prop
- *    `render={(item, index) => vnode}`. `key` controla el diffing al
+ *    `render={(item, index) => vnode}`. `itemKey` controla el diffing al
  *    redimensionar/reordenar (default: índice). `header`/`footer` agregan
  *    filas estáticas, `empty` el estado vacío, `loading`/`loadingRows` filas
  *    Skeleton, `hover` resalta todas las filas y `ordered` renderiza `<ol>`.
@@ -26,7 +26,9 @@ import { createListSortable, destroyListSortable } from './sortable.js'
  *    `onReorder(next)` y el padre actualiza su array (patrón Pagination/
  *    Table). Por defecto se arrastra la fila completa; si el template incluye
  *    un `ListDragHandle`, el drag solo arranca desde el asa (recomendado
- *    cuando la fila tiene botones/inputs).
+ *    cuando la fila tiene botones/inputs). `header`/`footer` son filas
+ *    estáticas: no se arrastran y no cuentan en el índice reordenado, así que
+ *    se pueden combinar con `sortable` (ver draggableIndexOf).
  *
  * Nota: `header`/`footer` solo aplican en modo data-driven (en el modo
  * compositivo la cabecera se agrega como un `ListRow` normal).
@@ -50,6 +52,7 @@ export const List = {
     if (!rec || !rec.dragging) return true
     if (Date.now() - rec.dragAt > 4000) {
       rec.dragging = false
+      setDraggingCursor(false)
       return true
     }
     return false
@@ -62,11 +65,18 @@ export const List = {
       rec.instance = destroyListSortable(rec.instance)
       sortRecords.delete(el)
     }
+    // Si la lista se desmonta en mitad de un drag, el cursor no puede quedar
+    // bloqueado en "grabbing".
+    setDraggingCursor(false)
   },
 
   view(vnode) {
-    const { data, key, empty, header, footer, loading, loadingRows, hover, ordered, sortable, className, ...rest } = vnode.attrs
+    const { data, empty, header, footer, loading, loadingRows, hover, ordered, sortable, className, ...rest } = vnode.attrs
     const children = vnode.children
+    // Clave de fila: `itemKey` (actual) con `key` como alias deprecado. NO se
+    // lee `key` directamente en cada uso porque colisiona con la key de vnode
+    // de Mithril (ver itemKeyOf).
+    const rowKey = itemKeyOf(vnode.attrs)
 
     // Resuelve el template: prop `render` primero; children-función (único
     // child) como alternativa. Mithril envuelve la función en un array [fn].
@@ -119,7 +129,7 @@ export const List = {
           const row = template(item, index)
           if (row == null) return null
           // Inyecta key si el template no la puso (diffing de Mithril).
-          const keyValue = key ? key(item, index) : index
+          const keyValue = rowKey ? rowKey(item, index) : index
           let out = row
           const attrs = { ...(row.attrs || {}) }
           let changed = false
@@ -158,7 +168,7 @@ const defaultStyles = list({})
  * Registro por elemento del modo sortable. Se guarda en un WeakMap keyed por
  * el <ul> (el elemento DOM sobrevive a la recreación del componente), nunca en
  * vnode.state.
- * @type {WeakMap<Element, { instance: object|null, sig: string|null, current: {data: unknown[], onReorder?: Function}|null, dragging: boolean, dragAt: number }>}
+ * @type {WeakMap<Element, { instance: object|null, sig: string|null, current: {data: unknown[], onReorder?: Function}|null, dragging: boolean, dragAt: number, fromIndex: number }>}
  */
 const sortRecords = new WeakMap()
 
@@ -166,16 +176,72 @@ const sortRecords = new WeakMap()
 function getSortRecord(el) {
   let rec = sortRecords.get(el)
   if (!rec) {
-    rec = { instance: null, sig: null, current: null, dragging: false, dragAt: 0 }
+    rec = { instance: null, sig: null, current: null, dragging: false, dragAt: 0, fromIndex: -1 }
     sortRecords.set(el, rec)
   }
   return rec
+}
+
+/**
+ * Marca el documento como "arrastrando" para que el cursor siga siendo
+ * `grabbing` durante todo el drag (regla `body.list-dragging` en el
+ * `globalCss` del preset), aunque el puntero salga de la fila arrastrada o
+ * caiga encima de otro componente. Se llama en onStart y se limpia en
+ * onEnd, en la expiración del guard y en onremove.
+ */
+function setDraggingCursor(on) {
+  if (typeof document === 'undefined' || !document.body) return
+  document.body.classList.toggle('list-dragging', !!on)
 }
 
 /** Clona el vnode inyectando `key` si no la tiene. */
 function withKey(row, keyValue) {
   if (row == null || row.key != null || keyValue == null) return row
   return m(row.tag, { ...row.attrs, key: keyValue }, row.children)
+}
+
+/**
+ * Prop de clave de fila del modo data-driven: `itemKey` (nombre actual) o
+ * `key` (alias deprecado, conservado por compatibilidad).
+ *
+ * Por qué `itemKey` y no `key`: en Mithril `attrs.key` ES la key del vnode,
+ * así que pasar la función de clave de fila como `key` hace que el `<ul>` de
+ * List viaje por el diff keyed. En aislamiento funciona (Mithril indexa las
+ * keys en un `Object.create(null)`, y el mismo source de arrow coacciona al
+ * mismo string), pero al lado de hermanos sin key rompe el invariante de
+ * fragmento keyed (Mithril exige todas las keys o ninguna) y el diff salta.
+ * Con `itemKey` la lista queda sin key de vnode y compone con cualquier
+ * hermano. Sólo se aceptan funciones; cualquier otro valor cae al índice.
+ */
+function itemKeyOf(attrs) {
+  if (typeof attrs.itemKey === 'function') return attrs.itemKey
+  if (typeof attrs.key === 'function') return attrs.key
+  return null
+}
+
+/**
+ * Índice de `node` entre las filas ARRASTRABLES de `container`, es decir
+ * ignorando las filas estáticas (`list-static` de header/footer) — el índice
+ * que espera el array `data`.
+ *
+ * Se calcula del DOM a propósito. Los índices del evento de SortableJS
+ * (`oldDraggableIndex`/`newDraggableIndex`) NO sirven cuando hay filas
+ * estáticas: su opción `draggable` por defecto para `<ul>` es `'>li'` y su
+ * `index()` cuenta todo hermano que matchee el selector, incluido el que
+ * `filter: '.list-static'` excluye del drag (verificado con SortableJS
+ * 1.15.7: con un header estático, oldDraggableIndex === oldIndex). Usarlos
+ * como índices de `data` desplazaba el reordenamiento un puesto y el guard
+ * descartaba el drop a la última posición. El DOM es además la fuente de
+ * verdad de lo que el usuario ve, y ya se lee en el tick diferido (cuando
+ * SortableJS terminó de mover el nodo).
+ */
+function draggableIndexOf(container, node) {
+  if (!container || !node || node.parentNode !== container) return -1
+  let index = 0
+  for (let el = node.previousElementSibling; el; el = el.previousElementSibling) {
+    if (!el.classList.contains('list-static')) index++
+  }
+  return index
 }
 
 /** Marca una fila como estática (no arrastrable en modo sortable). */
@@ -196,7 +262,8 @@ function syncSortable(vnode) {
   if (!el) return
 
   const rec = getSortRecord(el)
-  const { sortable, data, key, loading } = vnode.attrs
+  const { sortable, data, loading } = vnode.attrs
+  const rowKey = itemKeyOf(vnode.attrs)
 
   const enabled = sortable && Array.isArray(data) && !loading && data.length > 1
 
@@ -213,42 +280,51 @@ function syncSortable(vnode) {
   // repo para listeners nativos). `el` es la clave estable del registro.
   rec.current = { data, onReorder: vnode.attrs.onReorder }
 
-  const sig = data.map((item, index) => String(key ? key(item, index) : index)).join('|')
+  const sig = data.map((item, index) => String(rowKey ? rowKey(item, index) : index)).join('|')
   if (rec.instance && sig === rec.sig) return
 
   rec.instance = destroyListSortable(rec.instance)
   rec.instance = createListSortable(el, {
-    onStart: () => { rec.dragging = true; rec.dragAt = Date.now() },
+    onStart: (evt) => {
+      rec.dragging = true
+      rec.dragAt = Date.now()
+      setDraggingCursor(true)
+      // Posición de origen en el array `data` (el DOM todavía no se movió):
+      // se calcula aquí porque en el tick de fin el nodo ya está en el destino.
+      rec.fromIndex = draggableIndexOf(el, evt != null ? evt.item : null)
+    },
     onEnd: (evt) => {
       // SortableJS termina de mover el nodo en el DOM DESPUÉS de onEnd; el
-      // orden nuevo se calcula de los índices del propio evento (robusto al
-      // timing del DOM) y el redraw se difiere un tick, con el guard aún
-      // activo, para no parchear encima del cleanup de SortableJS.
-      setTimeout(() => finishSort(rec, evt), 0)
+      // índice de destino se lee del DOM en el tick diferido y el redraw se
+      // difiere con el guard aún activo, para no parchear encima del cleanup
+      // de SortableJS.
+      setTimeout(() => finishSort(rec, el, evt), 0)
     },
   })
   rec.sig = sig
 }
 
 /**
- * Fin del drag: reordena el array controlado según la posición de soltado que
- * reporta SortableJS (old/newDraggableIndex — índices solo entre filas
- * arrastrables, ignoran header/footer estáticos) y notifica al padre.
+ * Fin del drag: reordena el array controlado según la posición de soltado real
+ * (índice entre filas arrastrables, ver draggableIndexOf) y notifica al padre.
  */
-function finishSort(rec, evt) {
+function finishSort(rec, el, evt) {
   rec.dragging = false
+  setDraggingCursor(false)
 
   const { data, onReorder } = rec.current || {}
   if (typeof onReorder === 'function' && Array.isArray(data)) {
-    const from = evt != null ? (evt.oldDraggableIndex != null ? evt.oldDraggableIndex : evt.oldIndex) : null
-    const to = evt != null ? (evt.newDraggableIndex != null ? evt.newDraggableIndex : evt.newIndex) : null
-    if (from != null && to != null && from !== to && from >= 0 && to >= 0 && from < data.length && to < data.length) {
+    const item = evt != null ? evt.item : null
+    const from = rec.fromIndex != null ? rec.fromIndex : -1
+    const to = item != null ? draggableIndexOf(el, item) : -1
+    if (from >= 0 && to >= 0 && from !== to && from < data.length && to < data.length) {
       const next = data.slice()
       const [moved] = next.splice(from, 1)
       next.splice(to, 0, moved)
       onReorder(next)
     }
   }
+  rec.fromIndex = -1
 
   // Evento nativo de SortableJS: Mithril no redibuja solo. Ya fuera de la pila
   // de SortableJS (tick diferido), el DOM quedó en el orden final y el diff

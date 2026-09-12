@@ -41,3 +41,6 @@ sortableDesc: >-
   columna <code>index</code> demuestra que el modelo sí se reordenó.
 sortableWholeLabel: Arrastre de fila entera (sin asa)
 sortableHandleLabel: Arrastre solo desde el asa ListDragHandle
+sortableStaticLabel: Sortable + header/footer estáticos (filas fijas)
+sortableStaticHeader: Base del pipeline — @pandacss/dev/postcss (no arrastrable)
+sortableStaticFooter: fin del pipeline (no arrastrable)

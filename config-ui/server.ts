@@ -35,7 +35,8 @@
  * resuelve en `onError` con `code === 'NOT_FOUND'`.
  */
 import { Elysia } from 'elysia'
-import { existsSync, readFileSync, writeFileSync } from 'node:fs'
+import { existsSync, readFileSync, statSync, writeFileSync } from 'node:fs'
+import { gzipSync } from 'node:zlib'
 import { dirname, join, relative, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { spawn, spawnSync } from 'node:child_process'
@@ -43,7 +44,7 @@ import { ensureToken, parseColors, parseFlat, removeToken, writeColorsSrc, write
 import {
   assignFont, availableFonts, bunAdd, ensureRoleTokens, fontfaceWired, migrateLegacyFonts,
   packageFontFilePath, packageMeta, packageScope, parseLoadedKey, pruneLoaded,
-  readFontsTokens, readLoaded, removePackage, sanitizeFontId, searchFonts, syncBlock,
+  readFontsTokens, readLoaded, readOutdir, removePackage, sanitizeFontId, searchFonts, syncBlock,
   tokensForFamily, unassignFont,
 } from './fonts-api'
 import {
@@ -255,8 +256,49 @@ app.post('/api/rebuild', () => {
   const found = resolveTheme(process.cwd())
   const cwd = found.projectRoot || process.cwd()
   const result = runRebuild(cwd, found.themeDir)
-  return { ok: result.ok, codegen: result.codegen, cssgen: result.cssgen, postcss: result.postcss, mode: result.mode }
+  return {
+    ok: result.ok,
+    codegen: result.codegen,
+    cssgen: result.cssgen,
+    postcss: result.postcss,
+    mode: result.mode,
+    output: outputCssStat(cwd, found.themeDir),
+  }
 })
+
+/**
+ * Tamaño del CSS de salida del proyecto (el que linkea el index.html) tras un
+ * rebuild: `{ path, bytes, gzipBytes, mtime }`, o null si todavía no existe.
+ *
+ * La ruta sale del build config del editor (`postcss.build.json`) cuando el
+ * proyecto tiene pipeline postcss, o del `outdir` del `panda.config.ts`
+ * (default `styled-system`) + `styles.css` en el flujo clásico `codegen +
+ * cssgen`. El gzip se calcula del propio archivo, que es lo que realmente
+ * viaja por la red.
+ */
+function outputCssStat(
+  projectRoot: string,
+  themeDir?: string | null,
+): { path: string; bytes: number; gzipBytes: number; mtime: number } | null {
+  try {
+    const rel = themeDir && hasPostcssConfig(projectRoot)
+      ? readBuildConfig(themeDir).output
+      : join(readOutdir(readFileSync(join(projectRoot, 'panda.config.ts'), 'utf8')), 'styles.css')
+    const abs = resolve(projectRoot, rel)
+    if (!existsSync(abs)) return null
+    const buf = readFileSync(abs)
+    return {
+      path: rel,
+      bytes: buf.byteLength,
+      gzipBytes: gzipSync(buf).byteLength,
+      mtime: statSync(abs).mtimeMs,
+    }
+  } catch {
+    // Sin panda.config.ts, output inexistente o ilegible: el rebuild sigue
+    // siendo válido, simplemente no hay tamaño que reportar.
+    return null
+  }
+}
 
 // ── API: fuentes (modelo npm — catálogo, añadir, disponibles, asignar) ─────
 // El proveedor por defecto es Fontsource. Flujo: buscar en el catálogo →
@@ -513,7 +555,7 @@ app.post('/api/postcss/install', async ({ request }) => {
   try {
     const categories = await catalog()
     const plugin = categories.flatMap((c) => c.plugins).find((p) => p.name === name)
-    if (!plugin) return { ok: false, error: `'${name}' no está en el listado oficial.` }
+    if (!plugin) return { ok: false, error: `'${name}' no está en el listado de plugins.` }
     const pkg = await resolveNpmPackage(plugin.name, plugin.url)
     if (!pkg) {
       return { ok: false, error: `No hay paquete npm para '${name}' (${plugin.url}).` }
@@ -570,6 +612,8 @@ app.get('/api/postcss/config', () => {
       plugins,
       build,
       buildPath: relative(process.cwd(), buildConfigPath(themeDir)),
+      // Tamaño actual del CSS de salida en disco (se refresca tras /api/rebuild).
+      outputStat: outputCssStat(projectRoot, themeDir),
     }
   } catch (e) {
     return { ok: false, error: String(e) }

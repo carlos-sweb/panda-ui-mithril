@@ -53,6 +53,46 @@ export interface PostcssCategory {
 let catalogCache: { at: number; categories: PostcssCategory[] } | null = null
 const CATALOG_TTL = 30 * 60 * 1000
 
+/**
+ * Plugins que NO están en el listado de postcss.org pero queremos ofrecer
+ * igualmente en el editor (plugins que solo viven en GitHub, o pedidos
+ * explícitos del usuario).
+ *
+ * Se fusionan con el catálogo scrapeado en `catalog()`/`searchCatalog()`; si
+ * algún día postcss.org los lista, gana la entrada oficial (dedupe por
+ * `name`). `npm` se fija a mano: no hay href de npmjs.com del que deducir el
+ * paquete, así que no se pasa por `npmCandidates`.
+ */
+const EXTRA_CATEGORY = {
+  id: 'extras',
+  name: 'Extras (not listed on postcss.org)',
+} as const
+
+const EXTRA_PLUGINS: PostcssPlugin[] = [
+  {
+    name: 'postcss-prune-var',
+    description: 'removes unused CSS variables, following the var() dependency graph.',
+    url: 'https://github.com/tomasklaen/postcss-prune-var',
+    category: EXTRA_CATEGORY.name,
+    categoryId: EXTRA_CATEGORY.id,
+    npm: 'postcss-prune-var',
+  },
+]
+
+/** Añade los extras al final del catálogo, sin duplicar los ya listados. */
+function withExtras(categories: PostcssCategory[]): PostcssCategory[] {
+  const listed = new Set(categories.flatMap((c) => c.plugins.map((p) => p.name)))
+  const missing = EXTRA_PLUGINS.filter((p) => !listed.has(p.name))
+  if (missing.length === 0) return categories
+  const existing = categories.find((c) => c.id === EXTRA_CATEGORY.id)
+  if (existing) {
+    return categories.map((c) =>
+      c.id === EXTRA_CATEGORY.id ? { ...c, plugins: [...c.plugins, ...missing] } : c,
+    )
+  }
+  return [...categories, { id: EXTRA_CATEGORY.id, name: EXTRA_CATEGORY.name, plugins: missing }]
+}
+
 /** Decodifica entidades HTML básicas en texto plano. */
 function decodeEntities(s: string): string {
   return s
@@ -137,23 +177,23 @@ export function parseCatalogHtml(html: string): PostcssCategory[] {
   return categories
 }
 
-/** Listado oficial con caché en memoria. Lanza si la página falla. */
+/** Listado oficial (postcss.org) + extras, con caché en memoria. Lanza si la página falla. */
 export async function catalog(): Promise<PostcssCategory[]> {
   const now = Date.now()
-  if (catalogCache && now - catalogCache.at < CATALOG_TTL) return catalogCache.categories
+  if (catalogCache && now - catalogCache.at < CATALOG_TTL) return withExtras(catalogCache.categories)
   const res = await fetch(CATALOG_URL, { signal: AbortSignal.timeout(FETCH_TIMEOUT) })
   if (!res.ok) throw new Error(`postcss.org ${res.status}`)
   const html = await res.text()
   const categories = parseCatalogHtml(html)
   if (categories.length === 0) throw new Error('No se pudo parsear el listado de plugins')
   catalogCache = { at: now, categories }
-  return categories
+  return withExtras(categories)
 }
 
-/** Filtra el catálogo por nombre/descripción (case-insensitive). */
+/** Filtra el catálogo (oficial + extras) por nombre/descripción (case-insensitive). */
 export function searchCatalog(q: string): PostcssCategory[] {
   const needle = q.trim().toLowerCase()
-  const all = catalogCache?.categories ?? []
+  const all = withExtras(catalogCache?.categories ?? [])
   if (!needle) return all
   const out: PostcssCategory[] = []
   for (const cat of all) {

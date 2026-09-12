@@ -45,6 +45,7 @@ Title — semantic heading with size, color, align, transform, weight, truncate,
 - Custom properties scoped per component: `--btn-color`, `--rating-size`, `--swap-size`, `--title-color`, `--btn-size`
 - Token references use `'token(spacing.X)'` string form (NOT bare paths)
 - `defaultVariants` on every recipe
+- **Use only variant values the recipe defines** (check the component's `.d.ts`/docs). An unknown value does NOT fail: the runtime emits its class anyway (`<Tag size="sm">` → `tag--size_sm`) but no such rule exists, so the element silently loses that part of its styling — e.g. `Tag` has `size: 'md' | 'lg'`, and since its padding lives in the size variant (`tag--size_md`), `size="sm"` renders a Tag with **no padding**. Same with `Stack gap`: values are `xs|sm|md|lg|xl`, so `gap="0"` emits nothing and you get the default gap.
 
 ### Data-driven components
 `List`, `Pagination`, and `Dropdown` are prop-driven and expose the contract the future data-driven `Table` will reuse:

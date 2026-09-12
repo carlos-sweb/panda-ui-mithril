@@ -40,3 +40,6 @@ sortableDesc: >-
   the <code>index</code> column proves the model really reordered.
 sortableWholeLabel: Whole-row drag (no handle)
 sortableHandleLabel: Drag only from the ListDragHandle grip
+sortableStaticLabel: Sortable + static header/footer (pinned rows)
+sortableStaticHeader: Pipeline base — @pandacss/dev/postcss (not draggable)
+sortableStaticFooter: end of pipeline (not draggable)

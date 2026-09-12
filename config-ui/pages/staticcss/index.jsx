@@ -264,7 +264,7 @@ const page = {
                       )}
                       {s.scannedComponents !== null && s.scannedComponents.length > 0 && (
                         <div className={chipRow}>
-                          {s.scannedComponents.map((c) => <Tag key={c} size="sm" variant="ghost">{c}</Tag>)}
+                          {s.scannedComponents.map((c) => <Tag key={c} size="md" variant="ghost">{c}</Tag>)}
                         </div>
                       )}
                       {s.scannedComponents !== null && s.scannedComponents.length === 0 && (
@@ -284,7 +284,7 @@ const page = {
                       <Text weight="bold" size="sm">{t('finalRecipes')} ({finalRecipes.length})</Text>
                       <div className={chipRow}>
                         {finalRecipes.length === 0 && <Text color="neutral" size="sm">{t('finalRecipesEmpty')}</Text>}
-                        {finalRecipes.map((r) => <Tag key={r} size="sm" variant="success">{r}</Tag>)}
+                        {finalRecipes.map((r) => <Tag key={r} size="md" variant="success">{r}</Tag>)}
                       </div>
                     </Stack>
 

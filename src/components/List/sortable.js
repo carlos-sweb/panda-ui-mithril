@@ -22,7 +22,7 @@ import Sortable from 'sortablejs'
 
 /** Crea la instancia Sortable sobre `el` y ajusta las clases de modo. */
 export function createListSortable(el, hooks = {}) {
-  const { onStart, onEnd, onCancel } = hooks
+  const { onStart, onEnd } = hooks
   if (!el) return null
 
   // Modo de agarre: si el template incluye asas, SortableJS restringe el drag
@@ -33,15 +33,29 @@ export function createListSortable(el, hooks = {}) {
 
   const options = {
     animation: 150,
-    // Clases que SortableJS aplica a las filas durante el drag (recipe list.ts).
+    // NADA de drag nativo HTML5 (`forceFallback: true`). Con el drag nativo
+    // (`nativeDraggable`, el default en desktop) el navegador se adueña del
+    // cursor mientras la fila "vuela" y pinta su propia flecha IGNORANDO el
+    // CSS: verificado en el navegador que con el default se dispara `dragstart`
+    // y el `cursor: grabbing` computado no se pinta. Con el fallback SortableJS
+    // mueve un clon con eventos de mouse, así que el cursor real (recipe +
+    // `body.list-dragging`, ver más abajo) sí se aplica. En touch ya se usaba
+    // el fallback de todos modos.
+    forceFallback: true,
+    // Umbral en px del fallback antes de considerar que es un arrastre (evita
+    // que un clic con micro-movimiento levante la fila).
+    fallbackTolerance: 3,
+    // Clases que SortableJS aplica durante el drag (recipe list.ts). En
+    // fallback el clon que sigue al puntero recibe `dragClass` + `fallbackClass`
+    // (el default `sortable-fallback` es un nombre ajeno al proyecto).
     ghostClass: 'list-sort-ghost',
     chosenClass: 'list-sort-chosen',
     dragClass: 'list-sort-drag',
+    fallbackClass: 'list-sort-drag',
     // Header/footer de List no son arrastrables (filas estáticas).
     filter: '.list-static',
     onStart,
     onEnd,
-    onCancel,
   }
   if (handleMode) options.handle = '.list-drag-handle'
 
