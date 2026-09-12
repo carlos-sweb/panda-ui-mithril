@@ -1,13 +1,13 @@
 # Config UI (theme editor) — `bunx panda-ui-mithril config`
 
-Detalle de implementación del editor de theme (`config-ui/`). **Este archivo
-complementa la sección "Config UI" de [`../AGENTS.md`](../AGENTS.md)**, que
-conserva la resolución del target, las guards y las invariantes por sección;
-aquí está la mecánica completa: endpoints, formatos en disco, reglas de
-serialización y el porqué de cada decisión.
+Implementation detail of the theme editor (`config-ui/`). **This file
+complements the "Config UI" section of [`../AGENTS.md`](../AGENTS.md)**, which
+keeps the target resolution, the guards and the per-section invariants; here
+is the full mechanics: endpoints, on-disk formats, serialization rules and the
+why behind each decision.
 
-Léelo antes de tocar `config-ui/*.ts`, `panda-config-ui.config.ts`, o de
-escribir una sección nueva del editor.
+Read it before touching `config-ui/*.ts`, `panda-config-ui.config.ts`, or
+writing a new editor section.
 
 ---
 
@@ -23,17 +23,17 @@ so it never clobbers the playground's `styled-system/`).
 
 ## Theme target resolution
 (`config-ui/server.ts` → `resolveTheme`):
-- `--dir <ruta>` / `--dir=<ruta>` / `-d <ruta>` / `-d=<ruta>` (read from
-  `process.argv`): explicit base. Ambas formas; una ruta relativa se
-  resuelve contra el cwd, así que `config --dir=src/pages/login` apunta al
-  sub-proyecto (con su propio `pum/` + `panda.config.ts`) y no a la raíz.
+- `--dir <path>` / `--dir=<path>` / `-d <path>` / `-d=<path>` (read from
+  `process.argv`): explicit base. Both forms; a relative path is resolved
+  against the cwd, so `config --dir=src/pages/login` points at the
+  sub-project (with its own `pum/` + `panda.config.ts`) and not at the root.
   Accepts a project root (`pum/theme` → `src/theme` → `theme` subdirs are
   tried inside it), or a theme dir directly (has `colors.ts`).
 - `--port <n>` / `--port=<n>` / `-p <n>` (read from `process.argv`): server
   port (default **1234**).
-- `--no-open` (o `BROWSER=none`): NO abre el navegador del sistema al arrancar
-  (la URL se imprime igual en stdout). Para revisiones repetidas / scripts /
-  CI: sin esto cada reinicio abre una pestaña nueva.
+- `--no-open` (or `BROWSER=none`): does NOT open the system browser on start
+  (the URL is still printed to stdout). For repeated reviews / scripts / CI:
+  without this, every restart opens a new tab.
 - On start the server **opens the URL in the system browser** (best-effort:
   `xdg-open`/`open`/`start`, spawned detached + unref'd — a failure never
   kills the server; the URL is always printed to stdout).
@@ -45,44 +45,45 @@ so it never clobbers the playground's `styled-system/`).
   pipeline block below).
 - `GET /api/theme` also returns `themeRel` (e.g. `pum/theme` or `src/theme`)
   so the pages show the real edited path instead of a hardcoded one.
-- **El theme debe pertenecer al proyecto que se recompila**
-  (`themeOwnedByProject` en `resolveTheme`, expuesto por `GET /api/theme`): el
-  proyecto es el directorio con `panda.config.ts`, y su config importa SU
-  `pum/preset`. Un `--dir` cuyo dir tiene `pum/theme` pero **no** su propio
-  `panda.config.ts` (p. ej. un SPA anidado sin `init`) resuelve como
-  projectRoot el ancestro: editarlo no tendría efecto y el CSS se escribiría
-  en el ancestro, en silencio. Todos los `POST /api/*` (y `/api/rebuild`)
-  ahora lo **rechazan** con `themeOwnershipError` + hint
-  `bunx panda-ui-mithril init --dir=<ruta-del-spa>`. Un SPA independiente
-  necesita su propio `pum/` + `panda.config.ts` (`init --dir=<spa>`); así
-  `config --dir=<spa>` edita y compila SOLO ese sub-proyecto (verificado: dos
-  SPAs anidados con temas y CSS distintos, y la raíz intacta).
+- **The theme must belong to the project being rebuilt**
+  (`themeOwnedByProject` in `resolveTheme`, exposed by `GET /api/theme`): the
+  project is the directory with `panda.config.ts`, and its config imports ITS
+  `pum/preset`. A `--dir` whose dir has `pum/theme` but **no** own
+  `panda.config.ts` (e.g. a nested SPA without `init`) resolves the ancestor
+  as projectRoot: editing it would have no effect and the CSS would be written
+  to the ancestor, silently. All `POST /api/*` (and `/api/rebuild`) now
+  **reject** it with `themeOwnershipError` + hint
+  `bunx panda-ui-mithril init --dir=<spa-path>`. An independent SPA
+  needs its own `pum/` + `panda.config.ts` (`init --dir=<spa>`); that way
+  `config --dir=<spa>` edits and compiles ONLY that sub-project (verified: two
+  nested SPAs with different themes and CSS, and the root untouched).
 
 ## `config --init`
-(`scripts/cli.ts`, mismo `--dir`) inicializa y abre en un
-paso: si el dir apuntado **no** es todavía un proyecto (sin theme en
-`pum/theme`, `src/theme`, `theme` ni el legacy `pum/theme.ts`) llama a
-`scaffoldProject()` — el MISMO cuerpo que usa `init` — y luego abre el editor;
-si ya lo es, **no toca nada** y solo abre. Es la única forma combinada y es
-aditiva por construcción (`force: false` siempre), porque la vía destructiva
-sigue siendo exclusiva de `init --force` (que sobrescribe `pum/theme/*.ts` con
-los defaults del paquete). `scaffoldProject(cwd, { force, printNextSteps })` es
-el cuerpo compartido: `init` imprime los "Next steps" y `config --init` no
-(acaba de abrir el editor).
+(`scripts/cli.ts`, same `--dir`) initializes and opens in one
+step: if the pointed dir is **not** yet a project (no theme in
+`pum/theme`, `src/theme`, `theme` nor the legacy `pum/theme.ts`) it calls
+`scaffoldProject()` — the SAME body `init` uses — and then opens the editor;
+if it already is, it **touches nothing** and only opens. It is the only
+combined form and it is additive by construction (`force: false` always),
+because the destructive path remains exclusive to `init --force` (which
+overwrites `pum/theme/*.ts` with the package defaults).
+`scaffoldProject(cwd, { force, printNextSteps })` is
+the shared body: `init` prints the "Next steps" and `config --init` does not
+(it has just opened the editor).
 
 ## `init` now shares the same `--dir`/`-d` flag
 (`scripts/cli.ts`,
 `dirFromArgv` — literal copy of `config`'s `themeDirFromArgv` parsing:
-`--dir <ruta>`/`--dir=<ruta>`/`-d <ruta>`, resuelto a absoluto contra cwd). Unlike `config --dir` (which only READS an existing project),
-`init --dir <ruta>` WRITES everything there — `pum/`, `panda.config.ts`,
-`tsconfig.json`, `postcss.config.cjs`, `pum/index.css` — creating `<ruta>`
+`--dir <path>`/`--dir=<path>`/`-d <path>`, resolved to absolute against cwd). Unlike `config --dir` (which only READS an existing project),
+`init --dir <path>` WRITES everything there — `pum/`, `panda.config.ts`,
+`tsconfig.json`, `postcss.config.cjs`, `pum/index.css` — creating `<path>`
 first via `mkdirSync(..., { recursive: true })` if it doesn't exist yet.
-Deliberately symmetric with `config --dir`: `init --dir mi-app` then later
-`config --dir mi-app` land on the same project root. Without `--dir`, `init`
+Deliberately symmetric with `config --dir`: `init --dir my-app` then later
+`config --dir my-app` land on the same project root. Without `--dir`, `init`
 still resolves everything against `process.cwd()`, unchanged. Caveat carried
 over either way: the generated `panda.config.ts`'s `include` glob
 (`./src/**/*...`) is relative to wherever `panda.config.ts` itself ends up —
-if the consumer's real `src/` isn't a sibling of `<ruta>`, `include` needs a
+if the consumer's real `src/` isn't a sibling of `<path>`, `include` needs a
 manual edit after `init`.
 
 ## Legacy layout migration
@@ -103,308 +104,312 @@ must NOT require a second closing brace (that bug silently dropped all but the
 last token per category); `extractBalanced` must match `marker` followed by
 `(` or `=` so `import { defineTokens }` is ignored.
 
-## Fonts API — fuentes por paquetes npm @fontsource
+## Fonts API — fonts from npm @fontsource packages
 (`config-ui/server.ts`
-+ `config-ui/fonts-api.ts`, proveedor por defecto `https://fontsource.org/`):
-- **Flujo (sin paso intermedio de "instalar")**: el catálogo de Fontsource solo
-  sirve para BUSCAR; "Add" ejecuta **`bun add @fontsource/{id}`** en el
-  projectRoot y la fuente queda DISPONIBLE en `node_modules`; **"Assign" es la
-  ÚNICA operación que carga la fuente al sistema** (escribe el token en
-  `pum/theme/fonts.ts` + emite los `@font-face` de esa familia) — el CSS solo
-  contiene familias asignadas y usadas (prune automático contra los tokens).
-- **Estado del editor** (derivado de `dirname(themeDir)` → `pum/` o `src/`):
-  `{raiz}/fonts-loaded.json` (familias cargadas: id → family/weights/styles/
-  subsets; clave `v:`+id para @fontsource-variable). Los paquetes disponibles
-  se escanean en `node_modules/@fontsource/*` Y `node_modules/@fontsource-variable/*`
++ `config-ui/fonts-api.ts`, default provider `https://fontsource.org/`):
+- **Flow (no intermediate "install" step)**: the Fontsource catalog only
+  serves to SEARCH; "Add" runs **`bun add @fontsource/{id}`** in the
+  projectRoot and the font becomes AVAILABLE in `node_modules`; **"Assign" is
+  the ONLY operation that loads the font into the system** (it writes the token
+  in `pum/theme/fonts.ts` + emits that family's `@font-face`) — the CSS only
+  contains assigned and used families (automatic prune against the tokens).
+- **Editor state** (derived from `dirname(themeDir)` → `pum/` or `src/`):
+  `{root}/fonts-loaded.json` (loaded families: id → family/weights/styles/
+  subsets; key `v:`+id for @fontsource-variable). The available packages
+  are scanned in `node_modules/@fontsource/*` AND `node_modules/@fontsource-variable/*`
   (metadata.json: id/family/weights/styles/defSubset/version/license).
-  `pum/theme/fonts.ts` = qué token usa cada familia.
-- **Fuentes variable (@fontsource-variable/{id})**: se añaden con
-  `bun add @fontsource-variable/{id}` (`variable: true` en add/assign/
-  available/unassign/remove/file). Un woff2 por subset×estilo cubre TODO el
-  rango de pesos: la family del CSS es `'{Familia} Variable'` (se lee del css
-  del paquete con `variableFontInfo`), el @font-face emitido usa
-  `font-weight: '100 900'` (rango) + `format('woff2-variations')` y el archivo
-  `{id}-{subset}-wght-{style}.woff2` (eje wght). El assign de una variable NO
-  ofrece selección de pesos (un solo archivo).
-- **Carga = vía nativa de Panda**: el editor escribe la clave **`globalFontface`**
-  (nivel superior de `defineConfig`, f minúscula — la `theme.globalFontFace`
-  mayúscula NO emite nada en Panda 1.12, verificado) en el `panda.config.ts`
-  del consumidor bajo el marker `/* pum:fontfaces */`
-  (`buildFontfaceSource`/`writeFontfaceConfig`/`syncBlock` en fonts-api),
-  y corre `codegen + cssgen` automáticamente (`runRebuild` en server.ts).
-  cssgen emite los `@font-face` DENTRO de `{projectRoot}/{outdir}/styles.css`
-  — la app ya linkea ese CSS, no se toca el HTML. El `url()` de cada src es
-  relativo al styles.css generado y apunta al woff2 del paquete:
-  `node_modules/@fontsource/{id}/files/{id}-{subset}-{peso}-{estilo}.woff2`
-  (naming CON prefijo del id; el bundler de Bun lo resuelve e inlinea).
-- **Asignación (sin pasos manuales)**: "Assign" (fuente + token + pesos/
-  estilos/subsets) → fonts.ts con `'"Family", system-ui, sans-serif'` (token
-  `mono` → `'"Family", monospace'`) + bloque + rebuild. Unassign resetea los
-  tokens a stack genérico (`system-ui, sans-serif` / `monospace`).
-- **Migración legacy**: instalaciones self-hosted antiguas (`{raiz}/fonts/{id}`
-  con metadata.json) se migran solas al abrir el editor: `bun add` + registro
-  en fonts-loaded.json con los pesos del legacy + borrado del dir y
-  `{raiz}/fonts.css`.
-- **Endpoints**: `GET /api/fonts/search?q=` (proxy de `api.fontsource.org/v1/fonts`
-  con caché en memoria de 30 min del listado ~540 KB, ranking por family/id),
-  `POST /api/fonts/add` (bun add), `GET /api/fonts/available` (paquetes +
-  estado cargado + wired + migrated), `POST /api/fonts/assign`,
+  `pum/theme/fonts.ts` = which token each family uses.
+- **Variable fonts (@fontsource-variable/{id})**: added with
+  `bun add @fontsource-variable/{id}` (`variable: true` in add/assign/
+  available/unassign/remove/file). One woff2 per subset×style covers the WHOLE
+  weight range: the CSS family is `'{Family} Variable'` (read from the
+  package's css with `variableFontInfo`), the emitted @font-face uses
+  `font-weight: '100 900'` (range) + `format('woff2-variations')` and the file
+  `{id}-{subset}-wght-{style}.woff2` (wght axis). The assign of a variable does
+  NOT offer weight selection (a single file).
+- **Loading = Panda's native path**: the editor writes the key **`globalFontface`**
+  (top level of `defineConfig`, lowercase f — the capitalized
+  `theme.globalFontFace` emits NOTHING in Panda 1.12, verified) in the
+  consumer's `panda.config.ts` under the marker `/* pum:fontfaces */`
+  (`buildFontfaceSource`/`writeFontfaceConfig`/`syncBlock` in fonts-api),
+  and runs `codegen + cssgen` automatically (`runRebuild` in server.ts).
+  cssgen emits the `@font-face` INSIDE `{projectRoot}/{outdir}/styles.css`
+  — the app already links that CSS, the HTML is not touched. The `url()` of
+  each src is relative to the generated styles.css and points at the package's
+  woff2:
+  `node_modules/@fontsource/{id}/files/{id}-{subset}-{weight}-{style}.woff2`
+  (naming WITH the id prefix; Bun's bundler resolves and inlines it).
+- **Assignment (no manual steps)**: "Assign" (font + token + weights/
+  styles/subsets) → fonts.ts with `'"Family", system-ui, sans-serif'` (token
+  `mono` → `'"Family", monospace'`) + block + rebuild. Unassign resets the
+  tokens to a generic stack (`system-ui, sans-serif` / `monospace`).
+- **Legacy migration**: old self-hosted installs (`{root}/fonts/{id}`
+  with metadata.json) migrate on their own when the editor opens: `bun add` +
+  registration in fonts-loaded.json with the legacy weights + deletion of the
+  dir and `{root}/fonts.css`.
+- **Endpoints**: `GET /api/fonts/search?q=` (proxy of `api.fontsource.org/v1/fonts`
+  with a 30 min in-memory cache of the ~540 KB listing, ranking by family/id),
+  `POST /api/fonts/add` (bun add), `GET /api/fonts/available` (packages +
+  loaded + wired + migrated state), `POST /api/fonts/assign`,
   `POST /api/fonts/unassign`, `POST /api/fonts/remove` (bun remove),
-  `GET /api/fonts/file/{id}/{file}` (woff2 del paquete con guard de traversal,
-  preview local). Mismo contrato de error que `/api/theme` (`legacy` / sin theme).
-  `POST /api/theme` con `fonts` dispara el prune del bloque (syncBlock).
-- **Reglas críticas**: los ids se validan con `/^[a-z0-9-]+$/`; el bloque y
-  fonts-loaded.json son fuente de verdad del editor (reconstruibles); el
-  `:root` del preset usa `font-family: var(--fonts-sans)` (el token manda).
-  NUNCA escribas `*/` dentro de un JSDoc en
-  estos archivos (p. ej. rutas con `fonts/` dentro de un comentario): cierra
-  el comentario y rompe el bundle de la SPA en silencio.
+  `GET /api/fonts/file/{id}/{file}` (package woff2 with a traversal guard,
+  local preview). Same error contract as `/api/theme` (`legacy` / no theme).
+  `POST /api/theme` with `fonts` triggers the block prune (syncBlock).
+- **Critical rules**: ids are validated with `/^[a-z0-9-]+$/`; the block and
+  fonts-loaded.json are the editor's source of truth (rebuildable); the
+  preset's `:root` uses `font-family: var(--fonts-sans)` (the token wins).
+  NEVER write `*/` inside a JSDoc in
+  these files (e.g. paths with `fonts/` inside a comment): it closes
+  the comment and silently breaks the SPA bundle.
 
-## Postcss section — plugins de PostCSS por paquetes npm
+## Postcss section — PostCSS plugins from npm packages
 (`config-ui/server.ts`
-+ `config-ui/postcss-api.ts` + `config-ui/postcss-schemas.ts` + página
-`config-ui/pages/postcss/`): gestiona el pipeline postcss del proyecto
-(modelo Panda-as-Plugin, ver la sección "Consumer preset/source model" en
++ `config-ui/postcss-api.ts` + `config-ui/postcss-schemas.ts` + page
+`config-ui/pages/postcss/`): manages the project's postcss pipeline
+(Panda-as-Plugin model, see the "Consumer preset/source model" section in
 [`../AGENTS.md`](../AGENTS.md)):
-- **Viñeta Install**: catálogo OFICIAL de `postcss.org/docs/postcss-plugins`
-  (scrapeado del HTML server-rendered, 13 categorías/~353 plugins, caché 30
-  min). "Install" ejecuta `bun add {paquete}` en el projectRoot (paquete npm
-  RESUELTO contra la registry con candidatos del href: npmjs.com/package,
-  último segmento github, nombre, `postcss-`+nombre; caché 1 h).
-  **`EXTRA_PLUGINS`** (`config-ui/postcss-api.ts`): lista curada para plugins
-  que postcss.org NO lista (viven solo en GitHub) pero queremos ofrecer igual;
-  hoy contiene `postcss-prune-var`
-  (https://github.com/tomasklaen/postcss-prune-var, que sí tiene esquema en
-  `postcss-schemas.ts`). Se fusionan con el scrapeo vía `withExtras()` bajo la
-  categoría `extras` ("Extras (not listed on postcss.org)") y se deduplican
-  por `name` — si algún día postcss.org lo lista, gana la entrada oficial. El
-  `npm` va fijado a mano (no hay href de npmjs del que deducir candidatos).
-  Añadir un plugin aquí es editar ese array; no hace falta tocar el scrapeo.
-- **Viñeta Available**: plugins del catálogo (oficial + extras) presentes en
-  node_modules (con flag `configurable` si hay esquema curado). Ojo: un plugin
-  puede estar instalado y **no** declarado en `package.json`/`bun.lock` (el
-  caso real de `example-pum1`: autoprefixer, cssnano y postcss-prune-var
-  entraron a node_modules el mismo día y ninguno figura como dependencia) —
-  `availablePlugins` mira node_modules, así que igual aparece; pero
-  "Remove package" (`bun remove`) sobre un paquete no declarado reescribe
-  `package.json`/`bun.lock` sin borrar la carpeta.
-- **Viñeta Configure** (fuente = `postcss.config.cjs` del projectRoot):
-  `readPipelineConfig`/`writePipelineConfig` reescriben SOLO el bloque entre
-  los markers `/* pum:postcss */` … `/* /pum:postcss */` (plugins manuales
-  fuera del bloque se conservan); `'@pandacss/dev/postcss'` (base, de
-  `postcss-schemas.ts` → `PANDA_PLUGIN_ID`) SIEMPRE primero y no removible;
-  `enabled: false` se omite al escribir. El editor de opciones se genera de
-  los esquemas curados (`postcss-schemas.ts`): tipos string/number/boolean/
-  enum (value+label)/array/regex/json; opciones FUNCIÓN → `editable:false` +
-  `notes`. Sin esquema → editor JSON libre. Build entry/output (defaults
-  `pum/index.css` → `styled-system/styles.css`) se guardan en
-  `{raiz}/postcss.build.json` (`readBuildConfig`/`writeBuildConfig`).
-- **Runner**: `config-ui/postcss-runner.cjs` ejecuta el pipeline declarado en
-  el `postcss.config.cjs` del proyecto (require de `postcss` y de cada plugin
-  desde el node_modules del PROYECTO vía createRequire; soporta objeto
-  name→opts, arrays [name, opts] y funciones). Para el plugin de Panda fija
-  SIEMPRE `configPath`/`cwd` explícitos: si no vienen en el bloque, usa
-  `{ configPath: <projectRoot>/panda.config.ts, cwd: <projectRoot> }` (igual
-  que build-css.ts); si vienen relativos, los resuelve contra projectRoot —
-  así se puede apuntar a un config file panda distinto (esquema del plugin
-  con `configPath`/`cwd`, persistidos por serializeManagedBlock).
-  `runRebuild` lo usa cuando `hasPostcssConfig(projectRoot)` (tras `panda
-  codegen`); si no, `cssgen`.
-- **Endpoints**: `GET/POST /api/postcss/config` (plugins del .cjs + build
+- **Install tab**: OFFICIAL catalog from `postcss.org/docs/postcss-plugins`
+  (scraped from the server-rendered HTML, 13 categories/~353 plugins, 30
+  min cache). "Install" runs `bun add {package}` in the projectRoot (npm
+  package RESOLVED against the registry with candidates from the href:
+  npmjs.com/package, last github segment, name, `postcss-`+name; 1 h cache).
+  **`EXTRA_PLUGINS`** (`config-ui/postcss-api.ts`): curated list for plugins
+  postcss.org does NOT list (they live only on GitHub) but we still want to
+  offer; today it contains `postcss-prune-var`
+  (https://github.com/tomasklaen/postcss-prune-var, which does have a schema in
+  `postcss-schemas.ts`). They are merged with the scrape via `withExtras()`
+  under the `extras` category ("Extras (not listed on postcss.org)") and
+  deduplicated by `name` — if postcss.org ever lists it, the official entry
+  wins. Its `npm` is hardcoded by hand (there is no npmjs href to deduce
+  candidates from). Adding a plugin here means editing that array; the scrape
+  does not need to be touched.
+- **Available tab**: catalog plugins (official + extras) present in
+  node_modules (with a `configurable` flag if a curated schema exists). Note: a
+  plugin can be installed and **not** declared in `package.json`/`bun.lock`
+  (the real case of `example-pum1`: autoprefixer, cssnano and
+  postcss-prune-var entered node_modules the same day and none of them appears
+  as a dependency) — `availablePlugins` looks at node_modules, so it shows up
+  anyway; but "Remove package" (`bun remove`) on an undeclared package rewrites
+  `package.json`/`bun.lock` without deleting the folder.
+- **Configure tab** (source = the projectRoot's `postcss.config.cjs`):
+  `readPipelineConfig`/`writePipelineConfig` rewrite ONLY the block between
+  the markers `/* pum:postcss */` … `/* /pum:postcss */` (manual plugins
+  outside the block are preserved); `'@pandacss/dev/postcss'` (base, from
+  `postcss-schemas.ts` → `PANDA_PLUGIN_ID`) ALWAYS first and not removable;
+  `enabled: false` is omitted when writing. The options editor is generated
+  from the curated schemas (`postcss-schemas.ts`): types string/number/boolean/
+  enum (value+label)/array/regex/json; FUNCTION options → `editable:false` +
+  `notes`. No schema → free JSON editor. Build entry/output (defaults
+  `pum/index.css` → `styled-system/styles.css`) are stored in
+  `{root}/postcss.build.json` (`readBuildConfig`/`writeBuildConfig`).
+- **Runner**: `config-ui/postcss-runner.cjs` runs the pipeline declared in
+  the project's `postcss.config.cjs` (require of `postcss` and of each plugin
+  from the PROJECT's node_modules via createRequire; supports name→opts
+  object, [name, opts] arrays and functions). For the Panda plugin it ALWAYS
+  sets explicit `configPath`/`cwd`: if they are not in the block, it uses
+  `{ configPath: <projectRoot>/panda.config.ts, cwd: <projectRoot> }` (same
+  as build-css.ts); if they are relative, it resolves them against projectRoot
+  — so it can point at a different panda config file (plugin schema
+  with `configPath`/`cwd`, persisted by serializeManagedBlock).
+  `runRebuild` uses it when `hasPostcssConfig(projectRoot)` (after `panda
+  codegen`); if not, `cssgen`.
+- **Endpoints**: `GET/POST /api/postcss/config` (plugins from the .cjs + build
   config), `GET /api/postcss/catalog?q=`, `GET /api/postcss/available`,
-  `POST /api/postcss/install|remove`. Mismo contrato de error que /api/theme.
-- **Tamaño del CSS de salida**: `GET /api/postcss/config` devuelve `outputStat`
-  y `POST /api/rebuild` devuelve `output` — `{ path, bytes, gzipBytes, mtime }`,
-  o `null` si el archivo todavía no existe. `outputCssStat()` (`server.ts`)
-  resuelve la ruta desde `postcss.build.json` cuando el proyecto tiene pipeline
-  postcss, o desde el `outdir` del `panda.config.ts` (default `styled-system`)
-  + `styles.css` en el flujo clásico `codegen + cssgen`; el gzip se calcula del
-  propio archivo porque es lo que realmente viaja por la red. La página lo
-  muestra bajo el campo "Output CSS" y en la alerta del rebuild
-  (`formatBytes`/`outputSizeLabel` en `config-ui/pages/postcss/index.jsx`). Los
-  rebuilds de otras páginas (theme/fonts) ignoran el campo — es aditivo.
-- **Reglas críticas**: NUNCA escribas `*/` dentro de un JSDoc (cierra el
-  comentario y rompe el bundle de la SPA en silencio). El bloque gestionado se
-  serializa con `JSON.stringify` por entrada (claves con comillas dobles,
-  válido como JS y parseable envolviéndolo en `({ ... })`); el interior del
-  par de markers se evalúa con `new Function('return ({ ' + src + ' })')`.
-  La CABECERA del archivo gestionado NO debe contener los literales de los
-  markers (`/* pum:postcss */` / `/* /pum:postcss */`) — ni siquiera en un
-  comentario — o `indexOf`/`findManagedBlock` apuntarían al comentario y el
-  editor insertaría plugins fuera de `module.exports`. `findManagedBlock`
-  localiza el par tras `module.exports`; `writePipelineConfig` regenera el
-  archivo desde el scaffold si no es CJS válido (`isValidCjs`); y en la rama
-  con markers el reemplazo usa el STRING serializado (`managed`), nunca el
-  objeto de índices de `findManagedBlock` (sombreado de `block` → bug
-  `[object Object]`, corregido).
-  `postcss-schemas.ts` NO importa node (se bundlea en la SPA); `postcss-api.ts`
-  y `server.ts` sí. El runner nunca se ejecuta contra el propio repo por
-  defecto: el repo no tiene `postcss.config.cjs` (usa `scripts/build-css.ts`).
+  `POST /api/postcss/install|remove`. Same error contract as /api/theme.
+- **Output CSS size**: `GET /api/postcss/config` returns `outputStat`
+  and `POST /api/rebuild` returns `output` — `{ path, bytes, gzipBytes, mtime }`,
+  or `null` if the file does not exist yet. `outputCssStat()` (`server.ts`)
+  resolves the path from `postcss.build.json` when the project has a postcss
+  pipeline, or from the `outdir` of `panda.config.ts` (default `styled-system`)
+  + `styles.css` in the classic `codegen + cssgen` flow; gzip is computed from
+  the file itself because that is what actually travels over the network. The
+  page shows it under the "Output CSS" field and in the rebuild alert
+  (`formatBytes`/`outputSizeLabel` in `config-ui/pages/postcss/index.jsx`).
+  Rebuilds from other pages (theme/fonts) ignore the field — it is additive.
+- **Critical rules**: NEVER write `*/` inside a JSDoc (it closes the
+  comment and silently breaks the SPA bundle). The managed block is
+  serialized with `JSON.stringify` per entry (double-quoted keys,
+  valid as JS and parseable by wrapping it in `({ ... })`); the interior of the
+  marker pair is evaluated with `new Function('return ({ ' + src + ' })')`.
+  The HEADER of the managed file must NOT contain the marker literals
+  (`/* pum:postcss */` / `/* /pum:postcss */`) — not even in a
+  comment — or `indexOf`/`findManagedBlock` would point at the comment and the
+  editor would insert plugins outside `module.exports`. `findManagedBlock`
+  locates the pair after `module.exports`; `writePipelineConfig` regenerates
+  the file from the scaffold if it is not valid CJS (`isValidCjs`); and in the
+  branch with markers the replacement uses the serialized STRING (`managed`),
+  never the index object from `findManagedBlock` (shadowing of `block` → bug
+  `[object Object]`, fixed).
+  `postcss-schemas.ts` does NOT import node (it is bundled into the SPA);
+  `postcss-api.ts` and `server.ts` do. The runner never runs against the repo
+  itself by default: the repo has no `postcss.config.cjs` (it uses
+  `scripts/build-css.ts`).
 
-## Lightningcss section — soporte NATIVO de Panda, NO un plugin PostCSS
-(`config-ui/lightningcss-api.ts` + página `config-ui/pages/lightningcss/`):
-gestiona 3 campos de nivel superior de `panda.config.ts` — `lightningcss:
-boolean`, `browserslist: string[]`, `minify: boolean` — verificados contra el
-código fuente instalado (`@pandacss/node`, `@pandacss/core`, versión 1.12.0):
-- **Por qué NO vive en el pipeline PostCSS**: `lightningcss` no es un plugin
-  PostCSS. Cuando `lightningcss: true`, Panda auto-registra internamente
+## Lightningcss section — NATIVE Panda support, NOT a PostCSS plugin
+(`config-ui/lightningcss-api.ts` + page `config-ui/pages/lightningcss/`):
+manages 3 top-level fields of `panda.config.ts` — `lightningcss:
+boolean`, `browserslist: string[]`, `minify: boolean` — verified against the
+installed source code (`@pandacss/node`, `@pandacss/core`, version 1.12.0):
+- **Why it does NOT live in the PostCSS pipeline**: `lightningcss` is not a
+  PostCSS plugin. When `lightningcss: true`, Panda auto-registers internally
   `@pandacss/plugin-lightningcss` (`@pandacss/node`'s `applyAutoPlugins`,
-  llamada desde `loadConfigAndCreateContext`) para su propio hook interno
-  `css:optimize` (`@pandacss/core`'s `optimizeCss`) — el paso final donde
-  Panda pule el CSS que emite (unwrap de nesting, dedup, minify/prettify).
-  Ese hook se invoca igual vía `panda cssgen` (CLI) que dentro de
-  `@pandacss/dev/postcss` (el `Builder.emit()` que usa la página Postcss),
-  así que activar lightningcss **no requiere tocar `runRebuild` ni
-  `postcss-runner.cjs`** — el rebuild existente ya lo respeta.
-- **Cero instalación**: `@pandacss/plugin-lightningcss`, `lightningcss`
-  (binario nativo) y `browserslist` son dependencias DIRECTAS de
-  `@pandacss/node` (ver su `package.json`) — vienen transitivamente con
-  cualquier `@pandacss/dev` ya instalado, nunca hace falta `bun add`.
-- **"Targets" = queries de browserslist**, no el objeto `Targets` crudo de
-  lightningcss: la implementación real de `@pandacss/plugin-lightningcss`
-  hace `browserslistToTargets(browserslist(config.browserslist))` — mismo
-  formato que `overrideBrowserslist` de `autoprefixer` en el esquema curado
-  de Postcss. El editor reusa el mismo widget de array que esa página.
-- **Preview de targets resueltos** (`GET /api/lightningcss/preview`): resuelve
-  el `browserslist`/`lightningcss` **del proyecto consumidor** (nunca los de
-  config-ui) vía `require.resolve('@pandacss/plugin-lightningcss/package.json',
-  { paths: [projectRoot] })` — no asume hoisting, funciona con node_modules
-  anidado. El objeto `Targets` real (verificado en runtime contra
-  lightningcss 1.31.1) trae 3 claves más de las 9 documentadas en su `.d.ts`
-  (`and_chr`, `and_ff`, `op_mob` — variantes móviles); versión decodificada
-  del entero de lightningcss (`major<<16 | minor<<8 | patch`).
-- **Bloque gestionado** (`/* pum:lightningcss */` … `/* /pum:lightningcss */`)
-  dentro de `defineConfig({...})` en `panda.config.ts` — mismo mecanismo de
-  markers que `/* pum:fontfaces */` (`fonts-api.ts`), coexisten sin conflicto
-  porque cada uno usa su propio marker único. `enabled: false` borra el
-  bloque entero (config.ts queda limpio), igual que `writeFontfaceConfig`
-  cuando no hay caras que emitir.
-- Si `autoprefixer`/`cssnano` siguen activos en el pipeline PostCSS, la
-  página avisa (solo texto, no toca su config) de que pueden ser redundantes
-  — lightningcss ya prefija (según targets) y minifica.
+  called from `loadConfigAndCreateContext`) for its own internal hook
+  `css:optimize` (`@pandacss/core`'s `optimizeCss`) — the final step where
+  Panda polishes the CSS it emits (nesting unwrap, dedup, minify/prettify).
+  That hook is invoked the same way via `panda cssgen` (CLI) as inside
+  `@pandacss/dev/postcss` (the `Builder.emit()` the Postcss page uses),
+  so enabling lightningcss **does not require touching `runRebuild` or
+  `postcss-runner.cjs`** — the existing rebuild already respects it.
+- **Zero install**: `@pandacss/plugin-lightningcss`, `lightningcss`
+  (native binary) and `browserslist` are DIRECT dependencies of
+  `@pandacss/node` (see its `package.json`) — they come transitively with
+  any already installed `@pandacss/dev`, `bun add` is never needed.
+- **"Targets" = browserslist queries**, not lightningcss's raw `Targets`
+  object: the real implementation of `@pandacss/plugin-lightningcss`
+  does `browserslistToTargets(browserslist(config.browserslist))` — same
+  format as `autoprefixer`'s `overrideBrowserslist` in the curated
+  Postcss schema. The editor reuses the same array widget as that page.
+- **Resolved targets preview** (`GET /api/lightningcss/preview`): resolves
+  the **consumer project's** `browserslist`/`lightningcss` (never config-ui's)
+  via `require.resolve('@pandacss/plugin-lightningcss/package.json',
+  { paths: [projectRoot] })` — it does not assume hoisting, it works with
+  nested node_modules. The real `Targets` object (verified at runtime against
+  lightningcss 1.31.1) carries 3 more keys than the 9 documented in its `.d.ts`
+  (`and_chr`, `and_ff`, `op_mob` — mobile variants); decoded
+  version of the lightningcss integer (`major<<16 | minor<<8 | patch`).
+- **Managed block** (`/* pum:lightningcss */` … `/* /pum:lightningcss */`)
+  inside `defineConfig({...})` in `panda.config.ts` — same marker
+  mechanism as `/* pum:fontfaces */` (`fonts-api.ts`), they coexist without
+  conflict because each uses its own unique marker. `enabled: false` deletes
+  the whole block (config.ts is left clean), just like `writeFontfaceConfig`
+  when there are no faces to emit.
+- If `autoprefixer`/`cssnano` are still active in the PostCSS pipeline, the
+  page warns (text only, it does not touch their config) that they may be
+  redundant — lightningcss already prefixes (per targets) and minifies.
 
 ## Static Css Recipes section
-(`config-ui/staticcss-scan-api.ts` + página
-`config-ui/pages/staticcss/`): reduce `staticCss.recipes` de `'*'` (default
-de Panda — genera TODOS los recipes de la librería, ~157 KB en un proyecto
-que solo usa `Button`) a solo los que el consumidor realmente usa.
-- **Grafo del paquete, calculado en vivo, nunca shippeado**: `buildComponentGraph(libRoot)`
-  parsea `src/index.js` (barrel: símbolo exportado → carpeta, soporta que una
-  carpeta exporte varios símbolos como `CardBody`/`CardTitle` → `Card`),
-  `package.json`'s `exports` (subpath kebab → carpeta), y cada
-  `src/components/*/index.js` (qué recipes importa + de qué OTRAS carpetas
-  depende). `libRoot` es `PKG_DIR` del propio `server.ts` — config-ui corre
-  DESDE el paquete que hay que escanear, no hace falta resolverlo aparte.
-- **Cierre transitivo de wrappers** (`closureRecipes`): 10 de los 72
-  componentes importan otros componentes de la librería, no solo su propio
-  recipe — verificado, no es hipotético: `ButtonClose→Button`,
+(`config-ui/staticcss-scan-api.ts` + page
+`config-ui/pages/staticcss/`): reduces `staticCss.recipes` from `'*'` (Panda's
+default — it generates ALL the library's recipes, ~157 KB in a project
+that only uses `Button`) to only those the consumer actually uses.
+- **Package graph, computed live, never shipped**: `buildComponentGraph(libRoot)`
+  parses `src/index.js` (barrel: exported symbol → folder, it supports a
+  folder exporting several symbols like `CardBody`/`CardTitle` → `Card`),
+  `package.json`'s `exports` (kebab subpath → folder), and each
+  `src/components/*/index.js` (which recipes it imports + which OTHER folders
+  it depends on). `libRoot` is `PKG_DIR` from `server.ts` itself — config-ui
+  runs FROM the package to be scanned, it does not need to be resolved
+  separately.
+- **Transitive closure of wrappers** (`closureRecipes`): 10 of the 72
+  components import other library components, not just their own
+  recipe — verified, not hypothetical: `ButtonClose→Button`,
   `ButtonCopy→Button,Tooltip`, `ColorPicker→Button,ButtonClose,Dropdown,Menu`,
   `Drawer→ButtonClose`, `Dropdown→Button`, `List→Skeleton`,
   `Modal→ButtonClose`, `Navbar→Button,Link`, `RatingGroup→Rating`,
-  `Table→Pagination,Select,Skeleton`. Ejemplo real: si el consumidor solo
-  importa `Table`, el cierre correcto es `table, tableOverflow, pagination,
-  select, skeleton, button` (el último porque `Pagination` a su vez usa
-  `button`) — un cierre no transitivo dejaría partes de la tabla sin estilo,
-  en silencio.
-- **Escaneo del consumidor** reusa el mismo glob `include` que ya tiene su
-  `panda.config.ts` (vía `fast-glob`, resuelto con `require.resolve` desde
-  `@pandacss/node` — mismo patrón robusto a node_modules anidado que
-  `lightningcss-api.ts`), buscando `import {...} from 'panda-ui-mithril'`
-  (resuelto símbolo a símbolo contra el barrel) y `from
-  'panda-ui-mithril/{subpath}'` (resuelto contra el exports map).
-- **Recipes manuales** (`{raiz}/staticcss.json`, mismo patrón que
-  `postcss.build.json`/`fonts-loaded.json`) — **el Scan nunca los toca ni
-  los borra**: son la respuesta a "¿cómo agrego mi propio recipe custom, o
-  algo que el análisis estático no puede ver (import dinámico, re-export
-  indirecto por un barrel propio del consumidor)?". El valor final escrito
-  en `staticCss.recipes` es siempre `scan ∪ manual`, nunca solo uno de los
-  dos.
-- **Escritura quirúrgica de `panda.config.ts`**: `writeStaticCssRecipes`
-  localiza `staticCss: {...}` por balanced-brace scan (mismo técnica que
-  `writeFontfaceConfig` en `fonts-api.ts`) y reemplaza SOLO el valor de
-  `recipes:` dentro de ese span — nunca toca `css`/`patterns`/`themes` si el
-  consumidor ya los tiene configurados. `enabled: false` restaura el string
-  `'*'` literal (revierte todo al default seguro de Panda, un click).
-- **Formas VÁLIDAS de `staticCss.recipes` (verificado contra Panda 1.12 con
-  `panda cssgen` en un consumidor limpio)**: `'*'` → todos los recipes; objeto
-  `{ tag: ['*'] }` → ese recipe completo (base + TODAS las variantes). Las dos
-  formas "naturales" que la gente escribe a mano están **rotas en silencio**:
-  `recipes: ['tag']` (array) → Panda hace `{...['tag']}` = `{0:'tag'}` y no
-  emite NADA; `recipes: {}` → tampoco emite nada. En ambos casos los
-  componentes quedan sin CSS y el síntoma más visible es **Tag sin padding**,
-  porque su padding no está en la base `.tag` sino en la variante de tamaño
-  (`.tag--size_md { padding-inline: … }`): sirve de canario. Diagnóstico en un
-  consumidor: `grep -o '\.tag--size_md{[^}]*}' styled-system/styles.css`.
-- **Guardas del editor** (añadidas tras reproducir lo anterior): la lista vacía
-  con `enabled: true` **se rechaza** (`{}` = ningún recipe; para desactivar está
-  `'*'`); `findRecipesValueSpan` entiende también la forma array, así que
-  `readStaticCssRecipes` la lee (antes la reportaba como `'*'`, mintiendo en la
-  UI) y al guardar se reescribe en la forma canónica; y si `recipes` existe con
-  una forma no reconocible (una variable, una llamada) se **lanza un error** en
-  vez de insertar una SEGUNDA clave `recipes:` — antes eso dejaba el valor viejo
-  ganando (en JS gana la última clave) y rompía el CSS justo después de guardar
-  desde el editor.
-- **Riesgo explícito, no oculto**: a diferencia de fonts/postcss/lightningcss
-  (aditivos, revertir es solo borrar un bloque), esto reemplaza el valor de
-  un campo que YA EXISTÍA con contenido funcional — un análisis estático
-  incompleto significa CSS roto en producción (componente sin estilo, en
-  silencio). Por eso el toggle es `enabled: false` por defecto, el Scan
-  siempre muestra preview (componentes detectados + recipes resultantes)
-  antes de guardar, y el campo manual existe como red de seguridad explícita.
+  `Table→Pagination,Select,Skeleton`. Real example: if the consumer only
+  imports `Table`, the correct closure is `table, tableOverflow, pagination,
+  select, skeleton, button` (the last one because `Pagination` in turn uses
+  `button`) — a non-transitive closure would leave parts of the table unstyled,
+  silently.
+- **Consumer scan** reuses the same `include` glob its
+  `panda.config.ts` already has (via `fast-glob`, resolved with `require.resolve`
+  from `@pandacss/node` — same pattern robust to nested node_modules as
+  `lightningcss-api.ts`), looking for `import {...} from 'panda-ui-mithril'`
+  (resolved symbol by symbol against the barrel) and `from
+  'panda-ui-mithril/{subpath}'` (resolved against the exports map).
+- **Manual recipes** (`{root}/staticcss.json`, same pattern as
+  `postcss.build.json`/`fonts-loaded.json`) — **the Scan never touches or
+  deletes them**: they are the answer to "how do I add my own custom recipe, or
+  something static analysis cannot see (dynamic import, indirect re-export
+  through the consumer's own barrel)?". The final value written
+  in `staticCss.recipes` is always `scan ∪ manual`, never just one of the
+  two.
+- **Surgical write of `panda.config.ts`**: `writeStaticCssRecipes`
+  locates `staticCss: {...}` by balanced-brace scan (same technique as
+  `writeFontfaceConfig` in `fonts-api.ts`) and replaces ONLY the value of
+  `recipes:` inside that span — it never touches `css`/`patterns`/`themes` if
+  the consumer already has them configured. `enabled: false` restores the
+  literal `'*'` string (reverts everything to Panda's safe default, one click).
+- **VALID forms of `staticCss.recipes` (verified against Panda 1.12 with
+  `panda cssgen` on a clean consumer)**: `'*'` → all the recipes; object
+  `{ tag: ['*'] }` → that recipe complete (base + ALL the variants). The two
+  "natural" forms people write by hand are **silently broken**:
+  `recipes: ['tag']` (array) → Panda does `{...['tag']}` = `{0:'tag'}` and emits
+  NOTHING; `recipes: {}` → it emits nothing either. In both cases the
+  components are left with no CSS and the most visible symptom is **Tag with
+  no padding**, because its padding is not in the `.tag` base but in the size
+  variant (`.tag--size_md { padding-inline: … }`): it serves as a canary.
+  Diagnosis on a consumer: `grep -o '\.tag--size_md{[^}]*}' styled-system/styles.css`.
+- **Editor guards** (added after reproducing the above): the empty list
+  with `enabled: true` **is rejected** (`{}` = no recipe; to disable there is
+  `'*'`); `findRecipesValueSpan` also understands the array form, so
+  `readStaticCssRecipes` reads it (before it reported it as `'*'`, lying in the
+  UI) and on save it is rewritten in the canonical form; and if `recipes` exists
+  with an unrecognizable form (a variable, a call) an **error is thrown** in
+  place of inserting a SECOND `recipes:` key — before that left the old value
+  winning (in JS the last key wins) and broke the CSS right after saving
+  from the editor.
+- **Explicit risk, not hidden**: unlike fonts/postcss/lightningcss
+  (additive, reverting is just deleting a block), this replaces the value of
+  a field that ALREADY EXISTED with working content — an incomplete static
+  analysis means broken CSS in production (component with no style, silently).
+  That is why the toggle is `enabled: false` by default, the Scan
+  always shows a preview (detected components + resulting recipes)
+  before saving, and the manual field exists as an explicit safety net.
 
 ## Advanced section
-(`config-ui/advanced-config-api.ts` + página
-`config-ui/pages/advanced/`): subconjunto CURADO de campos de nivel superior
-de `defineConfig` que no tenían página propia — `preflight`, `strictTokens`,
-`strictPropertyValues`, `hash`, `clean` (bloque aditivo `/* pum:advanced */`,
-mismo mecanismo que `/* pum:lightningcss */`) + `include`/`exclude`
-(reemplazo quirúrgico, mismo balanced-brace scan que `staticCss.recipes` —
-`include` YA existe sin marcar en el scaffold de `cli.ts`, así que no puede
-ser un bloque aditivo nuevo). `polyfill` (Panda) vive en la página
-Lightningcss en vez de aquí — es del mismo tema (targets de navegadores
-viejos) y, a diferencia de `lightningcss`/`browserslist`/`minify`, es
-**independiente** de si lightningcss está activo: `writeLightningcssConfig`
-solo agrega las líneas `lightningcss`/`browserslist`/`minify` cuando
-`enabled` es `true`, pero `polyfill` se escribe siempre que sea `true`, y el
-bloque entero solo se borra cuando AMBOS (`enabled` y `polyfill`) están en
-su default — verificado con un `polyfill: true` + `enabled: false` real
-contra `example-pum1`.
-- **Deliberadamente excluidos** de esta página (ver el header del archivo
-  para el razonamiento completo por campo): `jsxFramework`/`jsxFactory`
-  (fijos a Mithril por el scaffold — exponerlos rompe el paquete),
-  `outdir` (ya documentado como footgun si no es `styled-system`),
-  `layers`/`separator` (necesitan regenerar `pum/index.css` también, que
-  hoy hardcodea `@layer reset, base, tokens, recipes, utilities;`),
-  `hooks`/`plugins`/`presets`/`eject` (funciones JS o demasiado estructural,
-  no serializable a un formulario), `studio` (una herramienta visual
-  DISTINTA que ya trae Panda), `themes`/`utilities`/
-  `patterns` custom (PUM ya resuelve esos casos con su propio sistema).
-- **`prefix` — SUSPENDIDO a pedido del usuario** (`{ cssVar, className }`,
-  NO un string único aunque Panda también acepta esa forma corta): se
-  implementó, se probó y luego se retiró de la UI/API tras verificar
-  empíricamente que el riesgo es **mucho más grave que un selector
-  suelto** — `prefix.className` rompe el **paquete completo**, no solo los
-  17 recipes que referencian clases de OTROS componentes como selector CSS
-  literal (`'& > .button:not(:first-child)'` en `buttonGroup.ts`/
-  `join.ts`, `'& > .drawer-box'` en `drawer.ts`, etc.). Causa raíz: cada
-  componente de PUM importa su recipe (nombres de clase incluidos) desde
-  el `styled-system/recipes` PROPIO de panda-ui-mithril, precompilado y
-  congelado al publicar el paquete en npm — el `prefix` del
-  `panda.config.ts` del CONSUMIDOR solo puede reprefijar el CSS que genera
-  la corrida de Panda del consumidor, nunca ese JS ya compilado y
-  distribuido. Verificado end-to-end contra el paquete real instalado en
-  `example-pum1` (no contra el repo de panda-ui-mithril, cuyo propio build
-  sí quedaría consistente): con `prefix.className: 'pum'` guardado y
-  reconstruido vía la UI real (Save → Rebuild CSS → `bunx panda codegen` +
-  pipeline postcss), el CSS generado queda con clases como
-  `.pum-button--size_md{...}` y `.pum-button-group>.button:not(:first-
-  child){margin-inline-start:...}`, pero el `<button>` renderizado por el
-  `Button` importado de `node_modules/panda-ui-mithril` sigue con la clase
-  SIN prefijo (`class="button button--size_md ..."`) — desajuste total, cero
-  reglas matchean, el componente pierde TODO su estilo (no solo el
-  fusionado de bordes de `ButtonGroup`). `cssVar` NO tiene este problema —
-  todo consumo de tokens pasa por el macro `token()` que Panda resuelve en
-  compile-time independientemente del prefijo, así que namespacea
-  correctamente las custom properties (`--pum-colors-primary`) sin tocar
-  ningún nombre de clase — si se retoma este campo en el futuro, debe ser
-  **cssVar-only**, nunca className.
+(`config-ui/advanced-config-api.ts` + page
+`config-ui/pages/advanced/`): CURATED subset of top-level fields
+of `defineConfig` that had no page of their own — `preflight`, `strictTokens`,
+`strictPropertyValues`, `hash`, `clean` (additive block `/* pum:advanced */`,
+same mechanism as `/* pum:lightningcss */`) + `include`/`exclude`
+(surgical replacement, same balanced-brace scan as `staticCss.recipes` —
+`include` ALREADY exists unmarked in `cli.ts`'s scaffold, so it cannot
+be a new additive block). `polyfill` (Panda) lives on the
+Lightningcss page instead of here — it is part of the same topic (old
+browser targets) and, unlike `lightningcss`/`browserslist`/`minify`, it is
+**independent** of whether lightningcss is active: `writeLightningcssConfig`
+only adds the `lightningcss`/`browserslist`/`minify` lines when
+`enabled` is `true`, but `polyfill` is always written when it is `true`, and the
+whole block is only deleted when BOTH (`enabled` and `polyfill`) are at
+their default — verified with a real `polyfill: true` + `enabled: false`
+against `example-pum1`.
+- **Deliberately excluded** from this page (see the file header
+  for the full per-field reasoning): `jsxFramework`/`jsxFactory`
+  (fixed to Mithril by the scaffold — exposing them breaks the package),
+  `outdir` (already documented as a footgun if it is not `styled-system`),
+  `layers`/`separator` (they need to regenerate `pum/index.css` too, which
+  today hardcodes `@layer reset, base, tokens, recipes, utilities;`),
+  `hooks`/`plugins`/`presets`/`eject` (JS functions or too structural,
+  not serializable to a form), `studio` (a DIFFERENT visual tool
+  that Panda already ships), custom `themes`/`utilities`/
+  `patterns` (PUM already solves those cases with its own system).
+- **`prefix` — SUSPENDED at the user's request** (`{ cssVar, className }`,
+  NOT a single string even though Panda also accepts that short form): it was
+  implemented, tested and then withdrawn from the UI/API after empirically
+  verifying that the risk is **far more serious than a stray
+  selector** — `prefix.className` breaks the **entire package**, not just the
+  17 recipes that reference classes of OTHER components as a literal CSS
+  selector (`'& > .button:not(:first-child)'` in `buttonGroup.ts`/
+  `join.ts`, `'& > .drawer-box'` in `drawer.ts`, etc.). Root cause: each
+  PUM component imports its recipe (class names included) from
+  panda-ui-mithril's OWN `styled-system/recipes`, precompiled and
+  frozen when the package is published to npm — the CONSUMER's
+  `panda.config.ts` `prefix` can only re-prefix the CSS generated by the
+  consumer's Panda run, never that already-compiled and
+  distributed JS. Verified end-to-end against the real package installed in
+  `example-pum1` (not against the panda-ui-mithril repo, whose own build
+  would indeed stay consistent): with `prefix.className: 'pum'` saved and
+  rebuilt via the real UI (Save → Rebuild CSS → `bunx panda codegen` +
+  postcss pipeline), the generated CSS ends up with classes like
+  `.pum-button--size_md{...}` and `.pum-button-group>.button:not(:first-
+  child){margin-inline-start:...}`, but the `<button>` rendered by the
+  `Button` imported from `node_modules/panda-ui-mithril` still has the class
+  WITHOUT a prefix (`class="button button--size_md ..."`) — total mismatch, zero
+  rules match, the component loses ALL its styling (not just
+  `ButtonGroup`'s border merge). `cssVar` does NOT have this problem —
+  every token consumption goes through the `token()` macro that Panda resolves
+  at compile-time regardless of the prefix, so it correctly namespaces
+  the custom properties (`--pum-colors-primary`) without touching
+  any class name — if this field is picked up again in the future, it must be
+  **cssVar-only**, never className.

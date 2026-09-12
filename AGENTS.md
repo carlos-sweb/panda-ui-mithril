@@ -231,8 +231,8 @@ the value from the FIRST render forever. The fix used in this codebase
 ```js
 view(vnode) {
   const isOpen = vnode.attrs.open !== undefined ? !!vnode.attrs.open : vnode.state.open
-  // Espejo para listeners nativos (document): vnode.attrs se reemplaza en
-  // cada render, vnode.state persiste.
+  // Mirror for native listeners (document): vnode.attrs is replaced on every
+  // render, vnode.state persists.
   vnode.state._open = isOpen
   return m('div', { oncreate: (v) => attachListeners(v) }, ...)
 }
@@ -694,7 +694,7 @@ which is what `init` scaffolds since it matches the repo's own build
 - `pum/index.css` (default entry, configurable): first line
   `@layer reset, base, tokens, recipes, utilities;` — the directive Panda
   replaces with the generated CSS. Output default `styled-system/styles.css`
-  (configurable); `{raiz}/postcss.build.json` stores entry/output (editor
+  (configurable); `{root}/postcss.build.json` stores entry/output (editor
   metadata, like `fonts-loaded.json`).
 - Rebuild: `runRebuild` in the editor is postcss-aware — if the project has
   `postcss.config.cjs` it runs `panda codegen` + `config-ui/postcss-runner.cjs`
@@ -709,67 +709,67 @@ map are lowercase kebab: `panda-ui-mithril/button`, `panda-ui-mithril/alert`
 
 ## Config UI (theme editor) — `bunx panda-ui-mithril config`
 
-`config-ui/` es un **cliente del core como el playground** (NO vive en `src/`):
-reusa el shell (navbar + sidebar + rutas + i18n) y consume solo componentes de
-`panda-ui-mithril`. El editor es un servidor **Elysia en :1234**
-(`config-ui/server.ts`) que bundlea la SPA con `Bun.build` en runtime y sirve su
-propio CSS — `config-ui/config-ui.css` es un **artefacto TRACKEADO**: tras tocar
-una recipe o el preset hay que correr `bun run build:config-ui` (ver la nota en
-Commands; es el fallo silencioso que dejó a `list-drag-handle` sin su
-`cursor: grab`).
+`config-ui/` is a **client of the core, like the playground** (it does NOT live
+in `src/`): it reuses the shell (navbar + sidebar + routes + i18n) and consumes
+only `panda-ui-mithril` components. The editor is an **Elysia server on :1234**
+(`config-ui/server.ts`) that bundles the SPA with `Bun.build` at runtime and
+serves its own CSS — `config-ui/config-ui.css` is a **TRACKED artifact**: after
+touching a recipe or the preset you must run `bun run build:config-ui` (see the
+note in Commands; it is the silent failure that left `list-drag-handle` without
+its `cursor: grab`).
 
-**El detalle de cada sección del editor — fonts, postcss, lightningcss,
-staticCss, advanced — vive en [`docs/config-ui.md`](./docs/config-ui.md).** Aquí
-queda solo lo que hace falta para trabajar en el repo.
+**The detail of every editor section — fonts, postcss, lightningcss, staticCss,
+advanced — lives in [`docs/config-ui.md`](./docs/config-ui.md).** Only what is
+needed to work in this repo stays here.
 
-### Resolución del target del theme (`resolveTheme`)
+### Theme target resolution (`resolveTheme`)
 
-- `--dir <ruta>` / `--dir=<ruta>` / `-d <ruta>` / `-d=<ruta>`: base explícita
-  (una ruta relativa se resuelve contra el cwd). Acepta la raíz de un proyecto
-  (`pum/theme` → `src/theme` → `theme`) o un dir de theme directo (`colors.ts`).
-- `--port <n>` / `--port=<n>` / `-p <n>` (default 1234) y `--no-open` (o
-  `BROWSER=none`): no abre el navegador; la URL se imprime igual.
-- Sin flags: **búsqueda ascendente** desde `cwd` (máx. 10 niveles).
-- Devuelve `{ themeDir, projectRoot, legacy }`; `projectRoot` = dir con
-  `panda.config.ts`, y `POST /api/rebuild` compila AHÍ, nunca en `cwd`.
-  `GET /api/theme` añade `themeRel`.
-- **`themeOwnedByProject` (guard)**: el theme debe pertenecer al proyecto que se
-  recompila. Un `--dir` con `pum/theme` pero **sin** su propio `panda.config.ts`
-  (un SPA anidado sin `init`) resolvería `projectRoot` al ancestro: editarlo no
-  tendría efecto y el CSS se escribiría en el ancestro **en silencio**. Los 13
-  `POST /api/*` y `/api/rebuild` lo rechazan con `themeOwnershipError` + hint
-  `bunx panda-ui-mithril init --dir=<ruta-del-spa>`.
-- **`config --init`** (mismo `--dir`): si el dir todavía no es un proyecto llama
-  a `scaffoldProject()` (el MISMO cuerpo que `init`) y luego abre el editor; si
-  ya lo es **no toca nada**. Es aditivo por construcción (`force: false`); la vía
-  destructiva sigue siendo exclusiva de `init --force`, que sobrescribe
-  `pum/theme/*.ts` con los defaults del paquete.
-- **`init --dir <ruta>`** comparte el flag y **escribe** todo ahí (crea el
-  directorio). Caveat: el `include` del `panda.config.ts` generado es relativo a
-  dónde acabe ese archivo.
-- **Migración legacy**: las instalaciones viejas tienen `pum/theme.ts` en un solo
-  archivo y el editor NO puede editarlas (`{ ok: false, legacy: true, hint }`);
-  `init` las migra solo, preservando los valores (`theme-io.ts`).
+- `--dir <path>` / `--dir=<path>` / `-d <path>` / `-d=<path>`: explicit base
+  (a relative path resolves against the cwd). It accepts a project root
+  (`pum/theme` → `src/theme` → `theme`) or a theme dir directly (`colors.ts`).
+- `--port <n>` / `--port=<n>` / `-p <n>` (default 1234) and `--no-open` (or
+  `BROWSER=none`): does not open the browser; the URL is printed either way.
+- Without flags: **upward search** from `cwd` (max 10 levels).
+- Returns `{ themeDir, projectRoot, legacy }`; `projectRoot` = the dir holding
+  `panda.config.ts`, and `POST /api/rebuild` compiles THERE, never in `cwd`.
+  `GET /api/theme` also returns `themeRel`.
+- **`themeOwnedByProject` (guard)**: the theme must belong to the project being
+  recompiled. A `--dir` whose dir has `pum/theme` but **no** `panda.config.ts` of
+  its own (a nested SPA without `init`) would resolve `projectRoot` to the
+  ancestor: editing it would have no effect and the CSS would be written to the
+  ancestor **silently**. All 13 `POST /api/*` endpoints and `/api/rebuild` reject
+  it with `themeOwnershipError` plus the hint
+  `bunx panda-ui-mithril init --dir=<spa-path>`.
+- **`config --init`** (same `--dir`): if the dir is not a project yet it calls
+  `scaffoldProject()` (the SAME body `init` uses) and then opens the editor; if it
+  already is one it **touches nothing**. It is additive by construction
+  (`force: false`); the destructive path stays exclusive to `init --force`, which
+  overwrites `pum/theme/*.ts` with the package defaults.
+- **`init --dir <path>`** shares the flag and **writes** everything there
+  (creating the directory). Caveat: the generated `panda.config.ts`'s `include`
+  is relative to wherever that file ends up.
+- **Legacy migration**: old installs keep `pum/theme.ts` as a single file and the
+  editor CANNOT edit them (`{ ok: false, legacy: true, hint }`); `init` migrates
+  them on its own, preserving the values (`theme-io.ts`).
 
-### Invariantes por sección (mecánica completa en `docs/config-ui.md`)
+### Per-section invariants (full mechanics in `docs/config-ui.md`)
 
-- **Fonts**: la carga va por **`globalFontface`** (f minúscula, nivel superior de
-  `defineConfig`) — la `theme.globalFontFace` mayúscula NO emite nada en Panda
-  1.12. Bloque `/* pum:fontfaces */`.
-- **Postcss**: `'@pandacss/dev/postcss'` SIEMPRE primero y no removible; el bloque
-  gestionado va entre `/* pum:postcss */` … `/* /pum:postcss */` y la CABECERA de
-  ese archivo no debe contener esos literales.
-- **Lightningcss**: NO es un plugin PostCSS — son campos nativos de
-  `panda.config.ts` (`lightningcss`/`browserslist`/`minify`) y no requiere
-  instalar nada.
-- **StaticCss**: `staticCss.recipes` solo acepta `'*'` o `{ nombre: ['*'] }`; un
-  array o `{}` **no emiten nada** (canario del síntoma: **Tag sin padding**).
-- **Advanced**: subconjunto curado; `include`/`exclude` se reemplazan
-  quirúrgicamente (ya existen sin marcar en el scaffold, así que no pueden ser un
-  bloque aditivo).
+- **Fonts**: loading goes through **`globalFontface`** (lowercase f, top level of
+  `defineConfig`) — the uppercase `theme.globalFontFace` emits nothing in Panda
+  1.12. Block `/* pum:fontfaces */`.
+- **Postcss**: `'@pandacss/dev/postcss'` is ALWAYS first and cannot be removed;
+  the managed block lives between `/* pum:postcss */` … `/* /pum:postcss */` and
+  the HEADER of that file must not contain those literals.
+- **Lightningcss**: it is NOT a PostCSS plugin — these are native
+  `panda.config.ts` fields (`lightningcss`/`browserslist`/`minify`) and nothing
+  needs installing.
+- **StaticCss**: `staticCss.recipes` only accepts `'*'` or `{ name: ['*'] }`; an
+  array or `{}` **emit nothing** (the symptom's canary: **Tag with no padding**).
+- **Advanced**: a curated subset; `include`/`exclude` are replaced surgically
+  (they already exist unmarked in the scaffold, so they cannot be a new additive
+  block).
 
-**Reglas trampa transversales** (valen para todo `config-ui/*.ts`): **nunca
-escribas `*/` dentro de un JSDoc** (una ruta con `fonts/` lo cierra y rompe el
-bundle de la SPA sin error); y el bundle de la SPA se construye al arrancar, así
-que cambiar un `.js` de config-ui exige **reiniciar** el editor (y el navegador
-cachea el bundle).
+**Cross-cutting traps** (they apply to every `config-ui/*.ts`): **never write
+`*/` inside a JSDoc** (a path containing `fonts/` closes it and silently breaks
+the SPA bundle); and the SPA bundle is built at startup, so changing a config-ui
+`.js` requires **restarting** the editor (and the browser caches the bundle).
