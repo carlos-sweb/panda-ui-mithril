@@ -682,6 +682,9 @@ so it never clobbers the playground's `styled-system/`).
   tried inside it), or a theme dir directly (has `colors.ts`).
 - `--port <n>` / `--port=<n>` / `-p <n>` (read from `process.argv`): server
   port (default **1234**).
+- `--no-open` (o `BROWSER=none`): NO abre el navegador del sistema al arrancar
+  (la URL se imprime igual en stdout). Para revisiones repetidas / scripts /
+  CI: sin esto cada reinicio abre una pestaña nueva.
 - On start the server **opens the URL in the system browser** (best-effort:
   `xdg-open`/`open`/`start`, spawned detached + unref'd — a failure never
   kills the server; the URL is always printed to stdout).

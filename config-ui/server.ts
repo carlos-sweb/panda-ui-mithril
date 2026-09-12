@@ -11,7 +11,8 @@
  *
  * Flags (leídos de process.argv — el bin ya los recibió):
  *   --port <n> | --port=<n> | -p <n>   puerto del servidor (default 1234)
- *   --dir <ruta> | -d <ruta>           base explícita para el theme (ver abajo)
+ *   --dir <ruta> | --dir=<ruta> | -d   base explícita para el theme (ver abajo)
+ *   --no-open                          no abrir el navegador al arrancar
  *
  * El target son los archivos del theme del consumidor. Resolución de ruta:
  *   - `--dir <ruta>` (o `-d`): usa `<ruta>` como base explícita (acepta un
@@ -59,6 +60,7 @@ import { readStaticCssState, scanProject, writeStaticCssState } from './staticcs
 import { readAdvancedState, writeAdvancedState } from './advanced-config-api'
 
 const PORT = portFromArgv() ?? 1234
+const NO_OPEN = noOpenFromArgv()
 const CLI_DIR = dirname(fileURLToPath(import.meta.url))
 // config-ui/server.ts → la raíz del paquete es ../ (node_modules/panda-ui-mithril/)
 const PKG_DIR = join(CLI_DIR, '..')
@@ -873,7 +875,12 @@ console.log(`PUM Config — theme editor: ${url}`)
 
 // Abre la URL en el navegador del sistema (best-effort: si falla o no hay
 // navegador, el servidor sigue funcionando y la URL se imprimió arriba).
-setTimeout(() => openBrowser(url), 150)
+// Con `--no-open` (o BROWSER=none) no se lanza nada: solo se avisa por stdout.
+if (NO_OPEN) {
+  console.log('(navegador no abierto: --no-open — abre la URL de arriba a mano)')
+} else {
+  setTimeout(() => openBrowser(url), 150)
+}
 
 // ── Helpers: resolución de ruta del theme ─────────────────────────────────
 /**
@@ -1002,6 +1009,16 @@ function openBrowser(url: string) {
   } catch (e) {
     console.error('config-ui: no se pudo abrir el navegador:', String(e))
   }
+}
+
+/**
+ * `--no-open` (o `BROWSER=none`) evita que el servidor abra el navegador del
+ * sistema al arrancar. Pensado para revisiones repetidas, scripts y CI: sin
+ * esto cada reinicio abre una pestaña nueva. La URL SIEMPRE se imprime en
+ * stdout, así que el editor sigue siendo usable a mano.
+ */
+function noOpenFromArgv(): boolean {
+  return process.argv.includes('--no-open') || process.env.BROWSER === 'none'
 }
 
 /** Niveles desde cwd hasta la raíz (máx. 10), para búsqueda ascendente. */

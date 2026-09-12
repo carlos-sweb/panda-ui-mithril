@@ -183,6 +183,10 @@ Usage:
                                          and opens it in the browser.
   bunx panda-ui-mithril config --port 5000    Serves the editor on :5000
                                          (also --port=5000 or -p 5000).
+  bunx panda-ui-mithril config --no-open      Does NOT open the system browser
+                                         on start (the URL is still printed).
+                                         Useful for repeated runs, scripts and
+                                         CI; also honored via BROWSER=none.
   bunx panda-ui-mithril config --dir <path>   Points the editor at another
                                          project root (or a theme dir directly);
                                          "--dir=<path>" also works, and a
@@ -199,11 +203,12 @@ Usage:
                                          panda.config.ts, tsconfig.json and the
                                          postcss pipeline) and then opens the
                                          editor — one step for a fresh SPA
-                                         (combine with --dir, also "--init" is
-                                         non-destructive: if the project already
-                                         exists it opens the editor and touches
-                                         nothing). To regenerate an existing
-                                         project use "init --force" instead.
+                                         (combine with --dir to target it).
+                                         It is non-destructive: if the project
+                                         already exists it opens the editor and
+                                         touches nothing. To regenerate an
+                                         existing project use "init --force"
+                                         instead.
   bunx panda-ui-mithril --help          Shows this help.
 
 The editable theme lives in pum/theme/*.ts — change colors/scales there and
