@@ -49,7 +49,7 @@ export default {
           {t('paragraph')}
         </Text>
 
-        <Stack direction="row" gap="md" wrap="wrap">
+        <Stack direction="row" gap="md">
           <Indicator position="end top">
             <Badge color="secondary" className="indicator-item">New</Badge>
             <Button>Main content</Button>

@@ -232,7 +232,7 @@ const page = {
             <CardBody>
               <Stack gap="md">
                 <div className={optionRow}>
-                  <Stack gap="0">
+                  <Stack gap="xs">
                     <Text weight="bold" size="sm">{t('enable')}</Text>
                     <Text color="neutral" size="sm" className={optionHelp}>{t('enableHint')}</Text>
                   </Stack>
@@ -273,7 +273,7 @@ const page = {
                     </Stack>
 
                     <div className={optionRow}>
-                      <Stack gap="0">
+                      <Stack gap="xs">
                         <Text weight="bold" size="sm">{t('manual')}</Text>
                         <Text color="neutral" size="sm" className={optionHelp}>{t('manualHint')}</Text>
                       </Stack>

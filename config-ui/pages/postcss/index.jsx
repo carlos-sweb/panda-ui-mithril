@@ -542,7 +542,7 @@ function pluginEditor(s, pl) {
       <Stack gap="sm">
         {editables.map((opt) => (
           <div key={opt.key} className={optionRow}>
-            <Stack gap="0">
+            <Stack gap="xs">
               <Text weight="bold" size="sm" className={css({ fontFamily: 'monospace', fontSize: '0.8125rem' })}>
                 {opt.key}
               </Text>
@@ -554,7 +554,7 @@ function pluginEditor(s, pl) {
           </div>
         ))}
         {notesFor(pl.id).length > 0 && (
-          <Stack gap="0">
+          <Stack gap="xs">
             {notesFor(pl.id).map((n, i) => (
               <Text key={i} color="neutral" size="sm" className={noteText}>{n}</Text>
             ))}

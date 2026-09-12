@@ -205,7 +205,7 @@ const page = {
                 <Stack gap="md">
                   {FLAGS.map((f) => (
                     <div key={f.key} className={optionRow}>
-                      <Stack gap="0">
+                      <Stack gap="xs">
                         <Text weight="bold" size="sm">{t(f.labelKey)}</Text>
                         <Text color="neutral" size="sm" className={optionHelp}>{t(f.hintKey)}</Text>
                       </Stack>

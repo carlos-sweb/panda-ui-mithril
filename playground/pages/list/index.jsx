@@ -447,7 +447,7 @@ export default {
           <Text color="neutral" className={css({ marginBottom: '1rem', maxWidth: '600px' })}>
             {m.trust(t('dataRenderDesc'))}
           </Text>
-          <Stack direction="row" gap="sm" wrap="wrap" className={css({ marginBottom: '0.75rem' })}>
+          <Stack direction="row" gap="sm" className={css({ marginBottom: '0.75rem' })}>
             <Button size="sm" color="primary" onclick={() => {
               vnode.state.rpSeq += 1
               vnode.state.rpItems.push({ id: vnode.state.rpSeq, name: `Item ${vnode.state.rpSeq}`, desc: `row #${vnode.state.rpSeq}` })

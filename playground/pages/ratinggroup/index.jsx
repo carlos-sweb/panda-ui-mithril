@@ -61,7 +61,7 @@ export default {
         <Block spacing="lg">
           <Title as="h2" size="3">{t('basic')}</Title>
           <Text size="sm" color="neutral">{t('wrapWithLabel')}</Text>
-          <Stack direction="row" gap="md" wrap="wrap">
+          <Stack direction="row" gap="md">
             <RatingGroup label="Score" defaultValue={3} />
             <RatingGroup label="Quality" defaultValue={4} color="secondary" size="lg" />
           </Stack>
@@ -70,7 +70,7 @@ export default {
         <Block spacing="lg">
           <Title as="h2" size="3">{t('readonly')}</Title>
           <Text size="sm" color="neutral">{t('displayOnly')}</Text>
-          <Stack direction="row" gap="md" wrap="wrap">
+          <Stack direction="row" gap="md">
             <RatingGroup label="Rating" value={4} readonly />
             <RatingGroup label="Performance" value={2} readonly color="info" />
           </Stack>
@@ -78,7 +78,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.subtitles.colors')}</Title>
-          <Stack direction="row" gap="md" wrap="wrap">
+          <Stack direction="row" gap="md">
             <RatingGroup label="Default" defaultValue={3} />
             <RatingGroup label="Primary" defaultValue={3} color="primary" />
             <RatingGroup label="Secondary" defaultValue={3} color="secondary" />
@@ -88,7 +88,7 @@ export default {
 
         <Block spacing="lg">
           <Title as="h2" size="3">{t('common.subtitles.sizes')}</Title>
-          <Stack direction="row" gap="md" wrap="wrap">
+          <Stack direction="row" gap="md">
             <RatingGroup label="xs" defaultValue={3} size="xs" />
             <RatingGroup label="sm" defaultValue={3} size="sm" />
             <RatingGroup label="md" defaultValue={3} />
@@ -100,7 +100,7 @@ export default {
         <Block spacing="lg">
           <Title as="h2" size="3">{t('hideValue')}</Title>
           <Text size="sm" color="neutral">{t('showValueFalse')}</Text>
-          <Stack direction="row" gap="md" wrap="wrap">
+          <Stack direction="row" gap="md">
             <RatingGroup label="Overall" defaultValue={4} showValue={false} />
           </Stack>
         </Block>
@@ -108,7 +108,7 @@ export default {
         <Block spacing="lg">
           <Title as="h2" size="3">{t('withStandaloneRating')}</Title>
           <Text size="sm" color="neutral">{t('compareRating')}</Text>
-          <Stack direction="row" gap="md" wrap="wrap">
+          <Stack direction="row" gap="md">
             <Stack gap="xs">
               <Text size="sm" color="neutral">Rating</Text>
               <Rating defaultValue={3} />

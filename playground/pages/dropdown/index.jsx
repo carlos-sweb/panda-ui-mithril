@@ -159,7 +159,7 @@ export default {
 
         {/* ── Básico: click + menú ── */}
         <Box>
-          <Stack direction="row" gap="md" wrap="wrap" align="center">
+          <Stack direction="row" gap="md" align="center">
             <Dropdown>
               <DropdownTrigger>
                 <Button>Options</Button>
@@ -230,7 +230,7 @@ export default {
         {/* ── Placements ── */}
         <Block spacing="lg">
           <Title as="h2" size="3">{t('placementsTitle')}</Title>
-          <Stack direction="row" gap="md" wrap="wrap" align="center" className={css({ padding: '2rem 0' })}>
+          <Stack direction="row" gap="md" align="center" className={css({ padding: '2rem 0' })}>
             {placements.map((placement) => (
               <Dropdown key={placement} placement={placement}>
                 <DropdownTrigger>
@@ -258,7 +258,7 @@ export default {
           <Stack gap="md">
             {/* Selector de idioma */}
             <Box>
-              <Stack direction="row" gap="md" wrap="wrap" align="center">
+              <Stack direction="row" gap="md" align="center">
                 <Text size="sm" color="neutral">{t('langLabel')}:</Text>
                 <Dropdown>
                   <DropdownTrigger>
@@ -283,7 +283,7 @@ export default {
 
             {/* Menú de usuario */}
             <Box>
-              <Stack direction="row" gap="md" wrap="wrap" align="center">
+              <Stack direction="row" gap="md" align="center">
                 <Dropdown>
                   <DropdownTrigger>
                     <Button variant="ghost" className={css({ paddingInline: '0.5rem' })}>

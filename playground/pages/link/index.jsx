@@ -51,7 +51,7 @@ export default {
           {t('paragraph')}
         </Text>
 
-        <Stack direction="row" gap="md" wrap="wrap">
+        <Stack direction="row" gap="md">
           <Link href="#!/link">Default</Link>
           <Link href="#!/link" color="primary">Primary</Link>
           <Link href="#!/link" color="secondary">Secondary</Link>
@@ -63,7 +63,7 @@ export default {
           <Text color="neutral">
             {t('underlineHoverOnly')} <code>hover={false}</code> {t('underlineAlways')} <code>noUnderline</code> {t('underlineNever')}
           </Text>
-          <Stack direction="row" gap="md" wrap="wrap">
+          <Stack direction="row" gap="md">
             <Link href="#!/link">Default (hover)</Link>
             <Link href="#!/link" hover={false}>Always underline</Link>
             <Link href="#!/link" noUnderline>No underline</Link>

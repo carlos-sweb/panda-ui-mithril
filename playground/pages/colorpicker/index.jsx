@@ -72,7 +72,7 @@ export default {
         <Block spacing="lg">
           <Title as="h3" size="5">{t('basicTitle')}</Title>
           <Text size="sm" color="neutral">{t('basicDesc')}</Text>
-          <Stack direction="row" gap="md" wrap="wrap" alignItems="flex-start">
+          <Stack direction="row" gap="md" align="start">
             <ColorPicker defaultValue="#623CEA" />
           </Stack>
         </Block>
@@ -86,7 +86,7 @@ export default {
         <Block spacing="lg">
           <Title as="h3" size="5">{t('noCopyTitle')}</Title>
           <Text size="sm" color="neutral">{t('noCopyDesc')}</Text>
-          <Stack direction="row" gap="md" wrap="wrap" alignItems="flex-start">
+          <Stack direction="row" gap="md" align="start">
             <ColorPicker defaultValue="#0ea5e9" copy={false} />
           </Stack>
         </Block>
@@ -94,7 +94,7 @@ export default {
         <Block spacing="lg">
           <Title as="h3" size="5">{t('modesTitle')}</Title>
           <Text size="sm" color="neutral">{t('modesDesc')}</Text>
-          <Stack direction="row" gap="md" wrap="wrap" alignItems="flex-start">
+          <Stack direction="row" gap="md" align="start">
             <ColorPicker defaultValue="#f97316" size="sm" />
             <ColorPicker defaultValue="#10b981" size="lg" />
           </Stack>
@@ -103,7 +103,7 @@ export default {
         <Block spacing="lg">
           <Title as="h3" size="5">{t('restrictedModesTitle')}</Title>
           <Text size="sm" color="neutral">{t('restrictedModesDesc')}</Text>
-          <Stack direction="row" gap="md" wrap="wrap" alignItems="flex-start">
+          <Stack direction="row" gap="md" align="start">
             <ColorPicker defaultValue="#8b5cf6" modes={['picker', 'rgb']} />
             <ColorPicker defaultValue="#0ea5e9" excludeModes={['lab']} />
             <ColorPicker defaultValue="#84cc16" modes={['rgb']} />
@@ -113,7 +113,7 @@ export default {
         <Block spacing="lg">
           <Title as="h3" size="5">{t('dropdownTitle')}</Title>
           <Text size="sm" color="neutral">{t('dropdownDesc')}</Text>
-          <Stack direction="row" gap="md" wrap="wrap" alignItems="flex-start">
+          <Stack direction="row" gap="md" align="start">
             <ColorPicker defaultValue="#7c3aed" trigger="Pick a color" />
             <ColorPicker
               defaultValue="#2563eb"

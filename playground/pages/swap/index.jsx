@@ -108,7 +108,7 @@ export default {
           <Text size="sm" color="neutral" className={css({ marginBottom: '0.75rem' })}>
             {t('controlledDescription')}
           </Text>
-          <Stack direction="row" gap="sm" alignItems="center">
+          <Stack direction="row" gap="sm" align="center">
             <Swap
               on={<Sun size={20} />}
               off={<Moon size={20} />}

@@ -76,7 +76,7 @@ export default {
           {t('paragraph')}
         </Text>
 
-        <Stack direction="row" gap="md" wrap="wrap" className={css({ alignItems: 'center' })}>
+        <Stack direction="row" gap="md" className={css({ alignItems: 'center' })}>
           {shapes.map((shape, i) => (
             <Mask key={shape} src={masks[vnode.state.picks[i]]} shape={shape} size="lg" />
           ))}

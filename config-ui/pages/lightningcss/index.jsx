@@ -353,7 +353,7 @@ const page = {
             <CardBody>
               <Stack gap="md">
                 <div className={optionRow}>
-                  <Stack gap="0">
+                  <Stack gap="xs">
                     <Text weight="bold" size="sm">{t('enable')}</Text>
                     <Text color="neutral" size="sm" className={optionHelp}>{t('enableHint')}</Text>
                   </Stack>
@@ -366,7 +366,7 @@ const page = {
                 </div>
 
                 <div className={optionRow}>
-                  <Stack gap="0">
+                  <Stack gap="xs">
                     <Text weight="bold" size="sm">{t('polyfill')}</Text>
                     <Text color="neutral" size="sm" className={optionHelp}>{t('polyfillHint')}</Text>
                   </Stack>
@@ -381,7 +381,7 @@ const page = {
                 {s.enabled && (
                   <>
                     <div className={optionRow}>
-                      <Stack gap="0">
+                      <Stack gap="xs">
                         <Text weight="bold" size="sm">{t('minify')}</Text>
                         <Text color="neutral" size="sm" className={optionHelp}>{t('minifyHint')}</Text>
                       </Stack>

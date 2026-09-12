@@ -53,7 +53,7 @@ export default {
           {t('paragraph')}
         </Text>
 
-        <Stack direction="row" gap="sm" wrap="wrap">
+        <Stack direction="row" gap="sm">
           <Kbd size="xs">K</Kbd>
           <Kbd size="sm">Shift</Kbd>
           <Kbd size="md">Enter</Kbd>

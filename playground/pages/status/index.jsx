@@ -47,7 +47,7 @@ export default {
           {t('paragraph')}
         </Text>
 
-        <Stack direction="row" gap="sm" wrap="wrap">
+        <Stack direction="row" gap="sm">
           <Status color="primary" />
           <Status color="secondary" />
           <Status color="accent" />
