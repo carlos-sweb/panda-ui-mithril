@@ -674,7 +674,10 @@ Panda config** — `panda-config-ui.config.ts`, outdir `styled-system-config-ui`
 so it never clobbers the playground's `styled-system/`).
 
 **Theme target resolution** (`config-ui/server.ts` → `resolveTheme`):
-- `--dir <ruta>` / `-d <ruta>` (read from `process.argv`): explicit base.
+- `--dir <ruta>` / `--dir=<ruta>` / `-d <ruta>` / `-d=<ruta>` (read from
+  `process.argv`): explicit base. Ambas formas; una ruta relativa se
+  resuelve contra el cwd, así que `config --dir=src/pages/login` apunta al
+  sub-proyecto (con su propio `pum/` + `panda.config.ts`) y no a la raíz.
   Accepts a project root (`pum/theme` → `src/theme` → `theme` subdirs are
   tried inside it), or a theme dir directly (has `colors.ts`).
 - `--port <n>` / `--port=<n>` / `-p <n>` (read from `process.argv`): server
@@ -690,11 +693,33 @@ so it never clobbers the playground's `styled-system/`).
   pipeline block below).
 - `GET /api/theme` also returns `themeRel` (e.g. `pum/theme` or `src/theme`)
   so the pages show the real edited path instead of a hardcoded one.
+- **El theme debe pertenecer al proyecto que se recompila**
+  (`themeOwnedByProject` en `resolveTheme`, expuesto por `GET /api/theme`): el
+  proyecto es el directorio con `panda.config.ts`, y su config importa SU
+  `pum/preset`. Un `--dir` cuyo dir tiene `pum/theme` pero **no** su propio
+  `panda.config.ts` (p. ej. un SPA anidado sin `init`) resuelve como
+  projectRoot el ancestro: editarlo no tendría efecto y el CSS se escribiría
+  en el ancestro, en silencio. Todos los `POST /api/*` (y `/api/rebuild`)
+  ahora lo **rechazan** con `themeOwnershipError` + hint
+  `bunx panda-ui-mithril init --dir=<ruta-del-spa>`. Un SPA independiente
+  necesita su propio `pum/` + `panda.config.ts` (`init --dir=<spa>`); así
+  `config --dir=<spa>` edita y compila SOLO ese sub-proyecto (verificado: dos
+  SPAs anidados con temas y CSS distintos, y la raíz intacta).
+
+**`config --init`** (`scripts/cli.ts`, mismo `--dir`) inicializa y abre en un
+paso: si el dir apuntado **no** es todavía un proyecto (sin theme en
+`pum/theme`, `src/theme`, `theme` ni el legacy `pum/theme.ts`) llama a
+`scaffoldProject()` — el MISMO cuerpo que usa `init` — y luego abre el editor;
+si ya lo es, **no toca nada** y solo abre. Es la única forma combinada y es
+aditiva por construcción (`force: false` siempre), porque la vía destructiva
+sigue siendo exclusiva de `init --force` (que sobrescribe `pum/theme/*.ts` con
+los defaults del paquete). `scaffoldProject(cwd, { force, printNextSteps })` es
+el cuerpo compartido: `init` imprime los "Next steps" y `config --init` no
+(acaba de abrir el editor).
 
 **`init` now shares the same `--dir`/`-d` flag** (`scripts/cli.ts`,
 `dirFromArgv` — literal copy of `config`'s `themeDirFromArgv` parsing:
-`--dir <ruta>`/`-d <ruta>`, space-separated, resolved to absolute against
-cwd). Unlike `config --dir` (which only READS an existing project),
+`--dir <ruta>`/`--dir=<ruta>`/`-d <ruta>`, resuelto a absoluto contra cwd). Unlike `config --dir` (which only READS an existing project),
 `init --dir <ruta>` WRITES everything there — `pum/`, `panda.config.ts`,
 `tsconfig.json`, `postcss.config.cjs`, `pum/index.css` — creating `<ruta>`
 first via `mkdirSync(..., { recursive: true })` if it doesn't exist yet.

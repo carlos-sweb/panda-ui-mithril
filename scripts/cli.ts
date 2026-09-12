@@ -165,7 +165,8 @@ Usage:
                                          layout automatically (values preserved).
   bunx panda-ui-mithril init --force    Overwrites if pum/ or panda.config.ts
                                          already exist.
-  bunx panda-ui-mithril init --dir <path>     Writes everything (pum/,
+  bunx panda-ui-mithril init --dir <path>     ("--dir=<path>" also works.)
+                                         Writes everything (pum/,
                                          panda.config.ts, tsconfig.json,
                                          postcss.config.cjs) under <path>
                                          instead of the current directory —
@@ -184,9 +185,25 @@ Usage:
                                          (also --port=5000 or -p 5000).
   bunx panda-ui-mithril config --dir <path>   Points the editor at another
                                          project root (or a theme dir directly);
+                                         "--dir=<path>" also works, and a
+                                         relative path resolves against cwd, so
+                                         "config --dir=src/pages/login" edits
+                                         that sub-project (with its own
+                                         pum/ + panda.config.ts) instead of the
+                                         repo root;
                                          without it, it searches upward from
                                          the current directory (pum/theme, then
                                          src/theme).
+  bunx panda-ui-mithril config --init   Initializes the project first IF it is
+                                         not one yet (creates pum/,
+                                         panda.config.ts, tsconfig.json and the
+                                         postcss pipeline) and then opens the
+                                         editor — one step for a fresh SPA
+                                         (combine with --dir, also "--init" is
+                                         non-destructive: if the project already
+                                         exists it opens the editor and touches
+                                         nothing). To regenerate an existing
+                                         project use "init --force" instead.
   bunx panda-ui-mithril --help          Shows this help.
 
 The editable theme lives in pum/theme/*.ts — change colors/scales there and
@@ -351,19 +368,76 @@ function writeFlatSrcTo(themeDir: string, file: string, values: Record<string, s
 }
 
 /**
- * Lee `--dir <ruta>` / `-d <ruta>` de process.argv — mismo formato que
- * `themeDirFromArgv` en config-ui/server.ts (espacio, no `--dir=ruta`;
- * resuelto a absoluta contra cwd). Usado tanto por `init` como por `config`.
+ * Lee `--dir <ruta>` / `--dir=<ruta>` / `-d <ruta>` / `-d=<ruta>` de
+ * process.argv — mismo formato que `themeDirFromArgv` en config-ui/server.ts
+ * (espacio o `=`; resuelto a absoluta contra cwd). Usado tanto por `init` como
+ * por `config`.
  */
 function dirFromArgv(): string | null {
   const argv = process.argv
-  for (let i = 2; i < argv.length - 1; i++) {
-    if (argv[i] === '--dir' || argv[i] === '-d') {
-      const v = argv[i + 1]
-      if (v && !v.startsWith('-')) return resolve(v)
-    }
+  for (let i = 2; i < argv.length; i++) {
+    const a = argv[i]
+    let raw: string | undefined
+    if (a.startsWith('--dir=')) raw = a.slice('--dir='.length)
+    else if (a.startsWith('-d=')) raw = a.slice('-d='.length)
+    else if (a === '--dir' || a === '-d') raw = argv[i + 1]
+    if (raw && !raw.startsWith('-')) return resolve(raw)
   }
   return null
+}
+
+/**
+ * ¿Este dir ya es un proyecto panda-ui-mithril? (theme en cualquiera de los
+ * layouts válidos: pum/theme, src/theme, theme/ — o el legacy pum/theme.ts).
+ * Lo usa `config --init` para decidir si hay que crear algo.
+ */
+function hasTheme(dir: string): boolean {
+  for (const sub of ['pum/theme', 'src/theme', 'theme']) {
+    if (existsSync(join(dir, sub, 'colors.ts'))) return true
+  }
+  return existsSync(join(dir, PUM_DIR, 'theme.ts'))
+}
+
+/**
+ * Crea el proyecto (pum/ + panda.config.ts + tsconfig JSX + pipeline postcss).
+ * Es el cuerpo compartido por `init` y por `config --init`:
+ *  - `init` llama con `force: args.includes('--force')` y sale por
+ *    `process.exit(1)` si ya existe (salvo legacy, que se migra).
+ *  - `config --init` llama SOLO si `hasTheme()` es false, siempre con
+ *    `force: false`: la variante combinada es aditiva por construcción y no
+ *    puede sobrescribir nada (para regenerar está `init --force`).
+ */
+function scaffoldProject(cwd: string, opts: { force: boolean; printNextSteps: boolean }): void {
+  const target = join(cwd, CONFIG_NAME)
+  const legacy = isLegacyTheme(cwd)
+
+  // El check de "ya existe" se salta si es layout legacy: la migración es
+  // exactamente la operación que el usuario necesita (y panda.config.ts se
+  // regenera con el template canónico, idéntico al que ya tiene).
+  if (existsSync(target) && !opts.force && !legacy) {
+    console.error(
+      `${CONFIG_NAME} already exists in ${cwd}. Use --force to overwrite it.`,
+    )
+    process.exit(1)
+  }
+
+  if (legacy) {
+    migrateLegacyTheme(cwd)
+  } else {
+    copyPum(cwd, opts.force)
+  }
+  writeFileSync(target, CONFIG_TEMPLATE)
+  console.log(`✔ Created ${CONFIG_NAME} in ${cwd}`)
+  ensureJsxConfig(cwd)
+  writePostcssScaffold(cwd, opts.force)
+  if (!opts.printNextSteps) return
+  console.log('')
+  console.log('The editable theme is in pum/theme/*.ts (colors/fonts/spacing/radii/keyframes).')
+  console.log('The CSS pipeline is postcss.config.cjs (Panda via PostCSS) + pum/index.css (entry with @layer).')
+  console.log('Next steps:')
+  console.log('  bunx panda-ui-mithril config   # theme + Postcss → Configure (builds the CSS)')
+  console.log('  bunx panda codegen             # generates Panda assets (helpers)')
+  console.log('  bun index.html                 # opens http://localhost:3000')
 }
 
 async function main() {
@@ -376,6 +450,21 @@ async function main() {
       console.error('Could not find config-ui/server.ts in the installed package.')
       process.exit(1)
     }
+
+    // `config --init` — asegura el proyecto antes de abrir el editor: crea
+    // pum/ + panda.config.ts + tsconfig + pipeline postcss SI FALTAN, y no
+    // toca nada si ya existe (variante aditiva; nunca sobrescribe). Así un SPA
+    // nuevo se puede inicializar y abrir de una sola vez:
+    //   bunx panda-ui-mithril config --init --dir=src/pages/login
+    if (args.includes('--init')) {
+      const dir = dirFromArgv() ?? process.cwd()
+      if (hasTheme(dir)) {
+        console.log(`✔ ${dir} is already a panda-ui-mithril project — opening the editor, nothing touched.`)
+      } else {
+        scaffoldProject(dir, { force: false, printNextSteps: false })
+      }
+    }
+
     // Importa el servidor (Elysia escucha y mantiene el proceso vivo). El
     // server lee --dir/-d y --port/-p de process.argv (puerto, ruta del theme,
     // y abre el navegador).
@@ -391,43 +480,7 @@ async function main() {
   const explicitDir = dirFromArgv()
   const cwd = explicitDir ?? process.cwd()
   if (explicitDir) mkdirSync(explicitDir, { recursive: true })
-  const force = args.includes('--force')
-  const target = join(cwd, CONFIG_NAME)
-  const legacy = isLegacyTheme(cwd)
-
-  // El check de "ya existe" se salta si es layout legacy: la migración es
-  // exactamente la operación que el usuario necesita (y panda.config.ts se
-  // regenera con el template canónico, idéntico al que ya tiene).
-  if (existsSync(target) && !force && !legacy) {
-    console.error(
-      `${CONFIG_NAME} already exists in ${cwd}. Use --force to overwrite it.`,
-    )
-    process.exit(1)
-  }
-
-  if (legacy) {
-    migrateLegacyTheme(cwd)
-  } else {
-    copyPum(cwd, force)
-  }
-  writeFileSync(target, CONFIG_TEMPLATE)
-  console.log(`✔ Created ${CONFIG_NAME}${explicitDir ? ` in ${cwd}` : ''}`)
-  ensureJsxConfig(cwd)
-  writePostcssScaffold(cwd, force)
-  console.log('')
-  console.log('The editable theme is in pum/theme/*.ts (colors/fonts/spacing/radii/keyframes).')
-  console.log('The CSS pipeline is postcss.config.cjs (Panda via PostCSS) + pum/index.css (entry with @layer).')
-  console.log('Next steps:')
-  if (explicitDir) {
-    console.log(`  cd ${cwd}`)
-    console.log(`  bunx panda-ui-mithril config --dir ${cwd}   # theme + Postcss → Configure (builds the CSS)`)
-    console.log('  bunx panda codegen                          # generates Panda assets (helpers), run from inside the dir')
-    console.log('  bun index.html                              # opens http://localhost:3000, run from inside the dir')
-  } else {
-    console.log('  bunx panda-ui-mithril config   # theme + Postcss → Configure (builds the CSS)')
-    console.log('  bunx panda codegen             # generates Panda assets (helpers)')
-    console.log('  bun index.html                 # opens http://localhost:3000')
-  }
+  scaffoldProject(cwd, { force: args.includes('--force'), printNextSteps: true })
 }
 
 await main()

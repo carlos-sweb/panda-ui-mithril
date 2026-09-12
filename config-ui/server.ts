@@ -154,6 +154,9 @@ app.get('/api/theme', () => {
     themeDir: found.themeDir,
     projectRoot: found.projectRoot,
     themeRel: relative(found.projectRoot, found.themeDir) || found.themeDir,
+    // false → el theme editado NO es el del proyecto que se recompila (la UI
+    // puede avisar antes de que el usuario toque nada; los POST lo rechazan).
+    themeOwnedByProject: found.themeOwnedByProject !== false,
   }
 })
 
@@ -169,6 +172,8 @@ app.post('/api/theme', async ({ request }) => {
     }
   }
   if (!found.themeDir) return { ok: false, error: 'pum/theme not found' }
+  const ownErr = themeOwnershipError(found)
+  if (ownErr) return ownErr
 
   const body = await request.json().catch(() => ({})) as Record<string, unknown>
   try {
@@ -254,6 +259,8 @@ function runRebuild(projectRoot: string, themeDir?: string | null) {
 
 app.post('/api/rebuild', () => {
   const found = resolveTheme(process.cwd())
+  const ownErr = themeOwnershipError(found)
+  if (ownErr) return ownErr
   const cwd = found.projectRoot || process.cwd()
   const result = runRebuild(cwd, found.themeDir)
   return {
@@ -387,6 +394,8 @@ app.post('/api/fonts/add', async ({ request }) => {
   const found = resolveTheme(process.cwd())
   const err = themeError(found)
   if (err) return err
+  const ownErr = themeOwnershipError(found)
+  if (ownErr) return ownErr
   const body = await request.json().catch(() => ({})) as Record<string, unknown>
   const id = sanitizeFontId(String(body.id ?? ''))
   if (!id) return { ok: false, error: 'Falta el id de la fuente.' }
@@ -411,6 +420,8 @@ app.post('/api/fonts/assign', async ({ request }) => {
   const found = resolveTheme(process.cwd())
   const err = themeError(found)
   if (err) return err
+  const ownErr = themeOwnershipError(found)
+  if (ownErr) return ownErr
   const body = await request.json().catch(() => ({})) as Record<string, unknown>
   if (!body.id || !body.token) return { ok: false, error: 'Faltan id y token.' }
   try {
@@ -445,6 +456,8 @@ app.post('/api/fonts/unassign', async ({ request }) => {
   const found = resolveTheme(process.cwd())
   const err = themeError(found)
   if (err) return err
+  const ownErr = themeOwnershipError(found)
+  if (ownErr) return ownErr
   const body = await request.json().catch(() => ({})) as Record<string, unknown>
   if (!body.id) return { ok: false, error: 'Falta el id de la fuente.' }
   try {
@@ -470,6 +483,8 @@ app.post('/api/fonts/remove', async ({ request }) => {
   const found = resolveTheme(process.cwd())
   const err = themeError(found)
   if (err) return err
+  const ownErr = themeOwnershipError(found)
+  if (ownErr) return ownErr
   const body = await request.json().catch(() => ({})) as Record<string, unknown>
   if (!body.id) return { ok: false, error: 'Falta el id de la fuente.' }
   try {
@@ -548,6 +563,8 @@ app.post('/api/postcss/install', async ({ request }) => {
   const found = resolveTheme(process.cwd())
   const err = themeError(found)
   if (err) return err
+  const ownErr = themeOwnershipError(found)
+  if (ownErr) return ownErr
   const body = await request.json().catch(() => ({})) as Record<string, unknown>
   const name = String(body.name ?? '').trim()
   if (!name) return { ok: false, error: 'Falta el nombre del plugin.' }
@@ -576,6 +593,8 @@ app.post('/api/postcss/remove', async ({ request }) => {
   const found = resolveTheme(process.cwd())
   const err = themeError(found)
   if (err) return err
+  const ownErr = themeOwnershipError(found)
+  if (ownErr) return ownErr
   const body = await request.json().catch(() => ({})) as Record<string, unknown>
   const pkg = String(body.pkg ?? '').trim()
   if (!pkg) return { ok: false, error: 'Falta el paquete.' }
@@ -625,6 +644,8 @@ app.post('/api/postcss/config', async ({ request }) => {
   const found = resolveTheme(process.cwd())
   const err = themeError(found)
   if (err) return err
+  const ownErr = themeOwnershipError(found)
+  if (ownErr) return ownErr
   const themeDir = found.themeDir!
   const projectRoot = found.projectRoot || dirname(themeDir)
   const body = await request.json().catch(() => ({})) as Record<string, unknown>
@@ -690,6 +711,8 @@ app.post('/api/lightningcss/config', async ({ request }) => {
   const found = resolveTheme(process.cwd())
   const err = themeError(found)
   if (err) return err
+  const ownErr = themeOwnershipError(found)
+  if (ownErr) return ownErr
   const projectRoot = found.projectRoot || dirname(found.themeDir!)
   const body = await request.json().catch(() => ({})) as Record<string, unknown>
   try {
@@ -743,6 +766,8 @@ app.post('/api/staticcss/scan', () => {
   const found = resolveTheme(process.cwd())
   const err = themeError(found)
   if (err) return err
+  const ownErr = themeOwnershipError(found)
+  if (ownErr) return ownErr
   const projectRoot = found.projectRoot || dirname(found.themeDir!)
   return scanProject(projectRoot, PKG_DIR)
 })
@@ -752,6 +777,8 @@ app.post('/api/staticcss/config', async ({ request }) => {
   const found = resolveTheme(process.cwd())
   const err = themeError(found)
   if (err) return err
+  const ownErr = themeOwnershipError(found)
+  if (ownErr) return ownErr
   const projectRoot = found.projectRoot || dirname(found.themeDir!)
   const body = await request.json().catch(() => ({})) as Record<string, unknown>
   try {
@@ -796,6 +823,8 @@ app.post('/api/advanced/config', async ({ request }) => {
   const found = resolveTheme(process.cwd())
   const err = themeError(found)
   if (err) return err
+  const ownErr = themeOwnershipError(found)
+  if (ownErr) return ownErr
   const projectRoot = found.projectRoot || dirname(found.themeDir!)
   const body = await request.json().catch(() => ({})) as Record<string, unknown>
   try {
@@ -854,15 +883,53 @@ setTimeout(() => openBrowser(url), 150)
  * - projectRoot: dir raíz del proyecto (donde está panda.config.ts).
  * - legacy:    true si hay pum/theme.ts de archivo único (layout viejo).
  */
+/**
+ * El editor solo puede operar sobre el theme del proyecto que RECOMPILA: su
+ * `panda.config.ts` importa su propio `pum/preset`, así que un theme que vive
+ * en otro directorio (caso real: `config --dir=src/pages/login` cuando ese SPA
+ * todavía no tiene su `panda.config.ts`) no lo usa nadie — editarlo no tendría
+ * efecto y el CSS se escribiría en el proyecto raíz, en silencio. Devuelve el
+ * error a mostrar, o null si el theme sí pertenece al proyecto.
+ */
+function themeOwnershipError(found: {
+  themeDir: string | null
+  projectRoot: string | null
+  themeOwnedByProject?: boolean
+}) {
+  if (!found.themeDir || !found.projectRoot || found.themeOwnedByProject !== false) return null
+  // El propio cwd se muestra en absoluto (un "." no dice nada).
+  const rel = (path: string) => {
+    const r = relative(process.cwd(), path)
+    return r === '' ? path : r
+  }
+  const themeRel = rel(found.themeDir)
+  const projectRel = rel(found.projectRoot)
+  const spaDir = themeRel.replace(/\/(pum\/theme|src\/theme|theme)$/, '')
+  return {
+    ok: false,
+    error:
+      `El theme apuntado (${themeRel}) no es el del proyecto que se recompila (${projectRel}): ` +
+      'su panda.config.ts importa su propio pum/preset, así que editar este theme no tendría ' +
+      `efecto y el CSS se escribiría en ${projectRel}. Crea un proyecto propio para ese SPA ` +
+      'y apunta el editor ahí.',
+    hint: `bunx panda-ui-mithril init --dir=${spaDir}`,
+  }
+}
+
 function resolveTheme(cwd: string) {
   const explicit = themeDirFromArgv()
   const candidates = explicit ? [explicit] : walkUp(cwd)
+
+  // ¿El theme resuelto es el del proyecto que se recompila? Los tres sitios
+  // canónicos dentro del projectRoot; ver themeOwnershipError.
+  const owned = (themeDir: string, projectRoot: string | null) =>
+    !!projectRoot && ['pum/theme', 'src/theme', 'theme'].some((sub) => join(projectRoot, sub) === themeDir)
 
   for (const base of candidates) {
     // base apunta directo a un theme dir (tiene colors.ts)
     if (existsSync(join(base, 'colors.ts'))) {
       const projectRoot = findProjectRoot(dirname(base))
-      return { themeDir: base, projectRoot, legacy: false }
+      return { themeDir: base, projectRoot, legacy: false, themeOwnedByProject: owned(base, projectRoot) }
     }
     // base es un dir de proyecto: pum/theme (consumidor), src/theme (repo),
     // o un dir que ya contiene theme/ (p. ej. --dir ./src → src/theme).
@@ -870,25 +937,34 @@ function resolveTheme(cwd: string) {
       const dir = join(base, sub)
       if (existsSync(join(dir, 'colors.ts'))) {
         const projectRoot = findProjectRoot(base)
-        return { themeDir: dir, projectRoot, legacy: false }
+        return { themeDir: dir, projectRoot, legacy: false, themeOwnedByProject: owned(dir, projectRoot) }
       }
     }
     // layout legacy: pum/theme.ts de archivo único, sin carpeta theme/
     if (existsSync(join(base, 'pum', 'theme.ts')) && !existsSync(join(base, 'pum', 'theme'))) {
-      return { themeDir: null, projectRoot: findProjectRoot(base), legacy: true }
+      return { themeDir: null, projectRoot: findProjectRoot(base), legacy: true, themeOwnedByProject: true }
     }
   }
-  return { themeDir: null, projectRoot: null, legacy: false }
+  return { themeDir: null, projectRoot: null, legacy: false, themeOwnedByProject: true }
 }
 
-/** Lee `--dir <ruta>` / `-d <ruta>` de process.argv (el bin ya lo recibió). */
+/**
+ * Lee `--dir <ruta>` / `--dir=<ruta>` / `-d <ruta>` / `-d=<ruta>` de
+ * process.argv (el bin ya lo recibió). Acepta las dos formas: la de espacio y
+ * la de `=` — esta última es la que usa mucha gente
+ * (`panda-ui-mithril config --dir=src/pages/login`) y antes se ignoraba en
+ * silencio, con lo que el editor caía al proyecto raíz en vez del sub-proyecto.
+ * Una ruta relativa se resuelve contra el cwd desde el que se lanzó el bin.
+ */
 function themeDirFromArgv(): string | null {
   const argv = process.argv
-  for (let i = 2; i < argv.length - 1; i++) {
-    if (argv[i] === '--dir' || argv[i] === '-d') {
-      const v = argv[i + 1]
-      if (v && !v.startsWith('-')) return resolve(v)
-    }
+  for (let i = 2; i < argv.length; i++) {
+    const a = argv[i]
+    let raw: string | undefined
+    if (a.startsWith('--dir=')) raw = a.slice('--dir='.length)
+    else if (a.startsWith('-d=')) raw = a.slice('-d='.length)
+    else if (a === '--dir' || a === '-d') raw = argv[i + 1]
+    if (raw && !raw.startsWith('-')) return resolve(raw)
   }
   return null
 }
