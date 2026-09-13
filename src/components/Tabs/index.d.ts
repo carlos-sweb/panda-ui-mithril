@@ -4,11 +4,11 @@ import { ComponentAttrs, PumSize } from '../../types'
 export type TabsVariant = 'box' | 'border' | 'lift'
 
 export interface TabsAttrs extends ComponentAttrs {
-  /** Modo controlado: ref del tab activo */
+  /** Controlled mode: ref of the active tab */
   active?: string
-  /** Modo no controlado: ref del tab activo inicial */
+  /** Uncontrolled mode: initial active tab ref */
   defaultActive?: string
-  /** Callback cuando cambia el tab activo */
+  /** Callback fired when the active tab changes */
   onActiveChange?: (ref: string) => void
   variant?: TabsVariant
   size?: PumSize
@@ -20,7 +20,7 @@ export interface TabsAttrs extends ComponentAttrs {
 }
 
 export interface TabAttrs extends ComponentAttrs {
-  /** Identificador que vincula Tab con TabContent */
+  /** Identifier linking a Tab to its TabContent */
   ref: string
   active?: boolean
   disabled?: boolean
@@ -29,7 +29,7 @@ export interface TabAttrs extends ComponentAttrs {
 }
 
 export interface TabContentAttrs extends ComponentAttrs {
-  /** Identificador que vincula TabContent con Tab */
+  /** Identifier linking TabContent to its Tab */
   ref: string
   active?: boolean
   children?: Vnode | Vnode[] | string | null

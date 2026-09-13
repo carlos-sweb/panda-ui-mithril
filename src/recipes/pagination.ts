@@ -5,11 +5,11 @@ export const paginationRecipe = defineRecipe({
   base: {
     display: 'inline-flex',
     alignItems: 'center',
-    // Tamaño base (escala de Button); los items lo heredan vía --btn-size.
+    // Base size (Button scale); the items inherit it via --btn-size.
     '--btn-size': 'token(spacing.10)',
     fontSize: 'token(fontSizes.md)',
 
-    // Elipsis: mismo alto que los botones, ancho fijo, texto atenuado.
+    // Ellipsis: same height as the buttons, fixed width, muted text.
     '& > .pagination-ellipsis': {
       display: 'inline-flex',
       alignItems: 'center',
@@ -21,10 +21,10 @@ export const paginationRecipe = defineRecipe({
     },
   },
   variants: {
-    // joined: botones pegados. El recipe Button pone borderRadius en las 4
-    // esquinas de cada item, así que joined primero RESETEA todo el radio y
-    // luego redondea solo las esquinas externas: izquierda del primero y
-    // derecha del último. Los medios quedan rectos.
+    // joined: buttons stuck together. The Button recipe sets borderRadius on all 4
+    // corners of each item, so joined first RESETS the whole radius and
+    // then rounds only the outer corners: left of the first and
+    // right of the last. The middle ones stay straight.
     variant: {
       joined: {
         '& > .pagination-item': {
@@ -49,14 +49,14 @@ export const paginationRecipe = defineRecipe({
         },
       },
     },
-    // square: radius del botón según variant. circle: redondos completos.
+    // square: button radius according to variant. circle: fully round.
     shape: {
       square: {},
       circle: {
         '& > .pagination-item, & > .pagination-ellipsis': { borderRadius: '9999px' },
-        // joined + circle: solo las esquinas externas redondean (media luna
-        // hacia afuera); las internas y los medios quedan rectos para que la
-        // cadena de botones se lea pegada.
+        // joined + circle: only the outer corners round (crescent
+        // outward); the inner ones and the middle ones stay straight so the
+        // button chain reads as stuck together.
         '&.pagination--variant_joined > .pagination-item:first-child': {
           borderStartStartRadius: '9999px',
           borderEndStartRadius: '9999px',

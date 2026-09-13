@@ -3,9 +3,9 @@ import { ChatBubblePUM } from '../../../styled-system/recipes'
 import { cx } from '../../../styled-system/css'
 
 /**
- * Componente Chat. Contenedor del hilo de conversación: agrupa el avatar,
- * cabecera, burbuja y pie en una rejilla. `placement` alinea el bloque a la
- * izquierda (start) o derecha (end).
+ * Chat component. Conversation thread container: groups the avatar,
+ * header, bubble and footer in a grid. `placement` aligns the block to the
+ * left (start) or right (end).
  *
  * @type {import('mithril').Component<import('./index').ChatAttrs>}
  */
@@ -21,7 +21,7 @@ export const Chat = {
 }
 
 /**
- * Componente ChatImage. Avatar del participante que envía el mensaje.
+ * ChatImage component. Avatar of the participant who sends the message.
  *
  * @type {import('mithril').Component<import('./index').ChatImageAttrs>}
  */
@@ -33,7 +33,7 @@ export const ChatImage = {
 }
 
 /**
- * Componente ChatHeader. Cabecera del mensaje (nombre, hora, ...).
+ * ChatHeader component. Message header (name, time, ...).
  *
  * @type {import('mithril').Component<import('./index').ChatHeaderAttrs>}
  */
@@ -45,8 +45,8 @@ export const ChatHeader = {
 }
 
 /**
- * Componente ChatBubble. Burbuja con el contenido del mensaje; `color`
- * cambia el fondo y el color de texto (neutral, primary, success, ...).
+ * ChatBubble component. Bubble with the message content; `color`
+ * changes the background and the text color (neutral, primary, success, ...).
  *
  * @type {import('mithril').Component<import('./index').ChatBubbleAttrs>}
  */
@@ -62,7 +62,7 @@ export const ChatBubble = {
 }
 
 /**
- * Componente ChatFooter. Pie del mensaje (hora de lectura, estado, ...).
+ * ChatFooter component. Message footer (read time, status, ...).
  *
  * @type {import('mithril').Component<import('./index').ChatFooterAttrs>}
  */
@@ -74,7 +74,7 @@ export const ChatFooter = {
 }
 
 /**
- * Componente ChatReply. Cita/respuesta a un mensaje anterior.
+ * ChatReply component. Quote/reply to a previous message.
  *
  * @type {import('mithril').Component<import('./index').ChatReplyAttrs>}
  */
@@ -93,7 +93,7 @@ export const ChatReply = {
 }
 
 /**
- * Componente ChatStatus. Indicador de estado del mensaje (enviado, entregado, leído).
+ * ChatStatus component. Message status indicator (sent, delivered, read).
  *
  * @type {import('mithril').Component<import('./index').ChatStatusAttrs>}
  */
@@ -116,7 +116,7 @@ export const ChatStatus = {
 }
 
 /**
- * Componente ChatReactions. Muestra reacciones de emoji en un mensaje.
+ * ChatReactions component. Shows emoji reactions on a message.
  *
  * @type {import('mithril').Component<import('./index').ChatReactionsAttrs>}
  */
@@ -142,7 +142,7 @@ export const ChatReactions = {
 }
 
 /**
- * Componente ChatMessage. Mensaje completo con nombre, burbuja, timestamp y estado.
+ * ChatMessage component. Full message with name, bubble, timestamp and status.
  *
  * @type {import('mithril').Component<import('./index').ChatMessageAttrs>}
  */
@@ -159,9 +159,9 @@ export const ChatMessage = {
       ...rest
     }, [
       reply && m(ChatReply, { name: reply.name, text: reply.text }),
-      // Los hijos viven en vnode.children (nunca en vnode.attrs.children):
-      // texto del mensaje o sub-componentes (ChatAudio, ChatImageMessage,
-      // ChatLink, ...) se renderizan dentro de la burbuja.
+      // Children live in vnode.children (never in vnode.attrs.children):
+      // message text or sub-components (ChatAudio, ChatImageMessage,
+      // ChatLink, ...) are rendered inside the bubble.
       m(ChatBubble, { color, size }, vnode.children),
       reactions && m(ChatReactions, { reactions }),
       (time || status) && m('div', { className: 'chat-message-meta' }, [
@@ -173,7 +173,7 @@ export const ChatMessage = {
 }
 
 /**
- * Componente ChatAudio. Reproductor de audio para mensajes de voz.
+ * ChatAudio component. Audio player for voice messages.
  *
  * @type {import('mithril').Component<import('./index').ChatAudioAttrs>}
  */
@@ -194,7 +194,7 @@ export const ChatAudio = {
 }
 
 /**
- * Componente ChatVideo. Reproductor de video inline.
+ * ChatVideo component. Inline video player.
  *
  * @type {import('mithril').Component<import('./index').ChatVideoAttrs>}
  */
@@ -219,7 +219,7 @@ export const ChatVideo = {
 }
 
 /**
- * Componente ChatImageMessage. Mensaje con imagen y caption opcional.
+ * ChatImageMessage component. Message with an image and optional caption.
  *
  * @type {import('mithril').Component<import('./index').ChatImageMessageAttrs>}
  */
@@ -238,7 +238,7 @@ export const ChatImageMessage = {
 }
 
 /**
- * Componente ChatFile. Archivo adjunto con icono, nombre y tamaño.
+ * ChatFile component. Attached file with icon, name and size.
  *
  * @type {import('mithril').Component<import('./index').ChatFileAttrs>}
  */
@@ -264,7 +264,7 @@ export const ChatFile = {
 }
 
 /**
- * Componente ChatLink. Enlace con preview (título, descripción, imagen).
+ * ChatLink component. Link with preview (title, description, image).
  *
  * @type {import('mithril').Component<import('./index').ChatLinkAttrs>}
  */
@@ -289,7 +289,7 @@ export const ChatLink = {
 }
 
 /**
- * Componente ChatSystem. Mensajes del sistema (fecha, "X se unió", etc.).
+ * ChatSystem component. System messages (date, "X joined", etc.).
  *
  * @type {import('mithril').Component<import('./index').ChatSystemAttrs>}
  */
@@ -306,7 +306,7 @@ export const ChatSystem = {
 }
 
 /**
- * Componente ChatInput. Área de entrada de mensajes con botones de adjunto y emoji.
+ * ChatInput component. Message input area with attach and emoji buttons.
  *
  * @type {import('mithril').Component<import('./index').ChatInputAttrs>}
  */
@@ -367,7 +367,7 @@ export const ChatInput = {
 }
 
 /**
- * Componente ChatTyping. Indicador de "escribiendo..." con animación.
+ * ChatTyping component. "typing..." indicator with animation.
  *
  * @type {import('mithril').Component<import('./index').ChatTypingAttrs>}
  */
@@ -387,7 +387,7 @@ export const ChatTyping = {
 }
 
 /**
- * Componente ChatEmoji. Selector de emojis con grid de opciones.
+ * ChatEmoji component. Emoji picker with a grid of options.
  *
  * @type {import('mithril').Component<import('./index').ChatEmojiAttrs>}
  */
@@ -416,7 +416,7 @@ export const ChatEmoji = {
 }
 
 /**
- * Componente ChatWindow. Contenedor principal con header fijo, área de mensajes scrollable y footer fijo.
+ * ChatWindow component. Main container with a fixed header, scrollable message area and fixed footer.
  *
  * @type {import('mithril').Component<import('./index').ChatWindowAttrs>}
  */

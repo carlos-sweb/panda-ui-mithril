@@ -3,16 +3,16 @@ import { dropdown } from '../../../styled-system/recipes'
 import { cx } from '../../../styled-system/css'
 import { Button } from '../Button/index.js'
 
-// Estilos por defecto (sin variantes) para los subcomponentes usados fuera de
-// un root Dropdown o como fallback. Evita llamar al sva en cada render.
+// Default styles (no variants) for subcomponents used outside a
+// Dropdown root or as a fallback. Avoids calling sva on every render.
 const defaultStyles = dropdown({})
 
-// Delay (ms) de apertura/cierre en modo hover, para que el menú no parpadee
-// al cruzar el borde entre trigger y panel.
+// Open/close delay (ms) in hover mode, so the menu does not flicker
+// when crossing the border between trigger and panel.
 const HOVER_DELAY_MS = 150
 
-// Aplana fragments (`tag: '['`) y arrays anidados a vnodes directos, igual
-// que Tabs/Menu, para que el clonado de abajo vea DropdownTrigger/Content.
+// Flattens fragments (`tag: '['`) and nested arrays into direct vnodes, just
+// like Tabs/Menu, so the cloning below sees DropdownTrigger/Content.
 const flatten = (nodes) => nodes.reduce((acc, node) => {
   if (node == null) return acc
   if (Array.isArray(node)) return acc.concat(flatten(node))
@@ -21,13 +21,13 @@ const flatten = (nodes) => nodes.reduce((acc, node) => {
 }, [])
 
 /**
- * Componente Dropdown. Contenedor que gestiona un panel flotante anclado a un
- * trigger. Soporta apertura por click o hover, posicionamiento en 12
- * direcciones, cierre por click-fuera/Escape/selección, y modos controlado
- * (`open` + `onchange`) y no controlado (`defaultOpen`).
+ * Dropdown component. Container that manages a floating panel anchored to a
+ * trigger. Supports opening by click or hover, positioning in 12
+ * directions, closing by click-outside/Escape/selection, and controlled
+ * (`open` + `onchange`) and uncontrolled (`defaultOpen`) modes.
  *
- * Children esperados: un `DropdownTrigger` y un `DropdownContent` (en ese
- * orden). Dentro del content se usa el patrón habitual de menú con
+ * Expected children: a `DropdownTrigger` and a `DropdownContent` (in that
+ * order). Inside the content the usual menu pattern is used with
  * `Menu`/`MenuItem`/`MenuTitle`.
  *
  * @type {import('mithril').Component<import('./index').DropdownAttrs>}
@@ -37,10 +37,10 @@ export const Dropdown = {
     vnode.state.open = vnode.attrs.defaultOpen === true
     vnode.state._handlers = null
     vnode.state._hoverTimer = null
-    // Espejo del estado actual (open + flags) para los listeners nativos de
-    // document: Mithril reemplaza `vnode.attrs` en cada render, así que un
-    // closure de `oncreate` vería siempre las attrs del primer render. Se
-    // actualiza en cada `view()` y se lee desde `vnode.state` (persistente).
+    // Mirror of the current state (open + flags) for the native document
+    // listeners: Mithril replaces `vnode.attrs` on every render, so an
+    // `oncreate` closure would always see the first render's attrs. It is
+    // updated on each `view()` and read from `vnode.state` (persistent).
     vnode.state._open = vnode.state.open
     vnode.state._closeOnSelect = true
     vnode.state._closeOnOutside = true
@@ -50,10 +50,10 @@ export const Dropdown = {
   oncreate(vnode) {
     const root = vnode.dom
 
-    // Click fuera: cierra si el click no está dentro del root; si está dentro
-    // y cae en un item de menú (y closeOnSelect), cierra también. Los items
-    // `.menu-disabled` no cierran (pointer-events ya los bloquea, pero el
-    // chequeo extra protege el caso de triggers custom).
+    // Click outside: closes if the click is not inside the root; if it is
+    // inside and lands on a menu item (and closeOnSelect), it closes too. The
+    // `.menu-disabled` items do not close (pointer-events already blocks them,
+    // but the extra check protects the custom-trigger case).
     const onDocClick = (e) => {
       if (!vnode.state._open) return
       if (root.contains(e.target)) {
@@ -68,8 +68,8 @@ export const Dropdown = {
       if (vnode.state._closeOnOutside !== false) vnode.state.setOpen(false)
     }
 
-    // Teclado: Escape cierra y devuelve foco al trigger; flechas/Home/End
-    // navegan entre los items `[role="menuitem"]` del panel abierto.
+    // Keyboard: Escape closes and returns focus to the trigger; arrows/Home/End
+    // navigate among the open panel's `[role="menuitem"]` items.
     const onKey = (e) => {
       if (!vnode.state._open) return
       if (e.key === 'Escape' && vnode.state._closeOnEscape !== false) {
@@ -114,9 +114,9 @@ export const Dropdown = {
       if (isControlled) {
         if (onchange && next !== isOpen) {
           onchange(next)
-          // El cambio puede venir de un listener nativo (click fuera, Escape),
-          // fuera del ciclo de redraw de Mithril: forzar el re-render para
-          // que el padre vea su nuevo valor de `open`.
+          // The change can come from a native listener (click outside, Escape),
+          // outside Mithril's redraw cycle: force the re-render so
+          // the parent sees its new `open` value.
           m.redraw()
         }
         return
@@ -170,10 +170,10 @@ export const Dropdown = {
 }
 
 /**
- * Componente DropdownTrigger. Botón que abre/cierra el menú. Si recibe un
- * único child vnode (p.ej. un `Button` de la librería), lo clona inyectándole
- * `aria-haspopup`/`aria-expanded` y el handler; si recibe texto plano,
- * renderiza un `Button` propio.
+ * DropdownTrigger component. Button that opens/closes the menu. If it receives a
+ * single child vnode (e.g. a library `Button`), it clones it injecting
+ * `aria-haspopup`/`aria-expanded` and the handler; if it receives plain text,
+ * it renders its own `Button`.
  *
  * @type {import('mithril').Component<import('./index').DropdownTriggerAttrs>}
  */
@@ -183,7 +183,7 @@ export const DropdownTrigger = {
     const { open, trigger, setOpen } = __dd || {}
 
     const toggle = (e) => {
-      // Respeta el handler previo del child (si lo había) y luego hace toggle.
+      // Respects the child's previous handler (if any) and then toggles.
       if (vnode.state._prevOnclick) vnode.state._prevOnclick(e)
       if (setOpen) setOpen(!open)
     }
@@ -207,7 +207,7 @@ export const DropdownTrigger = {
       }, child.children)
     }
 
-    // Texto plano: botón con los estilos de Button.
+    // Plain text: button with Button's styles.
     return m(Button, {
       ...rest,
       ...interactive,
@@ -217,10 +217,10 @@ export const DropdownTrigger = {
 }
 
 /**
- * Componente DropdownContent. Panel flotante posicionado respecto al trigger;
- * `role="menu"` y oculto para AT mientras está cerrado. En `onupdate` marca
- * los items del menú (`Menu > li > a`) con `role="menuitem"` + `tabindex=-1`
- * para la navegación por teclado del root.
+ * DropdownContent component. Floating panel positioned relative to the trigger;
+ * `role="menu"` and hidden from AT while closed. In `onupdate` it marks
+ * the menu items (`Menu > li > a`) with `role="menuitem"` + `tabindex=-1`
+ * for the root's keyboard navigation.
  *
  * @type {import('mithril').Component<import('./index').DropdownContentAttrs>}
  */

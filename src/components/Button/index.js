@@ -3,9 +3,9 @@ import { button } from '../../../styled-system/recipes'
 import { cx } from '../../../styled-system/css'
 
 /**
- * Componente Button. Botón con variantes de color, estilo y tamaño.
- * Si recibe `href` renderiza un `<a>`, en caso contrario un `<button>`;
- * `block`/`wide` controlan el ancho y `square`/`circle` la forma.
+ * Button component. Button with color, style and size variants.
+ * If it receives `href` it renders an `<a>`, otherwise a `<button>`;
+ * `block`/`wide` control the width and `square`/`circle` the shape.
  *
  * @type {import('mithril').Component<import('./index').ButtonAttrs>}
  */

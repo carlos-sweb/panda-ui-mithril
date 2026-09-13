@@ -3,8 +3,8 @@ import { status } from '../../../styled-system/recipes'
 import { cx } from '../../../styled-system/css'
 
 /**
- * Componente Status. Punto indicador de estado con variante de color
- * y tamaño.
+ * Status component. State indicator dot with color
+ * and size variants.
  *
  * @type {import('mithril').Component<import('./index').StatusAttrs>}
  */

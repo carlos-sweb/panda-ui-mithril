@@ -3,10 +3,10 @@ import { link } from '../../../styled-system/recipes'
 import { cx } from '../../../styled-system/css'
 
 /**
- * Componente Link. Enlace de texto con variante de color; `hover: false`
- * muestra el subrayado solo al pasar el cursor y `noUnderline: true` lo
- * elimina por completo (útil en contextos como el navbar, donde NavbarLink
- * lo aplica como default — mismo concepto que Drawer condiciona Modal).
+ * Link component. Text link with a color variant; `hover: false`
+ * shows the underline only on hover and `noUnderline: true`
+ * removes it entirely (useful in contexts like the navbar, where NavbarLink
+ * applies it as the default — same concept as Drawer conditioning Modal).
  *
  * @type {import('mithril').Component<import('./index').LinkAttrs>}
  */

@@ -5,9 +5,9 @@ import { cx } from '../../../styled-system/css'
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-mithril'
 import { t } from '../../i18n.js'
 
-// Calcula la lista de páginas a mostrar (números y '...'): boundaries en los
-// extremos, siblings alrededor de la página actual, con elipsis donde haga
-// falta. Mismo enfoque que Mantine/welcome-ui.
+// Computes the list of pages to show (numbers and '...'): boundaries at the
+// ends, siblings around the current page, with ellipsis where
+// needed. Same approach as Mantine/welcome-ui.
 function getRange(page, pageCount, siblings, boundaries) {
   const totalShown = boundaries * 2 + siblings * 2 + 3
   if (pageCount <= totalShown) {
@@ -31,22 +31,22 @@ function getRange(page, pageCount, siblings, boundaries) {
 }
 
 /**
- * Componente Pagination. Navegación data-driven entre páginas: recibe `page`
- * (actual) y `pageCount`, y emite `onchange(page)` al hacer click. `variant`
- * pega los botones (joined, default) o los separa (separated); `shape` elige
- * botones cuadrados o circulares. `siblings`/`boundaries` controlan cuántas
- * páginas se muestran alrededor de la actual y en los extremos (con elipsis
- * cuando el rango es grande).
+ * Pagination component. Data-driven navigation between pages: receives `page`
+ * (current) and `pageCount`, and emits `onchange(page)` on click. `variant`
+ * joins the buttons (joined, default) or separates them (separated); `shape` chooses
+ * square or circular buttons. `siblings`/`boundaries` control how many
+ * pages are shown around the current one and at the ends (with ellipsis
+ * when the range is large).
  *
- * Uso típico (controlado por el consumidor):
+ * Typical usage (controlled by the consumer):
  *   m(Pagination, { page, pageCount, onchange: (p) => { page = p } })
  *
  * @type {import('mithril').Component<import('./index').PaginationAttrs>}
  */
 export const Pagination = {
   oninit(vnode) {
-    // Modo no-controlado: si el consumidor pasa `defaultPage` y no controla
-    // `page`, el componente gestiona su propia página internamente.
+    // Uncontrolled mode: if the consumer passes `defaultPage` and does not control
+    // `page`, the component manages its own page internally.
     vnode.state.page = vnode.attrs.defaultPage ?? 1
   },
 
@@ -75,8 +75,8 @@ export const Pagination = {
 
     const styles = pagination({ variant, shape, size })
 
-    // Modo compositivo (retrocompatibilidad): si hay children explícitos,
-    // se renderizan dentro del contenedor con los estilos base.
+    // Composition mode (backward compatibility): if there are explicit children,
+    // they are rendered inside the container with the base styles.
     if (vnode.children != null && vnode.children.length > 0) {
       return m('div', {
         className: cx('pagination', styles, className),
@@ -168,7 +168,7 @@ export const Pagination = {
       }))
     }
 
-    // Teclado: ←/→ navegan prev/next cuando el foco está dentro del root.
+    // Keyboard: ←/→ navigate prev/next when focus is inside the root.
     const onkeydown = (e) => {
       if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return
       const next = e.key === 'ArrowLeft' ? safePage - 1 : safePage + 1
@@ -188,9 +188,9 @@ export const Pagination = {
 }
 
 /**
- * Componente PaginationButton. Botón individual de paginación (escape hatch
- * para uso compositivo manual): `active` marca la página actual y `disabled`
- * deshabilita. Reutiliza el recipe Button.
+ * PaginationButton component. Individual pagination button (escape hatch
+ * for manual composition use): `active` marks the current page and `disabled`
+ * disables it. Reuses the Button recipe.
  *
  * @type {import('mithril').Component<import('./index').PaginationButtonAttrs>}
  */

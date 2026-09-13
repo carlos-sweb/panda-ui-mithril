@@ -1,20 +1,20 @@
 /**
- * i18n de la librería — strings internos de los componentes (estado vacío,
- * aria-labels, ...) en inglés (default) y español. El consumidor elige el
- * idioma con `setLocale('es')` y repinta (`m.redraw()`); la elección se
- * persiste en localStorage bajo la clave `pum-lang` y se restaura al cargar.
+ * Library i18n — internal component strings (empty state, aria-labels, ...)
+ * in English (default) and Spanish. The consumer picks the language with
+ * `setLocale('es')` and repaints (`m.redraw()`); the choice is persisted in
+ * localStorage under the `pum-lang` key and restored on load.
  *
  *   import { setLocale } from 'panda-ui-mithril'
  *   setLocale('es')
  *   m.redraw()
  *
- * Las claves son planas y con fallback a inglés: si falta la clave en el
- * locale activo se usa `en`; si falta en ambos, se devuelve la propia clave.
+ * Keys are flat and fall back to English: if the key is missing in the active
+ * locale `en` is used; if missing in both, the key itself is returned.
  */
 
 const STORAGE_KEY = 'pum-lang'
 
-/** Lee el locale persistido por el usuario (fallback: 'en'). */
+/** Reads the locale persisted by the user (fallback: 'en'). */
 function readStoredLocale() {
   try {
     const stored = typeof localStorage !== 'undefined' ? localStorage.getItem(STORAGE_KEY) : null
@@ -126,9 +126,9 @@ const messages = {
 }
 
 /**
- * Establece el idioma de la librería ('en' | 'es') y lo persiste en
- * localStorage (`pum-lang`). Requiere `m.redraw()` del consumidor para
- * repintar los componentes con los nuevos strings.
+ * Sets the library language ('en' | 'es') and persists it in
+ * localStorage (`pum-lang`). Requires the consumer's `m.redraw()` to
+ * repaint the components with the new strings.
  * @param {'en' | 'es'} locale
  */
 export function setLocale(locale) {
@@ -136,12 +136,12 @@ export function setLocale(locale) {
   try {
     if (typeof localStorage !== 'undefined') localStorage.setItem(STORAGE_KEY, currentLocale)
   } catch {
-    // storage no disponible (SSR, modo privado) — la elección no persiste.
+    // storage unavailable (SSR, private mode) — the choice is not persisted.
   }
 }
 
 /**
- * Devuelve el idioma activo de la librería (persistido en `pum-lang`).
+ * Returns the library's active language (persisted in `pum-lang`).
  * @returns {'en' | 'es'}
  */
 export function getLocale() {
@@ -149,8 +149,8 @@ export function getLocale() {
 }
 
 /**
- * Resuelve una clave de mensaje en el locale activo (fallback: en, luego la
- * propia clave). Interno de la librería.
+ * Resolves a message key in the active locale (fallback: en, then the
+ * key itself). Internal to the library.
  * @param {string} key
  * @returns {string}
  */

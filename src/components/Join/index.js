@@ -3,8 +3,8 @@ import { join, joinItem } from '../../../styled-system/recipes'
 import { cx } from '../../../styled-system/css'
 
 /**
- * Componente Join. Agrupa elementos adyacentes con esquinas unificadas;
- * `vertical` los apila en columna.
+ * Join component. Groups adjacent elements with unified corners;
+ * `vertical` stacks them in a column.
  *
  * @type {import('mithril').Component<import('./index').JoinAttrs>}
  */
@@ -20,7 +20,7 @@ export const Join = {
 }
 
 /**
- * Elemento dentro de un Join, con los estilos de borde unificados.
+ * Element inside a Join, with unified border styles.
  *
  * @type {import('mithril').Component<import('./index').JoinItemAttrs>}
  */

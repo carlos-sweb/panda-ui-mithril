@@ -3,16 +3,16 @@ import { megamenu } from '../../../styled-system/recipes'
 import { cx } from '../../../styled-system/css'
 
 /**
- * Resultado cacheado de `megamenu({})` — los subcomponentes sin variantes
- * reusan las mismas clases en cada render. Evita llamar al sva repetidamente.
+ * Cached result of `megamenu({})` — subcomponents without variants
+ * reuse the same classes on every render. Avoids calling the sva repeatedly.
  * @type {ReturnType<typeof megamenu>}
  */
 const defaultStyles = megamenu({})
 
 /**
- * Componente Megamenu. Barra de navegación con paneles desplegables que
- * se abren al hacer hover/focus sobre cada trigger. `size` controla la
- * altura y `vertical` apila los ítems en columna.
+ * Megamenu component. Navigation bar with dropdown panels that
+ * open on hover/focus over each trigger. `size` controls the
+ * height and `vertical` stacks the items in a column.
  *
  * @type {import('mithril').Component<import('./index').MegamenuAttrs>}
  */
@@ -28,8 +28,8 @@ export const Megamenu = {
 }
 
 /**
- * Componente MegamenuItem. Envuelve un trigger y su panel; al hacer hover o
- * focus sobre el ítem se muestra el panel asociado.
+ * MegamenuItem component. Wraps a trigger and its panel; on hover or
+ * focus over the item the associated panel is shown.
  *
  * @type {import('mithril').Component<import('./index').MegamenuItemAttrs>}
  */
@@ -41,9 +41,9 @@ export const MegamenuItem = {
 }
 
 /**
- * Componente MegamenuTrigger. Botón o enlace que abre el panel. Con `href`
- * renderiza un `<a>`, si no un `<button>`; `active` resalta el trigger y
- * `chevron` añade la flecha de desplegable.
+ * MegamenuTrigger component. Button or link that opens the panel. With `href`
+ * it renders an `<a>`, otherwise a `<button>`; `active` highlights the trigger and
+ * `chevron` adds the dropdown arrow.
  *
  * @type {import('mithril').Component<import('./index').MegamenuTriggerAttrs>}
  */
@@ -61,8 +61,8 @@ export const MegamenuTrigger = {
 }
 
 /**
- * Componente MegamenuPanel. Contenido desplegable de un MegamenuItem,
- * posicionado de forma absoluta bajo el trigger.
+ * MegamenuPanel component. Dropdown content of a MegamenuItem,
+ * absolutely positioned below the trigger.
  *
  * @type {import('mithril').Component<import('./index').MegamenuPanelAttrs>}
  */
@@ -74,7 +74,7 @@ export const MegamenuPanel = {
 }
 
 /**
- * Componente MegamenuActive. Capa decorativa que resalta el trigger activo.
+ * MegamenuActive component. Decorative layer that highlights the active trigger.
  *
  * @type {import('mithril').Component<import('./index').MegamenuActiveAttrs>}
  */

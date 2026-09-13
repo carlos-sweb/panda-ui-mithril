@@ -3,8 +3,8 @@ import { menu } from '../../../styled-system/recipes'
 import { cx } from '../../../styled-system/css'
 
 /**
- * Componente MenuItem. Ítem del menú (`<li>` que envuelve un `<a>`); `active`
- * lo resalta y `disabled` lo atenúa.
+ * MenuItem component. Menu item (`<li>` that wraps an `<a>`); `active`
+ * highlights it and `disabled` dims it.
  *
  * @type {import('mithril').Component<import('./index').MenuItemAttrs>}
  */
@@ -18,9 +18,9 @@ export const MenuItem = {
 }
 
 /**
- * Componente Menu. Menú de navegación (`<ul>`) con tamaño y orientación
- * horizontal opcional. Cuando `autoActive` es true, el menú gestiona
- * automáticamente cuál ítem está activo al hacer click.
+ * Menu component. Navigation menu (`<ul>`) with optional size and
+ * horizontal orientation. When `autoActive` is true, the menu automatically
+ * manages which item is active on click.
  *
  * @type {import('mithril').Component<import('./index').MenuAttrs>}
  */
@@ -70,7 +70,7 @@ export const Menu = {
 }
 
 /**
- * Componente MenuTitle. Título de sección dentro del menú.
+ * MenuTitle component. Section title inside the menu.
  *
  * @type {import('mithril').Component<import('./index').MenuTitleAttrs>}
  */
@@ -82,7 +82,7 @@ export const MenuTitle = {
 }
 
 /**
- * Componente MenuDropdown. Submenú desplegable anidado.
+ * MenuDropdown component. Nested dropdown submenu.
  *
  * @type {import('mithril').Component<import('./index').MenuDropdownAttrs>}
  */
@@ -94,7 +94,7 @@ export const MenuDropdown = {
 }
 
 /**
- * Componente MenuDropdownToggle. Enlace que abre/cierra un submenú desplegable.
+ * MenuDropdownToggle component. Link that opens/closes a dropdown submenu.
  *
  * @type {import('mithril').Component<import('./index').MenuDropdownToggleAttrs>}
  */

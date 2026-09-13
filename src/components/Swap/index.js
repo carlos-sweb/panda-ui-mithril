@@ -3,38 +3,38 @@ import { swap } from '../../../styled-system/recipes'
 import { cx } from '../../../styled-system/css'
 
 /**
- * Swap — toggle on/off que intercambia dos contenidos.
+ * Swap — on/off toggle that swaps two contents.
  *
- * Renderiza un `<label>` que envuelve un `<input type="checkbox">` oculto más
- * los bloques `.swap-on` / `.swap-off`. El toggle es 100% CSS: hacer click en
- * el label alterna el checkbox nativo y el recipe (`cva()`, single-slot, sin
- * `defaultStyles`) conmuta opacidad/transformación vía
- * `input:checked ~ .swap-on|.swap-off` + `transition` — sin estado JS.
+ * Renders a `<label>` that wraps a hidden `<input type="checkbox">` plus
+ * the `.swap-on` / `.swap-off` blocks. The toggle is 100% CSS: clicking
+ * the label toggles the native checkbox and the recipe (`cva()`, single-slot, without
+ * `defaultStyles`) switches opacity/transform via
+ * `input:checked ~ .swap-on|.swap-off` + `transition` — with no JS state.
  *
- * - `active` añade la clase `swap-active` (toggle programático/incontrolado,
- *   sin necesidad de interactuar con el checkbox).
- * - `checked` + `onchange` permiten uso controlado (se propagan al input).
- * - `style="flip"` usa rotateY con `backfaceVisibility`; `style="rotate"`
- *   (default) rota 45deg el contenido activo.
+ * - `active` adds the `swap-active` class (programmatic/uncontrolled toggle,
+ *   without needing to interact with the checkbox).
+ * - `checked` + `onchange` allow controlled use (they propagate to the input).
+ * - `style="flip"` uses rotateY with `backfaceVisibility`; `style="rotate"`
+ *   (default) rotates the active content 45deg.
  *
  * @param {object} vnode - Mithril vnode
- * @param {boolean} [vnode.attrs.active] - Aplica la clase `swap-active` para
- *   mostrar `.swap-on` sin depender del estado del checkbox.
- * @param {'rotate'|'flip'} [vnode.attrs.style] - Estilo de la transición:
- *   `rotate` (default) o `flip` 3D.
- * @param {import('mithril').Children} [vnode.attrs.on] - Contenido visible
- *   cuando el swap está activo (`swap-on`).
- * @param {import('mithril').Children} [vnode.attrs.off] - Contenido visible
- *   cuando el swap está inactivo (`swap-off`).
- * @param {boolean} [vnode.attrs.checked] - Estado controlado del checkbox.
- * @param {(checked: boolean, e: Event) => void} [vnode.attrs.onchange] - Handler de cambio del
- *   checkbox (uso controlado). Recibe el nuevo estado boolean y el evento DOM.
- * @param {string} [vnode.attrs.className] - Clase(s) extra añadida(s) tras la
- *   clase base `swap` y el output del recipe.
- * @param {object} [vnode.attrs] - Cualquier otro atributo se propaga al label.
- * @param {import('mithril').Children} [vnode.children] - Contenido adicional
- *   tras los bloques on/off.
- * @returns {import('mithril').Vnode} Un elemento `label.swap`.
+ * @param {boolean} [vnode.attrs.active] - Applies the `swap-active` class to
+ *   show `.swap-on` without depending on the checkbox state.
+ * @param {'rotate'|'flip'} [vnode.attrs.style] - Transition style:
+ *   `rotate` (default) or `flip` 3D.
+ * @param {import('mithril').Children} [vnode.attrs.on] - Content visible
+ *   when the swap is active (`swap-on`).
+ * @param {import('mithril').Children} [vnode.attrs.off] - Content visible
+ *   when the swap is inactive (`swap-off`).
+ * @param {boolean} [vnode.attrs.checked] - Controlled state of the checkbox.
+ * @param {(checked: boolean, e: Event) => void} [vnode.attrs.onchange] - Change handler of the
+ *   checkbox (controlled use). Receives the new boolean state and the DOM event.
+ * @param {string} [vnode.attrs.className] - Extra class(es) added after the
+ *   base `swap` class and the recipe output.
+ * @param {object} [vnode.attrs] - Any other attribute is propagated to the label.
+ * @param {import('mithril').Children} [vnode.children] - Additional content
+ *   after the on/off blocks.
+ * @returns {import('mithril').Vnode} A `label.swap` element.
  * @type {import('mithril').Component<import('./index').SwapAttrs>}
  */
 export const Swap = {    

@@ -1,10 +1,10 @@
 import { defineSlotRecipe } from '@pandacss/dev'
 
 /**
- * OTP — un input real por celda (patrón Mantine/Ant/PrimeReact). Cada celda es
- * un <input> de verdad: caret nativo, focus ring nativo y click-to-position sin
- * hacks de superposición. El estado del código lo gestiona el componente en JS
- * (avance de focus, backspace, flechas, paste, mask, oncomplete).
+ * OTP — one real input per cell (Mantine/Ant/PrimeReact pattern). Each cell is
+ * a real <input>: native caret, native focus ring and click-to-position without
+ * overlay hacks. The code state is managed by the component in JS
+ * (focus advance, backspace, arrows, paste, mask, oncomplete).
  */
 export const otpRecipe = defineSlotRecipe({
   className: 'otp',

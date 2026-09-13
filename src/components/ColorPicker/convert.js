@@ -1,30 +1,30 @@
 /**
- * convert — motor de conversión de espacios de color del ColorPicker.
+ * convert — color-space conversion engine for the ColorPicker.
  *
- * Funciones puras, sin dependencias. La fuente de verdad del componente es el
- * hex; los canales de cada modo se derivan desde él y el drag de un canal
- * recalcula hex vía el modo activo.
+ * Pure functions, no dependencies. The component's source of truth is the
+ * hex; each mode's channels are derived from it and dragging a channel
+ * recomputes the hex through the active mode.
  *
- * Convenciones:
- * - RGB/HSB/HSL: canales 0-255 / 0-360 / 0-100 según el espacio.
- * - CMYK: 0-100 por canal (porcentajes).
- * - LAB: L 0-100, a/b -128..127 (rango estándar sRGB, referencia blanca D65).
- * - Hex siempre normalizado a `#rrggbb` minúsculas (salida de rgbToHex).
+ * Conventions:
+ * - RGB/HSB/HSL: channels 0-255 / 0-360 / 0-100 depending on the space.
+ * - CMYK: 0-100 per channel (percentages).
+ * - LAB: L 0-100, a/b -128..127 (standard sRGB range, D65 white reference).
+ * - Hex always normalized to lowercase `#rrggbb` (output of rgbToHex).
  */
 
-/** Clampa un número a [min, max]. */
+/** Clamps a number to [min, max]. */
 export function clamp(n, min, max) {
   return Math.min(max, Math.max(min, n))
 }
 
-/** Convierte un componente 0-255 a su dígito hex (2 chars). */
+/** Converts a 0-255 component to its hex digit (2 chars). */
 function toHex2(n) {
   return clamp(Math.round(n), 0, 255).toString(16).padStart(2, '0')
 }
 
 /**
- * Convierte un hex a RGB. Acepta `#rgb`, `rgb`, `#rrggbb`, `rrggbb`.
- * Devuelve `{ r, g, b }` con canales 0-255, o `null` si no es válido.
+ * Converts a hex to RGB. Accepts `#rgb`, `rgb`, `#rrggbb`, `rrggbb`.
+ * Returns `{ r, g, b }` with channels 0-255, or `null` if invalid.
  */
 export function hexToRgb(hex) {
   if (typeof hex !== 'string') return null
@@ -35,7 +35,7 @@ export function hexToRgb(hex) {
   return { r: (n >> 16) & 255, g: (n >> 8) & 255, b: n & 255 }
 }
 
-/** Convierte RGB (0-255) a hex normalizado `#rrggbb`. */
+/** Converts RGB (0-255) to the normalized hex `#rrggbb`. */
 export function rgbToHex({ r, g, b }) {
   return `#${toHex2(r)}${toHex2(g)}${toHex2(b)}`
 }
@@ -121,7 +121,7 @@ export function hslToRgb({ h, s, l }) {
 
 // ── RGB ↔ CMYK ─────────────────────────────────────────────────────────────
 
-/** RGB (0-255) → CMYK `{ c, m, y, k }` en 0-100. */
+/** RGB (0-255) → CMYK `{ c, m, y, k }` in 0-100. */
 export function rgbToCmyk({ r, g, b }) {
   const rn = r / 255, gn = g / 255, bn = b / 255
   const k = 1 - Math.max(rn, gn, bn)
@@ -147,9 +147,9 @@ export function cmykToRgb({ c, m, y, k }) {
   }
 }
 
-// ── RGB ↔ LAB (vía XYZ, referencia blanca D65) ─────────────────────────────
+// ── RGB ↔ LAB (via XYZ, D65 white reference) ─────────────────────────────
 
-/** RGB (0-255) → XYZ (normalizado a 0-1, D65). */
+/** RGB (0-255) → XYZ (normalized to 0-1, D65). */
 function rgbToXyz({ r, g, b }) {
   const fn = (v) => {
     const c = v / 255

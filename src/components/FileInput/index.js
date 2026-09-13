@@ -3,8 +3,8 @@ import { fileInput } from '../../../styled-system/recipes'
 import { cx } from '../../../styled-system/css'
 
 /**
- * Componente FileInput. Selector de archivos (`<input type="file">`) con
- * variantes de color, tamaño y modo ghost.
+ * FileInput component. File picker (`<input type="file">`) with
+ * color, size and ghost mode variants.
  *
  * @type {import('mithril').Component<import('./index').FileInputAttrs>}
  */

@@ -3,8 +3,8 @@ import { fieldset, fieldsetLegend } from '../../../styled-system/recipes'
 import { cx } from '../../../styled-system/css'
 
 /**
- * Componente Fieldset. Agrupa campos de formulario relacionados dentro de un
- * `<fieldset>` con una `<legend>` opcional (`legend`).
+ * Fieldset component. Groups related form fields inside a `<fieldset>` with an
+ * optional `<legend>` (`legend`).
  *
  * @type {import('mithril').Component<import('./index').FieldsetAttrs>}
  */

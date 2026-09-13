@@ -3,8 +3,8 @@ import { range } from '../../../styled-system/recipes'
 import { cx } from '../../../styled-system/css'
 
 /**
- * Componente Range. Control deslizante (`<input type="range">`) con variantes
- * de color, tamaño y orientación vertical.
+ * Range component. Slider (`<input type="range">`) with color,
+ * size and vertical orientation variants.
  *
  * @type {import('mithril').Component<import('./index').RangeAttrs>}
  */

@@ -3,8 +3,8 @@ import { avatar } from '../../../styled-system/recipes'
 import { cx } from '../../../styled-system/css'
 
 /**
- * Componente Avatar. Imagen de perfil (o placeholder) con `size`, `shape`
- * (circle/square) y `status` (online/offline).
+ * Avatar component. Profile image (or placeholder) with `size`, `shape`
+ * (circle/square) and `status` (online/offline).
  *
  * @type {import('mithril').Component<import('./index').AvatarAttrs>}
  */
@@ -22,14 +22,14 @@ export const Avatar = {
 }
 
 /**
- * Resultado cacheado de `avatar({})` — los subcomponentes no pasan variantes,
- * así que sus clases son determinísticas. Evita llamar al sva en cada render.
+ * Cached result of `avatar({})` — the subcomponents pass no variants,
+ * so their classes are deterministic. Avoids calling the sva on every render.
  * @type {ReturnType<typeof avatar>}
  */
 const defaultStyles = avatar({})
 
 /**
- * Grupo de avatares superpuestos con solapamiento entre ellos.
+ * Group of overlapping avatars with overlap between them.
  *
  * @type {import('mithril').Component<import('./index').AvatarGroupAttrs>}
  */

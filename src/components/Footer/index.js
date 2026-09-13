@@ -3,8 +3,8 @@ import { footer } from '../../../styled-system/recipes'
 import { cx } from '../../../styled-system/css'
 
 /**
- * Componente Footer. Pie de página en grid; `center` centra el contenido y
- * `horizontal`/`vertical` controlan la dirección del flujo.
+ * Footer component. Grid page footer; `center` centers the content and
+ * `horizontal`/`vertical` control the flow direction.
  *
  * @type {import('mithril').Component<import('./index').FooterAttrs>}
  */
@@ -27,15 +27,15 @@ export const Footer = {
 }
 
 /**
- * Resultado cacheado de `footer({})` — los subcomponentes no pasan variantes,
- * así que las clases son determinísticas. Evita llamar al sva en cada render.
+ * Cached result of `footer({})` — subcomponents pass no variants,
+ * so the classes are deterministic. Avoids calling sva on every render.
  * @type {ReturnType<typeof footer>}
  */
 const defaultStyles = footer({})
 
 /**
- * Componente FooterTitle. Título en mayúsculas de una columna del footer
- * (slot `title` de la recipe).
+ * FooterTitle component. Uppercase title of a footer column
+ * (the recipe's `title` slot).
  *
  * @type {import('mithril').Component<import('./index').FooterTitleAttrs>}
  */

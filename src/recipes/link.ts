@@ -36,8 +36,8 @@ export const linkRecipe = defineRecipe({
     },
   },
   defaultVariants: {
-    // El componente Link defaultea hover=true en JS (ver src/components/Link);
-    // se refleja aquí para que una llamada directa a link({}) coincida.
+    // The Link component defaults hover=true in JS (see src/components/Link);
+    // it is mirrored here so a direct call to link({}) matches.
     hover: true,
     noUnderline: false,
   },

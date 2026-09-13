@@ -1,20 +1,20 @@
 import { defineSlotRecipe } from '@pandacss/dev'
 
 /**
- * Navbar — barra de navegación superior de tres zonas (start/center/end) con
- * sub-componentes estratégicos (brand, menu, link, toggle) y variantes
- * profesionales: posición (static/sticky/fixed), color semántico, tamaño,
- * borde, sombra y efecto glass.
+ * Navbar — three-zone top navigation bar (start/center/end) with
+ * strategic sub-components (brand, menu, link, toggle) and
+ * professional variants: position (static/sticky/fixed), semantic color, size,
+ * border, shadow and glass effect.
  *
- * El color se comunica con custom properties component-scoped: la variante
- * `color` define `--navbar-bg` / `--navbar-fg` en el slot `navbar` y todos los
- * slots heredan `currentColor`, de modo que brand/link/toggle se ven bien
- * sobre cualquier fondo (patrón MUI AppBar).
+ * The color is communicated with component-scoped custom properties: the
+ * `color` variant defines `--navbar-bg` / `--navbar-fg` on the `navbar` slot and all
+ * slots inherit `currentColor`, so brand/link/toggle look good
+ * over any background (MUI AppBar pattern).
  *
- * Responsive (patrón Bootstrap/Flowbite, JS-first): el slot `menu` es el
- * grupo de links de escritorio (oculto <768px) y el slot `toggle` es la
- * hamburguesa solo móvil (oculta ≥768px). El patrón móvil de esta librería
- * empareja `NavbarToggle` con el `Drawer` (no con un menú CSS colapsable).
+ * Responsive (Bootstrap/Flowbite pattern, JS-first): the `menu` slot is the
+ * desktop link group (hidden <768px) and the `toggle` slot is the
+ * mobile-only hamburger (hidden ≥768px). This library's mobile pattern
+ * pairs `NavbarToggle` with the `Drawer` (not with a collapsible CSS menu).
  */
 export const navbarRecipe = defineSlotRecipe({
   className: 'navbar',
@@ -206,7 +206,7 @@ export const navbarRecipe = defineSlotRecipe({
       },
       false: {},
     },
-    // Variantes del slot `link` — NavbarLink las aplica con navbar({ active, disabled }).
+    // Variants of the `link` slot — NavbarLink applies them with navbar({ active, disabled }).
     active: {
       true: {
         link: {

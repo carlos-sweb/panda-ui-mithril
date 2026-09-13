@@ -14,8 +14,8 @@ import {
 
 const defaultStyles = colorPicker({})
 
-// Modos: claves de conversión + definición de canales (label i18n, min, max,
-// pista degradada y formateo del valor).
+// Modes: conversion keys + channel definitions (i18n label, min, max,
+// gradient track and value formatting).
 const MODES = {
   picker: { label: () => t('colorpicker.modePicker') },
   hsb: {
@@ -74,12 +74,12 @@ const MODES = {
 const MODE_ORDER = ['picker', 'hsb', 'hsl', 'rgb', 'cmyk', 'lab']
 
 /**
- * Resuelve los modos disponibles según las props:
- * - `modes` (allowlist): solo esos modos (validados contra MODE_ORDER, orden
- *   canónico). Sin la prop → todos.
- * - `excludeModes` (denylist): se quitan de la lista resultante.
- * - Si la combinación deja 0 modos, se restaura el set completo (defensa ante
- *   configs inválidas).
+ * Resolves the available modes from the props:
+ * - `modes` (allowlist): only those modes (validated against MODE_ORDER, canonical
+ *   order). Without the prop → all of them.
+ * - `excludeModes` (denylist): removed from the resulting list.
+ * - If the combination leaves 0 modes, the full set is restored (defense against
+ *   invalid configs).
  */
 function resolveAvailableModes(attrs) {
   const { modes, excludeModes } = attrs
@@ -95,27 +95,27 @@ function resolveAvailableModes(attrs) {
 const COPY_DURATION = 2000
 
 /**
- * ColorPicker — selector de color profesional multi-espacio.
+ * ColorPicker — professional multi-space color picker.
  *
- * Modo "picker" (default): área 2D Saturación/Brillo para el hue actual +
- * slider de hue + entrada hex + swatch + footer con menú de modo y copiar.
- * Modos alternos (HSB, HSL, RGB, CMYK, LAB): fila de sliders por canal con
- * pistas degradadas dinámicas. Todo se actualiza en tiempo real durante el
- * drag y notifica `onchange(hex)` con el hex normalizado (`#rrggbb`).
+ * "picker" mode (default): 2D Saturation/Brightness area for the current hue +
+ * hue slider + hex input + swatch + footer with a mode menu and copy.
+ * Alternate modes (HSB, HSL, RGB, CMYK, LAB): row of per-channel sliders with
+ * dynamic gradient tracks. Everything updates in real time during the
+ * drag and notifies `onchange(hex)` with the normalized hex (`#rrggbb`).
  *
  * Props:
- *   value        — hex controlado (si se pasa, el padre controla el color).
- *   defaultValue — hex inicial en modo no controlado (default '#623CEA').
- *   onchange     — (hex: string) => void, notifica en cada cambio.
- *   copy         — muestra el botón copiar en el footer (default true).
- *   modes        — allowlist de espacios a mostrar en el menú (default: todos).
- *   excludeModes — denylist de espacios a ocultar del menú (default: ninguno).
- *   trigger      — lanza el picker como dropdown desde un botón/texto: string,
- *                  Vnode, o (hex) => Vnode|string. Sin ella: tarjeta standalone.
- *   close        — en modo dropdown, ButtonClose en la esquina superior:
- *                  'end' (derecha, default) | 'start' (izquierda) | false.
+ *   value        — controlled hex (if passed, the parent controls the color).
+ *   defaultValue — initial hex in uncontrolled mode (default '#623CEA').
+ *   onchange     — (hex: string) => void, notifies on every change.
+ *   copy         — shows the copy button in the footer (default true).
+ *   modes        — allowlist of spaces to show in the menu (default: all).
+ *   excludeModes — denylist of spaces to hide from the menu (default: none).
+ *   trigger      — launches the picker as a dropdown from a button/text: string,
+ *                  Vnode, or (hex) => Vnode|string. Without it: standalone card.
+ *   close        — in dropdown mode, ButtonClose in the top corner:
+ *                  'end' (right, default) | 'start' (left) | false.
  *   size         — xs..xl (default md).
- *   className    — clase extra al root.
+ *   className    — extra class on the root.
  *
  * @type {import('mithril').Component<import('./index').ColorPickerAttrs>}
  */
@@ -125,12 +125,12 @@ export const ColorPicker = {
       ? vnode.attrs.value
       : (typeof vnode.attrs.defaultValue === 'string' ? vnode.attrs.defaultValue : '#623CEA')
     vnode.state.hex = rgbToHex(hexToRgb(initial) || { r: 98, g: 60, b: 234 })
-    // Borrador del input hex: permite pegar/editar libremente; solo se
-    // commitea (setHex) cuando el valor es válido, y al blur se revierte al
-    // hex si no lo era.
+    // Hex input draft: allows pasting/editing freely; it is only
+    // committed (setHex) when the value is valid, and on blur it reverts to the
+    // hex if it was not.
     vnode.state.draft = null
     vnode.state.mode = 'picker'
-    vnode.state.open = false // dropdown externo (modo trigger)
+    vnode.state.open = false // external dropdown (trigger mode)
     vnode.state.menuOpen = false
     vnode.state.copied = false
     vnode.state._copyTimer = null
@@ -145,12 +145,12 @@ export const ColorPicker = {
     const { value, defaultValue, onchange, copy = true, size, className, ...rest } = vnode.attrs
     const state = vnode.state
 
-    // Modos disponibles (allowlist/denylist) y modo activo resuelto: si el
-    // modo actual quedó fuera de los disponibles, usa el primero.
+    // Available modes (allowlist/denylist) and resolved active mode: if the
+    // current mode fell outside the available ones, it uses the first.
     const availableModes = resolveAvailableModes(vnode.attrs)
     const activeMode = availableModes.includes(state.mode) ? state.mode : availableModes[0]
 
-    // Fuente de verdad: hex (controlado → prop; no controlado → estado).
+    // Source of truth: hex (controlled → prop; uncontrolled → state).
     const hex = typeof value === 'string' ? value : state.hex
     const rgb = hexToRgb(hex) || { r: 0, g: 0, b: 0 }
 
@@ -164,17 +164,17 @@ export const ColorPicker = {
     const mode = MODES[activeMode] || MODES.picker
     const isPicker = activeMode === 'picker'
 
-    // Canales del modo actual, derivados del hex en cada render.
+    // Channels of the current mode, derived from the hex on every render.
     const channels = isPicker ? null : mode.fromHex(rgb)
 
-    // HSB derivado para el área 2D / hue del modo picker.
+    // HSB derived for the 2D area / hue of picker mode.
     const hsb = rgbToHsb(rgb)
     const hue = hsb.h
 
-    // Actualiza un canal (o s/b en picker) y recalcula hex.
+    // Updates a channel (or s/b in picker) and recomputes the hex.
     const setChannel = (channel, valuePct) => {
       if (activeMode === 'picker') {
-        // channel: 's' | 'b' — recibe 0-100; hue slider pasa channel 'h' 0-360.
+        // channel: 's' | 'b' — receives 0-100; hue slider passes channel 'h' 0-360.
         const next = channel === 'h'
           ? hsbToRgb({ h: valuePct, s: hsb.s, b: hsb.b })
           : hsbToRgb({ h: hue, s: channel === 's' ? valuePct : hsb.s, b: channel === 'b' ? valuePct : hsb.b })
@@ -185,7 +185,7 @@ export const ColorPicker = {
       setHex(mode.toHex(nextChannels))
     }
 
-    // Handler de drag genérico: posiciona por pointer dentro del track.
+    // Generic drag handler: positions by pointer inside the track.
     const startDrag = (e, channel, min, max) => {
       e.preventDefault()
       const el = e.currentTarget
@@ -225,10 +225,10 @@ export const ColorPicker = {
         if (state._copyTimer) clearTimeout(state._copyTimer)
         state._copyTimer = setTimeout(() => { state.copied = false; m.redraw() }, COPY_DURATION)
         m.redraw()
-      }).catch(() => { /* clipboard bloqueado — no-op */ })
+      }).catch(() => { /* clipboard blocked — no-op */ })
     }
 
-    // Slider 2D: gradiente compuesto vía hue (el recipe pinta ::before/::after).
+    // 2D slider: composite gradient via hue (the recipe paints ::before/::after).
     const gradientCursorLeft = `${hsb.s}%`
     const gradientCursorTop = `${100 - hsb.b}%`
 
@@ -259,8 +259,8 @@ export const ColorPicker = {
         style: { '--colorpicker-thumb-left': `${pct}%` },
       }))
 
-      // Modo "bare" (hue del Picker): solo la pista con su thumb, sin label ni
-      // valor — se entiende que es el tono.
+      // "bare" mode (Picker hue): only the track with its thumb, no label or
+      // value — it is understood to be the hue.
       if (opts.bare) return track
 
       return m('div', {
@@ -275,11 +275,11 @@ export const ColorPicker = {
       ])
     }
 
-    // ── Panel del picker (contenido sin la tarjeta del root) ────────────────
+    // ── Picker panel (content without the root card) ────────────────
     const panelContent = [
       isPicker
         ? m('div', { className: cx('colorpicker-picker', styles.picker) }, [
-            // Área 2D S/B
+            // 2D S/B area
             m('div', {
               className: cx('colorpicker-gradient', styles.gradient),
               key: 'gradient',
@@ -299,8 +299,8 @@ export const ColorPicker = {
               className: cx('colorpicker-cursor', styles.cursor),
               style: { '--colorpicker-cursor-left': gradientCursorLeft, '--colorpicker-cursor-top': gradientCursorTop },
             })),
-            // Slider de hue — solo la pista (bare): el usuario entiende que es
-            // el tono, sin etiqueta ni valor numérico.
+            // Hue slider — only the track (bare): the user understands it is
+            // the hue, without a label or numeric value.
             renderSlider({ key: 'h', i18n: 'colorpicker.hueLabel', min: 0, max: 360, fmt: (v) => `${Math.round(v)}°`, track: () => 'linear-gradient(to right, hsl(0 100% 50%), hsl(60 100% 50%), hsl(120 100% 50%), hsl(180 100% 50%), hsl(240 100% 50%), hsl(300 100% 50%), hsl(360 100% 50%))' }, { bare: true }),
           ])
         : m('div', { className: cx('colorpicker-sliders', styles.sliders) },
@@ -309,7 +309,7 @@ export const ColorPicker = {
       renderFooter(),
     ]
 
-    // ── Modo dropdown (prop `trigger`) ──────────────────────────────────────
+    // ── Dropdown mode (`trigger` prop) ──────────────────────────────────────
     const { trigger, close, ...dropdownRest } = rest
     if (trigger !== undefined) {
       const triggerNode = typeof trigger === 'function'
@@ -319,7 +319,7 @@ export const ColorPicker = {
               m('span', { className: cx('colorpicker-trigger-swatch', styles.triggerSwatch), style: { '--colorpicker-swatch-color': hex } }),
               trigger,
             ])
-          : trigger // Vnode: lo clona DropdownTrigger con aria + toggle
+          : trigger // Vnode: DropdownTrigger clones it with aria + toggle
 
       const showClose = close !== false
       const closeAlign = close === 'start' ? styles.closeStart : styles.closeEnd
@@ -329,10 +329,10 @@ export const ColorPicker = {
         onchange: (next) => { state.open = next; m.redraw() },
         placement: 'bottom-start',
         offset: 4,
-        // El panel no es un menú seleccionable: closeOnSelect=false evita que
-        // el click en el menú de modos ANIDADO (o cualquier item de menú
-        // interno) cierre el dropdown externo. El cierre es por click fuera
-        // o por el ButtonClose.
+        // The panel is not a selectable menu: closeOnSelect=false prevents
+        // a click in the NESTED mode menu (or any internal menu
+        // item) from closing the external dropdown. Closing is by click outside
+        // or by the ButtonClose.
         closeOnSelect: false,
         style: { '--colorpicker-hue': String(Math.round(hue)) },
         ...dropdownRest,
@@ -353,16 +353,16 @@ export const ColorPicker = {
       ])
     }
 
-    // ── Modo standalone (tarjeta) ───────────────────────────────────────────
+    // ── Standalone mode (card) ───────────────────────────────────────────
     return m('div', {
       className: cx('colorpicker', styles.root, className),
       style: { '--colorpicker-hue': String(Math.round(hue)) },
       ...rest,
     }, panelContent)
 
-    // ── helpers internos del view (cierran sobre state/rgb/hsb) ────────────
+    // ── internal view helpers (close over state/rgb/hsb) ────────────
 
-    /** drag 2D: calcula S (x) y B (y) desde el pointer dentro del área. */
+    /** 2D drag: computes S (x) and B (y) from the pointer inside the area. */
     function startDrag2D(e) {
       e.preventDefault()
       const el = e.currentTarget
@@ -390,9 +390,9 @@ export const ColorPicker = {
     }
 
     function renderHexRow() {
-      // Mientras hay draft (input enfocado) se muestra lo que el usuario
-      // escribe/pega; si es válido se commitea en vivo, si no, al blur se
-      // revierte al hex actual.
+      // While there is a draft (focused input), what the user
+      // types/pastes is shown; if valid it is committed live, if not, on blur it
+      // reverts to the current hex.
       const inputValue = state.draft !== null ? state.draft : hex
       return m('div', { className: cx('colorpicker-hex-row', styles.hexRow) }, [
         m('input', {
@@ -409,9 +409,9 @@ export const ColorPicker = {
           },
           oninput: (e) => {
             const raw = e.target.value
-            // El draft refleja siempre lo que hay en el input (permite pegar
-            // cualquier cosa); se commitea solo si parsea como hex (tolera
-            // espacios y # opcional). setHex recibe la versión limpia.
+            // The draft always reflects what is in the input (allows pasting
+            // anything); it is committed only if it parses as hex (tolerates
+            // spaces and an optional #). setHex receives the clean version.
             state.draft = raw
             const cleaned = raw.replace(/\s+/g, '')
             const parsed = hexToRgb(cleaned)
@@ -419,9 +419,9 @@ export const ColorPicker = {
             else m.redraw()
           },
           onblur: () => {
-            // Al salir, si el draft era válido ya se commiteó en oninput; si
-            // no, revierte al hex. Siempre se redibuja para sincronizar el
-            // value del input con el hex (o el draft null → hex).
+            // On exit, if the draft was valid it was already committed in oninput; if
+            // not, it reverts to the hex. It always redraws to sync the
+            // input value with the hex (or the null draft → hex).
             state.draft = null
             m.redraw()
           },
@@ -435,8 +435,8 @@ export const ColorPicker = {
     }
 
     function renderFooter() {
-      // Con un solo modo disponible no hay nada que elegir: se muestra el
-      // label estático (sin dropdown ni chevron).
+      // With a single available mode there is nothing to choose: the
+      // static label is shown (no dropdown or chevron).
       const modeControl = availableModes.length === 1
         ? m('span', { className: cx('colorpicker-mode-button', styles.modeButton) }, mode.label())
         : m(Dropdown, {

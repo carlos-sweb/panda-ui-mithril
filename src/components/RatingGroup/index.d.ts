@@ -1,27 +1,27 @@
 import { Component } from 'mithril'
 import type { PumSize, PumColor } from '../../types'
 
-/** Props del RatingGroup — envuelve Rating con label. Delega todas las props de Rating. */
+/** RatingGroup props — wraps Rating with a label. Delegates all Rating props. */
 export interface RatingGroupAttrs {
-  /** Texto del label (ej: "Puntuación"). Si no se pasa, no se muestra label. */
+  /** Label text (e.g. "Score"). If not passed, no label is shown. */
   label?: string
-  /** Valor actual del rating (modo controlado con onchange). */
+  /** Current rating value (controlled mode with onchange). */
   value?: number
-  /** Valor inicial (modo no controlado, estado interno). */
+  /** Initial value (uncontrolled mode, internal state). */
   defaultValue?: number
-  /** Cantidad máxima de estrellas. Default: 5. */
+  /** Maximum number of stars. Default: 5. */
   max?: number
-  /** Color de las estrellas. Default: warning. */
+  /** Star color. Default: warning. */
   color?: PumColor
-  /** Tamaño de las estrellas. Default: md. */
+  /** Star size. Default: md. */
   size?: PumSize
-  /** Si true, el rating es solo visual (no interactivo). */
+  /** If true, the rating is visual only (non-interactive). */
   readonly?: boolean
-  /** Callback al cambiar la puntuación. */
+  /** Callback when the score changes. */
   onchange?: (value: number) => void
-  /** Si true, muestra el valor numérico junto al label. Default: true. */
+  /** If true, shows the numeric value next to the label. Default: true. */
   showValue?: boolean
-  /** Clase CSS adicional. */
+  /** Additional CSS class. */
   className?: string
 }
 

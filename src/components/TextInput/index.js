@@ -3,8 +3,8 @@ import { textInput } from '../../../styled-system/recipes'
 import { cx } from '../../../styled-system/css'
 
 /**
- * Componente TextInput. Campo de texto de una línea (`<input type="text">`)
- * con variantes de color, tamaño y modo ghost.
+ * TextInput component. Single-line text field (`<input type="text">`)
+ * with color, size and ghost mode variants.
  *
  * @type {import('mithril').Component<import('./index').TextInputAttrs>}
  */

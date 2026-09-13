@@ -3,7 +3,7 @@ import { steps } from '../../../styled-system/recipes'
 import { cx } from '../../../styled-system/css'
 
 /**
- * Componente Steps. Progreso por pasos, horizontal o vertical.
+ * Steps component. Step progress, horizontal or vertical.
  *
  * @type {import('mithril').Component<import('./index').StepsAttrs>}
  */
@@ -20,7 +20,7 @@ export const Steps = {
 }
 
 /**
- * Paso individual; `color` cambia el color de su marcador.
+ * Individual step; `color` changes the color of its marker.
  *
  * @type {import('mithril').Component<import('./index').StepAttrs>}
  */
@@ -36,7 +36,7 @@ export const Step = {
 }
 
 /**
- * Icono opcional dentro de un paso (reemplaza el número por defecto).
+ * Optional icon inside a step (replaces the default number).
  *
  * @type {import('mithril').Component<import('./index').StepIconAttrs>}
  */

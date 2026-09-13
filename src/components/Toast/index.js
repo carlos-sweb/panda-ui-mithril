@@ -6,10 +6,10 @@ const VERTICALS = ['top', 'middle', 'bottom']
 const HORIZONTALS = ['start', 'center', 'end']
 
 /**
- * Componente Toast. Contenedor `position: fixed` para notificaciones; la
- * posición se define con tokens espacio-separados ("top end", "bottom start",
- * default "bottom end"). Los hijos entran con la animación `toast`
- * (keyframes del tema, ver `keyframes.toast` en panda.config.ts).
+ * Toast component. `position: fixed` container for notifications; the
+ * position is defined with space-separated tokens ("top end", "bottom start",
+ * default "bottom end"). The children enter with the `toast` animation
+ * (theme keyframes, see `keyframes.toast` in panda.config.ts).
  *
  * @type {import('mithril').Component<import('./index').ToastAttrs>}
  */

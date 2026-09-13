@@ -6,7 +6,7 @@ export interface ButtonCloseAttrs extends ComponentAttrs {
   variant?: 'outline' | 'dash' | 'soft' | 'ghost'
   size?: PumSize
   shape?: 'circle' | 'square'
-  /** Grosor del trazo del icono X. Default: 3 (lucide default). */
+  /** Stroke width of the X icon. Default: 3 (lucide default). */
   strokeWidth?: number
   disabled?: boolean
   [key: string]: unknown

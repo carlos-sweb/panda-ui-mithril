@@ -1,13 +1,13 @@
 import { defineSlotRecipe } from '@pandacss/dev'
 
 /**
- * ColorPicker — selector de color profesional multi-espacio (Picker 2D, HSB,
- * HSL, RGB, CMYK, LAB). Tarjeta flotante con área de degradado 2D arrastrable,
- * sliders por canal, entrada hex + swatch, menú de modo y botón copiar.
+ * ColorPicker — professional multi-space color selector (2D Picker, HSB,
+ * HSL, RGB, CMYK, LAB). Floating card with a draggable 2D gradient area,
+ * per-channel sliders, hex input + swatch, mode menu and copy button.
  *
- * Los degradados dinámicos (área 2D, pistas de los sliders) se aplican como
- * custom properties inline desde el componente (`--colorpicker-*`), no en el
- * recipe — son valores que dependen del color actual en cada render.
+ * Dynamic gradients (2D area, slider tracks) are applied as inline custom
+ * properties from the component (`--colorpicker-*`), not in the recipe —
+ * they are values that depend on the current color on every render.
  */
 export const colorPickerRecipe = defineSlotRecipe({
   className: 'colorpicker',
@@ -37,9 +37,9 @@ export const colorPickerRecipe = defineSlotRecipe({
     picker: {
       display: 'block',
     },
-    // Área 2D Saturación/Brillo para el hue actual. El degradado se compone en
-    // el componente (dos capas: blanco→hue horizontal, transparente→negro
-    // vertical) vía --colorpicker-hue.
+    // 2D Saturation/Brightness area for the current hue. The gradient is composed
+    // in the component (two layers: white→hue horizontal, transparent→black
+    // vertical) via --colorpicker-hue.
     gradient: {
       position: 'relative',
       width: '100%',
@@ -63,8 +63,8 @@ export const colorPickerRecipe = defineSlotRecipe({
         background: 'linear-gradient(to top, black, transparent)',
       },
     },
-    // left/top: posición dinámica del cursor 2D, vía --colorpicker-cursor-*
-    // (depende de saturación/brillo actuales, se fija inline desde el componente).
+    // left/top: dynamic position of the 2D cursor, via --colorpicker-cursor-*
+    // (depends on the current saturation/brightness, set inline from the component).
     cursor: {
       position: 'absolute',
       left: 'var(--colorpicker-cursor-left)',
@@ -88,8 +88,8 @@ export const colorPickerRecipe = defineSlotRecipe({
       flexDirection: 'column',
       gap: 'token(spacing.1)',
     },
-    // Cabecera de la fila: label a la izquierda, valor a la derecha, y el
-    // slider debajo.
+    // Row header: label on the left, value on the right, and the
+    // slider below.
     sliderHeader: {
       display: 'flex',
       alignItems: 'center',
@@ -104,8 +104,8 @@ export const colorPickerRecipe = defineSlotRecipe({
       textAlign: 'right',
       fontVariantNumeric: 'tabular-nums',
     },
-    // Pista del slider. El degradado lo pinta el componente inline
-    // (--colorpicker-track) porque depende de los canales actuales.
+    // Slider track. The gradient is painted by the component inline
+    // (--colorpicker-track) because it depends on the current channels.
     track: {
       position: 'relative',
       height: '0.875rem',
@@ -122,13 +122,13 @@ export const colorPickerRecipe = defineSlotRecipe({
         background: 'var(--colorpicker-track)',
       },
     },
-    // Slider de hue en modo Picker: solo la pista (sin label ni valor),
-    // separada del área 2D.
+    // Hue slider in Picker mode: only the track (no label or value),
+    // separated from the 2D area.
     hueTrack: {
       marginTop: 'token(spacing.3)',
     },
-    // left: posición dinámica del thumb en la pista, vía --colorpicker-thumb-left
-    // (depende del valor actual del canal, se fija inline desde el componente).
+    // left: dynamic position of the thumb on the track, via --colorpicker-thumb-left
+    // (depends on the channel's current value, set inline from the component).
     thumb: {
       position: 'absolute',
       left: 'var(--colorpicker-thumb-left)',
@@ -160,8 +160,8 @@ export const colorPickerRecipe = defineSlotRecipe({
       color: 'inherit',
       fontSize: '0.8125rem',
       fontFamily: 'token(fonts.mono)',
-      // El root tiene userSelect none; el input debe permitir seleccionar y
-      // pegar valores desde la web.
+      // The root has userSelect none; the input must allow selecting and
+      // pasting values from the web.
       userSelect: 'text',
       WebkitUserSelect: 'text',
       outline: 'none',
@@ -169,8 +169,8 @@ export const colorPickerRecipe = defineSlotRecipe({
         borderColor: 'primary',
       },
     },
-    // backgroundColor: hex actual, vía --colorpicker-swatch-color (compartida
-    // con triggerSwatch, se fija inline desde el componente en cada render).
+    // backgroundColor: current hex, via --colorpicker-swatch-color (shared
+    // with triggerSwatch, set inline from the component on every render).
     swatch: {
       width: '2.25rem',
       height: '2.25rem',
@@ -218,7 +218,7 @@ export const colorPickerRecipe = defineSlotRecipe({
       color: 'inherit',
       cursor: 'pointer',
     },
-    // Modo dropdown (prop `trigger`): trigger con swatch del color actual.
+    // Dropdown mode (`trigger` prop): trigger with a swatch of the current color.
     triggerButton: {
       display: 'inline-flex',
       alignItems: 'center',
@@ -233,8 +233,8 @@ export const colorPickerRecipe = defineSlotRecipe({
       backgroundColor: 'var(--colorpicker-swatch-color)',
       flexShrink: '0',
     },
-    // Contenedor del panel dentro del DropdownContent: ancla el ButtonClose
-    // (position absolute) y conserva el padding del picker.
+    // Panel container inside DropdownContent: anchors the ButtonClose
+    // (position absolute) and keeps the picker's padding.
     dropdownPanel: {
       position: 'relative',
       width: 'max-content',
@@ -245,9 +245,9 @@ export const colorPickerRecipe = defineSlotRecipe({
       color: 'base-content',
       userSelect: 'none',
     },
-    // Con ButtonClose visible se reserva espacio arriba para que el botón no
-    // tape el área 2D ni los sliders: el botón (top 8px + ~32px de alto) llega
-    // a los 40px, así que el contenido empieza a los 2.5rem.
+    // With ButtonClose visible, space is reserved at the top so the button does
+    // not cover the 2D area or the sliders: the button (top 8px + ~32px tall)
+    // reaches 40px, so the content starts at 2.5rem.
     dropdownPanelClose: {
       paddingTop: 'token(spacing.10)',
     },

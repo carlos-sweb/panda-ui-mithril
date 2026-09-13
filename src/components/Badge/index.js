@@ -3,8 +3,8 @@ import { badge } from '../../../styled-system/recipes'
 import { cx } from '../../../styled-system/css'
 
 /**
- * Componente Badge. Etiqueta pequeña para marcar estado, categoría o conteo,
- * con variantes de color, estilo (`outline`, `dash`, `soft`, `ghost`) y tamaño.
+ * Badge component. Small label to mark status, category or count,
+ * with color, style (`outline`, `dash`, `soft`, `ghost`) and size variants.
  *
  * @type {import('mithril').Component<import('./index').BadgeAttrs>}
  */

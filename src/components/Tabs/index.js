@@ -8,23 +8,23 @@ function resolveVariant(vnode) {
 }
 
 /**
- * Componente Tabs. Contenedor `tablist` de pestañas; acepta la variante
- * directa (`box`/`border`/`lift`) o los atajos booleanos `boxed`/`bordered`/
- * `lifted`, más el tamaño. Soporta modo controlado (`active`) y no controlado
- * (`defaultActive`).
+ * Tabs component. `tablist` container of tabs; accepts the direct
+ * variant (`box`/`border`/`lift`) or the boolean shortcuts `boxed`/`bordered`/
+ * `lifted`, plus the size. Supports controlled (`active`) and uncontrolled
+ * (`defaultActive`) mode.
  *
  * @type {import('mithril').Component<import('./index').TabsAttrs>}
  */
 export const Tabs = {
   oninit(vnode) {
-    // Estado interno: qué ref está activo
+    // Internal state: which ref is active
     vnode.state.activeRef = vnode.attrs.defaultActive ?? null
   },
 
   view(vnode) {
     const { 
-      active,           // Controlado externamente
-      defaultActive,    // Valor inicial no controlado
+      active,           // Controlled externally
+      defaultActive,    // Uncontrolled initial value
       onActiveChange,   // Callback
       variant, size, boxed, bordered, lifted, 
       className, 
@@ -33,12 +33,12 @@ export const Tabs = {
     
     const resolved = resolveVariant(vnode)
     
-    // Modo controlado vs no controlado
+    // Controlled vs uncontrolled mode
     const activeRef = active !== undefined ? active : vnode.state.activeRef
 
-    // Los hijos pueden venir envueltos en fragmentos (`tag: '['`) cuando se
-    // generan con `.map()`. Aplastarlos primero para que el clonado de abajo
-    // los vea como vnodes directos de Tab/TabContent.
+    // Children may come wrapped in fragments (`tag: '['`) when they are
+    // generated with `.map()`. Flatten them first so that the cloning below
+    // sees them as direct Tab/TabContent vnodes.
     const flatten = (nodes) => nodes.reduce((acc, node) => {
       if (node == null) return acc
       if (Array.isArray(node)) return acc.concat(flatten(node))
@@ -46,7 +46,7 @@ export const Tabs = {
       return acc.concat(node)
     }, [])
 
-    // Clonar hijos e inyectar active basado en ref
+    // Clone children and inject active based on ref
     const children = flatten(vnode.children).map(child => {
       if (child.tag === Tab || child.tag === TabContent) {
         return m(child.tag, {
@@ -60,18 +60,18 @@ export const Tabs = {
     return m('div', {
       role: 'tablist',
       className: cx('tabs', resolved && `tabs-${resolved}`, tabs({ variant: resolved, size }), className),
-      // Click handler: detecta qué tab se clickeó
+      // Click handler: detects which tab was clicked
       onclick: (e) => {
         const clickedTab = e.target.closest('[role="tab"]')
         if (!clickedTab) return
         
         const ref = clickedTab.dataset.ref
         if (ref && ref !== activeRef) {
-          // Modo no controlado: actualizar estado interno
+          // Uncontrolled mode: update internal state
           if (active === undefined) {
             vnode.state.activeRef = ref
           }
-          // Siempre llamar callback
+          // Always call callback
           onActiveChange && onActiveChange(ref)
         }
       },
@@ -106,7 +106,7 @@ export const Tabs = {
             break
           case 'Enter':
           case ' ':
-            // Activar tab enfocado
+            // Activate focused tab
             const ref = tabs[currentIndex].dataset.ref
             if (ref && ref !== activeRef) {
               if (active === undefined) {
@@ -129,8 +129,8 @@ export const Tabs = {
 }
 
 /**
- * Componente Tab. Pestaña individual (`<button role="tab">`); `active` marca
- * la selección y `disabled` deshabilita la interacción.
+ * Tab component. Individual tab (`<button role="tab">`); `active` marks
+ * the selection and `disabled` disables interaction.
  *
  * @type {import('mithril').Component<import('./index').TabAttrs>}
  */
@@ -156,8 +156,8 @@ export const Tab = {
 }
 
 /**
- * Componente TabContent. Panel de contenido asociado a una pestaña
- * (`role="tabpanel"`); con `active` se muestra.
+ * TabContent component. Content panel associated with a tab
+ * (`role="tabpanel"`); with `active` it is shown.
  *
  * @type {import('mithril').Component<import('./index').TabContentAttrs>}
  */

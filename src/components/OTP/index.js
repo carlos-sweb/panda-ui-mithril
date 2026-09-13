@@ -7,13 +7,13 @@ const ALPHANUMERIC_RE = /^[a-zA-Z0-9]$/
 const MASK_DEFAULT = '•'
 
 /**
- * Componente OTP. Código de un solo uso con un input real por celda (patrón
- * Mantine/Ant/PrimeReact): caret y focus nativos, avance de focus al teclear,
- * Backspace/flechas para navegar, paste de código completo, mask opcional,
- * estados disabled/readonly/error y eventos `onchange` (cada cambio) y
- * `oncomplete` (código completo).
+ * OTP component. One-time code with a real input per cell (Mantine/Ant/
+ * PrimeReact pattern): native caret and focus, focus advance on typing,
+ * Backspace/arrows to navigate, paste of a full code, optional mask,
+ * disabled/readonly/error states and `onchange` (every change) and
+ * `oncomplete` (complete code) events.
  *
- * Controlado: `value` + `onchange`. No controlado: `defaultValue`.
+ * Controlled: `value` + `onchange`. Uncontrolled: `defaultValue`.
  *
  * @type {import('mithril').Component<import('./index').OTPAttrs>}
  */
@@ -93,7 +93,7 @@ export const OTP = {
           const raw = e.target.value
           const ch = raw.slice(-1)
           if (ch && !re.test(ch)) {
-            // Carácter inválido: restaurar el valor anterior de la celda.
+            // Invalid character: restore the cell's previous value.
             e.target.value = display
             return
           }
@@ -101,7 +101,7 @@ export const OTP = {
           nextChars[i] = ch
           setValue(nextChars.join(''))
           if (ch) {
-            // Avanzar el focus a la siguiente celda vacía.
+            // Advance focus to the next empty cell.
             const nextEmpty = nextChars.findIndex((c, idx) => !c && idx > i)
             focusCell(nextEmpty === -1 ? i + 1 : nextEmpty)
           }
@@ -146,7 +146,7 @@ export const OTP = {
           focusCell(Math.min(i + chars.length - 1, length - 1))
         },
       }))
-      // Separador visual entre grupos de 3 celdas (p. ej. "123-456").
+      // Visual separator between groups of 3 cells (e.g. "123-456").
       if (separator && (i + 1) % 3 === 0 && i < length - 1) {
         cells.push(m('span', { key: `sep-${i}`, className: cx('otp-separator', styles.separator) }, separator))
       }
@@ -158,9 +158,9 @@ export const OTP = {
       ...rest,
     }, cells)
 
-    // Hidden input para formularios: si se pasa `name`, el valor real del código
-    // viaja en FormData al submit (patrón Mantine). Sin holes en el fragment
-    // (null rompe la regla de keys de Mithril) — solo se añade si existe.
+    // Hidden input for forms: if `name` is passed, the real code value
+    // travels in FormData on submit (Mantine pattern). No holes in the fragment
+    // (null breaks Mithril's key rule) — it is only added if it exists.
     const children = [group]
     if (name) children.push(m('input', { key: '__hidden__', type: 'hidden', name, value: current }))
 

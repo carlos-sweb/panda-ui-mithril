@@ -3,8 +3,8 @@ import { hero } from '../../../styled-system/recipes'
 import { cx } from '../../../styled-system/css'
 
 /**
- * Componente Hero. Sección hero de ancho completo; los hijos HeroOverlay y
- * HeroContent se superponen sobre el fondo en el mismo grid.
+ * Hero component. Full-width hero section; the HeroOverlay and
+ * HeroContent children overlap the background in the same grid.
  *
  * @type {import('mithril').Component<import('./index').HeroAttrs>}
  */
@@ -20,15 +20,15 @@ export const Hero = {
 }
 
 /**
- * Resultado cacheado de `hero({})` — los subcomponentes no pasan variantes,
- * así que las clases son determinísticas. Evita llamar al sva en cada render.
+ * Cached result of `hero({})` — subcomponents pass no variants,
+ * so the classes are deterministic. Avoids calling sva on every render.
  * @type {ReturnType<typeof hero>}
  */
 const defaultStyles = hero({})
 
 /**
- * Componente HeroContent. Contenido del hero, aislado por encima del overlay
- * (slot `content` de la recipe).
+ * HeroContent component. Hero content, isolated above the overlay
+ * (the recipe's `content` slot).
  *
  * @type {import('mithril').Component<import('./index').HeroContentAttrs>}
  */
@@ -40,8 +40,8 @@ export const HeroContent = {
 }
 
 /**
- * Componente HeroOverlay. Capa oscura sobre el fondo del hero (slot `overlay`
- * de la recipe).
+ * HeroOverlay component. Dark layer over the hero background (the recipe's
+ * `overlay` slot).
  *
  * @type {import('mithril').Component<import('./index').HeroOverlayAttrs>}
  */

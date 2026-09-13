@@ -1,15 +1,15 @@
 import { defineSlotRecipe, defineRecipe } from '@pandacss/dev'
 
 /**
- * Drawer — panel anclado a un borde de la pantalla que se desliza al abrir/cerrar.
- * Mismo mecanismo que Modal (dialog nativo + bridge JS de salida + @starting-style
- * de entrada por posición), pero sin posición "middle": siempre está anclado a
- * start/end (ancho = --drawer-size) o top/bottom (alto = --drawer-size).
+ * Drawer — panel anchored to a screen edge that slides in/out on open/close.
+ * Same mechanism as Modal (native dialog + JS exit bridge + per-position
+ * @starting-style entrance), but with no "middle" position: it is always anchored to
+ * start/end (width = --drawer-size) or top/bottom (height = --drawer-size).
  *
- * El tamaño se comunica con la custom property --drawer-size: la variante `size`
- * la define en el slot `drawer` (los presets) y el consumidor puede sobrescribirla
- * con un valor CSS arbitrario (p. ej. size="55%") — el slot `box` solo la consume
- * (width para start/end, height para top/bottom según la variante de posición).
+ * The size is communicated with the --drawer-size custom property: the `size` variant
+ * defines it on the `drawer` slot (the presets) and the consumer can override it
+ * with an arbitrary CSS value (e.g. size="55%") — the `box` slot only consumes it
+ * (width for start/end, height for top/bottom depending on the position variant).
  */
 export const drawerRecipe = defineSlotRecipe({
   className: 'drawer',
@@ -34,16 +34,16 @@ export const drawerRecipe = defineSlotRecipe({
         backgroundColor: 'color-mix(in oklab, black 40%, transparent)',
         backdropFilter: 'blur(2px)',
       },
-      // Entrada: @starting-style suministra el estado previo al render y la
-      // transición hacia los valores [open] corre en el primer render abierto.
+      // Entrance: @starting-style supplies the pre-render state and the
+      // transition into the [open] values runs on the first open render.
       '&[open]': {
         display: 'grid',
         placeItems: 'center',
-        // La fila/columna implícitas SIEMPRE igualan el dialog (minmax(0,1fr) =
-        // alto/ancho definidos del viewport, mínimo 0): con `1fr` a secas el
-        // mínimo es `auto` y la fila crece con el contenido — el panel seguiría
-        // al contenido y el DrawerBody (flex:1 + minHeight:0 + overflowY:auto)
-        // nunca llegaría a scrollear.
+        // The implicit row/column ALWAYS equals the dialog (minmax(0,1fr) =
+        // the viewport's defined height/width, minimum 0): with bare `1fr` the
+        // minimum is `auto` and the row grows with the content — the panel would
+        // follow the content and DrawerBody (flex:1 + minHeight:0 + overflowY:auto)
+        // would never get to scroll.
         gridAutoRows: 'minmax(0, 1fr)',
         gridAutoColumns: 'minmax(0, 1fr)',
         '& > .drawer-box': { opacity: '1' },
@@ -53,13 +53,13 @@ export const drawerRecipe = defineSlotRecipe({
         '&[open] > .drawer-box': { opacity: '0' },
         '&[open]::backdrop': { opacity: '0' },
       },
-      // Estado cerrado sin bridge JS (cierre nativo por ESC) — instantáneo.
+      // Closed state without the JS bridge (native close via ESC) — instant.
       '&:not([open])': {
         '& > .drawer-box': { opacity: '0' },
         '&::backdrop': { opacity: '0' },
       },
-      // Salida del panel: la posición sobrescribe el nombre del keyframe.
-      // Fallback por defecto (start) — las variantes lo reemplazan.
+      // Panel exit: the position overrides the keyframe name.
+      // Default fallback (start) — the variants replace it.
       '&.drawer-closing > .drawer-box': {
         '@media (prefers-reduced-motion: no-preference)': {
           animation: 'drawer-exit-start 0.2s ease-in forwards',
@@ -76,9 +76,9 @@ export const drawerRecipe = defineSlotRecipe({
       },
     },
     box: {
-      // El panel es intencionalmente cuadrado: un drawer va pegado al borde de la
-      // pantalla (patrón estándar en MUI/Ant/Chakra/Mantine) — sin radio
-      // interior. Si un consumidor quiere radio, lo añade vía className.
+      // The panel is intentionally square: a drawer sits flush against the screen
+      // edge (standard pattern in MUI/Ant/Chakra/Mantine) — no inner
+      // radius. If a consumer wants a radius, they add it via className.
       position: 'relative',
       gridColumnStart: '1',
       gridRowStart: '1',
@@ -140,8 +140,8 @@ export const drawerRecipe = defineSlotRecipe({
             width: '100%',
             height: 'var(--drawer-size, token(spacing.96))',
           },
-          // El transform de [open] DEBE ser la identidad: si solo cambiáramos el
-          // @starting-style, la transición interpolaría translateY(-100%) → scale(1).
+          // The [open] transform MUST be the identity: if we only changed the
+          // @starting-style, the transition would interpolate translateY(-100%) → scale(1).
           '&[open] > .drawer-box': { transform: 'translateY(0)' },
           '@starting-style': {
             '&[open] > .drawer-box': { opacity: '0', transform: 'translateY(-100%)' },
@@ -208,9 +208,9 @@ export const drawerRecipe = defineSlotRecipe({
         },
       },
     },
-    // La variante size vive en el slot `drawer` (no `box`): DrawerBox renderiza
-    // `drawer({}).box` sin variantes, así que los estilos de variante del slot box
-    // serían código muerto — igual que en modal.
+    // The size variant lives on the `drawer` slot (not `box`): DrawerBox renders
+    // `drawer({}).box` with no variants, so box-slot variant styles
+    // would be dead code — same as in modal.
     size: {
       xs: { drawer: { '--drawer-size': 'token(spacing.64)' } },   // 16rem
       sm: { drawer: { '--drawer-size': 'token(spacing.80)' } },   // 20rem

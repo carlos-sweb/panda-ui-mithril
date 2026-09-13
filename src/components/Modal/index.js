@@ -8,10 +8,10 @@ import { ButtonClose } from '../ButtonClose/index.js'
 const CLOSE_FALLBACK_MS = 240
 
 /**
- * Cierra el modal CON la animación de salida: añade .modal-closing, espera
- * animationend (fallback 240ms) y entonces dialog.close(). Es el mismo camino
- * para el cierre por prop (open=false) y para el botón X de buttonClose —
- * interacción 100% JS, sin trucos CSS/form.
+ * Closes the modal WITH the exit animation: adds .modal-closing, waits for
+ * animationend (240ms fallback) and then dialog.close(). It is the same path
+ * for closing via prop (open=false) and for buttonClose's X button —
+ * 100% JS interaction, no CSS/form tricks.
  * @param {Object} vnode */
 function animateClose(vnode) {
   const dialog = vnode.dom
@@ -41,9 +41,9 @@ function animateClose(vnode) {
 }
 
 /**
- * Componente Modal. Usa `<dialog>` nativo con `.showModal()`/`.close()`.
- * Las animaciones de entrada/salida y el bloqueo de scroll del body los maneja
- * CSS moderno (:has(), @starting-style, transition-behavior: allow-discrete).
+ * Modal component. Uses the native `<dialog>` with `.showModal()`/`.close()`.
+ * The entrance/exit animations and the body scroll lock are handled by
+ * modern CSS (:has(), @starting-style, transition-behavior: allow-discrete).
  *
  * @type {import('mithril').Component<import('./index').ModalAttrs>}
  */
@@ -55,8 +55,8 @@ export const Modal = {
   },
 
   /**
-   * Al montar: abre el <dialog> con showModal() si open=true,
-   * y registra el handler de cancel para persistent.
+   * On mount: opens the <dialog> with showModal() if open=true,
+   * and registers the cancel handler for persistent.
    * @param {Object} vnode */
   oncreate(vnode) {
     const dialog = vnode.dom
@@ -71,9 +71,9 @@ export const Modal = {
   },
 
   /**
-   * Sincroniza el <dialog> nativo con la prop `open`.
-   * - open → true: showModal() si no está abierto.
-   * - open → false: cierra con la animación (animateClose).
+   * Synchronizes the native <dialog> with the `open` prop.
+   * - open → true: showModal() if it is not open.
+   * - open → false: closes with the animation (animateClose).
    * @param {Object} vnode */
   onupdate(vnode) {
     const dialog = vnode.dom
@@ -87,8 +87,8 @@ export const Modal = {
   },
 
   /**
-   * Para consumidores que desmontan el Modal. Si el diálogo sigue abierto,
-   * lo cierra y dispara onclosed. @param {Object} vnode @returns {Promise<void>} */
+   * For consumers that unmount the Modal. If the dialog is still open,
+   * closes it and fires onclosed. @param {Object} vnode @returns {Promise<void>} */
   onbeforeremove(vnode) {
     if (vnode.dom.open) {
       vnode.dom.close()
@@ -97,7 +97,7 @@ export const Modal = {
     return Promise.resolve()
   },
 
-  /** Al desmontar: limpia el listener de cancel. @param {Object} vnode */
+  /** On unmount: cleans up the cancel listener. @param {Object} vnode */
   onremove(vnode) {
     if (vnode.state._cancelHandler) {
       vnode.dom.removeEventListener('cancel', vnode.state._cancelHandler)
@@ -106,7 +106,7 @@ export const Modal = {
   },
 
   /**
-   * Renderiza el <dialog> con clases de posición/tamaño y atributos ARIA.
+   * Renders the <dialog> with position/size classes and ARIA attributes.
    * @param {Object} vnode
    * @returns {import('mithril').Vnode} */
   view(vnode) {
@@ -129,8 +129,8 @@ export const Modal = {
             child._buttonCloseInjected = true
             const boxChildren = Array.isArray(child.children) ? [...child.children] : [child.children]
             boxChildren.push(
-              // El X es un botón JS puro: onclick dispara el bridge animado
-              // (animateClose) — mismo camino que el cierre por prop.
+              // The X is a pure JS button: onclick triggers the animated bridge
+              // (animateClose) — same path as closing via prop.
               m(ButtonClose, {
                 className: modalCloseButton(),
                 onclick: () => animateClose(vnode),
@@ -158,13 +158,13 @@ export const Modal = {
 }
 
 /**
- * Resultado cacheado de `modal({})` — los subcomponentes no pasan variantes,
- * así que las clases son determinísticas. Evita llamar al sva en cada render.
+ * Cached result of `modal({})` — the subcomponents pass no variants,
+ * so the classes are deterministic. Avoids calling the sva on every render.
  * @type {ReturnType<typeof modal>}
  */
 const defaultStyles = modal({})
 
-// ── Subcomponentes ──────────────────────────────────────────────
+// ── Subcomponents ──────────────────────────────────────────────
 
 /** @type {import('mithril').Component<import('./index').ModalBoxAttrs>} */
 export const ModalBox = {

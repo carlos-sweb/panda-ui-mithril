@@ -5,13 +5,13 @@ import { cx } from '../../../styled-system/css'
 
 
 /**
- * Indicador de carga. Animaciones `infinite` (spin/pulse) que no son migrables
- * a CSS moderno (@starting-style / transition-behavior), por eso se mantienen
- * como keyframes clásicos en el recipe `loading` (cva, single-slot).
+ * Loading indicator. `infinite` animations (spin/pulse) that are not migratable
+ * to modern CSS (@starting-style / transition-behavior), so they are kept
+ * as classic keyframes in the `loading` recipe (cva, single-slot).
  *
- * - `variant="spinner"` (default) renderiza el icono LoaderCircle con animación de giro.
- * - Las demás variantes (`dots`, `ring`, `ball`, `bars`, `infinity`) renderizan un `<span>`
- *   con la clase `loading-{variant}` definida en el recipe.
+ * - `variant="spinner"` (default) renders the LoaderCircle icon with a spinning animation.
+ * - The other variants (`dots`, `ring`, `ball`, `bars`, `infinity`) render a `<span>`
+ *   with the `loading-{variant}` class defined in the recipe.
  *
  * @type {import('mithril').Component<import('./index').LoadingAttrs>}
  */

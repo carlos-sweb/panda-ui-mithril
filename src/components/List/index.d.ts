@@ -10,64 +10,64 @@ import { ComponentAttrs } from '../../types'
  */
 export interface ListAttrs<T = unknown> extends Omit<ComponentAttrs, 'key'> {
   /**
-   * Array de datos. Cuando se pasa, el template de fila se repite por item
-   * (modo data-driven). Sin `data`, se usan los children explícitos
+   * Data array. When passed, the row template is repeated per item
+   * (data-driven mode). Without `data`, the explicit children are used
    * (`ListRow`/`ListCol`).
    */
   data?: readonly T[]
   /**
-   * Template de fila: `(item, index) => vnode`. Se repite `data.length` veces.
-   * Obligatorio cuando se pasa `data` (alternativa: un único child función).
+   * Row template: `(item, index) => vnode`. It repeats `data.length` times.
+   * Required when `data` is passed (alternative: a single child function).
    */
   render?: (item: T, index: number) => Vnode | null
   /**
-   * Accessor de clave de fila para el diffing de Mithril al
-   * redimensionar/reordenar: `(item, index) => string | number`. Default:
-   * índice. Se usa también como firma del modo `sortable` (recrea la instancia
-   * de SortableJS cuando cambia el conjunto de claves).
+   * Row key accessor for Mithril diffing when
+   * resizing/reordering: `(item, index) => string | number`. Default:
+   * index. It is also used as the signature of `sortable` mode (it recreates the
+   * SortableJS instance when the set of keys changes).
    */
   itemKey?: (item: T, index: number) => string | number
   /**
-   * @deprecated Alias de `itemKey`, conservado por compatibilidad. En Mithril
-   * `key` ES la clave del vnode: usarlo aquí mete el `<ul>` de List en el diff
-   * keyed y rompe el invariante de fragmento (todas las keys o ninguna) si la
-   * lista convive con hermanos sin key. Migra a `itemKey`.
+   * @deprecated Alias of `itemKey`, kept for compatibility. In Mithril
+   * `key` IS the vnode key: using it here pushes List's `<ul>` into the keyed
+   * diff and breaks the fragment invariant (all keys or none) if the
+   * list lives alongside siblings without a key. Migrate to `itemKey`.
    */
   key?: (item: T, index: number) => string | number
-  /** Fila estática al inicio de la lista (solo modo data-driven). */
+  /** Static row at the start of the list (data-driven mode only). */
   header?: Vnode | null
-  /** Fila estática al final de la lista (solo modo data-driven). */
+  /** Static row at the end of the list (data-driven mode only). */
   footer?: Vnode | null
-  /** Vnodes a mostrar cuando `data` está vacío. */
+  /** Vnodes to show when `data` is empty. */
   empty?: Vnode | Vnode[] | null
-  /** Mientras es `true`, muestra `loadingRows` filas Skeleton en vez de los datos. */
+  /** While it is `true`, shows `loadingRows` Skeleton rows instead of the data. */
   loading?: boolean
-  /** Cantidad de filas Skeleton con `loading`. Default: 3. */
+  /** Number of Skeleton rows with `loading`. Default: 3. */
   loadingRows?: number
-  /** Aplica el resaltado `hover` a todas las filas `ListRow` en modo data-driven. */
+  /** Applies the `hover` highlight to all `ListRow` rows in data-driven mode. */
   hover?: boolean
-  /** Renderiza `<ol>` en vez de `<ul>`. */
+  /** Renders `<ol>` instead of `<ul>`. */
   ordered?: boolean
   /**
-   * Habilita reordenar las filas arrastrándolas (solo modo data-driven,
-   * "sortable-self"). El drag NO se implementa desde cero: List envuelve
-   * SortableJS internamente. Por defecto se arrastra la fila completa; si el
-   * template incluye un `ListDragHandle`, el drag solo arranca desde el asa
-   * (recomendado cuando la fila tiene botones/inputs).
+   * Enables reordering rows by dragging them (data-driven mode only,
+   * "sortable-self"). The drag is NOT implemented from scratch: List wraps
+   * SortableJS internally. By default the whole row is dragged; if the
+   * template includes a `ListDragHandle`, the drag only starts from the handle
+   * (recommended when the row has buttons/inputs).
    */
   sortable?: boolean
   /**
-   * Callback controlado con el nuevo orden al soltar una fila:
-   * `(next: T[]) => void`. List nunca muta `data` — actualiza tu array desde
-   * `next` (patrón de Pagination/Table). Si el array no cambia, la lista
-   * vuelve a su orden previo en el próximo redraw.
+   * Controlled callback with the new order when a row is dropped:
+   * `(next: T[]) => void`. List never mutates `data` — update your array from
+   * `next` (the Pagination/Table pattern). If the array does not change, the list
+   * returns to its previous order on the next redraw.
    */
   onReorder?: (next: T[]) => void
   /**
-   * En modo data-driven los children pueden ser UNA función
-   * `(item, index) => vnode` — el template repetido por item (alternativa al
-   * prop `render`). Debe ser el único child. Con `data` sin template se lanza
-   * un error.
+   * In data-driven mode the children can be ONE function
+   * `(item, index) => vnode` — the template repeated per item (alternative to
+   * the `render` prop). It must be the only child. With `data` and no template
+   * an error is thrown.
    */
   children?: Vnode | Vnode[] | string | ((item: T, index: number) => Vnode | null) | null
   [key: string]: unknown
@@ -88,7 +88,7 @@ export interface ListColAttrs extends ComponentAttrs {
 
 export interface ListDragHandleAttrs extends ComponentAttrs {
   /**
-   * Tamaño del icono GripVertical en px. Default: 16.
+   * Size of the GripVertical icon in px. Default: 16.
    */
   size?: number
   children?: Vnode | Vnode[] | string | null

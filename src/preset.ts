@@ -169,9 +169,9 @@ export const pumPreset = definePreset({
   },
   globalCss: {
     ':root': {
-      // La fuente base viene del token fonts.sans (no hardcodeada): así el
-      // editor de fuentes (config-ui) y los consumidores pueden cambiar la
-      // tipografía del proyecto vía pum/theme/fonts.ts y se aplica de verdad.
+      // The base font comes from the fonts.sans token (not hardcoded): this way
+      // the font editor (config-ui) and consumers can change the project's
+      // typography via pum/theme/fonts.ts and it actually applies.
       fontFamily: 'var(--fonts-sans)',
       '--size-field': '.25rem',
       '--size': 'calc(var(--size-field,.25rem) * 10)',
@@ -191,11 +191,11 @@ export const pumPreset = definePreset({
     'body:has(dialog[open])': {
       overflow: 'hidden',
     },
-    // List en modo `sortable` marca el <body> con `list-dragging` mientras dura
-    // el arrastre (ver setDraggingCursor en src/components/List/index.js): así
-    // el cursor sigue diciendo "arrastrando" aunque el puntero salga de la
-    // fila, de la lista o caiga sobre otro componente. El `!` (important) es
-    // deliberado: gana a cualquier cursor declarado por lo que quede debajo.
+    // List in `sortable` mode marks the <body> with `list-dragging` for the
+    // duration of the drag (see setDraggingCursor in src/components/List/index.js):
+    // this way the cursor keeps saying "dragging" even if the pointer leaves the
+    // row, the list, or lands on another component. The `!` (important) is
+    // deliberate: it beats any cursor declared by whatever sits underneath.
     'body.list-dragging, body.list-dragging *': {
       cursor: 'grabbing!',
     },

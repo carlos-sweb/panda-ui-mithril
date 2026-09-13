@@ -3,8 +3,8 @@ import { select } from '../../../styled-system/recipes'
 import { cx } from '../../../styled-system/css'
 
 /**
- * Componente Select. Menú desplegable (`<select>`) con variantes de color,
- * tamaño y modo ghost. Las opciones se pasan como children (`<option>`).
+ * Select component. Dropdown menu (`<select>`) with color,
+ * size and ghost mode variants. The options are passed as children (`<option>`).
  *
  * @type {import('mithril').Component<import('./index').SelectAttrs>}
  */

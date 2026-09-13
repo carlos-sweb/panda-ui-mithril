@@ -4,8 +4,8 @@ import { cx } from '../../../styled-system/css'
 import { ratingGroup, ratingGroupLabel } from '../../../styled-system/recipes'
 
 /**
- * RatingGroup — envuelve un Rating con label y display de valor.
- * Delega todas las props de Rating internamente.
+ * RatingGroup — wraps a Rating with a label and a value display.
+ * Delegates all Rating props internally.
  *
  * @type {import('mithril').Component<import('./index').RatingGroupAttrs>}
  */

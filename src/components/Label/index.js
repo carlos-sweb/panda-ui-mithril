@@ -3,9 +3,9 @@ import { label } from '../../../styled-system/recipes'
 import { cx } from '../../../styled-system/css'
 
 /**
- * Componente Label. Etiqueta para un campo de formulario. Con `floating`
- * renderiza un `<label>` flotante que se superpone al input en lugar de un
- * `<span>` en línea.
+ * Label component. Label for a form field. With `floating`
+ * it renders a floating `<label>` that overlaps the input instead of an
+ * inline `<span>`.
  *
  * @type {import('mithril').Component<import('./index').LabelAttrs>}
  */

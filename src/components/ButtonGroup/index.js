@@ -3,8 +3,8 @@ import { buttonGroup } from '../../../styled-system/recipes'
 import { cx } from '../../../styled-system/css'
 
 /**
- * ButtonGroup — agrupa botones horizontalmente unificando bordes.
- * Las variantes del grupo se propagan a los hijos si estos no las definen.
+ * ButtonGroup — groups buttons horizontally with unified borders.
+ * The group's variants propagate to the children unless they define their own.
  *
  * @type {import('mithril').Component<import('./index').ButtonGroupAttrs>}
  */

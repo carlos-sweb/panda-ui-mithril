@@ -3,9 +3,9 @@ import { gridPUM } from '../../../styled-system/recipes'
 import { cx } from '../../../styled-system/css'
 
 /**
- * Componente Grid. Contenedor CSS Grid; `Cell` es su hijo directo (mismo
- * folder, mismo slot-recipe). `cols` controla el número de columnas y `gap`
- * la separación entre celdas.
+ * Grid component. CSS Grid container; `Cell` is its direct child (same
+ * folder, same slot-recipe). `cols` controls the number of columns and `gap`
+ * the spacing between cells.
  *
  * @type {import('mithril').Component<import('./index').GridAttrs>}
  */
@@ -17,8 +17,8 @@ export const Grid = {
 }
 
 /**
- * Componente Cell. Celda hija de `Grid`; `span` controla cuántas columnas
- * ocupa. Vive dentro de Grid — no tiene página propia ni subpath de paquete.
+ * Cell component. Child cell of `Grid`; `span` controls how many columns
+ * it occupies. It lives inside Grid — it has no page of its own or package subpath.
  *
  * @type {import('mithril').Component<import('./index').CellAttrs>}
  */

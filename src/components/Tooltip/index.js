@@ -3,21 +3,21 @@ import { tooltip } from '../../../styled-system/recipes'
 import { cx } from '../../../styled-system/css'
 
 /**
- * Tooltip. Muestra información adicional (`tip`) al hacer hover, al recibir
- * focus-visible o de forma imperativa vía `open`.
+ * Tooltip. Shows additional information (`tip`) on hover, on receiving
+ * focus-visible or imperatively via `open`.
  *
- * - La burbuja y la cola son pseudo-elementos (`:before`/`:after`) que están
- *   siempre en el DOM con `opacity: 0`; el recipe los anima a `opacity: 1`
- *   con `transition` (ver `recipes.ts`).
- * - Hover y focus-visible ya son 100% CSS (selectores `:hover` y
- *   `:has(:focus-visible)` en el recipe). El prop `open` cubre el estado
- *   controlado por el consumidor (cualquier condición que no sea hover/focus,
- *   ej. click, timer, máquina de estados) añadiendo la clase `tooltip-open`.
- * - No es migrable a `@starting-style` + `transition`: los pseudo-elementos
- *   nunca pasan por `display: none` (siempre existen a `opacity: 0`), así que
- *   `@starting-style` jamás se dispara; y tampoco puede expresar estado
- *   arbitrario de JS, solo inserción/cambios de display. La clase imperativa
- *   `tooltip-open` se mantiene.
+ * - The bubble and the tail are pseudo-elements (`:before`/`:after`) that are
+ *   always in the DOM with `opacity: 0`; the recipe animates them to `opacity: 1`
+ *   with `transition` (see `recipes.ts`).
+ * - Hover and focus-visible are already 100% CSS (selectors `:hover` and
+ *   `:has(:focus-visible)` in the recipe). The `open` prop covers the state
+ *   controlled by the consumer (any condition other than hover/focus,
+ *   e.g. click, timer, state machine) by adding the `tooltip-open` class.
+ * - It is not migratable to `@starting-style` + `transition`: the pseudo-elements
+ *   never go through `display: none` (they always exist at `opacity: 0`), so
+ *   `@starting-style` never fires; and it also cannot express arbitrary
+ *   JS state, only insertion/display changes. The imperative class
+ *   `tooltip-open` is kept.
  *
  * @type {import('mithril').Component<import('./index').TooltipAttrs>}
  */

@@ -1,5 +1,5 @@
 /**
- * Keyframes de panda-ui-mithril (animaciones de los componentes).
+ * panda-ui-mithril keyframes (component animations).
  */
 
 export const themeKeyframes = {

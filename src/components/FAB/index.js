@@ -9,8 +9,8 @@ import { cx } from '../../../styled-system/css'
 // closing on outside click, Escape key, and firing a callback when an
 // FABAction is chosen (so the menu can close itself after a selection).
 /**
- * Componente FAB (Floating Action Button). Contenedor de acciones flotantes;
- * con `flower` despliega las acciones en semicírculo en vez de una pila vertical.
+ * FAB component (Floating Action Button). Floating actions container;
+ * with `flower` it spreads the actions in a semicircle instead of a vertical stack.
  *
  * @type {import('mithril').Component<import('./index').FABAttrs>}
  */
@@ -26,7 +26,7 @@ export const FAB = {
 }
 
 /**
- * Botón principal del FAB: círculo grande de color que abre/cierra las acciones.
+ * FAB main button: large colored circle that opens/closes the actions.
  *
  * @type {import('mithril').Component<import('./index').FABMainAttrs>}
  */
@@ -44,8 +44,8 @@ export const FABMain = {
 }
 
 /**
- * Acción individual del FAB, con etiqueta de texto opcional (`label`)
- * y color propio.
+ * Individual FAB action, with an optional text label (`label`)
+ * and its own color.
  *
  * @type {import('mithril').Component<import('./index').FABActionAttrs>}
  */

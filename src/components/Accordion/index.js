@@ -3,9 +3,9 @@ import { collapse, collapseTitle } from '../../../styled-system/recipes'
 import { cx } from '../../../styled-system/css'
 
 /**
- * Componente Accordion. Panel colapsable accionado por un `<input>` oculto
- * (checkbox, o radio si se pasa `name` para agrupar). Variantes `arrow`,
- * `plus` y `border`. Alias: Collapse.
+ * Accordion component. Collapsible panel driven by a hidden `<input>`
+ * (checkbox, or radio if `name` is passed to group them). Variants `arrow`,
+ * `plus` and `border`. Alias: Collapse.
  *
  * @type {import('mithril').Component<import('./index').AccordionAttrs>}
  */
@@ -43,7 +43,7 @@ export const Accordion = {
 }
 
 /**
- * Componente AccordionTitle. Cabecera clicable del panel (`collapse-title`).
+ * AccordionTitle component. Clickable panel header (`collapse-title`).
  *
  * @type {import('mithril').Component<import('./index').AccordionTitleAttrs>}
  */
@@ -55,8 +55,8 @@ export const AccordionTitle = {
 }
 
 /**
- * Componente AccordionContent. Cuerpo del panel (`collapse-content`); se
- * muestra/oculta según el estado del `<input>`.
+ * AccordionContent component. Panel body (`collapse-content`); it is
+ * shown/hidden according to the `<input>` state.
  *
  * @type {import('mithril').Component<import('./index').AccordionContentAttrs>}
  */
@@ -68,19 +68,19 @@ export const AccordionContent = {
 }
 
 /**
- * Alias de Accordion.
+ * Alias of Accordion.
  * @type {import('mithril').Component<import('./index').AccordionAttrs>}
  */
 export const Collapse = Accordion
 
 /**
- * Alias de AccordionTitle.
+ * Alias of AccordionTitle.
  * @type {import('mithril').Component<import('./index').AccordionTitleAttrs>}
  */
 export const CollapseTitle = AccordionTitle
 
 /**
- * Alias de AccordionContent.
+ * Alias of AccordionContent.
  * @type {import('mithril').Component<import('./index').AccordionContentAttrs>}
  */
 export const CollapseContent = AccordionContent

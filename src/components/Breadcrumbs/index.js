@@ -3,8 +3,8 @@ import { breadcrumbs } from '../../../styled-system/recipes'
 import { cx } from '../../../styled-system/css'
 
 /**
- * Componente Breadcrumbs. Miga de pan con separador en chevron entre items.
- * Acepta un array `items` ({label, href}) o contenido como children.
+ * Breadcrumbs component. Breadcrumb trail with a chevron separator between
+ * items. Accepts an `items` array ({label, href}) or children content.
  *
  * @type {import('mithril').Component<import('./index').BreadcrumbsAttrs>}
  */

@@ -3,8 +3,8 @@ import { stackPUM } from '../../../styled-system/recipes'
 import { cx } from '../../../styled-system/css'
 
 /**
- * Stack — apila hijos vertical u horizontalmente con gap configurable
- * y responsive. Inspirado en MUI/Chakra/Primer Stack.
+ * Stack — stacks children vertically or horizontally with a configurable,
+ * responsive gap. Inspired by MUI/Chakra/Primer Stack.
  *
  * @type {import('mithril').Component<import('./index').StackAttrs>}
  */

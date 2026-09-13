@@ -13,14 +13,14 @@ export const tableRecipe = defineSlotRecipe({
       textAlign: 'left',
       borderRadius: 'var(--radius-box)',
 
-      // Columna ordenable (modo data-driven): cursor + icono espaciado.
+      // Sortable column (data-driven mode): cursor + spaced icon.
       '& :where(th.sortable)': {
         cursor: 'pointer',
         userSelect: 'none',
         '& svg': { marginInlineStart: 'token(spacing.1)', opacity: '0.5' },
         '&:hover svg': { opacity: '1' },
       },
-      // Columna con orden activo: encabezado destacado.
+      // Column with active sort: highlighted header.
       '& :where(th[aria-sort])': {
         color: 'base-content',
         '& svg': { opacity: '1' },
@@ -43,8 +43,8 @@ export const tableRecipe = defineSlotRecipe({
       '& :where(thead tr :is(td, th), tbody tr:not(:last-child) :is(td, th))': {
         borderBottom: 'var(--border, 1px) solid color-mix(in oklab, token(colors.base-content) 5%, transparent)',
       },
-      // Celdas de carga (loading): el Skeleton base es un bloque sin dimensión;
-      // la celda lo dimensiona como línea de texto (1em) para que sea visible.
+      // Loading cells: the base Skeleton is a block with no dimension;
+      // the cell sizes it like a line of text (1em) so it is visible.
       '& .table-cell-loading .skeleton': {
         height: '1em',
         width: '100%',
@@ -52,17 +52,17 @@ export const tableRecipe = defineSlotRecipe({
       },
     },
     row: {},
-    // Wrapper del modo data-driven: la paginación vive dentro, espaciada y
-    // alineada a la derecha (aparece sola cuando hay más de una página).
+    // Data-driven mode wrapper: the pagination lives inside, spaced and
+    // right-aligned (it appears on its own when there is more than one page).
     data: {
       width: '100%',
       '& > .pagination': {
         marginTop: 'token(spacing.4)',
         justifyContent: 'flex-end',
       },
-      // Barra inferior con selector de filas por página (pageSizeOptions) +
-      // Pagination: agrupados a la derecha, el selector flota a la izquierda
-      // de la paginación.
+      // Bottom bar with the rows-per-page selector (pageSizeOptions) +
+      // Pagination: grouped on the right, the selector floats to the left
+      // of the pagination.
       '& > .table-pagination-bar': {
         display: 'flex',
         alignItems: 'center',
@@ -120,8 +120,8 @@ export const tableRecipe = defineSlotRecipe({
         },
       },
     },
-    // Tabla con rejilla completa: borde exterior + divisores verticales entre
-    // columnas (los separadores horizontales ya están en el base).
+    // Table with a full grid: outer border + vertical dividers between
+    // columns (the horizontal separators are already in the base).
     bordered: {
       true: {
         table: {
@@ -140,9 +140,9 @@ export const tableRecipe = defineSlotRecipe({
         },
       },
     },
-    // Sticky header: solo el thead se fija arriba dentro del contenedor
-    // scrollable (emparejar con TableContainer/Table `maxHeight`). Sticky a
-    // nivel de celda (th) — patrón MUI, más compatible que en `thead`.
+    // Sticky header: only the thead is pinned to the top inside the
+    // scrollable container (pair with TableContainer/Table `maxHeight`). Sticky at
+    // the cell level (th) — MUI pattern, more compatible than on `thead`.
     stickyHeader: {
       true: {
         table: {
@@ -179,7 +179,7 @@ export const tableRecipe = defineSlotRecipe({
 
 export const tableOverflowRecipe = defineRecipe({
   className : 'table-overflow',
-  // Ambos ejes: sin `maxHeight` el vertical no scrollea (el contenido cabe);
-  // con `maxHeight` (prop de TableContainer) aparece el scroll vertical.
+  // Both axes: without `maxHeight` the vertical one does not scroll (the content fits);
+  // with `maxHeight` (a TableContainer prop) vertical scrolling appears.
   base: { overflow: 'auto' },
 })

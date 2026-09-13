@@ -1,58 +1,58 @@
 import Sortable from 'sortablejs'
 
 /**
- * Puente (wrapper) sobre SortableJS para el modo `sortable` de List.
+ * Bridge (wrapper) over SortableJS for List's `sortable` mode.
  *
- * No implementamos un motor de drag-and-drop propio: esta es la ÚNICA pieza
- * que importa `sortablejs`. El wrapper se encarga de
- *  - crear/destruir la instancia `Sortable.create` sobre el contenedor (el
- *    `<ul>`/`<ol>` de List),
- *  - decidir el modo de agarre: si el contenedor contiene asas `.list-drag-
- *    handle` (componente ListDragHandle) el drag solo arranca desde ellas
- *    (`handle` de SortableJS); si no, se arrastra la fila completa,
- *  - aplicar las clases visuales (`list-sort-whole`/`list-sort-handle` en el
- *    contenedor, `list-sort-ghost`/`list-sort-chosen` en las filas durante el
- *    drag), que el recipe `list.ts` estiliza.
+ * We do not implement our own drag-and-drop engine: this is the ONLY piece
+ * that imports `sortablejs`. The wrapper takes care of
+ *  - creating/destroying the `Sortable.create` instance on the container (List's
+ *    `<ul>`/`<ol>`),
+ *  - deciding the grab mode: if the container contains `.list-drag-
+ *    handle` handles (the ListDragHandle component) the drag only starts from them
+ *    (SortableJS's `handle`); if not, the whole row is dragged,
+ *  - applying the visual classes (`list-sort-whole`/`list-sort-handle` on the
+ *    container, `list-sort-ghost`/`list-sort-chosen` on the rows during the
+ *    drag), which the `list.ts` recipe styles.
  *
- * El puente NUNCA conoce el modelo de datos: expone hooks (`onStart`/`onEnd`)
- * y List reconcilia el orden nuevo contra su array controlado usando los
- * índices del propio evento de SortableJS (old/newDraggableIndex) vía
- * `onReorder`. Toda mutación del array la hace el padre.
+ * The bridge NEVER knows the data model: it exposes hooks (`onStart`/`onEnd`)
+ * and List reconciles the new order against its controlled array using
+ * SortableJS's own event indices (old/newDraggableIndex) via
+ * `onReorder`. All array mutation is done by the parent.
  */
 
-/** Crea la instancia Sortable sobre `el` y ajusta las clases de modo. */
+/** Creates the Sortable instance on `el` and adjusts the mode classes. */
 export function createListSortable(el, hooks = {}) {
   const { onStart, onEnd } = hooks
   if (!el) return null
 
-  // Modo de agarre: si el template incluye asas, SortableJS restringe el drag
-  // a ellas (handle); en caso contrario se arrastra la fila entera.
+  // Grab mode: if the template includes handles, SortableJS restricts the drag
+  // to them (handle); otherwise the whole row is dragged.
   const handleMode = el.querySelector('.list-drag-handle') != null
   el.classList.remove('list-sort-whole', 'list-sort-handle')
   el.classList.add(handleMode ? 'list-sort-handle' : 'list-sort-whole')
 
   const options = {
     animation: 150,
-    // NADA de drag nativo HTML5 (`forceFallback: true`). Con el drag nativo
-    // (`nativeDraggable`, el default en desktop) el navegador se adueña del
-    // cursor mientras la fila "vuela" y pinta su propia flecha IGNORANDO el
-    // CSS: verificado en el navegador que con el default se dispara `dragstart`
-    // y el `cursor: grabbing` computado no se pinta. Con el fallback SortableJS
-    // mueve un clon con eventos de mouse, así que el cursor real (recipe +
-    // `body.list-dragging`, ver más abajo) sí se aplica. En touch ya se usaba
-    // el fallback de todos modos.
+    // NO native HTML5 drag (`forceFallback: true`). With native drag
+    // (`nativeDraggable`, the desktop default) the browser takes over the
+    // cursor while the row "flies" and paints its own arrow IGNORING the
+    // CSS: verified in the browser that with the default `dragstart` fires
+    // and the computed `cursor: grabbing` is not painted. With the fallback SortableJS
+    // moves a clone with mouse events, so the real cursor (recipe +
+    // `body.list-dragging`, see below) does apply. On touch the
+    // fallback was used anyway.
     forceFallback: true,
-    // Umbral en px del fallback antes de considerar que es un arrastre (evita
-    // que un clic con micro-movimiento levante la fila).
+    // Fallback threshold in px before considering it a drag (it avoids
+    // a click with micro-movement lifting the row).
     fallbackTolerance: 3,
-    // Clases que SortableJS aplica durante el drag (recipe list.ts). En
-    // fallback el clon que sigue al puntero recibe `dragClass` + `fallbackClass`
-    // (el default `sortable-fallback` es un nombre ajeno al proyecto).
+    // Classes SortableJS applies during the drag (list.ts recipe). In
+    // fallback the clone that follows the pointer receives `dragClass` + `fallbackClass`
+    // (the default `sortable-fallback` is a name foreign to the project).
     ghostClass: 'list-sort-ghost',
     chosenClass: 'list-sort-chosen',
     dragClass: 'list-sort-drag',
     fallbackClass: 'list-sort-drag',
-    // Header/footer de List no son arrastrables (filas estáticas).
+    // List's header/footer are not draggable (static rows).
     filter: '.list-static',
     onStart,
     onEnd,
@@ -62,13 +62,13 @@ export function createListSortable(el, hooks = {}) {
   return Sortable.create(el, options)
 }
 
-/** Destruye la instancia Sortable si existe (devuelve null para encadenar). */
+/** Destroys the Sortable instance if it exists (returns null for chaining). */
 export function destroyListSortable(sortable) {
   if (!sortable) return null
   try {
     sortable.destroy()
   } catch {
-    // Ya destruida o drag interrumpido: no hay nada que limpiar.
+    // Already destroyed or interrupted drag: there is nothing to clean up.
   }
   return null
 }

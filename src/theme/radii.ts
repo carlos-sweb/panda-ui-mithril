@@ -1,7 +1,7 @@
 import { defineTokens } from '@pandacss/dev'
 
 /**
- * Radios de panda-ui-mithril.
+ * panda-ui-mithril radii.
  */
 
 export const radiiTokens = defineTokens({

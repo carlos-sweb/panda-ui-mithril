@@ -1,11 +1,11 @@
 import { defineTokens } from '@pandacss/dev'
 
 /**
- * Escala de espaciado extra de panda-ui-mithril.
+ * Extra spacing scale of panda-ui-mithril.
  *
- * Solo las claves más allá de la escala nativa de Panda (0.5–96); la escala
- * nativa la provee Panda mismo y no se sobrescribe (extender reemplazaría
- * toda la categoría).
+ * Only the keys beyond Panda's native scale (0.5–96); the native
+ * scale is provided by Panda itself and is not overwritten (extending would replace
+ * the whole category).
  */
 
 export const spacingTokens = defineTokens({

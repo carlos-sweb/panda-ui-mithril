@@ -6,47 +6,47 @@ import { Skeleton } from '../Skeleton/index.js'
 import { createListSortable, destroyListSortable } from './sortable.js'
 
 /**
- * Componente List. Lista vertical con separadores entre filas; los hijos
- * (`ListRow`/`ListCol`) se distribuyen en grid. Usa el slot `list` de la recipe.
+ * List component. Vertical list with separators between rows; the children
+ * (`ListRow`/`ListCol`) are laid out in a grid. Uses the recipe's `list` slot.
  *
- * Modos de uso:
- *  - **Compositivo** (sin `data`): children explícitos (`ListRow`/`ListCol`).
- *  - **Data-driven** (con `data`): el template se repite por item vía el prop
- *    `render={(item, index) => vnode}`. `itemKey` controla el diffing al
- *    redimensionar/reordenar (default: índice). `header`/`footer` agregan
- *    filas estáticas, `empty` el estado vacío, `loading`/`loadingRows` filas
- *    Skeleton, `hover` resalta todas las filas y `ordered` renderiza `<ol>`.
- *    Los children también pueden ser UNA función `(item, index) => vnode`
- *    (único child) como alternativa legada a `render`.
+ * Usage modes:
+ *  - **Compositional** (no `data`): explicit children (`ListRow`/`ListCol`).
+ *  - **Data-driven** (with `data`): the template repeats per item via the prop
+ *    `render={(item, index) => vnode}`. `itemKey` controls diffing when
+ *    resizing/reordering (default: index). `header`/`footer` add
+ *    static rows, `empty` the empty state, `loading`/`loadingRows` Skeleton
+ *    rows, `hover` highlights all rows and `ordered` renders `<ol>`.
+ *    The children can also be ONE function `(item, index) => vnode`
+ *    (only child) as a legacy alternative to `render`.
  *
- *  - **Sortable (sortable-self)**: con `sortable` las filas del modo
- *    data-driven se reordenan arrastrándolas. El drag NO se implementa desde
- *    cero: List envuelve SortableJS internamente (ver ./sortable.js); la API
- *    pública es controlada — List nunca muta `data`, al soltar una fila llama
- *    `onReorder(next)` y el padre actualiza su array (patrón Pagination/
- *    Table). Por defecto se arrastra la fila completa; si el template incluye
- *    un `ListDragHandle`, el drag solo arranca desde el asa (recomendado
- *    cuando la fila tiene botones/inputs). `header`/`footer` son filas
- *    estáticas: no se arrastran y no cuentan en el índice reordenado, así que
- *    se pueden combinar con `sortable` (ver draggableIndexOf).
+ *  - **Sortable (sortable-self)**: with `sortable` the rows of
+ *    data-driven mode are reordered by dragging them. The drag is NOT implemented from
+ *    scratch: List wraps SortableJS internally (see ./sortable.js); the
+ *    public API is controlled — List never mutates `data`, on dropping a row it calls
+ *    `onReorder(next)` and the parent updates its array (the Pagination/
+ *    Table pattern). By default the whole row is dragged; if the template includes
+ *    a `ListDragHandle`, the drag only starts from the handle (recommended
+ *    when the row has buttons/inputs). `header`/`footer` are static
+ *    rows: they are not draggable and do not count in the reordered index, so
+ *    they can be combined with `sortable` (see draggableIndexOf).
  *
- * Nota: `header`/`footer` solo aplican en modo data-driven (en el modo
- * compositivo la cabecera se agrega como un `ListRow` normal).
+ * Note: `header`/`footer` only apply in data-driven mode (in
+ * compositional mode the header is added as a normal `ListRow`).
  *
  * @type {import('mithril').Component<import('./index').ListAttrs>}
  */
 export const List = {
-  // El estado del sortable vive en `sortRecords`, un WeakMap keyed por el
-  // elemento DOM del <ul>: sobrevive aunque Mithril recree el componente
-  // (vnode.state no es estable aquí) y se limpia solo en onremove.
+  // The sortable state lives in `sortRecords`, a WeakMap keyed by the
+  // DOM element of the <ul>: it survives even if Mithril recreates the component
+  // (vnode.state is not stable here) and is cleaned up only in onremove.
   oncreate(vnode) { syncSortable(vnode) },
   onupdate(vnode) { syncSortable(vnode) },
 
-  // Mientras SortableJS mueve el DOM del drag, Mithril no debe diffeer esta
-  // lista (patchearía encima del elemento arrastrado). El guard se limpia en
-  // onEnd y el redraw final reconcilia el orden nuevo. Red de seguridad: si un
-  // drag quedara "pegado" (drop fuera de la ventana sin dragend), el guard
-  // expira a los 4 s y la lista vuelve a actualizarse.
+  // While SortableJS moves the drag DOM, Mithril must not diff this
+  // list (it would patch on top of the dragged element). The guard is cleared in
+  // onEnd and the final redraw reconciles the new order. Safety net: if a
+  // drag got "stuck" (drop outside the window without dragend), the guard
+  // expires after 4 s and the list updates again.
   onbeforeupdate(vnode) {
     const rec = vnode.dom && sortRecords.get(vnode.dom)
     if (!rec || !rec.dragging) return true
@@ -65,21 +65,21 @@ export const List = {
       rec.instance = destroyListSortable(rec.instance)
       sortRecords.delete(el)
     }
-    // Si la lista se desmonta en mitad de un drag, el cursor no puede quedar
-    // bloqueado en "grabbing".
+    // If the list unmounts in the middle of a drag, the cursor must not stay
+    // stuck on "grabbing".
     setDraggingCursor(false)
   },
 
   view(vnode) {
     const { data, empty, header, footer, loading, loadingRows, hover, ordered, sortable, className, ...rest } = vnode.attrs
     const children = vnode.children
-    // Clave de fila: `itemKey` (actual) con `key` como alias deprecado. NO se
-    // lee `key` directamente en cada uso porque colisiona con la key de vnode
-    // de Mithril (ver itemKeyOf).
+    // Row key: `itemKey` (current) with `key` as a deprecated alias. `key` is NOT
+    // read directly at each use because it collides with Mithril's vnode
+    // key (see itemKeyOf).
     const rowKey = itemKeyOf(vnode.attrs)
 
-    // Resuelve el template: prop `render` primero; children-función (único
-    // child) como alternativa. Mithril envuelve la función en un array [fn].
+    // Resolves the template: `render` prop first; function children (only
+    // child) as an alternative. Mithril wraps the function in an array [fn].
     const render = vnode.attrs.render
     const template = typeof render === 'function'
       ? render
@@ -89,36 +89,36 @@ export const List = {
 
     if (Array.isArray(data) && data.length > 0 && !template) {
       throw new Error(
-        'List: se pasó `data` sin template. Usa `render={(item, index) => ...}` ' +
-        'o un único child función. (Si mezclaste una función con otros children, ' +
-        'la función debe ser el único child o moverla al prop `render`.)'
+        'List: `data` was passed without a template. Use `render={(item, index) => ...}` ' +
+        'or a single child function. (If you mixed a function with other children, ' +
+        'the function must be the only child, or move it to the `render` prop.)'
       )
     }
 
     const tag = ordered ? 'ol' : 'ul'
 
-    // Modo sortable: solo data-driven (el compositivo no tiene modelo
-    // controlable); el detalle (≥2 filas, sin loading) se decide en el hook.
+    // Sortable mode: data-driven only (the compositional one has no controllable
+    // model); the detail (≥2 rows, no loading) is decided in the hook.
     const sortActive = sortable && Array.isArray(data)
 
     let rows
     if (Array.isArray(data)) {
       if (loading) {
-        // Fila skeleton por cada placeholder; todas con key (regla de Mithril).
-        // La clase `list-row-loading` es el hook del recipe (list.ts) para
-        // dimensionar los skeletons como líneas de texto.
+        // Skeleton row for each placeholder; all of them keyed (Mithril rule).
+        // The `list-row-loading` class is the recipe's hook (list.ts) to
+        // size the skeletons as text lines.
         rows = Array.from({ length: loadingRows || 3 }, (_, i) =>
           m(ListRow, { key: `__loading-${i}__`, hover, className: 'list-row-loading' }, [
-            // Sin `grow`: la regla `.list-row-loading` del recipe define el grid
-            // (1fr + 4.5rem); un `grow` dispararía la regla `:has(...)` de mayor
-            // especificidad y rompería la segunda columna.
+            // No `grow`: the recipe's `.list-row-loading` rule defines the grid
+            // (1fr + 4.5rem); a `grow` would trigger the higher-specificity
+            // `:has(...)` rule and break the second column.
             m(ListCol, null, m(Skeleton)),
             m(ListCol, null, m(Skeleton)),
           ])
         )
       } else if (data.length === 0) {
-        // Estado vacío: header/empty/footer, todos sin key (nunca conviven
-        // con filas keyed).
+        // Empty state: header/empty/footer, all unkeyed (they never coexist
+        // with keyed rows).
         rows = [
           ...(header != null ? [header] : []),
           ...(empty != null ? (Array.isArray(empty) ? empty : [empty]) : []),
@@ -128,18 +128,18 @@ export const List = {
         const mapRow = (item, index) => {
           const row = template(item, index)
           if (row == null) return null
-          // Inyecta key si el template no la puso (diffing de Mithril).
+          // Injects a key if the template did not set one (Mithril diffing).
           const keyValue = rowKey ? rowKey(item, index) : index
           let out = row
           const attrs = { ...(row.attrs || {}) }
           let changed = false
           if (row.key == null && keyValue != null) { attrs.key = keyValue; changed = true }
-          // `hover` a nivel de List: aplica el resaltado a las filas ListRow.
+          // `hover` at the List level: applies the highlight to ListRow rows.
           if (hover && out.tag === ListRow && !attrs.hover) { attrs.hover = true; changed = true }
           return changed ? m(out.tag, attrs, out.children) : out
         }
-        // header/footer con keys reservadas para mantener todo el array keyed;
-        // en modo sortable se marcan como estáticas (no arrastrables).
+        // header/footer with reserved keys to keep the whole array keyed;
+        // in sortable mode they are marked as static (not draggable).
         rows = [
           ...(header != null ? [staticRow(sortActive, withKey(header, '__header__'))] : []),
           ...data.map(mapRow).filter((row) => row != null),
@@ -158,21 +158,21 @@ export const List = {
 }
 
 /**
- * Resultado cacheado de `list({})` — el componente principal no pasa variantes,
- * así que las clases son determinísticas. Evita llamar al sva en cada render.
+ * Cached result of `list({})` — the main component passes no variants,
+ * so the classes are deterministic. Avoids calling sva on every render.
  * @type {ReturnType<typeof list>}
  */
 const defaultStyles = list({})
 
 /**
- * Registro por elemento del modo sortable. Se guarda en un WeakMap keyed por
- * el <ul> (el elemento DOM sobrevive a la recreación del componente), nunca en
+ * Per-element registry for sortable mode. It is kept in a WeakMap keyed by
+ * the <ul> (the DOM element survives component recreation), never in
  * vnode.state.
  * @type {WeakMap<Element, { instance: object|null, sig: string|null, current: {data: unknown[], onReorder?: Function}|null, dragging: boolean, dragAt: number, fromIndex: number }>}
  */
 const sortRecords = new WeakMap()
 
-/** Devuelve (creando si falta) el registro sortable del elemento. */
+/** Returns (creating it if missing) the element's sortable record. */
 function getSortRecord(el) {
   let rec = sortRecords.get(el)
   if (!rec) {
@@ -183,35 +183,35 @@ function getSortRecord(el) {
 }
 
 /**
- * Marca el documento como "arrastrando" para que el cursor siga siendo
- * `grabbing` durante todo el drag (regla `body.list-dragging` en el
- * `globalCss` del preset), aunque el puntero salga de la fila arrastrada o
- * caiga encima de otro componente. Se llama en onStart y se limpia en
- * onEnd, en la expiración del guard y en onremove.
+ * Marks the document as "dragging" so the cursor stays
+ * `grabbing` throughout the whole drag (the `body.list-dragging` rule in the
+ * preset's `globalCss`), even if the pointer leaves the dragged row or
+ * lands on top of another component. It is called in onStart and cleared in
+ * onEnd, on guard expiry and in onremove.
  */
 function setDraggingCursor(on) {
   if (typeof document === 'undefined' || !document.body) return
   document.body.classList.toggle('list-dragging', !!on)
 }
 
-/** Clona el vnode inyectando `key` si no la tiene. */
+/** Clones the vnode injecting `key` if it does not have one. */
 function withKey(row, keyValue) {
   if (row == null || row.key != null || keyValue == null) return row
   return m(row.tag, { ...row.attrs, key: keyValue }, row.children)
 }
 
 /**
- * Prop de clave de fila del modo data-driven: `itemKey` (nombre actual) o
- * `key` (alias deprecado, conservado por compatibilidad).
+ * Data-driven mode's row key prop: `itemKey` (current name) or
+ * `key` (deprecated alias, kept for compatibility).
  *
- * Por qué `itemKey` y no `key`: en Mithril `attrs.key` ES la key del vnode,
- * así que pasar la función de clave de fila como `key` hace que el `<ul>` de
- * List viaje por el diff keyed. En aislamiento funciona (Mithril indexa las
- * keys en un `Object.create(null)`, y el mismo source de arrow coacciona al
- * mismo string), pero al lado de hermanos sin key rompe el invariante de
- * fragmento keyed (Mithril exige todas las keys o ninguna) y el diff salta.
- * Con `itemKey` la lista queda sin key de vnode y compone con cualquier
- * hermano. Sólo se aceptan funciones; cualquier otro valor cae al índice.
+ * Why `itemKey` and not `key`: in Mithril `attrs.key` IS the vnode key,
+ * so passing the row key function as `key` makes List's `<ul>`
+ * travel through the keyed diff. In isolation it works (Mithril indexes the
+ * keys in an `Object.create(null)`, and the same arrow source coerces to the
+ * same string), but next to unkeyed siblings it breaks the keyed
+ * fragment invariant (Mithril requires all keys or none) and the diff skips.
+ * With `itemKey` the list has no vnode key and composes with any
+ * sibling. Only functions are accepted; any other value falls back to the index.
  */
 function itemKeyOf(attrs) {
   if (typeof attrs.itemKey === 'function') return attrs.itemKey
@@ -220,20 +220,20 @@ function itemKeyOf(attrs) {
 }
 
 /**
- * Índice de `node` entre las filas ARRASTRABLES de `container`, es decir
- * ignorando las filas estáticas (`list-static` de header/footer) — el índice
- * que espera el array `data`.
+ * Index of `node` among the DRAGGABLE rows of `container`, that is,
+ * ignoring the static rows (header/footer's `list-static`) — the index
+ * the `data` array expects.
  *
- * Se calcula del DOM a propósito. Los índices del evento de SortableJS
- * (`oldDraggableIndex`/`newDraggableIndex`) NO sirven cuando hay filas
- * estáticas: su opción `draggable` por defecto para `<ul>` es `'>li'` y su
- * `index()` cuenta todo hermano que matchee el selector, incluido el que
- * `filter: '.list-static'` excluye del drag (verificado con SortableJS
- * 1.15.7: con un header estático, oldDraggableIndex === oldIndex). Usarlos
- * como índices de `data` desplazaba el reordenamiento un puesto y el guard
- * descartaba el drop a la última posición. El DOM es además la fuente de
- * verdad de lo que el usuario ve, y ya se lee en el tick diferido (cuando
- * SortableJS terminó de mover el nodo).
+ * It is computed from the DOM on purpose. SortableJS event indices
+ * (`oldDraggableIndex`/`newDraggableIndex`) do NOT work when there are static
+ * rows: its default `draggable` option for `<ul>` is `'>li'` and its
+ * `index()` counts every sibling matching the selector, including the one
+ * `filter: '.list-static'` excludes from the drag (verified with SortableJS
+ * 1.15.7: with a static header, oldDraggableIndex === oldIndex). Using them
+ * as `data` indices shifted the reorder by one position and the guard
+ * discarded the drop to the last position. The DOM is also the source of
+ * truth of what the user sees, and it is already read in the deferred tick (when
+ * SortableJS finished moving the node).
  */
 function draggableIndexOf(container, node) {
   if (!container || !node || node.parentNode !== container) return -1
@@ -244,7 +244,7 @@ function draggableIndexOf(container, node) {
   return index
 }
 
-/** Marca una fila como estática (no arrastrable en modo sortable). */
+/** Marks a row as static (not draggable in sortable mode). */
 function staticRow(active, row) {
   if (!active || row == null) return row
   const attrs = { ...(row.attrs || {}) }
@@ -253,9 +253,9 @@ function staticRow(active, row) {
 }
 
 /**
- * Crea/actualiza la instancia Sortable del modo `sortable`. Se (re)crea solo
- * cuando cambia la "firma" de las filas (keys) o el modo — SortableJS cachea
- * los children y quedaría con referencias stale al añadir/quitar items.
+ * Creates/updates the Sortable instance for `sortable` mode. It is (re)created only
+ * when the "signature" of the rows (keys) or the mode changes — SortableJS caches
+ * the children and would be left with stale references when adding/removing items.
  */
 function syncSortable(vnode) {
   const el = vnode.dom
@@ -275,9 +275,9 @@ function syncSortable(vnode) {
     return
   }
 
-  // Espejo para el listener nativo de SortableJS: vnode.attrs se reemplaza en
-  // cada render, así que onEnd lee SIEMPRE los valores actuales (patrón del
-  // repo para listeners nativos). `el` es la clave estable del registro.
+  // Mirror for SortableJS's native listener: vnode.attrs is replaced on
+  // every render, so onEnd ALWAYS reads the current values (the repo's
+  // pattern for native listeners). `el` is the record's stable key.
   rec.current = { data, onReorder: vnode.attrs.onReorder }
 
   const sig = data.map((item, index) => String(rowKey ? rowKey(item, index) : index)).join('|')
@@ -289,15 +289,15 @@ function syncSortable(vnode) {
       rec.dragging = true
       rec.dragAt = Date.now()
       setDraggingCursor(true)
-      // Posición de origen en el array `data` (el DOM todavía no se movió):
-      // se calcula aquí porque en el tick de fin el nodo ya está en el destino.
+      // Source position in the `data` array (the DOM has not moved yet):
+      // it is computed here because by the end tick the node is already at the destination.
       rec.fromIndex = draggableIndexOf(el, evt != null ? evt.item : null)
     },
     onEnd: (evt) => {
-      // SortableJS termina de mover el nodo en el DOM DESPUÉS de onEnd; el
-      // índice de destino se lee del DOM en el tick diferido y el redraw se
-      // difiere con el guard aún activo, para no parchear encima del cleanup
-      // de SortableJS.
+      // SortableJS finishes moving the node in the DOM AFTER onEnd; the
+      // destination index is read from the DOM in the deferred tick and the redraw
+      // is deferred with the guard still active, to avoid patching on top of
+      // SortableJS's cleanup.
       setTimeout(() => finishSort(rec, el, evt), 0)
     },
   })
@@ -305,8 +305,8 @@ function syncSortable(vnode) {
 }
 
 /**
- * Fin del drag: reordena el array controlado según la posición de soltado real
- * (índice entre filas arrastrables, ver draggableIndexOf) y notifica al padre.
+ * End of drag: reorders the controlled array according to the real drop position
+ * (index among draggable rows, see draggableIndexOf) and notifies the parent.
  */
 function finishSort(rec, el, evt) {
   rec.dragging = false
@@ -326,15 +326,15 @@ function finishSort(rec, el, evt) {
   }
   rec.fromIndex = -1
 
-  // Evento nativo de SortableJS: Mithril no redibuja solo. Ya fuera de la pila
-  // de SortableJS (tick diferido), el DOM quedó en el orden final y el diff
-  // keyed reconcilia sin pelear.
+  // SortableJS native event: Mithril does not redraw on its own. Already outside
+  // SortableJS's stack (deferred tick), the DOM is in the final order and the
+  // keyed diff reconciles without fighting.
   m.redraw()
 }
 
 /**
- * Componente ListRow. Fila de la lista (`<li>`); con `hover` se resalta al
- * pasar el cursor (slot `row` de la recipe).
+ * ListRow component. List row (`<li>`); with `hover` it is highlighted on
+ * hover (the recipe's `row` slot).
  *
  * @type {import('mithril').Component<import('./index').ListRowAttrs>}
  */
@@ -350,8 +350,8 @@ export const ListRow = {
 }
 
 /**
- * Componente ListCol. Columna dentro de una fila; `grow` la expande para ocupar
- * el espacio restante y `wrap` la baja a la siguiente línea (slot `col`).
+ * ListCol component. Column inside a row; `grow` expands it to take up
+ * the remaining space and `wrap` moves it down to the next line (slot `col`).
  *
  * @type {import('mithril').Component<import('./index').ListColAttrs>}
  */
@@ -367,12 +367,12 @@ export const ListCol = {
 }
 
 /**
- * Componente ListDragHandle. Asa de arrastre del modo `sortable` de List:
- * si el template de fila incluye un ListDragHandle, el reordenamiento solo
- * arranca desde el asa (opción `handle` de SortableJS); sin asa se arrastra
- * la fila completa. Sin `sortable` queda como un grip estático. Es una
- * columna auto (span) dentro del grid de la fila: colócalo como primer
- * ListRow-child; el recipe ajusta `--list-grid-cols` vía `:has(...)`.
+ * ListDragHandle component. Drag handle for List's `sortable` mode:
+ * if the row template includes a ListDragHandle, reordering only
+ * starts from the handle (SortableJS's `handle` option); without a handle the
+ * whole row is dragged. Without `sortable` it remains a static grip. It is an
+ * auto column (span) inside the row's grid: place it as the first
+ * ListRow child; the recipe adjusts `--list-grid-cols` via `:has(...)`.
  *
  * @type {import('mithril').Component<import('./index').ListDragHandleAttrs>}
  */

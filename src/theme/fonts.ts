@@ -1,13 +1,13 @@
 import { defineTokens } from '@pandacss/dev'
 
 /**
- * Tipografías de panda-ui-mithril. Valores crudos (sin variante de tema).
+ * Typefaces of panda-ui-mithril. Raw values (no theme variant).
  *
- * Roles tipográficos: `sans` (cuerpo/base), `display` (titulares) y `mono`
- * (código/valores). `display` arranca compartiendo el stack de `sans` para
- * no cambiar la apariencia por defecto; asignar otra familia al rol display
- * (p. ej. Playfair Display desde el editor) hace que los componentes de
- * título usen esa familia.
+ * Typographic roles: `sans` (body/base), `display` (headings) and `mono`
+ * (code/values). `display` starts out sharing the `sans` stack so as
+ * not to change the default appearance; assigning another family to the display role
+ * (e.g. Playfair Display from the editor) makes the title components
+ * use that family.
  */
 
 export const fontsTokens = defineTokens({

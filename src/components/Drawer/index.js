@@ -8,16 +8,16 @@ import { ButtonClose } from '../ButtonClose/index.js'
 const CLOSE_FALLBACK_MS = 240
 
 /**
- * Cierra el drawer CON la animación de salida: añade .drawer-closing, espera
- * animationend (fallback 240ms) y entonces dialog.close(). Es el mismo camino
- * para el cierre por prop (open=false) y para el botón X de buttonClose —
- * interacción 100% JS, sin trucos CSS/form.
+ * Closes the drawer WITH the exit animation: adds .drawer-closing, waits for
+ * animationend (240ms fallback) and then dialog.close(). It is the same path
+ * for closing via prop (open=false) and for buttonClose's X button —
+ * 100% JS interaction, no CSS/form tricks.
  * @param {Object} vnode */
 function animateClose(vnode) {
   const dialog = vnode.dom
   if (!dialog.open || vnode.state._closing) return
-  // prefers-reduced-motion: la media query CSS desactiva la animación, así
-  // que animationend nunca llega — cerrar inmediatamente.
+  // prefers-reduced-motion: the CSS media query disables the animation, so
+  // animationend never arrives — close immediately.
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     dialog.close()
     if (vnode.attrs.onclosed) vnode.attrs.onclosed()
@@ -33,8 +33,8 @@ function animateClose(vnode) {
     if (vnode.attrs.onclosed) vnode.attrs.onclosed()
     if (vnode.attrs.onchange) vnode.attrs.onchange(false)
   }
-  // Safety net: si animationend nunca llega (sin CSS engine en tests,
-  // keyframes faltantes), igualmente cerrar.
+  // Safety net: if animationend never arrives (no CSS engine in tests,
+  // missing keyframes), close anyway.
   const timeoutId = setTimeout(finish, CLOSE_FALLBACK_MS)
   dialog.addEventListener('animationend', () => {
     clearTimeout(timeoutId)
@@ -47,10 +47,10 @@ function animateClose(vnode) {
 const SIZE_PRESETS = ['xs', 'sm', 'md', 'lg', 'xl', 'full']
 
 /**
- * Componente Drawer. Usa `<dialog>` nativo con `.showModal()`/`.close()` (mismo
- * bridge que Modal) y las animaciones de deslizamiento por posición. Emite
- * eventos de ciclo de vida: `onopen`, `onclose` (evento nativo del dialog),
- * `onclosed` (tras la animación de salida) y `onchange(next)`.
+ * Drawer component. Uses native `<dialog>` with `.showModal()`/`.close()` (the
+ * same bridge as Modal) and the slide animations per position. Emits
+ * lifecycle events: `onopen`, `onclose` (native dialog event),
+ * `onclosed` (after the exit animation) and `onchange(next)`.
  *
  * @type {import('mithril').Component<import('./index').DrawerAttrs>}
  */
@@ -62,8 +62,8 @@ export const Drawer = {
   },
 
   /**
-   * Al montar: abre el <dialog> con showModal() si open=true y registra el
-   * handler de cancel para persistent. @param {Object} vnode */
+   * On mount: opens the <dialog> with showModal() if open=true and registers
+   * the cancel handler for persistent. @param {Object} vnode */
   oncreate(vnode) {
     const dialog = vnode.dom
     const { open, persistent } = vnode.attrs
@@ -81,10 +81,10 @@ export const Drawer = {
   },
 
   /**
-   * Sincroniza el <dialog> nativo con la prop `open`.
-   * - open → true: showModal() si no está abierto y dispara onopen/onchange(true)
-   *   SOLO en la transición cerrado→abierto (guardado con `!dialog.open`).
-   * - open → false: cierra con la animación (animateClose).
+   * Syncs the native <dialog> with the `open` prop.
+   * - open → true: showModal() if not open and fires onopen/onchange(true)
+   *   ONLY on the closed→open transition (guarded with `!dialog.open`).
+   * - open → false: closes with the animation (animateClose).
    * @param {Object} vnode */
   onupdate(vnode) {
     const dialog = vnode.dom
@@ -102,7 +102,7 @@ export const Drawer = {
   },
 
   /**
-   * Para consumidores que desmontan el Drawer. @param {Object} vnode @returns {Promise<void>} */
+   * For consumers that unmount the Drawer. @param {Object} vnode @returns {Promise<void>} */
   onbeforeremove(vnode) {
     if (vnode.dom.open) {
       vnode.dom.close()
@@ -121,8 +121,8 @@ export const Drawer = {
   },
 
   /**
-   * Renderiza el <dialog> con clases de posición/tamaño, ARIA y el botón de
-   * cierre automático. @param {Object} vnode @returns {import('mithril').Vnode} */
+   * Renders the <dialog> with position/size classes, ARIA and the automatic
+   * close button. @param {Object} vnode @returns {import('mithril').Vnode} */
   view(vnode) {
     const {
       open, position = 'start', size, persistent, buttonClose,
@@ -136,8 +136,8 @@ export const Drawer = {
     if (labelledby) ariaProps['aria-labelledby'] = labelledby
     if (describedby) ariaProps['aria-describedby'] = describedby
 
-    // Tamaño arbitrario (no preset) → custom property dinámica (excepción
-    // sancionada: estilos vía custom properties, patrón --mail-color).
+    // Arbitrary size (not a preset) → dynamic custom property (sanctioned
+    // exception: styles via custom properties, the --mail-color pattern).
     const extraStyle = (size !== undefined && !SIZE_PRESETS.includes(size))
       ? { '--drawer-size': size }
       : null
@@ -149,8 +149,8 @@ export const Drawer = {
             child._buttonCloseInjected = true
             const boxChildren = Array.isArray(child.children) ? [...child.children] : [child.children]
             boxChildren.push(
-              // El X es un botón JS puro: onclick dispara el bridge animado
-              // (animateClose) — mismo camino que el cierre por prop.
+              // The X is a pure JS button: onclick fires the animated bridge
+              // (animateClose) — same path as closing via prop.
               m(ButtonClose, {
                 className: drawerCloseButton(),
                 onclick: () => animateClose(vnode),
@@ -179,12 +179,12 @@ export const Drawer = {
 }
 
 /**
- * Resultado cacheado de `drawer({})` — los subcomponentes no pasan variantes.
+ * Cached result of `drawer({})` — subcomponents pass no variants.
  * @type {ReturnType<typeof drawer>}
  */
 const defaultStyles = drawer({})
 
-// ── Subcomponentes ──────────────────────────────────────────────
+// ── Subcomponents ──────────────────────────────────────────────
 
 /** @type {import('mithril').Component<import('./index').DrawerBoxAttrs>} */
 export const DrawerBox = {
@@ -217,7 +217,7 @@ export const DrawerBackdrop = {
 }
 
 /**
- * Cabecera del drawer (slot `header`): título + zona del botón de cierre.
+ * Drawer header (slot `header`): title + close button area.
  * @type {import('mithril').Component<import('./index').DrawerHeaderAttrs>} */
 export const DrawerHeader = {
   view(vnode) {
@@ -227,10 +227,10 @@ export const DrawerHeader = {
 }
 
 /**
- * Contenido del drawer (slot `body`) — es el SCROLLER: flex:1 + minHeight:0 +
- * overflowY:auto dentro del panel flex. Encapsulado aquí para que el scroll
- * correcto sea el default (el patrón flex-scroll falla silenciosamente si se
- * aplica al elemento equivocado).
+ * Drawer content (slot `body`) — it is the SCROLLER: flex:1 + minHeight:0 +
+ * overflowY:auto inside the flex panel. Encapsulated here so that correct
+ * scrolling is the default (the flex-scroll pattern fails silently if it is
+ * applied to the wrong element).
  * @type {import('mithril').Component<import('./index').DrawerBodyAttrs>} */
 export const DrawerBody = {
   view(vnode) {
@@ -240,7 +240,7 @@ export const DrawerBody = {
 }
 
 /**
- * Pie del drawer (slot `footer`): borde superior + acciones alineadas a la derecha.
+ * Drawer footer (slot `footer`): top border + actions aligned to the right.
  * @type {import('mithril').Component<import('./index').DrawerFooterAttrs>} */
 export const DrawerFooter = {
   view(vnode) {

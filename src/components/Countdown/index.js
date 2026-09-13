@@ -3,8 +3,8 @@ import { countdown, countdownDigit } from '../../../styled-system/recipes'
 import { cx } from '../../../styled-system/css'
 
 /**
- * Componente Countdown. Modo presentacional: muestra un número con `value`.
- * Modo timer: cuenta regresiva con `duration`, autostart y callbacks.
+ * Countdown component. Presentational mode: shows a number with `value`.
+ * Timer mode: countdown with `duration`, autostart and callbacks.
  *
  * @type {import('mithril').Component<import('./index').CountdownAttrs>}
  */

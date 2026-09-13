@@ -8,10 +8,10 @@ const clamp = (v, min, max) => Math.min(max, Math.max(min, v))
 const toInt = (v, max) => clamp(Math.round(v), 0, max)
 
 /**
- * Componente Rating. Selector de valoración por estrellas (1..max). En modo
- * controlado, `value` + `onchange` gestionan el estado; en modo no
- * controlado se usa `defaultValue` y el estado es interno. `readonly` lo
- * convierte en una visualización estática sin interacción.
+ * Rating component. Star rating selector (1..max). In controlled
+ * mode, `value` + `onchange` manage the state; in uncontrolled
+ * mode `defaultValue` is used and the state is internal. `readonly` turns
+ * it into a static display with no interaction.
  *
  * @type {import('mithril').Component<import('./index').RatingAttrs>}
  */

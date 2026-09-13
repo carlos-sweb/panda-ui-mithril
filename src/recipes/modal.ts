@@ -138,16 +138,16 @@ export const modalRecipe = defineSlotRecipe({
             maxWidth: 'none',
             borderRadius: '0 0 var(--radius-box) var(--radius-box)',
           },
-          // Entrada: desliza desde el borde superior (slide-in-down).
-          // El transform de [open] DEBE sobrescribirse a la identidad: si solo
-          // cambiáramos el @starting-style, la transición interpolaría
-          // translateY(-100%) → scale(1) (funciones distintas → morph de matriz).
+          // Entrance: slides in from the top edge (slide-in-down).
+          // The [open] transform MUST be overridden to the identity: if we only
+          // changed the @starting-style, the transition would interpolate
+          // translateY(-100%) → scale(1) (different functions → matrix morph).
           '&[open] > .modal-box': { transform: 'translateY(0)' },
           '@starting-style': {
             '&[open] > .modal-box': { opacity: '0', transform: 'translateY(-100%)' },
           },
-          // Salida: keyframe por posición — misma duración que la base (0.2s,
-          // dentro del fallback de 240ms del bridge JS).
+          // Exit: per-position keyframe — same duration as the base (0.2s,
+          // within the JS bridge's 240ms fallback).
           '&.modal-closing > .modal-box': {
             '@media (prefers-reduced-motion: no-preference)': {
               animation: 'modal-exit-top 0.2s ease-in forwards',

@@ -1,12 +1,12 @@
 import { defineTokens, defineSemanticTokens } from '@pandacss/dev'
 
 /**
- * Identidad de color de panda-ui-mithril.
+ * Color identity of panda-ui-mithril.
  *
- * Dos bloques: `tokens` (valores crudos) y `semanticTokens` (valores con
- * significado, con variante light/dark). Los colores de marca
- * (primary/secondary/accent/neutral) son valores raw (base/dark) — el
- * consumidor los personaliza editando este archivo o vía
+ * Two blocks: `tokens` (raw values) and `semanticTokens` (values with
+ * meaning, with a light/dark variant). The brand colors
+ * (primary/secondary/accent/neutral) are raw values (base/dark) — the
+ * consumer customizes them by editing this file or via
  * theme.extend.semanticTokens.
  */
 

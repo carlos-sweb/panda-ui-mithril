@@ -3,8 +3,8 @@ import { textarea } from '../../../styled-system/recipes'
 import { cx } from '../../../styled-system/css'
 
 /**
- * Componente Textarea. Área de texto multilínea (`<textarea>`) con variantes
- * de color, tamaño y modo ghost.
+ * Textarea component. Multiline text area (`<textarea>`) with color,
+ * size and ghost mode variants.
  *
  * @type {import('mithril').Component<import('./index').TextareaAttrs>}
  */

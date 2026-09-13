@@ -3,8 +3,8 @@ import { timeline } from '../../../styled-system/recipes'
 import { cx } from '../../../styled-system/css'
 
 /**
- * Componente Timeline. Línea de tiempo, horizontal o vertical, con
- * `snapIcon` para compactar el marcador central.
+ * Timeline component. Timeline, horizontal or vertical, with
+ * `snapIcon` to compact the central marker.
  *
  * @type {import('mithril').Component<import('./index').TimelineAttrs>}
  */
@@ -21,15 +21,15 @@ export const Timeline = {
 }
 
 /**
- * Resultado cacheado de `timeline({})` — los subcomponentes no pasan variantes
- * (solo `box` activa la clase del slot `box`), así que sus clases son
- * determinísticas. Evita llamar al sva en cada render.
+ * Cached result of `timeline({})` — the subcomponents pass no variants
+ * (only `box` activates the `box` slot class), so their classes are
+ * deterministic. Avoids calling the sva on every render.
  * @type {ReturnType<typeof timeline>}
  */
 const defaultStyles = timeline({})
 
 /**
- * Elemento de la timeline; `hrBefore`/`hrAfter` añaden conectores.
+ * Timeline element; `hrBefore`/`hrAfter` add connectors.
  *
  * @type {import('mithril').Component<import('./index').TimelineItemAttrs>}
  */
@@ -45,7 +45,7 @@ export const TimelineItem = {
 }
 
 /**
- * Contenido inicial del elemento; `box` lo renderiza como un callout con borde.
+ * Initial content of the element; `box` renders it as a bordered callout.
  *
  * @type {import('mithril').Component<import('./index').TimelineStartAttrs>}
  */
@@ -57,7 +57,7 @@ export const TimelineStart = {
 }
 
 /**
- * Marcador central de la timeline.
+ * Central marker of the timeline.
  *
  * @type {import('mithril').Component<import('./index').TimelineMiddleAttrs>}
  */
@@ -69,7 +69,7 @@ export const TimelineMiddle = {
 }
 
 /**
- * Contenido final del elemento; `box` lo renderiza como un callout con borde.
+ * Final content of the element; `box` renders it as a bordered callout.
  *
  * @type {import('mithril').Component<import('./index').TimelineEndAttrs>}
  */

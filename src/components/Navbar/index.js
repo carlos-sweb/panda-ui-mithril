@@ -6,11 +6,11 @@ import { Button } from '../Button/index.js'
 import { Link } from '../Link/index.js'
 
 /**
- * Componente Navbar. Barra de navegación de tres zonas con variantes
- * profesionales (posición sticky/fixed, color semántico, tamaño, borde,
- * sombra, glass) y sub-componentes estratégicos: NavbarBrand (logo/título),
- * NavbarMenu + NavbarLink (grupo de links con estado activo) y NavbarToggle
- * (hamburguesa móvil, se empareja con el Drawer de la librería).
+ * Navbar component. Three-zone navigation bar with professional
+ * variants (sticky/fixed position, semantic color, size, border,
+ * shadow, glass) and strategic sub-components: NavbarBrand (logo/title),
+ * NavbarMenu + NavbarLink (group of links with active state) and NavbarToggle
+ * (mobile hamburger, pairs with the library's Drawer).
  *
  * @type {import('mithril').Component<import('./index').NavbarAttrs>}
  */
@@ -23,8 +23,8 @@ export const Navbar = {
 
     const styles = navbar({ position, color, size, border, shadow, glass })
 
-    // container: patrón Bootstrap — el contenido se centra con max-width
-    // (--navbar-max-w, default 80rem). Las zonas quedan dentro del wrapper.
+    // container: Bootstrap pattern — the content is centered with max-width
+    // (--navbar-max-w, default 80rem). The zones stay inside the wrapper.
     const children = container
       ? m('div', { className: cx('navbar-container', styles.container) }, vnode.children)
       : vnode.children
@@ -37,14 +37,14 @@ export const Navbar = {
 }
 
 /**
- * Resultado cacheado de `navbar({})` — subcomponentes sin variantes usan las
- * clases default. Evita llamar al sva en cada render.
+ * Cached result of `navbar({})` — subcomponents without variants use the
+ * default classes. Avoids calling the sva on every render.
  * @type {ReturnType<typeof navbar>}
  */
 const defaultStyles = navbar({})
 
 /**
- * Componente NavbarStart. Zona izquierda de la navbar.
+ * NavbarStart component. Left zone of the navbar.
  *
  * @type {import('mithril').Component<import('./index').NavbarStartAttrs>}
  */
@@ -56,7 +56,7 @@ export const NavbarStart = {
 }
 
 /**
- * Componente NavbarCenter. Zona central de la navbar.
+ * NavbarCenter component. Center zone of the navbar.
  *
  * @type {import('mithril').Component<import('./index').NavbarCenterAttrs>}
  */
@@ -68,7 +68,7 @@ export const NavbarCenter = {
 }
 
 /**
- * Componente NavbarEnd. Zona derecha de la navbar.
+ * NavbarEnd component. Right zone of the navbar.
  *
  * @type {import('mithril').Component<import('./index').NavbarEndAttrs>}
  */
@@ -80,9 +80,9 @@ export const NavbarEnd = {
 }
 
 /**
- * Componente NavbarBrand. Logo + título del sitio (patrón Bootstrap
- * `.navbar-brand`). Renderiza un `<a>`; `href` y `onclick` se
- * pasan por attrs.
+ * NavbarBrand component. Logo + site title (Bootstrap
+ * `.navbar-brand` pattern). Renders an `<a>`; `href` and `onclick` are
+ * passed through attrs.
  *
  * @type {import('mithril').Component<import('./index').NavbarBrandAttrs>}
  */
@@ -97,14 +97,14 @@ export const NavbarBrand = {
 }
 
 /**
- * Componente NavbarLink. Ítem de navegación con estado `active` (píldora +
- * aria-current) y `disabled` (atenuado, sin puntero).
+ * NavbarLink component. Navigation item with `active` state (pill +
+ * aria-current) and `disabled` (dimmed, no pointer).
  *
- * Mismo concepto que Drawer condiciona Modal: NavbarLink es `Link` con
- * propiedades por defecto del contexto navbar — `noUnderline` forzado (el
- * navbar nunca subraya) y la forma de píldora del slot `link`. `color` y
- * `hover` se bloquean: dentro del navbar el look lo decide el navbar, no el
- * link (usar `Link` crudo dentro del navbar es fuera de recomendación).
+ * Same concept as Drawer conditioning Modal: NavbarLink is `Link` with
+ * default properties from the navbar context — `noUnderline` forced (the
+ * navbar never underlines) and the pill shape of the `link` slot. `color` and
+ * `hover` are locked: inside the navbar the look is decided by the navbar, not the
+ * link (using raw `Link` inside the navbar is out of recommendation).
  *
  * @type {import('mithril').Component<import('./index').NavbarLinkAttrs>}
  */
@@ -123,8 +123,8 @@ export const NavbarLink = {
 }
 
 /**
- * Componente NavbarMenu. Grupo horizontal de NavbarLinks (slot `menu`),
- * visible en desktop y oculto <768px — el patrón móvil de la librería es el
+ * NavbarMenu component. Horizontal group of NavbarLinks (slot `menu`),
+ * visible on desktop and hidden <768px — the library's mobile pattern is the
  * Drawer + NavbarToggle (JS-first).
  *
  * @type {import('mithril').Component<import('./index').NavbarMenuAttrs>}
@@ -137,9 +137,9 @@ export const NavbarMenu = {
 }
 
 /**
- * Componente NavbarToggle. Hamburguesa de la navbar (solo móvil): botón ghost
- * cuadrado cuyo icono alterna Menu/X según `open`. Stateless — el consumidor
- * controla `open` y `onclick` (p. ej. para abrir un Drawer).
+ * NavbarToggle component. Navbar hamburger (mobile only): square ghost
+ * button whose icon alternates Menu/X according to `open`. Stateless — the consumer
+ * controls `open` and `onclick` (e.g. to open a Drawer).
  *
  * @type {import('mithril').Component<import('./index').NavbarToggleAttrs>}
  */

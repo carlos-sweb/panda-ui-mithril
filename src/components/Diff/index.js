@@ -11,16 +11,16 @@ import { cx } from '../../../styled-system/css'
 // (an image comparison slider), a more usual drag-anywhere interaction.
 
 /**
- * Resultado cacheado de `diff({})` — los subcomponentes sin variantes reusan
- * las mismas clases en cada render. Evita llamar al sva repetidamente.
+ * Cached result of `diff({})` — subcomponents without variants reuse
+ * the same classes on every render. Avoids calling sva repeatedly.
  * @type {ReturnType<typeof diff>}
  */
 const defaultStyles = diff({})
 
 /**
- * Componente Diff. Comparador de imágenes antes/después con divisor
- * arrastrable. `defaultPosition` fija el punto de partida del divisor en
- * porcentaje (0-100, por defecto 50); la posición se actualiza al arrastrar.
+ * Diff component. Before/after image comparer with a draggable
+ * divider. `defaultPosition` sets the divider's starting point as a
+ * percentage (0-100, defaults to 50); the position updates on drag.
  *
  * @type {import('mithril').Component<import('./index').DiffAttrs>}
  */
@@ -59,8 +59,8 @@ export const Diff = {
 }
 
 /**
- * Componente DiffItem1. Imagen "antes" (izquierda), recortada según la
- * posición actual del divisor.
+ * DiffItem1 component. "Before" image (left), clipped according to the
+ * divider's current position.
  *
  * @type {import('mithril').Component<import('./index').DiffItem1Attrs>}
  */
@@ -72,8 +72,8 @@ export const DiffItem1 = {
 }
 
 /**
- * Componente DiffItem2. Imagen "después" (derecha), visible bajo la capa
- * recortada de DiffItem1.
+ * DiffItem2 component. "After" image (right), visible under DiffItem1's
+ * clipped layer.
  *
  * @type {import('mithril').Component<import('./index').DiffItem2Attrs>}
  */
@@ -85,8 +85,8 @@ export const DiffItem2 = {
 }
 
 /**
- * Componente DiffResizer. Divisor vertical entre las dos imágenes; se
- * posiciona con `--diff-pos` y muestra el tirador central.
+ * DiffResizer component. Vertical divider between the two images; it is
+ * positioned with `--diff-pos` and shows the central handle.
  *
  * @type {import('mithril').Component<import('./index').DiffResizerAttrs>}
  */

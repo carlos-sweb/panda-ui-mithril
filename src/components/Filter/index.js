@@ -3,8 +3,8 @@ import { button , filter } from '../../../styled-system/recipes'
 import { cx } from '../../../styled-system/css'
 
 /**
- * Componente Filter. Contenedor de un grupo de filtros con opciones
- * excluyentes estilo radio; agrupa los FilterOption y FilterReset.
+ * Filter component. Container for a group of filters with mutually
+ * exclusive radio-style options; it groups FilterOption and FilterReset.
  *
  * @type {import('mithril').Component<import('./index').FilterAttrs>}
  */
@@ -20,8 +20,8 @@ export const Filter = {
 }
 
 /**
- * Componente FilterOption. Opción individual del filtro renderizada como un
- * `input` radio con aspecto de botón.
+ * FilterOption component. Individual filter option rendered as a
+ * radio `input` that looks like a button.
  *
  * @type {import('mithril').Component<import('./index').FilterOptionAttrs>}
  */
@@ -37,8 +37,8 @@ export const FilterOption = {
 }
 
 /**
- * Componente FilterReset. Opción especial que limpia el filtro activo,
- * renderizada como un `input` radio con aspecto de botón.
+ * FilterReset component. Special option that clears the active filter,
+ * rendered as a radio `input` that looks like a button.
  *
  * @type {import('mithril').Component<import('./index').FilterResetAttrs>}
  */

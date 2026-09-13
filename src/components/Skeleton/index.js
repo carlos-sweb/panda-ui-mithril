@@ -3,8 +3,8 @@ import { skeleton } from '../../../styled-system/recipes'
 import { cx } from '../../../styled-system/css'
 
 /**
- * Componente Skeleton. Placeholder animado que indica contenido en carga.
- * Con `text` ajusta el tamaño para parecer una línea de texto en vez de un bloque.
+ * Skeleton component. Animated placeholder that indicates loading content.
+ * With `text` it adjusts the size to look like a line of text instead of a block.
  *
  * @type {import('mithril').Component<import('./index').SkeletonAttrs>}
  */

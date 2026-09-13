@@ -3,11 +3,11 @@ import { card } from '../../../styled-system/recipes'
 import { cx } from '../../../styled-system/css'
 
 /**
- * Componente Card. Contenedor de contenido con variantes de tamaño, borde
- * (`border`/`dash`), sombra (`shadow`), disposición lateral (`side`) e
- * imagen a pantalla completa (`imageFull`). Trae `backgroundColor:
- * token(colors.base-100)` de base (su propio recipe) — no hace falta
- * agregarlo a mano.
+ * Card component. Content container with size variants, border
+ * (`border`/`dash`), shadow (`shadow`), side layout (`side`) and
+ * full-bleed image (`imageFull`). It brings `backgroundColor:
+ * token(colors.base-100)` in its base (its own recipe) — no need
+ * to add it by hand.
  *
  * @type {import('mithril').Component<import('./index').CardAttrs>}
  */
@@ -32,34 +32,34 @@ export const Card = {
 }
 
 /**
- * Resultado cacheado de `card({})` — los subcomponentes no pasan variantes
- * (excepto CardActions con `justify`), así que sus clases son determinísticas.
- * Evita llamar al sva en cada render.
+ * Cached result of `card({})` — the subcomponents pass no variants
+ * (except CardActions with `justify`), so their classes are deterministic.
+ * Avoids calling the sva on every render.
  * @type {ReturnType<typeof card>}
  */
 const defaultStyles = card({})
 
 /**
- * Cuerpo de la card: apila el contenido con padding y gap. `rail` lo
- * convierte en un compartimento lateral dividido (pensado para
- * `<Card side>`) — borde divisor + contenido centrado en la fila, por
- * ejemplo un riel vertical de acciones/presets junto al contenido principal.
+ * Card body: stacks the content with padding and gap. `rail` turns it
+ * into a split side compartment (intended for
+ * `<Card side>`) — divider border + content centered in the row, for
+ * example a vertical rail of actions/presets next to the main content.
  *
  * @type {import('mithril').Component<import('./index').CardBodyAttrs>}
  */
 export const CardBody = {
   view(vnode) {
     const { rail, className, ...rest } = vnode.attrs
-    // `rail` es el único variant real que puede recibir CardBody — evita
-    // llamar a card({}) de nuevo (y perder el cacheo de defaultStyles)
-    // salvo que efectivamente haga falta.
+    // `rail` is the only real variant CardBody can receive — avoid
+    // calling card({}) again (and losing the defaultStyles cache)
+    // unless it is actually needed.
     const styles = rail ? card({ rail }).body : defaultStyles.body
     return m('div', { className: cx('card-body', rail && 'card-body-rail', styles, className), ...rest }, vnode.children)
   }
 }
 
 /**
- * Título de la card.
+ * Card title.
  *
  * @type {import('mithril').Component<import('./index').CardTitleAttrs>}
  */
@@ -71,7 +71,7 @@ export const CardTitle = {
 }
 
 /**
- * Zona de acciones de la card; `justify` controla su alineación
+ * Card actions area; `justify` controls its alignment
  * (start, center, end, between).
  *
  * @type {import('mithril').Component<import('./index').CardActionsAttrs>}
@@ -87,7 +87,7 @@ export const CardActions = {
 }
 
 /**
- * Imagen destacada de la card (usa `<figure>`).
+ * Card featured image (uses `<figure>`).
  *
  * @type {import('mithril').Component<import('./index').CardFigureAttrs>}
  */

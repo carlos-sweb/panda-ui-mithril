@@ -5,8 +5,8 @@ import {
 import { cx } from '../../../styled-system/css'
 
 /**
- * Componente Stats. Contenedor en grid de una o más Stats, en horizontal
- * o vertical.
+ * Stats component. Grid container for one or more Stats, horizontal
+ * or vertical.
  *
  * @type {import('mithril').Component<import('./index').StatsAttrs>}
  */
@@ -23,14 +23,14 @@ export const Stats = {
 }
 
 /**
- * Resultado cacheado de `stat({})` — los subcomponentes no pasan variantes,
- * así que sus clases son determinísticas. Evita llamar al sva en cada render.
+ * Cached result of `stat({})` — the subcomponents pass no variants,
+ * so their classes are deterministic. Avoids calling the sva on every render.
  * @type {ReturnType<typeof stat>}
  */
 const defaultStyles = stat({})
 
 /**
- * Stat individual: una celda con su propio grid interno.
+ * Individual Stat: a cell with its own internal grid.
  *
  * @type {import('mithril').Component<import('./index').StatAttrs>}
  */
@@ -42,7 +42,7 @@ export const Stat = {
 }
 
 /**
- * Título de la stat.
+ * Stat title.
  *
  * @type {import('mithril').Component<import('./index').StatTitleAttrs>}
  */
@@ -54,7 +54,7 @@ export const StatTitle = {
 }
 
 /**
- * Valor principal de la stat.
+ * Main value of the stat.
  *
  * @type {import('mithril').Component<import('./index').StatValueAttrs>}
  */
@@ -66,7 +66,7 @@ export const StatValue = {
 }
 
 /**
- * Descripción o detalle de la stat.
+ * Description or detail of the stat.
  *
  * @type {import('mithril').Component<import('./index').StatDescAttrs>}
  */
@@ -78,7 +78,7 @@ export const StatDesc = {
 }
 
 /**
- * Figura o icono de la stat.
+ * Figure or icon of the stat.
  *
  * @type {import('mithril').Component<import('./index').StatFigureAttrs>}
  */
@@ -90,7 +90,7 @@ export const StatFigure = {
 }
 
 /**
- * Zona de acciones de la stat.
+ * Actions area of the stat.
  *
  * @type {import('mithril').Component<import('./index').StatActionsAttrs>}
  */

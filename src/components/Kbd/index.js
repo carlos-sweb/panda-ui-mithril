@@ -3,8 +3,8 @@ import { kbd } from '../../../styled-system/recipes'
 import { cx } from '../../../styled-system/css'
 
 /**
- * Componente Kbd. Representa una tecla del teclado (`<kbd>`), con tamaño
- * ajustable via `size`.
+ * Kbd component. Represents a keyboard key (`<kbd>`), with adjustable
+ * size via `size`.
  *
  * @type {import('mithril').Component<import('./index').KbdAttrs>}
  */

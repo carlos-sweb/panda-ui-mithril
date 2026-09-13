@@ -12,10 +12,10 @@ export const dropdownRecipe = defineSlotRecipe({
     content: {
       position: 'absolute',
       zIndex: '20',
-      // max-content: el panel siempre toma el ancho natural de su contenido,
-      // sin comprimirse por el "available space" del containing block (root
-      // inline-block). Con `width` (xs..xl) se fija un ancho explícito que
-      // sobreescribe este valor. 90vw es solo un tope de seguridad en móviles.
+      // max-content: the panel always takes the natural width of its content,
+      // without being squeezed by the containing block's "available space" (an
+      // inline-block root). With `width` (xs..xl) an explicit width is set that
+      // overrides this value. 90vw is only a safety cap on mobile.
       width: 'max-content',
       maxWidth: '90vw',
       padding: 'token(spacing.2)',
@@ -27,8 +27,8 @@ export const dropdownRecipe = defineSlotRecipe({
       boxShadow: '0 10px 25px color-mix(in oklab, black 20%, transparent)',
       opacity: '0',
       visibility: 'hidden',
-      // Las propiedades individuales translate/scale se suman a `transform`
-      // (usada solo para el centrado por placement), sin pisarse.
+      // The individual translate/scale properties add to `transform`
+      // (used only for placement centering), without overriding each other.
       translate: '0 -0.5rem',
       scale: '0.98',
       pointerEvents: 'none',
@@ -38,9 +38,9 @@ export const dropdownRecipe = defineSlotRecipe({
     },
   },
   variants: {
-    // El panel se posiciona respecto al trigger. El eje (bottom/top/left/right)
-    // es la dirección de apertura; la alineación (start/center/end) ajusta el
-    // otro eje. Default: abajo alineado al inicio (borde izquierdo del trigger).
+    // The panel is positioned relative to the trigger. The axis (bottom/top/left/right)
+    // is the opening direction; the alignment (start/center/end) adjusts the
+    // other axis. Default: bottom aligned to the start (trigger's left edge).
     placement: {
       'bottom-start': { content: { top: 'calc(100% + var(--dropdown-offset, 0.5rem))', insetInlineStart: '0' } },
       'bottom-center': { content: { top: 'calc(100% + var(--dropdown-offset, 0.5rem))', insetInlineStart: '50%', transform: 'translateX(-50%)' } },
@@ -55,10 +55,10 @@ export const dropdownRecipe = defineSlotRecipe({
       'right-center': { content: { insetInlineStart: 'calc(100% + var(--dropdown-offset, 0.5rem))', top: '50%', transform: 'translateY(-50%)' } },
       'right-end': { content: { insetInlineStart: 'calc(100% + var(--dropdown-offset, 0.5rem))', bottom: '0' } },
     },
-    // Abierto: el panel pasa a visible. La clase se aplica al slot `dropdown`
-    // (`.dropdown-open`), que activa el content con el selector de HIJO DIRECTO
-    // (`>`): un dropdown anidado dentro de otro abierto no debe "encender" su
-    // propio content (el menú de modos dentro del ColorPicker, p. ej.).
+    // Open: the panel becomes visible. The class is applied to the `dropdown`
+    // slot (`.dropdown-open`), which shows the content with the DIRECT CHILD
+    // selector (`>`): a dropdown nested inside another open one must not "turn on"
+    // its own content (the mode menu inside ColorPicker, for example).
     open: {
       true: {
         dropdown: {
@@ -72,7 +72,7 @@ export const dropdownRecipe = defineSlotRecipe({
         },
       },
     },
-    // Separación entre el panel y el trigger (--dropdown-offset).
+    // Gap between the panel and the trigger (--dropdown-offset).
     offset: {
       xs: { dropdown: { '--dropdown-offset': 'token(spacing.1)' } },
       sm: { dropdown: { '--dropdown-offset': 'token(spacing.2)' } },
@@ -80,10 +80,10 @@ export const dropdownRecipe = defineSlotRecipe({
       lg: { dropdown: { '--dropdown-offset': 'token(spacing.4)' } },
       xl: { dropdown: { '--dropdown-offset': 'token(spacing.5)' } },
     },
-    // Ancho del panel. Sin `width` el panel se ajusta al contenido y el menú
-    // interno conserva su ancho natural (fit-content, sin cortes de texto);
-    // con xs..xl se fija un ancho explícito (12rem..20rem) y el menú llena
-    // el panel con sus items estirados (alignItems: stretch del recipe Menu).
+    // Panel width. Without `width` the panel fits the content and the inner
+    // menu keeps its natural width (fit-content, no text clipping);
+    // with xs..xl an explicit width is set (12rem..20rem) and the menu fills
+    // the panel with its items stretched (alignItems: stretch from the Menu recipe).
     width: {
       xs: { content: { width: 'token(spacing.48)', '& > .menu': { width: '100%' } } },
       sm: { content: { width: 'token(spacing.56)', '& > .menu': { width: '100%' } } },

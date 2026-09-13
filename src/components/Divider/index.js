@@ -3,8 +3,8 @@ import { dividerPUM } from '../../../styled-system/recipes'
 import { cx } from '../../../styled-system/css'
 
 /**
- * Componente Divider. Separador horizontal o vertical (role="separator"),
- * con variante de color y `placement` para la etiqueta (start/end).
+ * Divider component. Horizontal or vertical separator (role="separator"),
+ * with a color variant and `placement` for the label (start/end).
  *
  * @type {import('mithril').Component<import('./index').DividerAttrs>}
  */

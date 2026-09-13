@@ -8,9 +8,9 @@ import { Select } from '../Select/index.js'
 import { t } from '../../i18n.js'
 
 /**
- * Componente TableContainer. Wrapper con scroll horizontal (y vertical si se
- * pasa `maxHeight`) para que la tabla no desborde en pantallas estrechas.
- * `maxHeight` crea la región scrollable que el Sticky header necesita.
+ * TableContainer component. Wrapper with horizontal scroll (and vertical if
+ * `maxHeight` is passed) so the table does not overflow on narrow screens.
+ * `maxHeight` creates the scrollable region the Sticky header needs.
  *
  * @type {import('mithril').Component<import('./index').TableContainerAttrs>}
  */
@@ -22,12 +22,12 @@ export const TableContainer = {
   }
 }
 
-// ── Helpers del modo data-driven ────────────────────────────────────────
+// ── Data-driven mode helpers ────────────────────────────────────────
 
 /**
- * Autodetecta el tipo de comparación de una columna muestreando sus valores:
- * todo numérico → 'number' (mayor a menor en desc), Date → 'date', resto →
- * 'string' (A-Z con localeCompare natural, "item 2" < "item 10").
+ * Auto-detects a column's comparison type by sampling its values:
+ * all numeric → 'number' (largest to smallest on desc), Date → 'date', rest →
+ * 'string' (A-Z with natural localeCompare, "item 2" < "item 10").
  * @param {unknown[]} values
  * @returns {'number' | 'date' | 'string'}
  */
@@ -43,7 +43,7 @@ function detectSortType(values) {
 }
 
 /**
- * Compara dos valores según el tipo. `direction` invierte el resultado.
+ * Compares two values according to the type. `direction` inverts the result.
  * @param {unknown} a
  * @param {unknown} b
  * @param {'number' | 'date' | 'string'} type
@@ -62,8 +62,8 @@ function compareValues(a, b, type, direction) {
 }
 
 /**
- * Compara dos items por la columna: comparador custom (`col.sort`), tipo
- * forzado (`col.sortType`) o autodetección del dataset.
+ * Compares two items by the column: custom comparator (`col.sort`), forced
+ * type (`col.sortType`) or auto-detection from the dataset.
  * @param {Object} a
  * @param {Object} b
  * @param {import('./index').TableColumn} col
@@ -82,18 +82,18 @@ function compareItems(a, b, col, direction, data) {
 }
 
 /**
- * Componente Table. Tabla de datos con tamaño, rayado (zebra), filas/columnas
- * fijas (pin) y dos modos:
+ * Table component. Data table with size, zebra striping, pinned
+ * rows/columns (pin) and two modes:
  *
- *  - **Compositivo** (sin `data`): children explícitos (`TableThead`/
+ *  - **Compositive** (no `data`): explicit children (`TableThead`/
  *    `TableTbody`/`TableRow`/`TableCell`/`TableHead`).
- *  - **Data-driven** (con `data`): `columns` definen el encabezado y las
- *    celdas; `pageSize` pagina la data y la `Pagination` de la librería
- *    **aparece automáticamente** cuando hay más de una página. Columnas con
- *    `sortable: true` ordenan (ciclo asc → desc → sin orden) con detección
- *    automática de numérico/texto. `page`/`defaultPage`/`onchange` y
- *    `sort`/`defaultSort`/`onSortChange` siguen el contrato controlado/
- *    no-controlado de la librería.
+ *  - **Data-driven** (with `data`): `columns` define the header and the
+ *    cells; `pageSize` paginates the data and the library's `Pagination`
+ *    **appears automatically** when there is more than one page. Columns with
+ *    `sortable: true` sort (cycle asc → desc → no sort) with automatic
+ *    numeric/text detection. `page`/`defaultPage`/`onchange` and
+ *    `sort`/`defaultSort`/`onSortChange` follow the library's controlled/
+ *    uncontrolled contract.
  *
  * @type {import('mithril').Component<import('./index').TableAttrs>}
  */
@@ -117,7 +117,7 @@ export const Table = {
 
     const styles = table({ size, zebra, pinRows, pinCols, hover, bordered, stickyHeader })
 
-    // ── Modo compositivo (retrocompatibilidad) ──
+    // ── Compositive mode (backward compatibility) ──
     if (data === undefined) {
       return m('table', {
         className: cx('table', styles.table, className),
@@ -125,7 +125,7 @@ export const Table = {
       }, vnode.children)
     }
 
-    // ── Modo data-driven ──
+    // ── Data-driven mode ──
     const isSortControlled = sortProp !== undefined
     const currentSort = isSortControlled ? sortProp : vnode.state.sort
     const setSort = (next) => {
@@ -136,7 +136,7 @@ export const Table = {
       }
     }
 
-    // Dataset ordenado (el orden se aplica a TODO antes de paginar).
+    // Sorted dataset (the order is applied to EVERYTHING before paginating).
     let rows = Array.isArray(data) ? data : []
     if (currentSort) {
       const col = columns.find((c) => c.key === currentSort.key)
@@ -145,9 +145,9 @@ export const Table = {
       }
     }
 
-    // Paginación (contract Pagination): controlada con `page` o interna.
+    // Pagination (Pagination contract): controlled with `page` or internal.
     const paginationEnabled = paginationProp !== false
-    // pageSize controlado (`pageSize` prop) o interno (`defaultPageSize` / 10).
+    // pageSize controlled (`pageSize` prop) or internal (`defaultPageSize` / 10).
     const isPageSizeControlled = pageSizeProp !== undefined
     const effectivePageSize = isPageSizeControlled ? pageSizeProp : vnode.state.pageSize
     const effPageSize = paginationEnabled ? effectivePageSize : Infinity
@@ -163,8 +163,8 @@ export const Table = {
         m.redraw()
       }
     }
-    // Cambio de filas por página: notifica, actualiza el estado interno si es
-    // no-controlado y vuelve a la página 1 (comportamiento Ant/MUI).
+    // Rows-per-page change: notifies, updates the internal state if
+    // uncontrolled, and returns to page 1 (Ant/MUI behavior).
     const setPageSize = (next) => {
       const clamped = Math.max(1, next || 1)
       if (onPageSizeChange) onPageSizeChange(clamped)
@@ -184,7 +184,7 @@ export const Table = {
       else setSort(null)
     }
 
-    // Encabezado: th con align/width, sortable con aria-sort + icono.
+    // Header: th with align/width, sortable with aria-sort + icon.
     const theadCells = columns.map((col) => {
       const sorted = currentSort != null && currentSort.key === col.key
       const thAttrs = {
@@ -205,7 +205,7 @@ export const Table = {
       return m('th', thAttrs, [label, icon].filter(Boolean))
     })
 
-    // Cuerpo: skeleton / empty / filas de la página actual (todas keyed).
+    // Body: skeleton / empty / rows of the current page (all keyed).
     let body
     if (loading) {
       body = Array.from({ length: loadingRows }, (_, i) =>
@@ -235,7 +235,7 @@ export const Table = {
       ? paginationProp
       : {}
 
-    // La paginación aparece SOLO cuando hay más de una página (hideWithOnePage).
+    // Pagination appears ONLY when there is more than one page (hideWithOnePage).
     const paginationEl = paginationEnabled && pageCount > 1
       ? m(Pagination, {
           page: safePage,
@@ -247,8 +247,8 @@ export const Table = {
         })
       : null
 
-    // Selector de filas por página (pageSizeOptions): etiqueta i18n por
-    // defecto (Rows per page / Filas por página) o `perPageLabel` custom.
+    // Rows-per-page selector (pageSizeOptions): default i18n label
+    // (Rows per page / its Spanish translation) or custom `perPageLabel`.
     const pageSizeEl = Array.isArray(pageSizeOptions) && pageSizeOptions.length > 0
       ? m('label', { className: 'table-page-size' }, [
           m('span', perPageLabel != null ? perPageLabel : t('table.rowsPerPage')),
@@ -261,8 +261,8 @@ export const Table = {
         ])
       : null
 
-    // Con selector: barra con el selector a la izquierda y la paginación a la
-    // derecha. Sin selector: la paginación va directa (regla `> .pagination`).
+    // With selector: bar with the selector on the left and the pagination on the
+    // right. Without selector: the pagination goes directly (rule `> .pagination`).
     const footerEl = pageSizeEl
       ? m('div', { className: 'table-pagination-bar' }, [pageSizeEl, paginationEl].filter(Boolean))
       : paginationEl
@@ -283,14 +283,14 @@ export const Table = {
 }
 
 /**
- * Resultado cacheado de `table({})` — los subcomponentes no pasan variantes,
- * así que las clases son determinísticas.
+ * Cached result of `table({})` — the subcomponents pass no variants,
+ * so the classes are deterministic.
  * @type {ReturnType<typeof table>}
  */
 const defaultStyles = table({})
 
 /**
- * Componente TableThead. Encabezado de la tabla (`<thead>`).
+ * TableThead component. Table header (`<thead>`).
  *
  * @type {import('mithril').Component<import('./index').TableTheadAttrs>}
  */
@@ -302,7 +302,7 @@ export const TableThead = {
 }
 
 /**
- * Componente TableTbody. Cuerpo de la tabla (`<tbody>`).
+ * TableTbody component. Table body (`<tbody>`).
  *
  * @type {import('mithril').Component<import('./index').TableTbodyAttrs>}
  */
@@ -314,7 +314,7 @@ export const TableTbody = {
 }
 
 /**
- * Componente TableTfoot. Pie de la tabla (`<tfoot>`).
+ * TableTfoot component. Table footer (`<tfoot>`).
  *
  * @type {import('mithril').Component<import('./index').TableTfootAttrs>}
  */
@@ -326,8 +326,8 @@ export const TableTfoot = {
 }
 
 /**
- * Componente TableRow. Fila de la tabla (`<tr>`); con `hover` se resalta al
- * pasar el cursor (slot `row` de la recipe).
+ * TableRow component. Table row (`<tr>`); with `hover` it is highlighted on
+ * cursor hover (recipe's `row` slot).
  *
  * @type {import('mithril').Component<import('./index').TableRowAttrs>}
  */
@@ -339,7 +339,7 @@ export const TableRow = {
 }
 
 /**
- * Componente TableCell. Celda de datos (`<td>`).
+ * TableCell component. Data cell (`<td>`).
  *
  * @type {import('mithril').Component<import('./index').TableCellAttrs>}
  */
@@ -351,7 +351,7 @@ export const TableCell = {
 }
 
 /**
- * Componente TableHead. Celda de encabezado (`<th>`).
+ * TableHead component. Header cell (`<th>`).
  *
  * @type {import('mithril').Component<import('./index').TableHeadAttrs>}
  */

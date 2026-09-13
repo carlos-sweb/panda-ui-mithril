@@ -16,10 +16,10 @@ import { cx } from '../../../styled-system/css'
 // playground/main.jsx's own navbar theme button.
 
 /**
- * Componente ThemeController. Checkbox controlado para alternar el tema de
- * la aplicación. `theme` es el nombre del tema que activa (p. ej. "dark"),
- * `checked` su estado y `onchange` recibe el tema seleccionado (o undefined
- * al deseleccionarlo). `variant` elige si se ve como toggle o checkbox.
+ * ThemeController component. Controlled checkbox to toggle the application's
+ * theme. `theme` is the name of the theme it activates (e.g. "dark"),
+ * `checked` its state and `onchange` receives the selected theme (or undefined
+ * when deselecting it). `variant` chooses whether it looks like a toggle or a checkbox.
  *
  * @type {import('mithril').Component<import('./index').ThemeControllerAttrs>}
  */

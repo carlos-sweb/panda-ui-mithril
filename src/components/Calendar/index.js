@@ -6,9 +6,9 @@ import {
 import { cx } from '../../../styled-system/css'
 import { t } from '../../i18n'
 
-// Claves de calendar.weekdayShort.*/calendar.month.* en src/i18n.js — el
-// texto real sale de t(), esto solo fija el ORDEN (domingo-primero,
-// enero-primero) y es el fallback cuando el consumidor NO pasa `locale`.
+// Keys of calendar.weekdayShort.*/calendar.month.* in src/i18n.js — the
+// real text comes from t(), this only fixes the ORDER (Sunday-first,
+// January-first) and is the fallback when the consumer does NOT pass `locale`.
 const WEEKDAY_KEYS = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
 const MONTH_KEYS = [
   'january', 'february', 'march', 'april', 'may', 'june',
@@ -16,13 +16,13 @@ const MONTH_KEYS = [
 ]
 
 /**
- * Nombres de mes/día para el `locale` de un `Calendar` — INDEPENDIENTE del
- * `setLocale('en'|'es')` de la librería (ese solo cubre aria-labels/UI
- * interna en dos idiomas). Un consumidor cuya app está en francés, portugués
- * o cualquier otro idioma pasa su propio `locale` prop con estos 19 strings
- * y el calendario los usa tal cual, sin depender de qué locales soporte la
- * librería. `months` empieza en enero, `weekdaysShort` empieza en domingo
- * (mismo orden que MONTH_KEYS/WEEKDAY_KEYS).
+ * Month/day names for a `Calendar`'s `locale` — INDEPENDENT of the
+ * library's `setLocale('en'|'es')` (that one only covers aria-labels/internal
+ * UI in two languages). A consumer whose app is in French, Portuguese
+ * or any other language passes its own `locale` prop with these 19 strings
+ * and the calendar uses them as-is, without depending on which locales the
+ * library supports. `months` starts in January, `weekdaysShort` starts on Sunday
+ * (same order as MONTH_KEYS/WEEKDAY_KEYS).
  * @param {import('./index').CalendarLocale | undefined} locale
  * @param {number} i
  */
@@ -40,10 +40,10 @@ function sameDay(a, b) {
 }
 
 /**
- * Rejilla de 42 días del mes, alineada a `weekStartsOn` (0=domingo, EE.UU.;
- * 1=lunes, la mayoría de países fuera de EE.UU.; hasta 6=sábado). Desplaza
- * el offset inicial en vez de asumir domingo-primero — la fecha real de
- * cada celda no cambia, solo qué columna le toca.
+ * 42-day grid of the month, aligned to `weekStartsOn` (0=Sunday, US;
+ * 1=Monday, most countries outside the US; up to 6=Saturday). Shifts
+ * the initial offset instead of assuming Sunday-first — the real date of
+ * each cell does not change, only which column it lands in.
  */
 function getMonthGrid(year, month, weekStartsOn = 0) {
   const firstDay = new Date(year, month, 1).getDay()
@@ -51,7 +51,7 @@ function getMonthGrid(year, month, weekStartsOn = 0) {
   return Array.from({ length: 42 }, (_, i) => new Date(year, month, 1 - offset + i))
 }
 
-/** Número de semana ISO-8601 (semana que contiene el jueves de esa semana). */
+/** ISO-8601 week number (the week containing that week's Thursday). */
 function getISOWeek(date) {
   const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()))
   const dayNum = d.getUTCDay() || 7
@@ -61,39 +61,39 @@ function getISOWeek(date) {
 }
 
 /**
- * Resultado cacheado de `calendar({})` — los slots sin variantes (cabecera,
- * navegación, rejilla, ...) reusan las mismas clases en cada render.
+ * Cached result of `calendar({})` — the slots without variants (header,
+ * navigation, grid, ...) reuse the same classes on every render.
  * @type {ReturnType<typeof calendar>}
  */
 const defaultStyles = calendar({})
 
 /**
- * Componente Calendar. Calendario de mes completo con navegación entre
- * meses/años y tres modos de selección:
- *  - `mode="single"` (default): `value` es un `Date`, `onchange` recibe un `Date`.
- *  - `mode="range"`: `value` es `{ start: Date|null, end: Date|null }`; al
- *    elegir el segundo día se muestra un preview de rango con hover antes
- *    de confirmar.
- *  - `mode="multiple"`: `value` es `Date[]`; cada click alterna el día.
+ * Calendar component. Full month calendar with navigation between
+ * months/years and three selection modes:
+ *  - `mode="single"` (default): `value` is a `Date`, `onchange` receives a `Date`.
+ *  - `mode="range"`: `value` is `{ start: Date|null, end: Date|null }`; when
+ *    choosing the second day, a range preview with hover is shown before
+ *    confirming.
+ *  - `mode="multiple"`: `value` is `Date[]`; each click toggles the day.
  *
- * El título del header es clickeable y hace drill-down día → mes → año
- * (`initialView` permite arrancar directo en "month" o "year", útil para un
- * selector de fecha de nacimiento). `showWeekNumbers` agrega la columna de
- * número de semana ISO (siempre calculada lunes-primero, por definición del
- * estándar ISO-8601 — independiente de `weekStartsOn`).
+ * The header title is clickable and drills down day → month → year
+ * (`initialView` allows starting directly in "month" or "year", useful for a
+ * date-of-birth picker). `showWeekNumbers` adds the ISO week-number
+ * column (always computed Monday-first, by definition of the
+ * ISO-8601 standard — independent of `weekStartsOn`).
  *
- * `weekStartsOn` (0=domingo default, EE.UU.; 1=lunes, la convención en la
- * mayoría de países fuera de EE.UU.; hasta 6=sábado) corre qué día cae en la
- * primera columna, tanto en la rejilla de días como en su cabecera — la
- * fecha real de cada celda no cambia, solo el orden de las columnas.
+ * `weekStartsOn` (0=Sunday default, US; 1=Monday, the convention in
+ * most countries outside the US; up to 6=Saturday) runs which day falls in the
+ * first column, both in the day grid and in its header — the
+ * real date of each cell does not change, only the order of the columns.
  *
 
- * `locale` (nombres de mes/día) es INDEPENDIENTE del `setLocale('en'|'es')`
- * de la librería — ese solo traduce aria-labels/UI interna a dos idiomas.
- * Un consumidor con su app en francés, portugués o cualquier otro idioma
- * pasa `locale={{ months: [...12], weekdaysShort: [...7] }}` y el calendario
- * usa esos strings tal cual, sin depender de qué locales soporte la
- * librería. Sin `locale`, cae al `t()` interno (en/es).
+ * `locale` (month/day names) is INDEPENDENT of the library's
+ * `setLocale('en'|'es')` — that one only translates aria-labels/internal UI into two languages.
+ * A consumer with its app in French, Portuguese or any other language
+ * passes `locale={{ months: [...12], weekdaysShort: [...7] }}` and the calendar
+ * uses those strings as-is, without depending on which locales the
+ * library supports. Without `locale`, it falls back to the internal `t()` (en/es).
  *
  * @type {import('mithril').Component<import('./index').CalendarAttrs>}
  */
@@ -107,11 +107,11 @@ export const Calendar = {
 
     vnode.state.viewYear = initial.getFullYear()
     vnode.state.viewMonth = initial.getMonth()
-    // NOTA: nunca nombrar este campo `view` — Mithril relee `vnode.state.view`
-    // DESPUÉS de correr oninit (para soportar components que la reasignan
-    // dinámicamente), así que un campo de estado propio con ese nombre
-    // pisa la función de render del propio componente y revienta con
-    // "this.apply is not a function" (this = el string, no una función).
+    // NOTE: never name this field `view` — Mithril re-reads `vnode.state.view`
+    // AFTER running oninit (to support components that reassign it
+    // dynamically), so a state field of its own with that name
+    // overwrites the component's own render function and blows up with
+    // "this.apply is not a function" (this = the string, not a function).
     vnode.state.panel = initialView === 'month' || initialView === 'year' ? initialView : 'day'
     vnode.state.yearPageStart = Math.floor(vnode.state.viewYear / 12) * 12
     vnode.state.hoverDate = null
@@ -202,9 +202,9 @@ export const Calendar = {
       const gridStyles = showWeekNumbers ? calendar({ withWeeknum: true }).grid : defaultStyles.grid
       const gridChildren = []
       if (showWeekNumbers) gridChildren.push(m('span', { key: 'wknum-spacer', className: defaultStyles.weeknum }, ''))
-      // Cabecera de días alineada a weekStartsOn — el índice REAL (0=domingo
-      // ... 6=sábado, el que usan monthName/weekdayShort y el locale custom)
-      // se calcula desplazando la posición mostrada, nunca al revés.
+      // Day header aligned to weekStartsOn — the REAL index (0=Sunday
+      // ... 6=Saturday, the one used by monthName/weekdayShort and the custom locale)
+      // is computed by shifting the displayed position, never the other way around.
       gridChildren.push(...Array.from({ length: 7 }, (_, pos) => {
         const dayIndex = (weekStartsOn + pos) % 7
         return m('span', { key: `wd-${WEEKDAY_KEYS[dayIndex]}`, className: defaultStyles.weekday }, weekdayShort(locale, dayIndex))
@@ -295,7 +295,7 @@ export const Calendar = {
 }
 
 /**
- * Componente CalendarDate. Día individual de la rejilla del calendario.
+ * CalendarDate component. Individual day of the calendar grid.
  *
  * @type {import('mithril').Component<import('./index').CalendarDateAttrs>}
  */
@@ -307,7 +307,7 @@ export const CalendarDate = {
 }
 
 /**
- * Componente CalendarMonth. Rejilla mensual de días del calendario.
+ * CalendarMonth component. Monthly grid of calendar days.
  *
  * @type {import('mithril').Component<import('./index').CalendarMonthAttrs>}
  */
@@ -319,7 +319,7 @@ export const CalendarMonth = {
 }
 
 /**
- * Componente CalendarHeader. Cabecera con la navegación entre meses.
+ * CalendarHeader component. Header with navigation between months.
  *
  * @type {import('mithril').Component<import('./index').CalendarHeaderAttrs>}
  */
