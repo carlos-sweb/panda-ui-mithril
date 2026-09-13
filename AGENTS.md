@@ -722,6 +722,15 @@ its `cursor: grab`).
 advanced — lives in [`docs/config-ui.md`](./docs/config-ui.md).** Only what is
 needed to work in this repo stays here.
 
+**CLI contract** (`scripts/cli.ts`): `--help`/`-h` anywhere wins and exits **0**
+(help on stdout); a usage error — unknown command, unknown option, an option the
+command does not accept, or a flag missing its value — prints the help on
+**stderr** and exits **1**. A `--dir` with no value is an ERROR, never a silent
+fallback to the cwd: `init --dir` used to scaffold into the current directory
+and `config --dir` to start the editor on the wrong project. Flags are per
+command (`init`: `--force`/`--dir`; `config`: `--dir`/`--port`/`--no-open`/
+`--init`). `scripts/cli.test.ts` spawns the CLI and pins all of it.
+
 ### Theme target resolution (`resolveTheme`)
 
 - `--dir <path>` / `--dir=<path>` / `-d <path>` / `-d=<path>`: explicit base

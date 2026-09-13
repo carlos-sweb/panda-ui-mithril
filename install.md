@@ -161,6 +161,14 @@ The package ships two commands. **Both accept `--dir`** (and the
 `--dir=<path>` form); a relative path resolves against the directory you run
 the command from.
 
+Exit status: **0** on success, and whenever `--help`/`-h` is passed (in any
+position); **1** on a usage error (unknown command or option, or a flag missing
+its value), when the project already exists (`init` without `--force`) and when
+the packaged `config-ui/server.ts` is missing. `--help` prints the help on
+**stdout**, while a usage error prints it on **stderr** — so
+`bunx panda-ui-mithril --help | less` works, and a failed run writes nothing to
+stdout.
+
 | Command | What it does |
 |---|---|
 | `bunx panda-ui-mithril init` | Creates `pum/` (preset + editable theme), `panda.config.ts`, the JSX fields in `tsconfig.json` and the postcss pipeline (`postcss.config.cjs` + `pum/index.css`). |

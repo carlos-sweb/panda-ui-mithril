@@ -211,6 +211,10 @@ Usage:
                                          instead.
   bunx panda-ui-mithril --help          Shows this help.
 
+Exit status: 0 on success and whenever --help is passed; 1 on a usage error
+(unknown command or option, missing or invalid flag value), when the project
+already exists (init without --force) and when config-ui/server.ts is missing.
+
 The editable theme lives in pum/theme/*.ts — change colors/scales there and
 recompile. Recipes are NOT copied: they come from the package via
 panda-ui-mithril/recipes.
@@ -372,22 +376,152 @@ function writeFlatSrcTo(themeDir: string, file: string, values: Record<string, s
 }
 
 /**
- * Reads `--dir <path>` / `--dir=<path>` / `-d <path>` / `-d=<path>` from
- * process.argv — same format as `themeDirFromArgv` in config-ui/server.ts
- * (space or `=`; resolved to an absolute path against cwd). Used by both `init`
- * and `config`.
+ * Flags each command accepts. `--help`/`-h` is handled before this table
+ * (it is valid everywhere) and `--dir`/`-d` and `--port`/`-p` take a value.
  */
-function dirFromArgv(): string | null {
-  const argv = process.argv
-  for (let i = 2; i < argv.length; i++) {
-    const a = argv[i]
-    let raw: string | undefined
-    if (a.startsWith('--dir=')) raw = a.slice('--dir='.length)
-    else if (a.startsWith('-d=')) raw = a.slice('-d='.length)
-    else if (a === '--dir' || a === '-d') raw = argv[i + 1]
-    if (raw && !raw.startsWith('-')) return resolve(raw)
+const COMMAND_FLAGS = {
+  init: ['--force', '--dir'],
+  config: ['--dir', '--port', '--no-open', '--init'],
+} as const
+
+type Command = keyof typeof COMMAND_FLAGS
+
+/** What the CLI understood from process.argv.slice(2). */
+type CliArgs = {
+  command: Command | null
+  help: boolean
+  dir: string | null
+  force: boolean
+  port: number | null
+  init: boolean
+  noOpen: boolean
+  error: string | null
+}
+
+/**
+ * Parses the CLI's own arguments:
+ *   - the command may come before or after its flags (`init --dir X` and
+ *     `--dir X init` mean the same);
+ *   - value flags accept `--dir X` and `--dir=X` (same forms as
+ *     `themeDirFromArgv` in config-ui/server.ts; a relative path resolves
+ *     against cwd), and a value that looks like another flag counts as
+ *     MISSING — `init --dir --force` must never fall back to the cwd and
+ *     scaffold somewhere else silently;
+ *   - anything unknown, plus flags a command does not accept, becomes `error`
+ *     instead of being ignored: a typo used to be silently dropped.
+ *
+ * It only READS argv: `config` imports the server in the same process and the
+ * server re-parses `--dir`/`--port` on its own, so the arguments must keep
+ * reaching it untouched.
+ */
+function parseArgs(argv: string[]): CliArgs {
+  const out: CliArgs = {
+    command: null,
+    help: false,
+    dir: null,
+    force: false,
+    port: null,
+    init: false,
+    noOpen: false,
+    error: null,
   }
-  return null
+  const positional: string[] = []
+  const seen = new Set<string>()
+
+  for (let i = 0; i < argv.length; i++) {
+    const a = argv[i]
+
+    if (a === '--help' || a === '-h') {
+      out.help = true
+      continue
+    }
+    if (!a.startsWith('-')) {
+      positional.push(a)
+      continue
+    }
+
+    const eq = a.indexOf('=')
+    const name = eq === -1 ? a : a.slice(0, eq)
+    const inline = eq === -1 ? null : a.slice(eq + 1)
+
+    if (name === '--dir' || name === '-d' || name === '--port' || name === '-p') {
+      const canonical = name === '--dir' || name === '-d' ? '--dir' : '--port'
+      seen.add(canonical)
+      let value = inline
+      if (value === null) {
+        const next = argv[i + 1]
+        if (next === undefined || next.startsWith('-')) {
+          out.error ??= `option '${name}' requires a value`
+          continue
+        }
+        value = next
+        i++
+      }
+      if (value === '') {
+        out.error ??= `option '${name}' requires a value`
+        continue
+      }
+      if (canonical === '--dir') {
+        out.dir = resolve(value)
+      } else {
+        const n = Number(value)
+        if (!Number.isInteger(n) || n <= 0 || n >= 65536) {
+          out.error ??= `invalid value for '${name}': '${value}' (expected a port between 1 and 65535)`
+        } else {
+          out.port = n
+        }
+      }
+      continue
+    }
+
+    if (a === '--force') {
+      seen.add('--force')
+      out.force = true
+      continue
+    }
+    if (a === '--init') {
+      seen.add('--init')
+      out.init = true
+      continue
+    }
+    if (a === '--no-open') {
+      seen.add('--no-open')
+      out.noOpen = true
+      continue
+    }
+
+    out.error ??= `unknown option '${a}'`
+  }
+
+  if (positional.length > 1) out.error ??= `unexpected argument '${positional[1]}'`
+  const cmd = positional[0]
+  if (cmd === undefined) {
+    // `--help` on its own is fine; asking for nothing is a usage error.
+    if (!out.help) out.error ??= 'missing command'
+  } else if (cmd === 'init' || cmd === 'config') {
+    out.command = cmd
+  } else {
+    out.error ??= `unknown command '${cmd}'`
+  }
+
+  if (out.command) {
+    const allowed: readonly string[] = COMMAND_FLAGS[out.command]
+    for (const flag of seen) {
+      if (!allowed.includes(flag)) {
+        out.error ??= `unknown option '${flag}' for '${out.command}'`
+      }
+    }
+  }
+
+  return out
+}
+
+/** Reports a usage error: the message and the help, both on stderr, exit 1. */
+function usageError(message: string): never {
+  console.error(`error: ${message}`)
+  console.error('')
+  console.error(HELP)
+  process.exit(1)
 }
 
 /**
@@ -445,10 +579,18 @@ function scaffoldProject(cwd: string, opts: { force: boolean; printNextSteps: bo
 }
 
 async function main() {
-  const args = process.argv.slice(2)
+  const parsed = parseArgs(process.argv.slice(2))
+
+  // `--help`/`-h` is a request, not a mistake: wherever it appears
+  // (`init --help`, `--bogus --help`) it wins and exits 0.
+  if (parsed.help) {
+    console.log(HELP)
+    process.exit(0)
+  }
+  if (parsed.error) usageError(parsed.error)
 
   // `config` — opens the visual theme editor (Elysia server on :1234)
-  if (args[0] === 'config') {
+  if (parsed.command === 'config') {
     const serverPath = join(PKG_DIR, 'config-ui', 'server.ts')
     if (!existsSync(serverPath)) {
       console.error('Could not find config-ui/server.ts in the installed package.')
@@ -461,8 +603,8 @@ async function main() {
     // never overwrites). That way a fresh SPA can be initialized and opened in
     // one step:
     //   bunx panda-ui-mithril config --init --dir=src/pages/login
-    if (args.includes('--init')) {
-      const dir = dirFromArgv() ?? process.cwd()
+    if (parsed.init) {
+      const dir = parsed.dir ?? process.cwd()
       if (hasTheme(dir)) {
         console.log(`✔ ${dir} is already a panda-ui-mithril project — opening the editor, nothing touched.`)
       } else {
@@ -472,20 +614,15 @@ async function main() {
 
     // Imports the server (Elysia listens and keeps the process alive). The
     // server reads --dir/-d and --port/-p from process.argv (port, theme path,
-    // and opening the browser).
+    // and opening the browser) — parseArgs above only validated them.
     await import(serverPath)
     return
   }
 
-  if (args.includes('--help') || args.includes('-h') || args[0] !== 'init') {
-    console.log(HELP)
-    process.exit(args[0] !== 'init' ? 1 : 0)
-  }
-
-  const explicitDir = dirFromArgv()
-  const cwd = explicitDir ?? process.cwd()
-  if (explicitDir) mkdirSync(explicitDir, { recursive: true })
-  scaffoldProject(cwd, { force: args.includes('--force'), printNextSteps: true })
+  // `init`, the only command left: parseArgs already rejected the rest.
+  const cwd = parsed.dir ?? process.cwd()
+  if (parsed.dir) mkdirSync(parsed.dir, { recursive: true })
+  scaffoldProject(cwd, { force: parsed.force, printNextSteps: true })
 }
 
 await main()
