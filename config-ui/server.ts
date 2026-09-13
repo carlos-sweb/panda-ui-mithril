@@ -88,6 +88,15 @@ try {
     naming: '[name].[ext]',
     minify: false,
     sourcemap: 'inline',
+    // Mithril's classic JSX transform, forced here instead of inherited. The
+    // editor's own SPA must NOT depend on the CONSUMER's tsconfig.json carrying
+    // `jsx: "react"` + `jsxFactory: "m"`: Bun.build resolves JSX per file, so a
+    // project without those fields (hand-written config, or a tsconfig that
+    // does not reach this file) fell back to the automatic React runtime and
+    // died with `Could not resolve: "react/jsx-dev-runtime"` — serving a BLANK
+    // editor with only a stderr line. Verified with this option: the bundle
+    // emits `import_mithril.default(...)` (662 calls) and references no React.
+    jsx: { runtime: 'classic', factory: 'm', fragment: 'm.Fragment' },
   })
   for (const artifact of out.outputs) {
     if (artifact.kind === 'entry-point') editorJs = await artifact.text()
