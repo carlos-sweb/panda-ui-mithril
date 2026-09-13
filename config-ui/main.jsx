@@ -104,6 +104,20 @@ const searchButtonLabel = css({ fontFamily: 'monospace', fontWeight: '700', font
 // Idiomas disponibles (en/es). El trigger muestra la bandera del idioma actual
 // + su abreviatura + ChevronDown; el menú lista cada idioma con su nombre
 // largo (patrón de la página dropdown).
+/**
+ * `code` is annotated because `langs` is plain data: without it TypeScript
+ * infers `string` and `PumSetLocale(l.code)` fails, since the library's
+ * `setLocale` only accepts `'en' | 'es'`. `flag` is a Mithril component — the
+ * flags are `{ view(vnode) }` objects — which is what lets `m(l.flag, …)` type
+ * check.
+ *
+ * @type {{
+ *   code: import('../src/index.js').PumLocale,
+ *   name: string,
+ *   abbr: string,
+ *   flag: { view: (vnode: any) => any },
+ * }[]}
+ */
 const langs = [
   { code: 'es', name: 'Español', abbr: 'Es', flag: FlagEs },
   { code: 'en', name: 'English', abbr: 'En', flag: FlagUs },
@@ -122,7 +136,11 @@ const Layout = {
 
   oncreate(vnode) {
     m.route.prefix = '#!'
-    m.route(document.getElementById('view-dynamic-content'), '/colors', routes)
+    // `getElementById` can return null, and `m.route` needs a real element:
+    // failing here says why, instead of leaving Mithril to complain later.
+    const root = document.getElementById('view-dynamic-content')
+    if (!root) throw new Error('config-ui: #view-dynamic-content is missing from index.html')
+    m.route(root, '/colors', routes)
 
     // Ensure language param exists in the URL
     const lang = currentLang()

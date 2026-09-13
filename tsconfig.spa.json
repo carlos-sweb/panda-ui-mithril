@@ -5,18 +5,21 @@
     "moduleResolution": "bundler",
     "strict": false,
     "strictNullChecks": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
+    "allowJs": true,
+    "checkJs": true,
     "noEmit": true,
-    "types": ["bun"],
+    "skipLibCheck": true,
+    "types": [],
     "baseUrl": ".",
     "paths": {
       "panda-ui/*": ["./styled-system/*"],
       "panda-ui-mithril": ["./src/index.js"]
     }
   },
-  "include": ["scripts/**/*.ts", "config-ui/**/*.ts"],
+  "include": [
+    "config-ui/**/*.d.ts",
+    "config-ui/i18n/**/*.js",
+    "config-ui/jsx-language.js"
+  ],
   "exclude": ["node_modules", "dist", "dist-playground"]
 }

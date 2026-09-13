@@ -62,7 +62,10 @@ function parseBrowserslist(arr) {
     const q = String(raw).trim()
     const match = PER_BROWSER_RE.exec(q)
     const key = match ? match[1].toLowerCase() : null
-    if (key && BROWSER_KEYS.has(key)) {
+    // `match &&` is redundant at runtime (`key` can only be truthy when the
+    // regex matched) but it makes the dependency visible to a type checker,
+    // which otherwise sees `match` as possibly null here.
+    if (match && key && BROWSER_KEYS.has(key)) {
       perBrowser[key] = match[2]
     } else if (q) {
       extra.push(q)

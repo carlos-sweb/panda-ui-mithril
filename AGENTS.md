@@ -72,27 +72,53 @@ minimal pointer to the site).
 | `bun run dev` | Dev server (`bun playground/index.html --port=4300`), serves on **port 4300** (pinned in `package.json` — a plain `bun playground/index.html` would fall back to Bun's own default and risk colliding with another local process). Not Vite. Requires `styled-system/styles.css` to exist — run `bun run codegen && bun run scripts/build-css.ts` first on a fresh clone. Bun's HTML dev server binds `localhost` (IPv6 `::1`) only — `http://127.0.0.1:4300` will NOT connect; always use `http://localhost:4300`. |
 | `bun run codegen` | Regenerates `styled-system/` JS/TS helpers (`css()`, tokens, recipes, patterns). |
 | `bun run scripts/build-css.ts` | Regenerates the **minified** `styled-system/styles.css` (a **generated artifact — gitignored**; CI's `bun run build` regenerates it on every deploy). |
-| `npm run typecheck` | Both projects: `tsconfig.lib.json` (src + styled-system, excludes playground) and `tsconfig.scripts.json` (the Bun side: `scripts/**` + `config-ui/**/*.ts`). `typecheck:lib` / `typecheck:scripts` run one at a time. |
+| `npm run typecheck` | Four passes, in order: `tsconfig.lib.json` (src + styled-system), `tsconfig.scripts.json` (the Bun side: `scripts/**` + `config-ui/**/*.ts`), `tsconfig.spa.json` (the editor's non-JSX `.js`), and `scripts/check-dts.ts` (the published `src/**` declarations with `skipLibCheck` **off**). Run one with `typecheck:lib` / `:scripts` / `:spa` / `:dts`. |
 | `bun run count` | Prints the live component count (1 folder = 1 component). |
 | `bun run build` | Builds the static playground (`scripts/build.ts` → `dist-playground/`, **gitignored**; step 1 regenerates `styles.css`). |
 | `bun run test` | `bun test`. |
 | `bun run push` | `bun run build && git push` (convenience, not a publish). |
 
-> **Type-checking `scripts/` and the editor's server side** needs Bun's globals,
-> so `@types/bun` is pinned to the runtime's own version on purpose (`1.3.14` ↔
-> `bun --version` 1.3.14): bump both together. A newer `@types/bun` types APIs
-> the installed Bun does not have yet, and the undeclared transitive
-> `bun-types@0.2.2` that used to be in `node_modules` reported `Bun.build`,
-> `Bun.write` and `$` as missing. `tsconfig.scripts.json` covers `scripts/**`
-> plus `config-ui/**/*.ts` (the editor's Bun-side modules; the SPA pages are not
-> covered). It sets `strictNullChecks: true` on purpose: discriminated unions —
-> the ones `assignFont`/`unassignFont`/`removePackage` and the rebuild result
-> rely on — only narrow with it on, and turning it on removed errors instead of
-> adding them. `POST /api/theme` validates the shape of `colors`/`fonts`/
-> `spacing`/`radii` before writing anything (`isThemeColorMap`/`isStringRecord`):
-> before that check a malformed payload was answered with `{ ok: true }` and,
-> with one field valid and another malformed, it wrote the valid one and still
-> reported success.
+> **Type-checking runs in four passes** (`npm run typecheck`):
+> - `typecheck:lib` — `tsconfig.lib.json`: src + styled-system.
+> - `typecheck:scripts` — `tsconfig.scripts.json`: the Bun side (`scripts/**` +
+>   `config-ui/**/*.ts`). It needs Bun's globals, so `@types/bun` is pinned to
+>   the runtime's own version (`1.3.14` ↔ `bun --version` 1.3.14) — bump both
+>   together; a newer one types APIs the installed Bun lacks, and the
+>   undeclared transitive `bun-types@0.2.2` that used to sit in `node_modules`
+>   reported `Bun.build`, `Bun.write` and `$` as missing. It also sets
+>   `strictNullChecks: true` on purpose: discriminated unions — what
+>   `assignFont`/`unassignFont`/`removePackage` and the rebuild result rely on —
+>   only narrow with it on, and turning it on removed errors instead of adding
+>   them.
+> - `typecheck:spa` — `tsconfig.spa.json`: the editor's non-JSX `.js` (the i18n
+>   loader and `jsx-language.js`) plus `config-ui/yml.d.ts`, which declares
+>   `*.yml` because Bun resolves those imports and TypeScript does not. **The
+>   `.jsx` pages are deliberately excluded**: TypeScript's JSX checker requires
+>   an element type with call or construct signatures, Mithril components here
+>   are plain `{ view() }` objects, and every `<Component />` is TS2604 — 469 of
+>   them, measured. Declaring `JSX.ElementClass` (with a `view` member) or
+>   `JSX.ElementType` changes nothing; only rewriting the pages to
+>   `m(Component, …)` would, at the cost of the JSX itself.
+> - `typecheck:dts` — `scripts/check-dts.ts`: compiles `src/**` with
+>   `skipLibCheck` **off** (a consumer's default) and fails only on errors under
+>   `src/`, reporting how many it ignored elsewhere (28 today, all in generated
+>   or third-party types: `styled-system/jsx/index.d.ts` re-exports a `./factory`
+>   module Panda 1.12 does not generate, plus `@pandacss/types` ambiguities).
+>   This pass exists because every other one runs with `skipLibCheck: true`,
+>   which cannot tell our declarations from third-party ones and therefore hid a
+>   real error in `ListAttrs` ("incorrectly extends ComponentAttrs").
+>
+> **The published type surface is tested, not assumed.** `src/index.d.ts` is what
+> the `types` field ships and it had drifted from the runtime: `Title` and 14
+> `Chat*` components were exported by `src/index.js` but missing from the
+> declarations, `RatingGroup` was re-exported while its own `.d.ts` declared
+> only the attrs interface, and `cx` was re-exported from a `./utils/cx` that
+> does not exist. `scripts/exports.test.ts` compares both barrels as text (and
+> each component's `.d.ts` against its `index.js`). `@types/mithril` is a
+> **dependency** for the same reason: the shipped `.d.ts` import from `mithril`,
+> which ships no types, so a consumer's default (`skipLibCheck: false`) got 71
+> TS7016 before. Verified after the fixes: a strict consumer type-checks clean
+> both with and without `skipLibCheck`.
 
 > **CSS regeneration**: after editing any recipe (`src/recipes/*.ts`) or
 > `panda.config.ts`, run `bun run codegen` **and** `bun run scripts/build-css.ts`.

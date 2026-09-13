@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "strict": false,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "esModuleInterop": true,
+    "skipLibCheck": false,
+    "noEmit": true,
+    "baseUrl": ".",
+    "paths": {
+      "panda-ui/*": ["./styled-system/*"]
+    },
+    "types": []
+  },
+  "include": ["src/**/*", "styled-system/**/*"],
+  "exclude": ["node_modules", "dist", "playground"]
+}
