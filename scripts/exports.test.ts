@@ -94,6 +94,10 @@ function typeOnlyReexports(dts: string): Set<string> {
 }
 
 const readSrc = (file: string) => readFileSync(join(SRC, file), 'utf8')
+const ROOT = join(import.meta.dir, '..')
+
+/** `ButtonGroup` → `button-group`, `FAB` → `fab`, `OTP` → `otp`. */
+const kebab = (name: string) => name.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase()
 
 describe('published types', () => {
   test('every runtime export of the barrel is declared', () => {
@@ -145,5 +149,41 @@ describe('published types', () => {
     }
 
     expect(gaps, `componentes con valores sin declarar:\n  ${gaps.join('\n  ')}`).toEqual([])
+  })
+
+  /**
+   * `package.json`'s `exports` map is hand-maintained (no script writes it), so
+   * it drifts: `Dropdown` was the one component out of 72 with no `./dropdown`
+   * subpath, while the guide documents lowercase-kebab subpaths for every
+   * component (`panda-ui-mithril/button`). Nothing caught it, and a consumer
+   * importing `panda-ui-mithril/dropdown` got ERR_PACKAGE_PATH_NOT_EXPORTED.
+   */
+  test('every component has a lowercase-kebab subpath export', () => {
+    const pkg = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8'))
+    const exported = new Set(Object.keys(pkg.exports))
+    const missing = readdirSync(COMPONENTS, { withFileTypes: true })
+      .filter((entry) => entry.isDirectory())
+      .map((entry) => entry.name)
+      .filter((name) => !exported.has(`./${kebab(name)}`))
+      .sort()
+
+    expect(missing, `componentes sin subpath en exports: ${missing.join(', ')}`).toEqual([])
+  })
+
+  test('every exports target exists on disk', () => {
+    const pkg = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8'))
+    const dangling: string[] = []
+
+    for (const [subpath, target] of Object.entries<Record<string, string>>(pkg.exports)) {
+      for (const condition of Object.keys(target)) {
+        if (condition === 'types' || condition === 'import') continue
+        dangling.push(`${subpath}: condición desconocida "${condition}"`)
+      }
+      for (const path of Object.values(target)) {
+        if (!existsSync(join(ROOT, path))) dangling.push(`${subpath}: ${path}`)
+      }
+    }
+
+    expect(dangling, `exports que apuntan a nada:\n  ${dangling.join('\n  ')}`).toEqual([])
   })
 })

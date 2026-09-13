@@ -10,13 +10,10 @@
         "@fontsource/ubuntu-mono": "^5.3.0",
         "@types/mithril": "^2.2.9",
         "circle-flags-mithril": "^1.0.0",
-        "devicon-mithril": "^1.0.0",
         "elysia": "^1.4.30",
         "highlight.js": "^11.12.0",
         "lucide-mithril": "^1.0.6",
-        "normalize.css": "^8.0.1",
         "sortablejs": "^1.15.7",
-        "voca": "^1.4.1",
       },
       "devDependencies": {
         "@csstools/postcss-cascade-layers": "^6.0.0",
@@ -29,6 +26,7 @@
         "@types/bun": "1.3.14",
         "autoprefixer": "^10.5.4",
         "cssnano": "^8.0.5",
+        "devicon-mithril": "^1.0.0",
         "esbuild": "^0.28.2",
         "happy-dom": "^20.11.2",
         "mithril": "^2.3.8",
@@ -43,6 +41,7 @@
         "stylelint": "^17.14.1",
         "stylelint-config-standard": "^40.0.0",
         "typescript": "^5.9.3",
+        "voca": "^1.4.1",
       },
       "peerDependencies": {
         "@pandacss/dev": "^0.53.0 || ^1.0.0",
@@ -553,8 +552,6 @@
     "node-releases": ["node-releases@2.0.53", "", {}, "sha512-D9UOmYG3UH1V+ENW56t5QXBwJw1YEY18ruVeus89Rw+SyIgjPkCO84bRzO3uNIYosJbNwiabWVn48o3uJLjxFQ=="],
 
     "normalize-path": ["normalize-path@3.0.0", "", {}, "sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA=="],
-
-    "normalize.css": ["normalize.css@8.0.1", "", {}, "sha512-qizSNPO93t1YUuUhP22btGOo3chcvDFqFaj2TRybP0DMxkHOCTYwp3n34fel4a31ORXy4m1Xq0Gyqpb5m33qIg=="],
 
     "nth-check": ["nth-check@2.1.1", "", { "dependencies": { "boolbase": "^1.0.0" } }, "sha512-lqjrjmaOoAnWfMmBPL+XNnynZh2+swxiX3WUE0s4yEHI6m+AwrK2UZOimIRl3X/4QctVqS8AiZjFqyOGrMXb/w=="],
 

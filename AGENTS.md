@@ -692,8 +692,11 @@ Tailwind/daisyUI-style `className` string found elsewhere in this codebase;
 
 ## Consumer preset/source model
 
-The package ships **source only** (`files: ["src", "styled-system"]` — no
-`dist` build; `prepublishOnly` runs `panda codegen && panda cssgen`).
+The package ships **source only** (`files: ["src", "styled-system", "config-ui",
+"scripts/cli.ts"]` — no `dist` build; `prepublishOnly` runs `panda codegen` and
+then `scripts/build-css.ts`, so the published `styled-system/styles.css` is the
+same **minified** artifact `bun run build` produces — `panda cssgen` alone would
+publish an unminified one, 227 kB instead of 179 kB).
 `styled-system/` **is published**, so the recipes' `'../../styled-system/css'`
 imports resolve inside the consumer's `node_modules/panda-ui-mithril/`. The
 consumer's own Panda run generates the CSS from **`pumPreset`** — the preset
