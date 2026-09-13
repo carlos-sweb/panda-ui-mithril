@@ -209,4 +209,4 @@ getComputedStyle(document.querySelector('button')).backgroundColor
 | Unstyled button (tokens yes, recipes no) | Missing `staticCss: { recipes: '*' }`, or `include` points at the package's recipes instead of `./src/**` |
 | Postinstall blocked by Bun | Harmless (the repo ships `styled-system/` in git) |
 | `127.0.0.1:3000` does not connect | Use `http://localhost:3000/` |
-| `config --dir=<spa>` refuses to write (it answers `"no es el del proyecto que se recompila"`, i.e. "it is not the one of the project being recompiled") | That SPA has no `panda.config.ts` of its own: run `bunx panda-ui-mithril init --dir=<spa>` |
+| `config --dir=<spa>` refuses to write (it answers "The theme pointed at (…) is not the one of the project being recompiled (…)") | That SPA has no `panda.config.ts` of its own: run `bunx panda-ui-mithril init --dir=<spa>` |

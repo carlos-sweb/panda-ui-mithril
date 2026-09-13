@@ -1,39 +1,39 @@
 #!/usr/bin/env bun
 /**
- * config-ui server — API del editor del theme (Elysia).
+ * config-ui server — theme editor API (Elysia).
  *
- * `bunx panda-ui-mithril config` sirve este servidor (por defecto en :1234):
- *   GET  /              → SPA del editor (bundleada con Bun.build)
- *   GET  /api/theme     → valores actuales del theme (JSON por categoría)
- *   POST /api/theme     → recibe edits y reescribe pum/theme/*.ts
- *   POST /api/rebuild   → ejecuta codegen + cssgen
- *   …y el resto de rutas /api/fonts/* (ver fonts-api.ts)
+ * `bunx panda-ui-mithril config` serves this server (by default on :1234):
+ *   GET  /              → editor SPA (bundled with Bun.build)
+ *   GET  /api/theme     → current theme values (JSON per category)
+ *   POST /api/theme     → receives edits and rewrites pum/theme/*.ts
+ *   POST /api/rebuild   → runs codegen + cssgen
+ *   …and the remaining /api/fonts/* routes (see fonts-api.ts)
  *
- * Flags (leídos de process.argv — el bin ya los recibió):
- *   --port <n> | --port=<n> | -p <n>   puerto del servidor (default 1234)
- *   --dir <ruta> | --dir=<ruta> | -d   base explícita para el theme (ver abajo)
- *   --no-open                          no abrir el navegador al arrancar
+ * Flags (read from process.argv — the bin already received them):
+ *   --port <n> | --port=<n> | -p <n>   server port (default 1234)
+ *   --dir <path> | --dir=<path> | -d   explicit base for the theme (see below)
+ *   --no-open                          do not open the browser on startup
  *
- * El target son los archivos del theme del consumidor. Resolución de ruta:
- *   - `--dir <ruta>` (o `-d`): usa `<ruta>` como base explícita (acepta un
- *     dir de proyecto con pum/ o src/, o un theme dir directo con colors.ts).
- *   - sin flag: búsqueda ascendente desde process.cwd() — `pum/theme` primero
- *     (consumidor), `src/theme` después (este repo/playground).
- *   - layout legacy: si existe `pum/theme.ts` de archivo único pero NO la
- *     carpeta `pum/theme/`, el editor no puede editar → responde con hint de
- *     migración (`bunx panda-ui-mithril init`, que preserva los valores).
+ * The target is the consumer's theme files. Path resolution:
+ *   - `--dir <path>` (or `-d`): uses `<path>` as the explicit base (accepts a
+ *     project dir with pum/ or src/, or a direct theme dir with colors.ts).
+ *   - without a flag: upward search from process.cwd() — `pum/theme` first
+ *     (consumer), then `src/theme` (this repo/playground).
+ *   - legacy layout: if `pum/theme.ts` exists as a single file but NOT the
+ *     `pum/theme/` folder, the editor cannot edit it → it responds with a
+ *     migration hint (`bunx panda-ui-mithril init`, which preserves the values).
  *
- * Al arrancar abre la URL en el navegador del sistema (xdg-open / open /
- * start según plataforma).
+ * On startup it opens the URL in the system browser (xdg-open / open /
+ * start depending on the platform).
  *
- * La SPA (config-ui/) se bundlea con Bun.build en runtime — resuelve los bare
- * imports (mithril, lucide-mithril, ...) que el navegador no entiende.
+ * The SPA (config-ui/) is bundled with Bun.build at runtime — it resolves the
+ * bare imports (mithril, lucide-mithril, ...) that the browser does not understand.
  *
- * Framework: Elysia (https://elysiajs.com/). Contrato HTTP de Bao preservado:
- * los handlers devuelven el objeto JSON directamente (Elysia lo serializa) o
- * un `new Response(...)` para contenido raw; el body JSON se parsea con
- * `request.json().catch(() => ({}))` (tolerante, igual que antes); el 404 se
- * resuelve en `onError` con `code === 'NOT_FOUND'`.
+ * Framework: Elysia (https://elysiajs.com/). Preserved Bao HTTP contract:
+ * the handlers return the JSON object directly (Elysia serializes it) or a
+ * `new Response(...)` for raw content; the JSON body is parsed with
+ * `request.json().catch(() => ({}))` (tolerant, same as before); the 404 is
+ * resolved in `onError` with `code === 'NOT_FOUND'`.
  */
 import { Elysia } from 'elysia'
 import { existsSync, readFileSync, statSync, writeFileSync } from 'node:fs'
@@ -62,23 +62,23 @@ import { readAdvancedState, writeAdvancedState } from './advanced-config-api'
 const PORT = portFromArgv() ?? 1234
 const NO_OPEN = noOpenFromArgv()
 const CLI_DIR = dirname(fileURLToPath(import.meta.url))
-// config-ui/server.ts → la raíz del paquete es ../ (node_modules/panda-ui-mithril/)
+// config-ui/server.ts → the package root is ../ (node_modules/panda-ui-mithril/)
 const PKG_DIR = join(CLI_DIR, '..')
 const UI_DIR = join(PKG_DIR, 'config-ui')
 
 const app = new Elysia()
 
-// Content types para servir binarios (fuentes del editor y de los proyectos).
+// Content types for serving binaries (editor and project fonts).
 const FONT_TYPES: Record<string, string> = {
   woff2: 'font/woff2', woff: 'font/woff', ttf: 'font/ttf', otf: 'font/otf',
   svg: 'image/svg+xml', png: 'image/png', ico: 'image/x-icon',
 }
 
-// ── Bundle de la SPA (Bun.build en runtime) ───────────────────────────────
-// El JS se bundlea (resuelve bare imports). El CSS NO se toma del bundle:
-// el editor usa su propio CSS generado con Panda postcss
-// (config-ui/config-ui.css, producido por scripts/build-config-ui.ts), que
-// incluye tokens + recipes + estilos de las páginas.
+// ── SPA bundle (Bun.build at runtime) ─────────────────────────────────────
+// The JS is bundled (it resolves bare imports). The CSS is NOT taken from the
+// bundle: the editor uses its own CSS generated with Panda postcss
+// (config-ui/config-ui.css, produced by scripts/build-config-ui.ts), which
+// includes tokens + recipes + page styles.
 let editorJs = ''
 let editorCss = ''
 try {
@@ -96,10 +96,10 @@ try {
   if (existsSync(generatedCss)) {
     editorCss = readFileSync(generatedCss, 'utf8')
   } else {
-    console.error('config-ui: config-ui.css no existe — corre bun run scripts/build-config-ui.ts')
+    console.error('config-ui: config-ui.css is missing — run bun run scripts/build-config-ui.ts')
   }
 } catch (e) {
-  console.error('config-ui: Bun.build falló:', String(e))
+  console.error('config-ui: Bun.build failed:', String(e))
 }
 
 const HTML_TEMPLATE = `<!DOCTYPE html>
@@ -125,7 +125,7 @@ app.get('/', () => {
   return new Response(HTML_TEMPLATE, { headers: { 'Content-Type': 'text/html' } })
 })
 
-// ── API: leer theme ───────────────────────────────────────────────────────
+// ── API: read theme ───────────────────────────────────────────────────────
 app.get('/api/theme', () => {
   const found = resolveTheme(process.cwd())
   if (found.legacy) {
@@ -156,13 +156,13 @@ app.get('/api/theme', () => {
     themeDir: found.themeDir,
     projectRoot: found.projectRoot,
     themeRel: relative(found.projectRoot, found.themeDir) || found.themeDir,
-    // false → el theme editado NO es el del proyecto que se recompila (la UI
-    // puede avisar antes de que el usuario toque nada; los POST lo rechazan).
+    // false → the edited theme is NOT the one of the project being recompiled
+    // (the UI can warn before the user touches anything; the POSTs reject it).
     themeOwnedByProject: found.themeOwnedByProject !== false,
   }
 })
 
-// ── API: escribir theme ───────────────────────────────────────────────────
+// ── API: write theme ──────────────────────────────────────────────────────
 app.post('/api/theme', async ({ request }) => {
   const found = resolveTheme(process.cwd())
   if (found.legacy) {
@@ -181,8 +181,8 @@ app.post('/api/theme', async ({ request }) => {
   try {
     if (body.colors) writeColors(found.themeDir, body.colors)
     if (body.fonts) {
-      // Estructura de tokens de rol (fonts.ts): quitar/añadir entradas que
-      // writeFlatSrc no puede crear por sí sola (solo reemplaza valores).
+      // Role token structure (fonts.ts): remove/add entries that
+      // writeFlatSrc cannot create on its own (it only replaces values).
       const fontsPath = join(found.themeDir!, 'fonts.ts')
       if (body.fontRemove && Array.isArray(body.fontRemove)) {
         let src = readFileSync(fontsPath, 'utf8')
@@ -203,9 +203,9 @@ app.post('/api/theme', async ({ request }) => {
         if (next !== src) writeFileSync(fontsPath, next, 'utf8')
       }
       writeFlat(found.themeDir, 'fonts', body.fonts)
-      // Prune: si el usuario editó los stacks (tab Tipografías) y dejó de
-      // usar una familia cargada, se regenera el bloque para que el CSS no
-      // cargue fuentes sin uso. El rebuild lo dispara el cliente tras save.
+      // Prune: if the user edited the stacks (Fonts tab) and stopped
+      // using a loaded family, the block is regenerated so the CSS does not
+      // load unused fonts. The client triggers the rebuild after save.
       const projectRoot = found.projectRoot || dirname(found.themeDir!)
       const configPath = join(projectRoot, 'panda.config.ts')
       if (existsSync(configPath)) syncBlock(found.themeDir!, projectRoot, readFileSync(configPath, 'utf8'))
@@ -218,16 +218,16 @@ app.post('/api/theme', async ({ request }) => {
   }
 })
 
-// ── API: rebuild (codegen + cssgen, o pipeline postcss) ────────────────────
+// ── API: rebuild (codegen + cssgen, or postcss pipeline) ──────────────────
 /**
- * Regenera el CSS del proyecto en su raíz (donde está panda.config.ts), nunca
- * en process.cwd() — el editor puede haberse lanzado desde un subdirectorio.
+ * Regenerates the project CSS at its root (where panda.config.ts lives), never
+ * in process.cwd() — the editor may have been launched from a subdirectory.
  *
- * Postcss-aware: si el proyecto tiene postcss.config.cjs (modelo recomendado
- * por Panda), corre `panda codegen` + el pipeline postcss declarado en ese
- * archivo sobre el entry css (configurable; default pum/index.css) hacia el
- * output (default styled-system/styles.css). Si no, mantiene el flujo clásico
- * `panda codegen && panda cssgen`.
+ * Postcss-aware: if the project has postcss.config.cjs (the model recommended
+ * by Panda), it runs `panda codegen` + the postcss pipeline declared in that
+ * file over the css entry (configurable; default pum/index.css) into the
+ * output (default styled-system/styles.css). Otherwise it keeps the classic
+ * `panda codegen && panda cssgen` flow.
  */
 function runRebuild(projectRoot: string, themeDir?: string | null) {
   const codegen = spawnSync('bunx', ['panda', 'codegen'], { cwd: projectRoot, encoding: 'utf8' })
@@ -276,14 +276,14 @@ app.post('/api/rebuild', () => {
 })
 
 /**
- * Tamaño del CSS de salida del proyecto (el que linkea el index.html) tras un
- * rebuild: `{ path, bytes, gzipBytes, mtime }`, o null si todavía no existe.
+ * Size of the project's output CSS (the one linked by index.html) after a
+ * rebuild: `{ path, bytes, gzipBytes, mtime }`, or null if it does not exist yet.
  *
- * La ruta sale del build config del editor (`postcss.build.json`) cuando el
- * proyecto tiene pipeline postcss, o del `outdir` del `panda.config.ts`
- * (default `styled-system`) + `styles.css` en el flujo clásico `codegen +
- * cssgen`. El gzip se calcula del propio archivo, que es lo que realmente
- * viaja por la red.
+ * The path comes from the editor's build config (`postcss.build.json`) when the
+ * project has a postcss pipeline, or from the `outdir` of `panda.config.ts`
+ * (default `styled-system`) + `styles.css` in the classic `codegen + cssgen`
+ * flow. The gzip is computed from the file itself, which is what actually
+ * travels over the network.
  */
 function outputCssStat(
   projectRoot: string,
@@ -303,21 +303,21 @@ function outputCssStat(
       mtime: statSync(abs).mtimeMs,
     }
   } catch {
-    // Sin panda.config.ts, output inexistente o ilegible: el rebuild sigue
-    // siendo válido, simplemente no hay tamaño que reportar.
+    // Without panda.config.ts, a nonexistent or unreadable output: the rebuild
+    // is still valid, there is simply no size to report.
     return null
   }
 }
 
-// ── API: fuentes (modelo npm — catálogo, añadir, disponibles, asignar) ─────
-// El proveedor por defecto es Fontsource. Flujo: buscar en el catálogo →
-// `bun add @fontsource/{id}` (queda DISPONIBLE en node_modules) → asignar a
-// un token (única operación que carga la fuente: fonts.ts + globalFontface →
-// cssgen la compila en styles.css). Ver config-ui/fonts-api.ts.
+// ── API: fonts (npm model — catalog, add, available, assign) ──────────────
+// The default provider is Fontsource. Flow: search the catalog →
+// `bun add @fontsource/{id}` (it becomes AVAILABLE in node_modules) → assign
+// to a token (the only operation that loads the font: fonts.ts + globalFontface
+// → cssgen compiles it into styles.css). See config-ui/fonts-api.ts.
 
 /**
- * Error de theme compartido por las rutas de fuentes (mismo contrato que
- * /api/theme). null si el theme es editable.
+ * Theme error shared by the font routes (same contract as
+ * /api/theme). null if the theme is editable.
  */
 function themeError(found: { themeDir: string | null; projectRoot: string | null; legacy: boolean }) {
   if (found.legacy) {
@@ -357,18 +357,18 @@ app.get('/api/fonts/available', () => {
   try {
     const themeDir = found.themeDir!
     const projectRoot = found.projectRoot || dirname(themeDir)
-    // Autocuración 0: garantiza los roles tipográficos (display) en fonts.ts.
+    // Self-healing 0: guarantees the typographic roles (display) in fonts.ts.
     if (ensureRoleTokens(themeDir)) runRebuild(projectRoot, themeDir)
-    // Autocuración 1: migra instalaciones self-hosted antiguas ({raiz}/fonts)
-    // a paquetes npm (bun add + fonts-loaded.json + limpieza).
+    // Self-healing 1: migrates old self-hosted installs ({root}/fonts)
+    // to npm packages (bun add + fonts-loaded.json + cleanup).
     const migrated = migrateLegacyFonts(themeDir, projectRoot)
-    // Autocuración 2: bloque globalFontface = (cargadas ∩ referenciadas) y
-    // estado sin familias inertes.
+    // Self-healing 2: globalFontface block = (loaded ∩ referenced) and
+    // state without inert families.
     pruneLoaded(themeDir)
     const configPath = join(projectRoot, 'panda.config.ts')
     const src = existsSync(configPath) ? readFileSync(configPath, 'utf8') : ''
     if (src && syncBlock(themeDir, projectRoot, src)) runRebuild(projectRoot, themeDir)
-    // wired: las fuentes cargadas compilan en styles.css vía Panda.
+    // wired: the loaded fonts compile into styles.css via Panda.
     const wired = src !== '' && fontfaceWired(src)
     const available = availableFonts(projectRoot)
     const tokens = readFontsTokens(themeDir)
@@ -391,7 +391,7 @@ app.get('/api/fonts/available', () => {
   }
 })
 
-/** Añade el paquete @fontsource/{id} al proyecto (queda DISPONIBLE). */
+/** Adds the @fontsource/{id} package to the project (it becomes AVAILABLE). */
 app.post('/api/fonts/add', async ({ request }) => {
   const found = resolveTheme(process.cwd())
   const err = themeError(found)
@@ -400,14 +400,14 @@ app.post('/api/fonts/add', async ({ request }) => {
   if (ownErr) return ownErr
   const body = await request.json().catch(() => ({})) as Record<string, unknown>
   const id = sanitizeFontId(String(body.id ?? ''))
-  if (!id) return { ok: false, error: 'Falta el id de la fuente.' }
+  if (!id) return { ok: false, error: 'Missing the font id.' }
   try {
     const projectRoot = found.projectRoot || dirname(found.themeDir!)
     const variable = !!body.variable
     if (!packageMeta(projectRoot, id, variable)) {
       const r = bunAdd(projectRoot, id, variable)
       if (!r.ok) {
-        return { ok: false, error: `bun add ${packageScope(variable)}/${id} falló: ${r.output.slice(-250)}` }
+        return { ok: false, error: `bun add ${packageScope(variable)}/${id} failed: ${r.output.slice(-250)}` }
       }
     }
     const meta = packageMeta(projectRoot, id, variable)
@@ -417,7 +417,7 @@ app.post('/api/fonts/add', async ({ request }) => {
   }
 })
 
-/** Asigna una fuente disponible a un token — la única operación que carga la fuente. */
+/** Assigns an available font to a token — the only operation that loads the font. */
 app.post('/api/fonts/assign', async ({ request }) => {
   const found = resolveTheme(process.cwd())
   const err = themeError(found)
@@ -425,7 +425,7 @@ app.post('/api/fonts/assign', async ({ request }) => {
   const ownErr = themeOwnershipError(found)
   if (ownErr) return ownErr
   const body = await request.json().catch(() => ({})) as Record<string, unknown>
-  if (!body.id || !body.token) return { ok: false, error: 'Faltan id y token.' }
+  if (!body.id || !body.token) return { ok: false, error: 'Missing id and token.' }
   try {
     const themeDir = found.themeDir!
     const projectRoot = found.projectRoot || dirname(themeDir)
@@ -453,7 +453,7 @@ app.post('/api/fonts/assign', async ({ request }) => {
   }
 })
 
-/** Desasigna una familia: resetea sus tokens y la quita del bloque. */
+/** Unassigns a family: resets its tokens and removes it from the block. */
 app.post('/api/fonts/unassign', async ({ request }) => {
   const found = resolveTheme(process.cwd())
   const err = themeError(found)
@@ -461,7 +461,7 @@ app.post('/api/fonts/unassign', async ({ request }) => {
   const ownErr = themeOwnershipError(found)
   if (ownErr) return ownErr
   const body = await request.json().catch(() => ({})) as Record<string, unknown>
-  if (!body.id) return { ok: false, error: 'Falta el id de la fuente.' }
+  if (!body.id) return { ok: false, error: 'Missing the font id.' }
   try {
     const themeDir = found.themeDir!
     const projectRoot = found.projectRoot || dirname(themeDir)
@@ -480,7 +480,7 @@ app.post('/api/fonts/unassign', async ({ request }) => {
   }
 })
 
-/** Desasigna (si estaba) y ejecuta `bun remove @fontsource/{id}`. */
+/** Unassigns (if it was assigned) and runs `bun remove @fontsource/{id}`. */
 app.post('/api/fonts/remove', async ({ request }) => {
   const found = resolveTheme(process.cwd())
   const err = themeError(found)
@@ -488,7 +488,7 @@ app.post('/api/fonts/remove', async ({ request }) => {
   const ownErr = themeOwnershipError(found)
   if (ownErr) return ownErr
   const body = await request.json().catch(() => ({})) as Record<string, unknown>
-  if (!body.id) return { ok: false, error: 'Falta el id de la fuente.' }
+  if (!body.id) return { ok: false, error: 'Missing the font id.' }
   try {
     const themeDir = found.themeDir!
     const projectRoot = found.projectRoot || dirname(themeDir)
@@ -507,7 +507,7 @@ app.post('/api/fonts/remove', async ({ request }) => {
   }
 })
 
-/** woff2 del paquete node_modules/@fontsource/{id}/files (preview local). */
+/** woff2 from the node_modules/@fontsource/{id}/files package (local preview). */
 app.get('/api/fonts/file/:id/:file', ({ params, query }) => {
   const found = resolveTheme(process.cwd())
   const err = themeError(found)
@@ -522,26 +522,26 @@ app.get('/api/fonts/file/:id/:file', ({ params, query }) => {
   })
 })
 
-// ── API: plugins PostCSS (catálogo oficial postcss.org + npm) ───────────────
-// El catálogo (https://postcss.org/docs/postcss-plugins) lista los plugins
-// oficiales; "Install" ejecuta `bun add {paquete}` en la raíz del proyecto
-// (queda disponible en node_modules). La configuración del pipeline es una
-// fase posterior. Mismo contrato que fonts: requiere theme resuelto.
+// ── API: PostCSS plugins (official postcss.org catalog + npm) ───────────────
+// The catalog (https://postcss.org/docs/postcss-plugins) lists the official
+// plugins; "Install" runs `bun add {package}` at the project root (it becomes
+// available in node_modules). Configuring the pipeline is a later phase.
+// Same contract as fonts: it requires a resolved theme.
 
-/** Catálogo oficial (filtrando por q si viene) — proxy de postcss.org. */
+/** Official catalog (filtering by q when provided) — postcss.org proxy. */
 app.get('/api/postcss/catalog', async ({ query }) => {
   const found = resolveTheme(process.cwd())
   const err = themeError(found)
   if (err) return err
   try {
-    await catalog() // pobla la caché (searchCatalog filtra sobre ella)
+    await catalog() // populates the cache (searchCatalog filters over it)
     return { ok: true, categories: searchCatalog(String(query.q ?? '')) }
   } catch (e) {
     return { ok: false, error: `postcss.org: ${String(e)}` }
   }
 })
 
-/** Plugins del catálogo presentes en node_modules del proyecto. */
+/** Catalog plugins present in the project's node_modules. */
 app.get('/api/postcss/available', async () => {
   const found = resolveTheme(process.cwd())
   const err = themeError(found)
@@ -551,7 +551,7 @@ app.get('/api/postcss/available', async () => {
     const categories = await catalog()
     const available = availablePlugins(projectRoot, categories).map((p) => ({
       ...p,
-      // El plugin tiene esquema curado (editor tipado) o es un pack conocido.
+      // The plugin has a curated schema (typed editor) or is a known pack.
       configurable: !!schemaFor(p.npm) || !!schemaFor(p.name),
     }))
     return { ok: true, available }
@@ -560,7 +560,7 @@ app.get('/api/postcss/available', async () => {
   }
 })
 
-/** Resuelve el paquete npm de un plugin del catálogo y corre `bun add`. */
+/** Resolves the npm package of a catalog plugin and runs `bun add`. */
 app.post('/api/postcss/install', async ({ request }) => {
   const found = resolveTheme(process.cwd())
   const err = themeError(found)
@@ -569,28 +569,28 @@ app.post('/api/postcss/install', async ({ request }) => {
   if (ownErr) return ownErr
   const body = await request.json().catch(() => ({})) as Record<string, unknown>
   const name = String(body.name ?? '').trim()
-  if (!name) return { ok: false, error: 'Falta el nombre del plugin.' }
+  if (!name) return { ok: false, error: 'Missing the plugin name.' }
   const projectRoot = found.projectRoot || dirname(found.themeDir!)
   try {
     const categories = await catalog()
     const plugin = categories.flatMap((c) => c.plugins).find((p) => p.name === name)
-    if (!plugin) return { ok: false, error: `'${name}' no está en el listado de plugins.` }
+    if (!plugin) return { ok: false, error: `'${name}' is not in the plugin list.` }
     const pkg = await resolveNpmPackage(plugin.name, plugin.url)
     if (!pkg) {
-      return { ok: false, error: `No hay paquete npm para '${name}' (${plugin.url}).` }
+      return { ok: false, error: `No npm package for '${name}' (${plugin.url}).` }
     }
     if (packageInstalled(projectRoot, pkg)) {
       return { ok: true, name, pkg, already: true }
     }
     const r = bunAddPackage(projectRoot, pkg)
-    if (!r.ok) return { ok: false, error: `bun add ${pkg} falló: ${r.output.slice(-250)}` }
+    if (!r.ok) return { ok: false, error: `bun add ${pkg} failed: ${r.output.slice(-250)}` }
     return { ok: true, name, pkg, already: false }
   } catch (e) {
     return { ok: false, error: String(e) }
   }
 })
 
-/** `bun remove {paquete}` (el pkg npm real, no el nombre del listado). */
+/** `bun remove {package}` (the real npm pkg, not the listing name). */
 app.post('/api/postcss/remove', async ({ request }) => {
   const found = resolveTheme(process.cwd())
   const err = themeError(found)
@@ -599,24 +599,24 @@ app.post('/api/postcss/remove', async ({ request }) => {
   if (ownErr) return ownErr
   const body = await request.json().catch(() => ({})) as Record<string, unknown>
   const pkg = String(body.pkg ?? '').trim()
-  if (!pkg) return { ok: false, error: 'Falta el paquete.' }
+  if (!pkg) return { ok: false, error: 'Missing the package.' }
   const projectRoot = found.projectRoot || dirname(found.themeDir!)
   try {
     const r = bunRemovePackage(projectRoot, pkg)
-    if (!r.ok) return { ok: false, error: `bun remove ${pkg} falló: ${r.output.slice(-250)}` }
+    if (!r.ok) return { ok: false, error: `bun remove ${pkg} failed: ${r.output.slice(-250)}` }
     return { ok: true, pkg }
   } catch (e) {
     return { ok: false, error: String(e) }
   }
 })
 
-// ── API: pipeline config (postcss.config.cjs — plugins del build css) ───────
-// La fuente de verdad es postcss.config.cjs en la raíz del proyecto (modelo
-// recomendado por Panda: el plugin de Panda como capa + plugins con opciones,
-// bloque gestionado entre markers). El build (entry/output) vive en
-// {raiz}/postcss.build.json, configurable por el usuario.
+// ── API: pipeline config (postcss.config.cjs — build css plugins) ───────────
+// The source of truth is postcss.config.cjs at the project root (the model
+// recommended by Panda: the Panda plugin as a layer + plugins with options,
+// a managed block between markers). The build (entry/output) lives in
+// {root}/postcss.build.json, configurable by the user.
 
-/** Lee el pipeline (postcss.config.cjs) + build config (entry/output). */
+/** Reads the pipeline (postcss.config.cjs) + build config (entry/output). */
 app.get('/api/postcss/config', () => {
   const found = resolveTheme(process.cwd())
   const err = themeError(found)
@@ -633,7 +633,7 @@ app.get('/api/postcss/config', () => {
       plugins,
       build,
       buildPath: relative(process.cwd(), buildConfigPath(themeDir)),
-      // Tamaño actual del CSS de salida en disco (se refresca tras /api/rebuild).
+      // Current size of the output CSS on disk (refreshed after /api/rebuild).
       outputStat: outputCssStat(projectRoot, themeDir),
     }
   } catch (e) {
@@ -641,7 +641,7 @@ app.get('/api/postcss/config', () => {
   }
 })
 
-/** Escribe el pipeline (plugins en postcss.config.cjs) + build config. */
+/** Writes the pipeline (plugins in postcss.config.cjs) + build config. */
 app.post('/api/postcss/config', async ({ request }) => {
   const found = resolveTheme(process.cwd())
   const err = themeError(found)
@@ -654,16 +654,16 @@ app.post('/api/postcss/config', async ({ request }) => {
   try {
     const clean = sanitizePipelineConfig(body.plugins)
     if (!clean.ok) return { ok: false, error: clean.error }
-    // Valida que los plugins referenciados estén instalados. El plugin de
-    // Panda (@pandacss/dev/postcss) NO es un paquete standalone: es un subpath
-    // de @pandacss/dev (siempre presente si panda codegen funciona).
+    // Validates that the referenced plugins are installed. The Panda plugin
+    // (@pandacss/dev/postcss) is NOT a standalone package: it is a subpath
+    // of @pandacss/dev (always present if panda codegen works).
     const missing = clean.plugins
       .filter((pl) => pl.id !== PANDA_PLUGIN_ID)
       .filter((pl) => !packageInstalled(projectRoot, pl.id))
     if (missing.length > 0) {
       return {
         ok: false,
-        error: `No instalados — usa la viñeta Install: ${missing.map((p) => p.id).join(', ')}.`,
+        error: `Not installed — use the Install tab: ${missing.map((p) => p.id).join(', ')}.`,
       }
     }
     const changed = writePipelineConfig(projectRoot, clean.plugins)
@@ -687,15 +687,15 @@ app.post('/api/postcss/config', async ({ request }) => {
   }
 })
 
-// ── API: lightningcss (soporte NATIVO de Panda — NO es un plugin PostCSS) ───
-// panda.config.ts expone `lightningcss`/`browserslist`/`minify` de nivel
-// superior; Panda auto-registra @pandacss/plugin-lightningcss internamente
-// cuando lightningcss=true (ver applyAutoPlugins en @pandacss/node), tanto
-// para `panda cssgen` como dentro de `@pandacss/dev/postcss` — por eso NO
-// hace falta runner propio ni tocar runRebuild. Mismo contrato de error que
-// /api/theme (legacy / sin theme).
+// ── API: lightningcss (NATIVE Panda support — NOT a PostCSS plugin) ─────────
+// panda.config.ts exposes top-level `lightningcss`/`browserslist`/`minify`;
+// Panda auto-registers @pandacss/plugin-lightningcss internally when
+// lightningcss=true (see applyAutoPlugins in @pandacss/node), both for
+// `panda cssgen` and inside `@pandacss/dev/postcss` — that is why NO own
+// runner is needed and runRebuild does not need touching. Same error contract
+// as /api/theme (legacy / no theme).
 
-/** Lee { enabled, browserslist, minify } de panda.config.ts. */
+/** Reads { enabled, browserslist, minify } from panda.config.ts. */
 app.get('/api/lightningcss/config', () => {
   const found = resolveTheme(process.cwd())
   const err = themeError(found)
@@ -708,7 +708,7 @@ app.get('/api/lightningcss/config', () => {
   }
 })
 
-/** Escribe { enabled, browserslist, minify } en panda.config.ts (bloque marcado). */
+/** Writes { enabled, browserslist, minify } into panda.config.ts (marked block). */
 app.post('/api/lightningcss/config', async ({ request }) => {
   const found = resolveTheme(process.cwd())
   const err = themeError(found)
@@ -731,7 +731,7 @@ app.post('/api/lightningcss/config', async ({ request }) => {
   }
 })
 
-/** Resuelve las queries de browserslist a targets reales (preview) — usa lightningcss/browserslist DEL proyecto consumidor. */
+/** Resolves browserslist queries to real targets (preview) — uses the CONSUMER project's lightningcss/browserslist. */
 app.get('/api/lightningcss/preview', ({ query }) => {
   const found = resolveTheme(process.cwd())
   const err = themeError(found)
@@ -742,15 +742,15 @@ app.get('/api/lightningcss/preview', ({ query }) => {
   return resolveTargets(projectRoot, queries)
 })
 
-// ── API: Static Css Recipes (reduce staticCss.recipes de '*' a lo usado) ────
-// Escanea el CÓDIGO FUENTE del propio paquete instalado (PKG_DIR, el mismo
-// panda-ui-mithril del que corre config-ui — no hace falta resolverlo del
-// consumidor) para construir el grafo componente->recipes / componente->
-// componente (wrappers), y el código del CONSUMIDOR (glob `include` de su
-// panda.config.ts) para saber qué componentes usa. Ver staticcss-scan-api.ts.
-// Mismo contrato de error que /api/theme (legacy / sin theme).
+// ── API: Static Css Recipes (reduce staticCss.recipes from '*' to what is used) ──
+// Scans the SOURCE CODE of the installed package itself (PKG_DIR, the same
+// panda-ui-mithril that runs config-ui — there is no need to resolve it from
+// the consumer) to build the component->recipes / component->component
+// (wrappers) graph, and the CONSUMER's code (the `include` glob of its
+// panda.config.ts) to know which components it uses. See staticcss-scan-api.ts.
+// Same error contract as /api/theme (legacy / no theme).
 
-/** Lee el estado actual (sin re-escanear) — { enabled, recipes, manual, include }. */
+/** Reads the current state (without rescanning) — { enabled, recipes, manual, include }. */
 app.get('/api/staticcss/config', () => {
   const found = resolveTheme(process.cwd())
   const err = themeError(found)
@@ -763,7 +763,7 @@ app.get('/api/staticcss/config', () => {
   }
 })
 
-/** Escanea el proyecto (no guarda) — preview de componentes detectados + recipes resultantes. */
+/** Scans the project (does not save) — preview of detected components + resulting recipes. */
 app.post('/api/staticcss/scan', () => {
   const found = resolveTheme(process.cwd())
   const err = themeError(found)
@@ -774,7 +774,7 @@ app.post('/api/staticcss/scan', () => {
   return scanProject(projectRoot, PKG_DIR)
 })
 
-/** Guarda { enabled, recipes, manual } — enabled=false restaura '*' (revierte todo). */
+/** Saves { enabled, recipes, manual } — enabled=false restores '*' (reverts everything). */
 app.post('/api/staticcss/config', async ({ request }) => {
   const found = resolveTheme(process.cwd())
   const err = themeError(found)
@@ -796,18 +796,18 @@ app.post('/api/staticcss/config', async ({ request }) => {
   }
 })
 
-// ── API: Advanced (subconjunto curado de panda.config.ts sin UI propia) ─────
-// preflight/strictTokens/strictPropertyValues/hash/clean (bloque aditivo,
-// mismo mecanismo que lightningcss) + include/exclude (reemplazo quirúrgico,
-// ya existen sin marcar en el scaffold de cli.ts). Ver advanced-config-api.ts
-// para qué campos de defineConfig quedaron deliberadamente afuera
-// (jsxFramework/jsxFactory fijos a Mithril, outdir fijo a styled-system,
-// layers/separator requieren regenerar pum/index.css, hooks/plugins no son
-// serializables, prefix SUSPENDIDO — riesgo verificado, rompe TODO el
-// paquete, no solo selectores puntuales).
-// Mismo contrato de error que /api/theme (legacy / sin theme).
+// ── API: Advanced (curated subset of panda.config.ts with no UI of its own) ─
+// preflight/strictTokens/strictPropertyValues/hash/clean (additive block, same
+// mechanism as lightningcss) + include/exclude (surgical replacement, they
+// already exist unmarked in cli.ts's scaffold). See advanced-config-api.ts
+// for which defineConfig fields were deliberately left out
+// (jsxFramework/jsxFactory fixed to Mithril, outdir fixed to styled-system,
+// layers/separator require regenerating pum/index.css, hooks/plugins are not
+// serializable, prefix SUSPENDED — verified risk, it breaks the WHOLE
+// package, not just individual selectors).
+// Same error contract as /api/theme (legacy / no theme).
 
-/** Lee el estado actual — { preflight, strictTokens, strictPropertyValues, hash, clean, include, exclude }. */
+/** Reads the current state — { preflight, strictTokens, strictPropertyValues, hash, clean, include, exclude }. */
 app.get('/api/advanced/config', () => {
   const found = resolveTheme(process.cwd())
   const err = themeError(found)
@@ -820,7 +820,7 @@ app.get('/api/advanced/config', () => {
   }
 })
 
-/** Guarda el estado — ver AdvancedState en advanced-config-api.ts. */
+/** Saves the state — see AdvancedState in advanced-config-api.ts. */
 app.post('/api/advanced/config', async ({ request }) => {
   const found = resolveTheme(process.cwd())
   const err = themeError(found)
@@ -846,9 +846,9 @@ app.post('/api/advanced/config', async ({ request }) => {
   }
 })
 
-// El CSS inline (config-ui.css) referencia las fuentes como rutas relativas
-// (fonts/xxx.woff2, copiadas por postcss-url) — el navegador las pide al
-// server, así que hay que servirlas desde config-ui/fonts/.
+// The inline CSS (config-ui.css) references the fonts as relative paths
+// (fonts/xxx.woff2, copied by postcss-url) — the browser requests them from
+// the server, so they must be served from config-ui/fonts/.
 app.get('/fonts/*', ({ params }) => {
   const rel = params['*'] ?? ''
   const file = join(UI_DIR, 'fonts', rel)
@@ -859,8 +859,8 @@ app.get('/fonts/*', ({ params }) => {
   })
 })
 
-// 404 para rutas desconocidas (GET y POST). En Elysia 1.4 no existe
-// `.notFound`; el hook es `onError` con `code === 'NOT_FOUND'`.
+// 404 for unknown routes (GET and POST). In Elysia 1.4 there is no
+// `.notFound`; the hook is `onError` with `code === 'NOT_FOUND'`.
 app.onError(({ code, set }) => {
   if (code === 'NOT_FOUND') {
     set.status = 404
@@ -873,30 +873,30 @@ app.listen({ port: PORT })
 const url = `http://localhost:${PORT}`
 console.log(`PUM Config — theme editor: ${url}`)
 
-// Abre la URL en el navegador del sistema (best-effort: si falla o no hay
-// navegador, el servidor sigue funcionando y la URL se imprimió arriba).
-// Con `--no-open` (o BROWSER=none) no se lanza nada: solo se avisa por stdout.
+// Opens the URL in the system browser (best-effort: if it fails or there is no
+// browser, the server keeps working and the URL was printed above).
+// With `--no-open` (or BROWSER=none) nothing is launched: it only warns on stdout.
 if (NO_OPEN) {
-  console.log('(navegador no abierto: --no-open — abre la URL de arriba a mano)')
+  console.log('(browser not opened: --no-open — open the URL above by hand)')
 } else {
   setTimeout(() => openBrowser(url), 150)
 }
 
-// ── Helpers: resolución de ruta del theme ─────────────────────────────────
+// ── Helpers: theme path resolution ────────────────────────────────────────
 /**
- * Resuelve el theme target. Devuelve:
+ * Resolves the target theme. Returns:
  *   { themeDir, projectRoot, legacy }
- * - themeDir:  dir con colors.ts (null si no encontrado).
- * - projectRoot: dir raíz del proyecto (donde está panda.config.ts).
- * - legacy:    true si hay pum/theme.ts de archivo único (layout viejo).
+ * - themeDir:  dir with colors.ts (null if not found).
+ * - projectRoot: project root dir (where panda.config.ts lives).
+ * - legacy:    true if there is a single-file pum/theme.ts (old layout).
  */
 /**
- * El editor solo puede operar sobre el theme del proyecto que RECOMPILA: su
- * `panda.config.ts` importa su propio `pum/preset`, así que un theme que vive
- * en otro directorio (caso real: `config --dir=src/pages/login` cuando ese SPA
- * todavía no tiene su `panda.config.ts`) no lo usa nadie — editarlo no tendría
- * efecto y el CSS se escribiría en el proyecto raíz, en silencio. Devuelve el
- * error a mostrar, o null si el theme sí pertenece al proyecto.
+ * The editor can only operate on the theme of the project it RECOMPILES: its
+ * `panda.config.ts` imports its own `pum/preset`, so a theme living in another
+ * directory (real case: `config --dir=src/pages/login` when that SPA does not
+ * have its `panda.config.ts` yet) is used by nobody — editing it would have
+ * no effect and the CSS would be written to the root project, silently. Returns
+ * the error to display, or null if the theme does belong to the project.
  */
 function themeOwnershipError(found: {
   themeDir: string | null
@@ -904,7 +904,7 @@ function themeOwnershipError(found: {
   themeOwnedByProject?: boolean
 }) {
   if (!found.themeDir || !found.projectRoot || found.themeOwnedByProject !== false) return null
-  // El propio cwd se muestra en absoluto (un "." no dice nada).
+  // The cwd itself is shown as an absolute path (a "." says nothing).
   const rel = (path: string) => {
     const r = relative(process.cwd(), path)
     return r === '' ? path : r
@@ -915,10 +915,10 @@ function themeOwnershipError(found: {
   return {
     ok: false,
     error:
-      `El theme apuntado (${themeRel}) no es el del proyecto que se recompila (${projectRel}): ` +
-      'su panda.config.ts importa su propio pum/preset, así que editar este theme no tendría ' +
-      `efecto y el CSS se escribiría en ${projectRel}. Crea un proyecto propio para ese SPA ` +
-      'y apunta el editor ahí.',
+      `The theme pointed at (${themeRel}) is not the one of the project being recompiled (${projectRel}): ` +
+      'its panda.config.ts imports its own pum/preset, so editing this theme would have ' +
+      `no effect and the CSS would be written to ${projectRel}. Create a project of its own for that SPA ` +
+      'and point the editor there.',
     hint: `bunx panda-ui-mithril init --dir=${spaDir}`,
   }
 }
@@ -927,19 +927,19 @@ function resolveTheme(cwd: string) {
   const explicit = themeDirFromArgv()
   const candidates = explicit ? [explicit] : walkUp(cwd)
 
-  // ¿El theme resuelto es el del proyecto que se recompila? Los tres sitios
-  // canónicos dentro del projectRoot; ver themeOwnershipError.
+  // Is the resolved theme the one of the project being recompiled? The three
+  // canonical locations inside projectRoot; see themeOwnershipError.
   const owned = (themeDir: string, projectRoot: string | null) =>
     !!projectRoot && ['pum/theme', 'src/theme', 'theme'].some((sub) => join(projectRoot, sub) === themeDir)
 
   for (const base of candidates) {
-    // base apunta directo a un theme dir (tiene colors.ts)
+    // base points directly to a theme dir (it has colors.ts)
     if (existsSync(join(base, 'colors.ts'))) {
       const projectRoot = findProjectRoot(dirname(base))
       return { themeDir: base, projectRoot, legacy: false, themeOwnedByProject: owned(base, projectRoot) }
     }
-    // base es un dir de proyecto: pum/theme (consumidor), src/theme (repo),
-    // o un dir que ya contiene theme/ (p. ej. --dir ./src → src/theme).
+    // base is a project dir: pum/theme (consumer), src/theme (repo),
+    // or a dir that already contains theme/ (e.g. --dir ./src → src/theme).
     for (const sub of ['pum/theme', 'src/theme', 'theme']) {
       const dir = join(base, sub)
       if (existsSync(join(dir, 'colors.ts'))) {
@@ -947,7 +947,7 @@ function resolveTheme(cwd: string) {
         return { themeDir: dir, projectRoot, legacy: false, themeOwnedByProject: owned(dir, projectRoot) }
       }
     }
-    // layout legacy: pum/theme.ts de archivo único, sin carpeta theme/
+    // legacy layout: single-file pum/theme.ts, with no theme/ folder
     if (existsSync(join(base, 'pum', 'theme.ts')) && !existsSync(join(base, 'pum', 'theme'))) {
       return { themeDir: null, projectRoot: findProjectRoot(base), legacy: true, themeOwnedByProject: true }
     }
@@ -956,12 +956,12 @@ function resolveTheme(cwd: string) {
 }
 
 /**
- * Lee `--dir <ruta>` / `--dir=<ruta>` / `-d <ruta>` / `-d=<ruta>` de
- * process.argv (el bin ya lo recibió). Acepta las dos formas: la de espacio y
- * la de `=` — esta última es la que usa mucha gente
- * (`panda-ui-mithril config --dir=src/pages/login`) y antes se ignoraba en
- * silencio, con lo que el editor caía al proyecto raíz en vez del sub-proyecto.
- * Una ruta relativa se resuelve contra el cwd desde el que se lanzó el bin.
+ * Reads `--dir <path>` / `--dir=<path>` / `-d <path>` / `-d=<path>` from
+ * process.argv (the bin already received it). Accepts both forms: the spaced
+ * one and the `=` one — the latter is the one many people use
+ * (`panda-ui-mithril config --dir=src/pages/login`) and it used to be ignored
+ * silently, so the editor fell back to the root project instead of the sub-project.
+ * A relative path is resolved against the cwd the bin was launched from.
  */
 function themeDirFromArgv(): string | null {
   const argv = process.argv
@@ -976,7 +976,7 @@ function themeDirFromArgv(): string | null {
   return null
 }
 
-/** Lee `--port <n>` / `--port=<n>` / `-p <n>` de process.argv. */
+/** Reads `--port <n>` / `--port=<n>` / `-p <n>` from process.argv. */
 function portFromArgv(): number | null {
   const argv = process.argv
   for (let i = 2; i < argv.length; i++) {
@@ -987,14 +987,14 @@ function portFromArgv(): number | null {
     if (raw !== undefined) {
       const n = Number(raw)
       if (Number.isInteger(n) && n > 0 && n < 65536) return n
-      console.warn(`config-ui: puerto inválido '${raw}' — usando 1234`)
+      console.warn(`config-ui: invalid port '${raw}' — using 1234`)
       return null
     }
   }
   return null
 }
 
-/** Abre la URL en el navegador del sistema (best-effort, no bloquea). */
+/** Opens the URL in the system browser (best-effort, non-blocking). */
 function openBrowser(url: string) {
   try {
     const cmd =
@@ -1004,24 +1004,24 @@ function openBrowser(url: string) {
           ? ['cmd', '/c', 'start', '', url]
           : ['xdg-open', url]
     const child = spawn(cmd[0], cmd.slice(1), { detached: true, stdio: 'ignore' })
-    child.on('error', (e) => console.error(`config-ui: no se pudo abrir el navegador (${cmd[0]}):`, e.message))
+    child.on('error', (e) => console.error(`config-ui: could not open the browser (${cmd[0]}):`, e.message))
     child.unref()
   } catch (e) {
-    console.error('config-ui: no se pudo abrir el navegador:', String(e))
+    console.error('config-ui: could not open the browser:', String(e))
   }
 }
 
 /**
- * `--no-open` (o `BROWSER=none`) evita que el servidor abra el navegador del
- * sistema al arrancar. Pensado para revisiones repetidas, scripts y CI: sin
- * esto cada reinicio abre una pestaña nueva. La URL SIEMPRE se imprime en
- * stdout, así que el editor sigue siendo usable a mano.
+ * `--no-open` (or `BROWSER=none`) prevents the server from opening the system
+ * browser on startup. Meant for repeated reviews, scripts and CI: without
+ * this, every restart opens a new tab. The URL is ALWAYS printed to stdout,
+ * so the editor remains usable by hand.
  */
 function noOpenFromArgv(): boolean {
   return process.argv.includes('--no-open') || process.env.BROWSER === 'none'
 }
 
-/** Niveles desde cwd hasta la raíz (máx. 10), para búsqueda ascendente. */
+/** Levels from cwd up to the root (max. 10), for the upward search. */
 function walkUp(cwd: string): string[] {
   const out: string[] = []
   let dir = cwd
@@ -1034,7 +1034,7 @@ function walkUp(cwd: string): string[] {
   return out
 }
 
-/** Sube desde `dir` hasta encontrar panda.config.ts (fallback: el propio dir). */
+/** Walks up from `dir` until it finds panda.config.ts (fallback: the dir itself). */
 function findProjectRoot(dir: string): string {
   let d = dir
   for (let i = 0; i < 10; i++) {
@@ -1046,7 +1046,7 @@ function findProjectRoot(dir: string): string {
   return dir
 }
 
-// ── Helpers: lectura ──────────────────────────────────────────────────────
+// ── Helpers: reading ──────────────────────────────────────────────────────
 function readColors(dir: string) {
   return parseColors(readFileSync(join(dir, 'colors.ts'), 'utf8'))
 }
@@ -1055,7 +1055,7 @@ function readFlat(dir: string, file: string) {
   return parseFlat(readFileSync(join(dir, file + '.ts'), 'utf8'))
 }
 
-// ── Helpers: escritura (regex dirigida, estructura conocida) ──────────────
+// ── Helpers: writing (targeted regex, known structure) ────────────────────
 function writeColors(dir: string, colors: Record<string, { base: string; dark: string }>) {
   const path = join(dir, 'colors.ts')
   writeFileSync(path, writeColorsSrc(readFileSync(path, 'utf8'), colors))
