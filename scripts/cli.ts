@@ -2,47 +2,47 @@
 /**
  * panda-ui-mithril CLI
  *
- * `bunx panda-ui-mithril init` — genera/actualiza la configuración del
- * consumidor:
- *   1. `pum/` — copia local de `preset.ts` + `theme.ts` (+ d.ts) + la carpeta
- *      `theme/` con `{colors,fonts,spacing,radii,keyframes}.ts`. El preset
- *      copiado importa las recipes del paquete (`panda-ui-mithril/recipes`,
- *      barrel público) — las recipes NO se copian. El theme (`pum/theme/*.ts`)
- *      es la fuente editable local del consumidor.
- *   2. `panda.config.ts` — apunta a `./pum/preset` (no node_modules).
- *   3. Mithril JSX fields en `tsconfig.json` (jsx: react + factory m).
- *      El dev server (`bun index.html`) compila los `.jsx` del paquete con la
- *      config JSX de `tsconfig.json` (el `bunfig.toml` solo lo respeta
- *      `bun build`, no el dev server — verificado empíricamente).
+ * `bunx panda-ui-mithril init` — generates/updates the consumer's
+ * configuration:
+ *   1. `pum/` — local copy of `preset.ts` + `theme.ts` (+ d.ts) + the `theme/`
+ *      folder with `{colors,fonts,spacing,radii,keyframes}.ts`. The copied
+ *      preset imports the package's recipes (`panda-ui-mithril/recipes`,
+ *      public barrel) — recipes are NOT copied. The theme (`pum/theme/*.ts`)
+ *      is the consumer's local editable source.
+ *   2. `panda.config.ts` — points at `./pum/preset` (not node_modules).
+ *   3. Mithril JSX fields in `tsconfig.json` (jsx: react + factory m).
+ *      The dev server (`bun index.html`) compiles the package's `.jsx` files
+ *      with the JSX config from `tsconfig.json` (only `bun build` honours
+ *      `bunfig.toml`, the dev server does not — verified empirically).
  *
- * Layout legacy: si el proyecto se inicializó con una versión vieja del CLI,
- * `pum/` tiene un `theme.ts` de archivo único (sin carpeta `theme/`). `init`
- * lo detecta y MIGRA automáticamente a `pum/theme/*.ts`, preservando los
- * valores personalizados (colores/fonts/spacing/radii/keyframes) que pudieran
- * haberse editado en el archivo legacy. El editor `config` no puede operar
- * sobre el layout legacy y devuelve un hint de migración.
+ * Legacy layout: if the project was initialized by an old CLI version, `pum/`
+ * holds a single-file `theme.ts` (no `theme/` folder). `init` detects it and
+ * MIGRATES automatically to `pum/theme/*.ts`, preserving the customized values
+ * (colors/fonts/spacing/radii/keyframes) that may have been edited in the
+ * legacy file. The `config` editor cannot operate on the legacy layout and
+ * returns a migration hint.
  *
  * Usage:
- *   bunx panda-ui-mithril init           # crea pum/ + config (no overwrite)
+ *   bunx panda-ui-mithril init           # creates pum/ + config (no overwrite)
  *   bunx panda-ui-mithril init --force   # force overwrite
- *   bunx panda-ui-mithril init --dir <ruta>     # escribe todo dentro de <ruta>
- *                                          en vez de cwd (misma raíz que
- *                                          después necesita `config --dir`)
- *   bunx panda-ui-mithril config         # editor visual (Elysia) en :1234,
- *                                          abre el navegador automáticamente
- *   bunx panda-ui-mithril config --port 5000    # puerto custom (--port=5000 ok)
- *   bunx panda-ui-mithril config --dir <ruta>   # apunta el editor a otra raíz
+ *   bunx panda-ui-mithril init --dir <path>     # writes everything inside
+ *                                          <path> instead of cwd (the same root
+ *                                          `config --dir` later needs)
+ *   bunx panda-ui-mithril config         # visual editor (Elysia) on :1234,
+ *                                          opens the browser automatically
+ *   bunx panda-ui-mithril config --port 5000    # custom port (--port=5000 ok)
+ *   bunx panda-ui-mithril config --dir <path>   # points the editor at another root
  *   bunx panda-ui-mithril --help
  *
- * `--dir`/`-d` en `init`: trata `<ruta>` como la raíz efectiva del proyecto
- * para TODO lo que `init` escribe (pum/, panda.config.ts, tsconfig.json,
- * postcss.config.cjs, pum/index.css) — se crea si no existe. Mismo flag y
- * misma semántica que ya tiene `config --dir` (ver themeDirFromArgv en
- * config-ui/server.ts), a propósito: `init --dir mi-app && config --dir
- * mi-app` apuntan al mismo lugar. El `panda.config.ts` generado sigue
- * trayendo `include: ['./src/**\/*...']` relativo a SU PROPIA carpeta — si
- * el código fuente real no vive dentro de `<ruta>`, hay que editar ese
- * include a mano después.
+ * `--dir`/`-d` on `init`: treats `<path>` as the project's effective root for
+ * EVERYTHING `init` writes (pum/, panda.config.ts, tsconfig.json,
+ * postcss.config.cjs, pum/index.css) — it is created if missing. Same flag and
+ * semantics as `config --dir` already has (see themeDirFromArgv in
+ * config-ui/server.ts), on purpose: `init --dir my-app && config --dir my-app`
+ * land in the same place. The generated `panda.config.ts` still ships
+ * `include: ['./src/**\/*...']` relative to ITS OWN folder — if the real
+ * source does not live inside `<path>`, that include has to be edited by hand
+ * afterwards.
  */
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join, resolve } from 'node:path'
@@ -65,9 +65,9 @@ const CONFIG_NAME = 'panda.config.ts'
 const TSCONFIG_NAME = 'tsconfig.json'
 const PUM_DIR = 'pum'
 const POSTCSS_CONFIG_NAME = 'postcss.config.cjs'
-// Entry css del pipeline postcss (default; el usuario puede cambiarlo en
-// config-ui → Postcss). La directiva @layer activa la generación del CSS de
-// Panda (reset/base/tokens/recipes/utilities) al correr postcss.
+// Pipeline postcss entry css (default; the user can change it in
+// config-ui → Postcss). The @layer directive enables the generation of Panda's
+// CSS (reset/base/tokens/recipes/utilities) when postcss runs.
 const PUM_ENTRY_CSS = 'pum/index.css'
 
 const CONFIG_TEMPLATE = `import { defineConfig } from '@pandacss/dev'
@@ -86,24 +86,24 @@ export default defineConfig({
 })
 `
 
-// Marker que delimita el bloque de plugins gestionado por config-ui dentro
-// de postcss.config.cjs (mismo patrón que /* pum:fontfaces */ en panda.config).
-// Apertura y cierre en líneas propias: el editor reemplaza SOLO el interior
-// del par; todo lo demás del archivo se conserva.
+// Marker delimiting the plugin block managed by config-ui inside
+// postcss.config.cjs (same pattern as /* pum:fontfaces */ in panda.config).
+// Opening and closing on their own lines: the editor replaces ONLY the inside
+// of the pair; everything else in the file is preserved.
 const POSTCSS_MARKER = '/* pum:postcss */'
 const POSTCSS_MARKER_END = '/* /pum:postcss */'
 
-// postcss.config.cjs base: Panda como plugin de PostCSS (vía recomendada por
-// panda-css.com/docs/installation/postcss). El bloque gestionado por el editor
-// (el par de comentarios pum:postcss que ves dentro de plugins) lo añade/quita
-// config-ui (sección Postcss → Configure). Las entradas manuales fuera del par
-// se conservan al guardar. NOTA: la cabecera NO debe escribir los literales de
-// los markers (/* pum:postcss */) — rompería la localización del editor.
-const POSTCSS_CONFIG_TEMPLATE = `// postcss.config.cjs — pipeline postcss del proyecto (Panda es una capa).
-// La sección gestionada por \`panda-ui-mithril config\` (Postcss → Configure)
-// es el bloque entre los dos comentarios pum:postcss dentro de plugins —
-// no edites su interior a mano. Las entradas que añadas fuera del bloque se
-// conservan al guardar desde el editor.
+// postcss.config.cjs base: Panda as a PostCSS plugin (the way recommended by
+// panda-css.com/docs/installation/postcss). The block managed by the editor
+// (the pair of pum:postcss comments you see inside plugins) is added/removed by
+// config-ui (Postcss → Configure section). Manual entries outside the pair are
+// preserved on save. NOTE: the header must NOT write the marker literals
+// (/* pum:postcss */) — it would break the editor's lookup.
+const POSTCSS_CONFIG_TEMPLATE = `// postcss.config.cjs — the project's postcss pipeline (Panda is one layer).
+// The section managed by \`panda-ui-mithril config\` (Postcss → Configure)
+// is the block between the two pum:postcss comments inside plugins — do not
+// edit its inside by hand. Entries you add outside the block are preserved
+// when saving from the editor.
 module.exports = {
   plugins: {
     ${POSTCSS_MARKER}
@@ -113,19 +113,19 @@ module.exports = {
 }
 `
 
-// Entry css del pipeline postcss. La primera línea (@layer …) es la directiva
-// que el plugin de Panda reemplaza por el CSS generado (preflight, tokens,
-// recipes, utilities) — el resto del archivo es css propio del proyecto.
-const PUM_INDEX_CSS_TEMPLATE = `/* Entry CSS del pipeline postcss — gestionado por panda-ui-mithril config.
-   La directiva @layer activa la generación del CSS de Panda (reset, base,
-   tokens, recipes, utilities) al correr postcss sobre este archivo. */
+// Pipeline postcss entry css. The first line (@layer …) is the directive the
+// Panda plugin replaces with the generated CSS (preflight, tokens, recipes,
+// utilities) — the rest of the file is the project's own css.
+const PUM_INDEX_CSS_TEMPLATE = `/* Postcss pipeline entry CSS — managed by panda-ui-mithril config.
+   The @layer directive enables the generation of Panda's CSS (reset, base,
+   tokens, recipes, utilities) when postcss runs on this file. */
 @layer reset, base, tokens, recipes, utilities;
 `
 
 /**
- * Crea el scaffold postcss del proyecto (solo si no existe, o --force):
- *   - postcss.config.cjs (raíz): Panda como plugin de PostCSS + marker.
- *   - pum/index.css (entry del pipeline con la directiva @layer).
+ * Creates the project's postcss scaffold (only if missing, or with --force):
+ *   - postcss.config.cjs (root): Panda as a PostCSS plugin + marker.
+ *   - pum/index.css (pipeline entry with the @layer directive).
  */
 function writePostcssScaffold(cwd: string, force: boolean) {
   const configPath = join(cwd, POSTCSS_CONFIG_NAME)
@@ -260,8 +260,8 @@ function copyPum(cwd: string, force: boolean) {
     ['src/preset.ts', 'preset.ts'],
     ['src/theme.ts', 'theme.ts'],
     ['src/theme.d.ts', 'theme.d.ts'],
-    // Archivos TS del theme (colors/fonts/spacing/radii/keyframes) — la
-    // fuente editable de valores del consumidor.
+    // Theme TS files (colors/fonts/spacing/radii/keyframes) — the consumer's
+    // editable source of values.
     ['src/theme/colors.ts', 'theme/colors.ts'],
     ['src/theme/fonts.ts', 'theme/fonts.ts'],
     ['src/theme/spacing.ts', 'theme/spacing.ts'],
@@ -302,21 +302,20 @@ function copyPum(cwd: string, force: boolean) {
   console.log(`✔ ${PUM_DIR}/ copied (preset.ts + theme.ts + theme/*.ts — recipes via package)`)
 }
 
-/** true si pum/ tiene el layout legacy: theme.ts archivo único sin carpeta theme/. */
+/** true if pum/ has the legacy layout: a single-file theme.ts with no theme/ folder. */
 function isLegacyTheme(cwd: string): boolean {
   const pumPath = join(cwd, PUM_DIR)
   return existsSync(join(pumPath, 'theme.ts')) && !existsSync(join(pumPath, 'theme'))
 }
 
 /**
- * Migra un pum/ legacy (theme.ts de archivo único) al layout nuevo
- * (pum/theme/*.ts), preservando los valores personalizados del archivo
- * legacy. Pasos:
- *   1. Parsear el theme.ts legacy ANTES de sobrescribirlo.
- *   2. Copiar el layout nuevo (copyPum interno con force).
- *   3. Re-aplicar los valores parseados sobre los archivos nuevos
- *      (writeColorsSrc/writeFlatSrc son no-op si un token no existe, así que
- *      los defaults del paquete quedan para tokens no presentes en legacy).
+ * Migrates a legacy pum/ (single-file theme.ts) to the new layout
+ * (pum/theme/*.ts), preserving the legacy file's customized values. Steps:
+ *   1. Parse the legacy theme.ts BEFORE overwriting it.
+ *   2. Copy the new layout (copyPum internal with force).
+ *   3. Re-apply the parsed values onto the new files
+ *      (writeColorsSrc/writeFlatSrc are no-ops for a token that does not
+ *      exist, so the package defaults stay for tokens absent from the legacy).
  */
 function migrateLegacyTheme(cwd: string) {
   const pumPath = join(cwd, PUM_DIR)
@@ -340,10 +339,10 @@ function migrateLegacyTheme(cwd: string) {
     Object.keys(radii).length +
     Object.keys(semanticColors).length
 
-  // Copia el layout nuevo (sobrescribe pum/ completo).
+  // Copies the new layout (overwrites the whole pum/).
   copyPum(cwd, true)
 
-  // Re-aplica los valores del legacy sobre los archivos recién copiados.
+  // Re-applies the legacy values onto the freshly copied files.
   const themeDir = join(pumPath, 'theme')
   const colorsPath = join(themeDir, 'colors.ts')
   writeFileSync(
@@ -356,7 +355,7 @@ function migrateLegacyTheme(cwd: string) {
   if (keyframesBlock) {
     writeFileSync(
       join(themeDir, 'keyframes.ts'),
-      `/**\n * Keyframes de panda-ui-mithril (migrados del layout legacy).\n */\n\nexport const themeKeyframes = ${keyframesBlock}\n`,
+      `/**\n * panda-ui-mithril keyframes (migrated from the legacy layout).\n */\n\nexport const themeKeyframes = ${keyframesBlock}\n`,
     )
   }
 
@@ -373,10 +372,10 @@ function writeFlatSrcTo(themeDir: string, file: string, values: Record<string, s
 }
 
 /**
- * Lee `--dir <ruta>` / `--dir=<ruta>` / `-d <ruta>` / `-d=<ruta>` de
- * process.argv — mismo formato que `themeDirFromArgv` en config-ui/server.ts
- * (espacio o `=`; resuelto a absoluta contra cwd). Usado tanto por `init` como
- * por `config`.
+ * Reads `--dir <path>` / `--dir=<path>` / `-d <path>` / `-d=<path>` from
+ * process.argv — same format as `themeDirFromArgv` in config-ui/server.ts
+ * (space or `=`; resolved to an absolute path against cwd). Used by both `init`
+ * and `config`.
  */
 function dirFromArgv(): string | null {
   const argv = process.argv
@@ -392,9 +391,9 @@ function dirFromArgv(): string | null {
 }
 
 /**
- * ¿Este dir ya es un proyecto panda-ui-mithril? (theme en cualquiera de los
- * layouts válidos: pum/theme, src/theme, theme/ — o el legacy pum/theme.ts).
- * Lo usa `config --init` para decidir si hay que crear algo.
+ * Is this dir already a panda-ui-mithril project? (theme in any of the valid
+ * layouts: pum/theme, src/theme, theme/ — or the legacy pum/theme.ts). Used by
+ * `config --init` to decide whether anything has to be created.
  */
 function hasTheme(dir: string): boolean {
   for (const sub of ['pum/theme', 'src/theme', 'theme']) {
@@ -404,21 +403,21 @@ function hasTheme(dir: string): boolean {
 }
 
 /**
- * Crea el proyecto (pum/ + panda.config.ts + tsconfig JSX + pipeline postcss).
- * Es el cuerpo compartido por `init` y por `config --init`:
- *  - `init` llama con `force: args.includes('--force')` y sale por
- *    `process.exit(1)` si ya existe (salvo legacy, que se migra).
- *  - `config --init` llama SOLO si `hasTheme()` es false, siempre con
- *    `force: false`: la variante combinada es aditiva por construcción y no
- *    puede sobrescribir nada (para regenerar está `init --force`).
+ * Creates the project (pum/ + panda.config.ts + tsconfig JSX + postcss
+ * pipeline). It is the body shared by `init` and `config --init`:
+ *  - `init` calls it with `force: args.includes('--force')` and exits through
+ *    `process.exit(1)` if it already exists (except legacy, which is migrated).
+ *  - `config --init` calls it ONLY if `hasTheme()` is false, always with
+ *    `force: false`: the combined variant is additive by construction and
+ *    cannot overwrite anything (to regenerate there is `init --force`).
  */
 function scaffoldProject(cwd: string, opts: { force: boolean; printNextSteps: boolean }): void {
   const target = join(cwd, CONFIG_NAME)
   const legacy = isLegacyTheme(cwd)
 
-  // El check de "ya existe" se salta si es layout legacy: la migración es
-  // exactamente la operación que el usuario necesita (y panda.config.ts se
-  // regenera con el template canónico, idéntico al que ya tiene).
+  // The "already exists" check is skipped for the legacy layout: migration is
+  // exactly the operation the user needs (and panda.config.ts is regenerated
+  // from the canonical template, identical to the one it already has).
   if (existsSync(target) && !opts.force && !legacy) {
     console.error(
       `${CONFIG_NAME} already exists in ${cwd}. Use --force to overwrite it.`,
@@ -448,7 +447,7 @@ function scaffoldProject(cwd: string, opts: { force: boolean; printNextSteps: bo
 async function main() {
   const args = process.argv.slice(2)
 
-  // `config` — abre el editor visual del theme (Elysia server en :1234)
+  // `config` — opens the visual theme editor (Elysia server on :1234)
   if (args[0] === 'config') {
     const serverPath = join(PKG_DIR, 'config-ui', 'server.ts')
     if (!existsSync(serverPath)) {
@@ -456,10 +455,11 @@ async function main() {
       process.exit(1)
     }
 
-    // `config --init` — asegura el proyecto antes de abrir el editor: crea
-    // pum/ + panda.config.ts + tsconfig + pipeline postcss SI FALTAN, y no
-    // toca nada si ya existe (variante aditiva; nunca sobrescribe). Así un SPA
-    // nuevo se puede inicializar y abrir de una sola vez:
+    // `config --init` — makes sure the project exists before opening the
+    // editor: creates pum/ + panda.config.ts + tsconfig + postcss pipeline IF
+    // MISSING, and touches nothing if it already exists (additive variant; it
+    // never overwrites). That way a fresh SPA can be initialized and opened in
+    // one step:
     //   bunx panda-ui-mithril config --init --dir=src/pages/login
     if (args.includes('--init')) {
       const dir = dirFromArgv() ?? process.cwd()
@@ -470,9 +470,9 @@ async function main() {
       }
     }
 
-    // Importa el servidor (Elysia escucha y mantiene el proceso vivo). El
-    // server lee --dir/-d y --port/-p de process.argv (puerto, ruta del theme,
-    // y abre el navegador).
+    // Imports the server (Elysia listens and keeps the process alive). The
+    // server reads --dir/-d and --port/-p from process.argv (port, theme path,
+    // and opening the browser).
     await import(serverPath)
     return
   }
