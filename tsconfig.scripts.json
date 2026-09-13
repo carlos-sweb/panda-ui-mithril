@@ -4,6 +4,10 @@
     "module": "ESNext",
     "moduleResolution": "bundler",
     "strict": false,
+    // Discriminated unions only narrow with strictNullChecks on, and this
+    // project relies on them (assignFont/unassignFont/removePackage and the
+    // rebuild result). Measured: turning it on removes errors, adds none.
+    "strictNullChecks": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "esModuleInterop": true,
@@ -16,6 +20,6 @@
       "panda-ui-mithril": ["./src/index.js"]
     }
   },
-  "include": ["scripts/**/*.ts"],
+  "include": ["scripts/**/*.ts", "config-ui/**/*.ts"],
   "exclude": ["node_modules", "dist", "dist-playground"]
 }

@@ -43,6 +43,20 @@ export interface LightningcssConfig {
 
 const DEFAULTS: LightningcssConfig = { enabled: false, browserslist: [], minify: false, polyfill: false }
 
+/**
+ * Shape of the MANAGED BLOCK as it is written in panda.config.ts, which is not
+ * the same as `LightningcssConfig`: there the field is called `lightningcss`
+ * (a top-level Panda config key), while `enabled` is the editor's name for the
+ * same thing. Everything is `unknown` because the block is evaluated from
+ * source text that a user can hand-edit.
+ */
+type RawLightningcssBlock = {
+  lightningcss?: unknown
+  browserslist?: unknown
+  minify?: unknown
+  polyfill?: unknown
+}
+
 /** Localiza el par de markers dentro de panda.config.ts. */
 function findBlock(src: string): { start: number; end: number } | null {
   const start = src.indexOf(LIGHTNINGCSS_MARKER)
@@ -62,10 +76,10 @@ export function readLightningcssConfig(pandaConfigSrc: string): LightningcssConf
   if (!block) return { ...DEFAULTS }
   const inner = pandaConfigSrc.slice(block.start + LIGHTNINGCSS_MARKER.length, block.end)
   try {
-    const value = new Function(`return ({ ${inner} })`)() as Partial<LightningcssConfig>
+    const value = new Function(`return ({ ${inner} })`)() as RawLightningcssBlock
     return {
       enabled: value.lightningcss === true,
-      browserslist: Array.isArray((value as any).browserslist) ? (value as any).browserslist.map(String) : [],
+      browserslist: Array.isArray(value.browserslist) ? value.browserslist.map(String) : [],
       minify: value.minify === true,
       polyfill: value.polyfill === true,
     }
@@ -119,9 +133,9 @@ export function writeLightningcssConfig(pandaConfigSrc: string, cfg: Lightningcs
 
   if (!managed) return pandaConfigSrc
   const anchor = 'export default defineConfig({\n'
-  if (pandaConfigSrc.includes(anchor)) return pandaConfigSrc.replace(anchor, anchor + managed, 1)
+  if (pandaConfigSrc.includes(anchor)) return pandaConfigSrc.replace(anchor, anchor + managed)
   if (pandaConfigSrc.includes('defineConfig({')) {
-    return pandaConfigSrc.replace('defineConfig({', 'defineConfig({\n' + managed, 1)
+    return pandaConfigSrc.replace('defineConfig({', 'defineConfig({\n' + managed)
   }
   return pandaConfigSrc
 }

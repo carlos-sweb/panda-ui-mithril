@@ -72,24 +72,27 @@ minimal pointer to the site).
 | `bun run dev` | Dev server (`bun playground/index.html --port=4300`), serves on **port 4300** (pinned in `package.json` — a plain `bun playground/index.html` would fall back to Bun's own default and risk colliding with another local process). Not Vite. Requires `styled-system/styles.css` to exist — run `bun run codegen && bun run scripts/build-css.ts` first on a fresh clone. Bun's HTML dev server binds `localhost` (IPv6 `::1`) only — `http://127.0.0.1:4300` will NOT connect; always use `http://localhost:4300`. |
 | `bun run codegen` | Regenerates `styled-system/` JS/TS helpers (`css()`, tokens, recipes, patterns). |
 | `bun run scripts/build-css.ts` | Regenerates the **minified** `styled-system/styles.css` (a **generated artifact — gitignored**; CI's `bun run build` regenerates it on every deploy). |
-| `npm run typecheck` | Both projects: `tsconfig.lib.json` (src + styled-system, excludes playground) and `tsconfig.scripts.json` (scripts/ + the config-ui module they import). `typecheck:lib` / `typecheck:scripts` run one at a time. |
+| `npm run typecheck` | Both projects: `tsconfig.lib.json` (src + styled-system, excludes playground) and `tsconfig.scripts.json` (the Bun side: `scripts/**` + `config-ui/**/*.ts`). `typecheck:lib` / `typecheck:scripts` run one at a time. |
 | `bun run count` | Prints the live component count (1 folder = 1 component). |
 | `bun run build` | Builds the static playground (`scripts/build.ts` → `dist-playground/`, **gitignored**; step 1 regenerates `styles.css`). |
 | `bun run test` | `bun test`. |
 | `bun run push` | `bun run build && git push` (convenience, not a publish). |
 
-> **Type-checking `scripts/`** needs Bun's globals, so `@types/bun` is pinned to
-> the runtime's own version on purpose (`1.3.14` ↔ `bun --version` 1.3.14): bump
-> both together. A newer `@types/bun` types APIs the installed Bun does not have
-> yet, and the undeclared transitive `bun-types@0.2.2` that used to be in
-> `node_modules` reported `Bun.build`, `Bun.write` and `$` as missing. The
-> `tsconfig.scripts.json` program covers `scripts/**` plus what those import
-> (`config-ui/theme-io.ts`); `config-ui/server.ts` and the rest of config-ui are
-> **not** covered, because `cli.ts` reaches the server through a computed dynamic
-> `import()` that TypeScript cannot resolve. Adding `config-ui/**/*.ts` to its
-> `include` reports 26 errors today (14 in `server.ts`), several of them
-> "Expected N arguments, but got N+1" — real drift between call and signature,
-> left for a separate pass.
+> **Type-checking `scripts/` and the editor's server side** needs Bun's globals,
+> so `@types/bun` is pinned to the runtime's own version on purpose (`1.3.14` ↔
+> `bun --version` 1.3.14): bump both together. A newer `@types/bun` types APIs
+> the installed Bun does not have yet, and the undeclared transitive
+> `bun-types@0.2.2` that used to be in `node_modules` reported `Bun.build`,
+> `Bun.write` and `$` as missing. `tsconfig.scripts.json` covers `scripts/**`
+> plus `config-ui/**/*.ts` (the editor's Bun-side modules; the SPA pages are not
+> covered). It sets `strictNullChecks: true` on purpose: discriminated unions —
+> the ones `assignFont`/`unassignFont`/`removePackage` and the rebuild result
+> rely on — only narrow with it on, and turning it on removed errors instead of
+> adding them. `POST /api/theme` validates the shape of `colors`/`fonts`/
+> `spacing`/`radii` before writing anything (`isThemeColorMap`/`isStringRecord`):
+> before that check a malformed payload was answered with `{ ok: true }` and,
+> with one field valid and another malformed, it wrote the valid one and still
+> reported success.
 
 > **CSS regeneration**: after editing any recipe (`src/recipes/*.ts`) or
 > `panda.config.ts`, run `bun run codegen` **and** `bun run scripts/build-css.ts`.

@@ -493,9 +493,9 @@ export function writeFontfaceConfig(pandaConfigSrc: string, faces: string): stri
   }
   if (!faces) return pandaConfigSrc
   const anchor = 'export default defineConfig({\n'
-  if (pandaConfigSrc.includes(anchor)) return pandaConfigSrc.replace(anchor, anchor + faces, 1)
+  if (pandaConfigSrc.includes(anchor)) return pandaConfigSrc.replace(anchor, anchor + faces)
   if (pandaConfigSrc.includes('defineConfig({')) {
-    return pandaConfigSrc.replace('defineConfig({', 'defineConfig({\n' + faces, 1)
+    return pandaConfigSrc.replace('defineConfig({', 'defineConfig({\n' + faces)
   }
   return pandaConfigSrc
 }

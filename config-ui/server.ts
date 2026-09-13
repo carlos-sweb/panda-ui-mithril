@@ -163,6 +163,24 @@ app.get('/api/theme', () => {
 })
 
 // ── API: write theme ──────────────────────────────────────────────────────
+/** `{ [token]: { base, dark } }` — the shape the Colors tab sends. */
+function isThemeColorMap(v: unknown): v is Record<string, { base: string; dark: string }> {
+  if (!v || typeof v !== 'object' || Array.isArray(v)) return false
+  return Object.values(v).every(
+    (entry) =>
+      !!entry &&
+      typeof entry === 'object' &&
+      typeof (entry as { base?: unknown }).base === 'string' &&
+      typeof (entry as { dark?: unknown }).dark === 'string',
+  )
+}
+
+/** `{ [token]: value }` — the shape the Fonts, Spacing and Radii tabs send. */
+function isStringRecord(v: unknown): v is Record<string, string> {
+  if (!v || typeof v !== 'object' || Array.isArray(v)) return false
+  return Object.values(v).every((value) => typeof value === 'string')
+}
+
 app.post('/api/theme', async ({ request }) => {
   const found = resolveTheme(process.cwd())
   if (found.legacy) {
@@ -178,6 +196,14 @@ app.post('/api/theme', async ({ request }) => {
   if (ownErr) return ownErr
 
   const body = await request.json().catch(() => ({})) as Record<string, unknown>
+  // The payload comes from our own SPA, but this is still an HTTP boundary:
+  // check the shape here instead of casting `unknown` away, and reject a
+  // malformed payload BEFORE writing anything (a partial write would leave the
+  // theme half-updated).
+  if (body.colors !== undefined && !isThemeColorMap(body.colors)) return { ok: false, error: 'Invalid colors payload.' }
+  if (body.fonts !== undefined && !isStringRecord(body.fonts)) return { ok: false, error: 'Invalid fonts payload.' }
+  if (body.spacing !== undefined && !isStringRecord(body.spacing)) return { ok: false, error: 'Invalid spacing payload.' }
+  if (body.radii !== undefined && !isStringRecord(body.radii)) return { ok: false, error: 'Invalid radii payload.' }
   try {
     if (body.colors) writeColors(found.themeDir, body.colors)
     if (body.fonts) {
@@ -229,7 +255,16 @@ app.post('/api/theme', async ({ request }) => {
  * output (default styled-system/styles.css). Otherwise it keeps the classic
  * `panda codegen && panda cssgen` flow.
  */
-function runRebuild(projectRoot: string, themeDir?: string | null) {
+/**
+ * Result of a rebuild: `mode` says which pipeline ran and the unused tool slot
+ * is `null`. `codegen`/`cssgen` carry the tail of stderr, or undefined when the
+ * tool printed nothing.
+ */
+type RebuildResult =
+  | { ok: boolean; mode: 'postcss'; codegen: string | undefined; postcss: string; cssgen: null }
+  | { ok: boolean; mode: 'cssgen'; codegen: string | undefined; cssgen: string | undefined; postcss: null }
+
+function runRebuild(projectRoot: string, themeDir?: string | null): RebuildResult {
   const codegen = spawnSync('bunx', ['panda', 'codegen'], { cwd: projectRoot, encoding: 'utf8' })
 
   if (themeDir && hasPostcssConfig(projectRoot)) {
@@ -438,15 +473,17 @@ app.post('/api/fonts/assign', async ({ request }) => {
       subsets: Array.isArray(body.subsets) ? body.subsets.map(String) : undefined,
     })
     if (!res.ok) return { ok: false, error: res.error }
-    const rebuild = res.changed ? runRebuild(projectRoot, themeDir) : { ok: true }
+    // `null` = nothing changed, so there was nothing to rebuild: a distinct
+    // case from "a rebuild ran and failed" (which is `{ ok: false, … }`).
+    const rebuild = res.changed ? runRebuild(projectRoot, themeDir) : null
     return {
       ok: true,
       family: res.family,
       token: res.token,
       value: res.value,
       wired: res.changed,
-      rebuildOk: rebuild.ok,
-      ...(rebuild.ok ? {} : { rebuildError: rebuild.codegen || rebuild.cssgen || 'rebuild failed' }),
+      rebuildOk: rebuild ? rebuild.ok : true,
+      ...(rebuild && !rebuild.ok ? { rebuildError: rebuild.codegen || rebuild.cssgen || 'rebuild failed' } : {}),
     }
   } catch (e) {
     return { ok: false, error: String(e) }
@@ -467,13 +504,15 @@ app.post('/api/fonts/unassign', async ({ request }) => {
     const projectRoot = found.projectRoot || dirname(themeDir)
     const res = unassignFont(themeDir, projectRoot, String(body.id), !!body.variable)
     if (!res.ok) return { ok: false, error: res.error }
-    const rebuild = res.changed ? runRebuild(projectRoot, themeDir) : { ok: true }
+    // `null` = nothing changed, so there was nothing to rebuild: a distinct
+    // case from "a rebuild ran and failed" (which is `{ ok: false, … }`).
+    const rebuild = res.changed ? runRebuild(projectRoot, themeDir) : null
     return {
       ok: true,
       resetTokens: res.resetTokens,
       wired: false,
-      rebuildOk: rebuild.ok,
-      ...(rebuild.ok ? {} : { rebuildError: rebuild.codegen || rebuild.cssgen || 'rebuild failed' }),
+      rebuildOk: rebuild ? rebuild.ok : true,
+      ...(rebuild && !rebuild.ok ? { rebuildError: rebuild.codegen || rebuild.cssgen || 'rebuild failed' } : {}),
     }
   } catch (e) {
     return { ok: false, error: String(e) }
@@ -494,13 +533,15 @@ app.post('/api/fonts/remove', async ({ request }) => {
     const projectRoot = found.projectRoot || dirname(themeDir)
     const res = removePackage(themeDir, projectRoot, String(body.id), !!body.variable)
     if (!res.ok) return { ok: false, error: res.error }
-    const rebuild = res.changed ? runRebuild(projectRoot, themeDir) : { ok: true }
+    // `null` = nothing changed, so there was nothing to rebuild: a distinct
+    // case from "a rebuild ran and failed" (which is `{ ok: false, … }`).
+    const rebuild = res.changed ? runRebuild(projectRoot, themeDir) : null
     return {
       ok: true,
       resetTokens: res.resetTokens,
       wired: false,
-      rebuildOk: rebuild.ok,
-      ...(rebuild.ok ? {} : { rebuildError: rebuild.codegen || rebuild.cssgen || 'rebuild failed' }),
+      rebuildOk: rebuild ? rebuild.ok : true,
+      ...(rebuild && !rebuild.ok ? { rebuildError: rebuild.codegen || rebuild.cssgen || 'rebuild failed' } : {}),
     }
   } catch (e) {
     return { ok: false, error: String(e) }

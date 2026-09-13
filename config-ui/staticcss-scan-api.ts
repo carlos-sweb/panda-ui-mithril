@@ -33,7 +33,7 @@
 
 import { existsSync, readFileSync, readdirSync, writeFileSync } from 'node:fs'
 import { createRequire } from 'node:module'
-import { dirname, join } from 'node:path'
+import { join } from 'node:path'
 
 // ── Resolución robusta de paquetes del proyecto consumidor ──────────────────
 /** `require` resuelto desde la ubicación REAL de un paquete (soporta node_modules anidado). */
@@ -328,9 +328,9 @@ export function writeStaticCssRecipes(pandaConfigSrc: string, recipes: '*' | str
   }
   const staticCssBlock = `  staticCss: {\n    recipes: ${valueText},\n  },\n`
   const anchor = 'export default defineConfig({\n'
-  if (pandaConfigSrc.includes(anchor)) return pandaConfigSrc.replace(anchor, anchor + staticCssBlock, 1)
+  if (pandaConfigSrc.includes(anchor)) return pandaConfigSrc.replace(anchor, anchor + staticCssBlock)
   if (pandaConfigSrc.includes('defineConfig({')) {
-    return pandaConfigSrc.replace('defineConfig({', 'defineConfig({\n' + staticCssBlock, 1)
+    return pandaConfigSrc.replace('defineConfig({', 'defineConfig({\n' + staticCssBlock)
   }
   throw new Error('No se encontró defineConfig({...}) en panda.config.ts: no se puede escribir staticCss.')
 }
@@ -406,3 +406,4 @@ export function writeStaticCssState(
   if (writeManualRecipes(raiz, opts.manual)) changed = true
   return changed
 }
+

@@ -114,9 +114,9 @@ export function writeAdvancedFlags(pandaConfigSrc: string, flags: AdvancedFlags)
 
   if (!managed) return pandaConfigSrc
   const anchor = 'export default defineConfig({\n'
-  if (pandaConfigSrc.includes(anchor)) return pandaConfigSrc.replace(anchor, anchor + managed, 1)
+  if (pandaConfigSrc.includes(anchor)) return pandaConfigSrc.replace(anchor, anchor + managed)
   if (pandaConfigSrc.includes('defineConfig({')) {
-    return pandaConfigSrc.replace('defineConfig({', 'defineConfig({\n' + managed, 1)
+    return pandaConfigSrc.replace('defineConfig({', 'defineConfig({\n' + managed)
   }
   return pandaConfigSrc
 }
@@ -180,9 +180,9 @@ export function writeArrayField(pandaConfigSrc: string, key: string, values: str
   if (values.length === 0) return pandaConfigSrc
   const field = `  ${key}: ${valueText},\n`
   const anchor = 'export default defineConfig({\n'
-  if (pandaConfigSrc.includes(anchor)) return pandaConfigSrc.replace(anchor, anchor + field, 1)
+  if (pandaConfigSrc.includes(anchor)) return pandaConfigSrc.replace(anchor, anchor + field)
   if (pandaConfigSrc.includes('defineConfig({')) {
-    return pandaConfigSrc.replace('defineConfig({', 'defineConfig({\n' + field, 1)
+    return pandaConfigSrc.replace('defineConfig({', 'defineConfig({\n' + field)
   }
   return pandaConfigSrc
 }
