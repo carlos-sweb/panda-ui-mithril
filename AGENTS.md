@@ -72,11 +72,24 @@ minimal pointer to the site).
 | `bun run dev` | Dev server (`bun playground/index.html --port=4300`), serves on **port 4300** (pinned in `package.json` — a plain `bun playground/index.html` would fall back to Bun's own default and risk colliding with another local process). Not Vite. Requires `styled-system/styles.css` to exist — run `bun run codegen && bun run scripts/build-css.ts` first on a fresh clone. Bun's HTML dev server binds `localhost` (IPv6 `::1`) only — `http://127.0.0.1:4300` will NOT connect; always use `http://localhost:4300`. |
 | `bun run codegen` | Regenerates `styled-system/` JS/TS helpers (`css()`, tokens, recipes, patterns). |
 | `bun run scripts/build-css.ts` | Regenerates the **minified** `styled-system/styles.css` (a **generated artifact — gitignored**; CI's `bun run build` regenerates it on every deploy). |
-| `npm run typecheck` | `tsc --noEmit --project tsconfig.lib.json` (src + styled-system, excludes playground). |
+| `npm run typecheck` | Both projects: `tsconfig.lib.json` (src + styled-system, excludes playground) and `tsconfig.scripts.json` (scripts/ + the config-ui module they import). `typecheck:lib` / `typecheck:scripts` run one at a time. |
 | `bun run count` | Prints the live component count (1 folder = 1 component). |
 | `bun run build` | Builds the static playground (`scripts/build.ts` → `dist-playground/`, **gitignored**; step 1 regenerates `styles.css`). |
 | `bun run test` | `bun test`. |
 | `bun run push` | `bun run build && git push` (convenience, not a publish). |
+
+> **Type-checking `scripts/`** needs Bun's globals, so `@types/bun` is pinned to
+> the runtime's own version on purpose (`1.3.14` ↔ `bun --version` 1.3.14): bump
+> both together. A newer `@types/bun` types APIs the installed Bun does not have
+> yet, and the undeclared transitive `bun-types@0.2.2` that used to be in
+> `node_modules` reported `Bun.build`, `Bun.write` and `$` as missing. The
+> `tsconfig.scripts.json` program covers `scripts/**` plus what those import
+> (`config-ui/theme-io.ts`); `config-ui/server.ts` and the rest of config-ui are
+> **not** covered, because `cli.ts` reaches the server through a computed dynamic
+> `import()` that TypeScript cannot resolve. Adding `config-ui/**/*.ts` to its
+> `include` reports 26 errors today (14 in `server.ts`), several of them
+> "Expected N arguments, but got N+1" — real drift between call and signature,
+> left for a separate pass.
 
 > **CSS regeneration**: after editing any recipe (`src/recipes/*.ts`) or
 > `panda.config.ts`, run `bun run codegen` **and** `bun run scripts/build-css.ts`.

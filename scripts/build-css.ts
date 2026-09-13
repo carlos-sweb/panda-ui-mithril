@@ -4,9 +4,7 @@ import atImport from 'postcss-import'
 import pruneVar from 'postcss-prune-var'
 import url from 'postcss-url'
 import nesting from 'postcss-nesting'
-import cascadeLayers from '@csstools/postcss-cascade-layers'
 import autoprefixer from 'autoprefixer'
-import stylelint from 'stylelint'
 import { transform, type Targets } from 'lightningcss'
 import reporter from 'postcss-reporter'
 import { resolve, dirname, basename } from 'path'
@@ -140,9 +138,9 @@ async function main() {
       },),
     pruneVar(),
     nesting(),
-    //cascadeLayers(),
+    // cascadeLayers(),  // enabling it means importing '@csstools/postcss-cascade-layers' again
     autoprefixer(),
-    //stylelint(),
+    // stylelint(),      // enabling it means importing 'stylelint' again
     reporter({ clearReportedMessages: true }), // reporter al final para capturar avisos
   ]).process(cssInput, {
     from: opts.input,
