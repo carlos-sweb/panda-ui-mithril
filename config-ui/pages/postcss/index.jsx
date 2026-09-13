@@ -10,28 +10,28 @@ import { t, loadPageI18n } from '../../i18n/index.js'
 import { schemaFor, PANDA_PLUGIN_ID } from '../../postcss-schemas'
 
 /**
- * Página Postcss — plugins de PostCSS por paquetes npm (modelo fonts).
+ * Postcss page — PostCSS plugins as npm packages (fonts model).
  *
- * Flujo: el listado OFICIAL de postcss.org/docs/postcss-plugins es el
- * catálogo; "Install" ejecuta `bun add {paquete}` y el plugin queda
- * DISPONIBLE (node_modules). La viñeta "Configure" gestiona el PIPELINE del
- * build css: qué plugins corren y con qué opciones — se persiste en
- * {raiz}/postcss.json (fuente de verdad del editor; que el build lea ese
- * archivo es la fase posterior, loader data-driven).
+ * Flow: the OFFICIAL listing of postcss.org/docs/postcss-plugins is the
+ * catalog; "Install" runs `bun add {package}` and the plugin becomes
+ * AVAILABLE (node_modules). The "Configure" tab manages the PIPELINE of the
+ * build css: which plugins run and with which options — persisted in
+ * {root}/postcss.json (the editor's source of truth; having the build read
+ * that file is the later phase, a data-driven loader).
  *
- * El editor de opciones se genera del esquema curado (postcss-schemas.ts);
- * plugins sin esquema → editor JSON libre.
+ * The options editor is generated from the curated schema (postcss-schemas.ts);
+ * plugins without a schema → free JSON editor.
  *
  * API:
- *   GET  /api/postcss/catalog?q=   catálogo oficial (proxy postcss.org)
- *   GET  /api/postcss/available    plugins del catálogo en node_modules
- *   POST /api/postcss/install      bun add {paquete npm resuelto}
- *   POST /api/postcss/remove       bun remove {paquete}
- *   GET  /api/postcss/config       pipeline ({raiz}/postcss.json)
- *   POST /api/postcss/config       escribe el pipeline
+ *   GET  /api/postcss/catalog?q=   official catalog (postcss.org proxy)
+ *   GET  /api/postcss/available    catalog plugins in node_modules
+ *   POST /api/postcss/install      bun add {resolved npm package}
+ *   POST /api/postcss/remove       bun remove {package}
+ *   GET  /api/postcss/config       pipeline ({root}/postcss.json)
+ *   POST /api/postcss/config       writes the pipeline
  */
 
-// ── utilidades css() de la página ────────────────────────────────────────────
+// ── css() utilities of the page ────────────────────────────────────────────
 const pluginName = css({
   fontFamily: 'monospace',
   fontSize: '0.8125rem',
@@ -83,12 +83,12 @@ const noteText = css({
   opacity: 0.7,
 })
 
-/** t() con interpolación: tf('a.b', { x }) reemplaza {x} en la traducción. */
+/** t() with interpolation: tf('a.b', { x }) replaces {x} in the translation. */
 function tf(path, vars) {
   return t(path).replace(/\{(\w+)\}/g, (_, k) => (vars && vars[k] !== undefined ? vars[k] : `{${k}}`))
 }
 
-/** Tamaño legible: 512 B · 170.4 KB · 1.2 MB (1 decimal, redondeo hacia arriba). */
+/** Human-readable size: 512 B · 170.4 KB · 1.2 MB (1 decimal, rounded up). */
 function formatBytes(n) {
   if (typeof n !== 'number' || !isFinite(n) || n < 0) return ''
   if (n < 1024) return `${n} B`
@@ -97,9 +97,9 @@ function formatBytes(n) {
 }
 
 /**
- * Texto del tamaño del CSS de salida a partir del stat del server
- * (`{ bytes, gzipBytes }`): "170.4 KB (gzip 24.1 KB)" — el gzip es lo que
- * realmente viaja por la red. Cadena vacía si no hay stat.
+ * Output CSS size text from the server stat
+ * (`{ bytes, gzipBytes }`): "170.4 KB (gzip 24.1 KB)" — gzip is what
+ * actually travels over the network. Empty string if there is no stat.
  */
 function outputSizeLabel(stat) {
   if (!stat || typeof stat.bytes !== 'number') return ''
@@ -108,7 +108,7 @@ function outputSizeLabel(stat) {
   return gz ? tf('configure.sizeWithGzip', { size: raw, gzip: gz }) : raw
 }
 
-// ── estado / acciones: catálogo y available (viñetas install/available) ──────
+// ── state / actions: catalog and available (install/available tabs) ──────
 function runCatalogSearch(s) {
   const q = s.query.trim()
   const seq = ++s.searchSeq
@@ -212,7 +212,7 @@ function removePlugin(s, p) {
     })
 }
 
-// ── estado / acciones: pipeline config (viñeta configure) ────────────────────
+// ── state / actions: pipeline config (configure tab) ────────────────────
 function loadConfig(s) {
   s.configLoading = true
   s.configError = null
@@ -224,8 +224,8 @@ function loadConfig(s) {
         s.configPath = d.path
         s.buildPath = d.buildPath
         s.hasConfig = !!d.hasConfig
-        // Copia editable: plugins [{ id, enabled, options }] (panda base
-        // siempre primero) + build { entry, output } + drafts JSON.
+        // Editable copy: plugins [{ id, enabled, options }] (panda base
+        // always first) + build { entry, output } + JSON drafts.
         s.plugins = (d.plugins || []).map((pl) => ({
           id: pl.id,
           enabled: pl.enabled !== false,
@@ -246,7 +246,7 @@ function loadConfig(s) {
     })
 }
 
-/** Añade un plugin instalado (available) al pipeline local. */
+/** Adds an installed plugin (available) to the local pipeline. */
 function addToPipeline(s, p) {
   const id = p.pkg || p.name
   if (s.plugins.some((x) => x.id === id)) return
@@ -255,7 +255,7 @@ function addToPipeline(s, p) {
   m.redraw()
 }
 
-/** Quita un plugin del pipeline local (el de Panda es base, no se quita). */
+/** Removes a plugin from the local pipeline (Panda's is the base, it is not removed). */
 function removeFromPipeline(s, id) {
   if (id === PANDA_PLUGIN_ID) return
   s.plugins = s.plugins.filter((x) => x.id !== id)
@@ -263,29 +263,29 @@ function removeFromPipeline(s, id) {
 }
 
 /**
- * Reordena el pipeline tras un drag (List `sortable`, controlado): `next` es
- * el nuevo orden SOLO de los plugins no-Panda (Panda es la base del pipeline,
- * se renderiza fijo fuera del array `data` que List reordena y aquí se
- * antepone de nuevo). El orden de este array es el que `serializeManagedBlock`
- * (postcss-api.ts) escribe tal cual en postcss.config.cjs, así que ES el orden
- * de ejecución real del pipeline.
+ * Reorders the pipeline after a drag (List `sortable`, controlled): `next` is
+ * the new order of ONLY the non-Panda plugins (Panda is the pipeline base,
+ * rendered fixed outside the `data` array that List reorders and here it is
+ * prepended again). The order of this array is what `serializeManagedBlock`
+ * (postcss-api.ts) writes as-is into postcss.config.cjs, so it IS the real
+ * execution order of the pipeline.
  */
 function reorderPipeline(s, next) {
   s.plugins = [s.plugins.find((p) => p.id === PANDA_PLUGIN_ID), ...next].filter(Boolean)
 }
 
-/** Opciones editables del esquema; null si el plugin no tiene esquema curado. */
+/** Editable options from the schema; null if the plugin has no curated schema. */
 function editableFor(id) {
   const schema = schemaFor(id)
   return schema ? schema.options.filter((o) => o.editable !== false) : null
 }
 
-/** Notas (opciones función) del esquema del plugin. */
+/** Notes (function options) from the plugin schema. */
 function notesFor(id) {
   return schemaFor(id)?.notes || []
 }
 
-/** Convierte el draft JSON de una opción a su valor real; null si inválido. */
+/** Converts an option's JSON draft to its real value; null if invalid. */
 function parseJsonDraft(s, id, key) {
   const raw = s.jsonDrafts[id]?.[key]
   if (raw === undefined) return { ok: true, value: undefined }
@@ -296,7 +296,7 @@ function parseJsonDraft(s, id, key) {
   }
 }
 
-/** Valida/parsea los drafts JSON antes de guardar. Devuelve error o null. */
+/** Validates/parses the JSON drafts before saving. Returns an error or null. */
 function jsonDraftError(s) {
   for (const id of Object.keys(s.jsonDrafts || {})) {
     for (const key of Object.keys(s.jsonDrafts[id])) {
@@ -319,11 +319,11 @@ function saveConfig(s) {
   s.savingConfig = true
   s.savedConfig = false
   s.configError = null
-  // Materializa drafts JSON válidos en options.
+  // Materializes valid JSON drafts into options.
   const plugins = s.plugins.map((pl) => {
     const options = { ...pl.options }
     const drafts = s.jsonDrafts?.[pl.id] || {}
-    // El draft __all__ (JSON libre de plugins sin esquema) reemplaza options.
+    // The __all__ draft (free JSON for plugins without a schema) replaces options.
     if (drafts.__all__ !== undefined) {
       const r = parseJsonDraft(s, pl.id, '__all__')
       if (r.ok && r.value && typeof r.value === 'object' && !Array.isArray(r.value)) {
@@ -353,7 +353,7 @@ function saveConfig(s) {
         s.configPath = d.path
         s.buildPath = d.buildPath
         s.jsonDrafts = {}
-        loadConfig(s) // recarga con lo persistido (options normalizadas)
+        loadConfig(s) // reloads with what was persisted (normalized options)
       } else {
         s.configError = d.error || 'Save failed'
       }
@@ -366,7 +366,7 @@ function saveConfig(s) {
     })
 }
 
-/** Dispara el rebuild postcss-aware del proyecto (POST /api/rebuild). */
+/** Triggers the project's postcss-aware rebuild (POST /api/rebuild). */
 function rebuild(s) {
   s.rebuilding = true
   s.rebuildMsg = null
@@ -376,7 +376,7 @@ function rebuild(s) {
     .then((d) => {
       s.rebuilding = false
       if (d.ok) {
-        // El server devuelve el tamaño del CSS de salida ya regenerado.
+        // The server returns the size of the already regenerated output CSS.
         s.outputStat = d.output || null
         const size = s.outputStat ? tf('configure.sizeSuffix', { size: outputSizeLabel(s.outputStat) }) : ''
         s.rebuildMsg = d.mode === 'postcss'
@@ -394,20 +394,20 @@ function rebuild(s) {
     })
 }
 
-/** Fija el valor de una opción (sin draft): string/number/boolean/enum/array. */
+/** Sets an option value (no draft): string/number/boolean/enum/array. */
 function setOption(s, pl, key, value) {
   pl.options[key] = value
-  // Si había un draft JSON de esta key, se descarta (edición tipada manda).
+  // If there was a JSON draft for this key, it is discarded (typed editing wins).
   if (s.jsonDrafts?.[pl.id]) delete s.jsonDrafts[pl.id][key]
 }
 
-// ── helpers de render: editor de opciones ────────────────────────────────────
-/** Select de enum: el value de <option> es el ÍNDICE (conserva el tipo real). */
+// ── render helpers: options editor ────────────────────────────────────
+/** Enum Select: the <option> value is the INDEX (keeps the real type). */
 function enumIndex(e, opts) {
   return opts.map((o) => o.value).findIndex((v) => String(v) === String(e.target.value))
 }
 
-/** Editor de una opción según su tipo (llama setOption al cambiar). */
+/** Editor for an option according to its type (calls setOption on change). */
 function optionEditor(s, pl, opt) {
   const current = pl.options[opt.key]
   const { type, key, placeholder } = opt
@@ -521,7 +521,7 @@ function optionEditor(s, pl, opt) {
     )
   }
 
-  // string y regex: input de texto plano.
+  // string and regex: plain text input.
   return (
     <TextInput
       size="md"
@@ -532,7 +532,7 @@ function optionEditor(s, pl, opt) {
   )
 }
 
-/** Cuerpo del editor de un plugin: filas de opciones del esquema (o JSON libre). */
+/** Body of a plugin editor: schema option rows (or free JSON). */
 function pluginEditor(s, pl) {
   const schema = schemaFor(pl.id)
   const editables = editableFor(pl.id)
@@ -564,7 +564,7 @@ function pluginEditor(s, pl) {
     )
   }
 
-  // Sin esquema: editor JSON libre de TODAS las opciones.
+  // No schema: free JSON editor for ALL options.
   const draft = s.jsonDrafts?.[pl.id]?.__all__
   const text = draft !== undefined
     ? draft
@@ -589,10 +589,10 @@ function pluginEditor(s, pl) {
 }
 
 /**
- * Collapse de un plugin del pipeline (título con tags + editor de opciones).
- * Compartido entre la fila estática de Panda (`header`, no arrastrable) y
- * cada fila arrastrable de List — mismo contenido, la diferencia es que
- * Panda no tiene checkbox de enabled ni botón de quitar (es la base).
+ * Collapse for a pipeline plugin (title with tags + options editor).
+ * Shared between the static Panda row (`header`, not draggable) and
+ * each draggable List row — same content, the difference being that
+ * Panda has no enabled checkbox and no remove button (it is the base).
  */
 function pluginCollapse(s, pl, defaultOpen) {
   const isPanda = pl.id === PANDA_PLUGIN_ID
@@ -637,7 +637,7 @@ function pluginCollapse(s, pl, defaultOpen) {
   )
 }
 
-/** Fila de la viñeta Configure ("Añadir desde Available"). */
+/** Row of the Configure tab ("Add from Available"). */
 function availableRow(s, p) {
   const id = p.pkg || p.name
   return (
@@ -650,8 +650,8 @@ function availableRow(s, p) {
   )
 }
 
-// ── filas compartidas (viñetas install/available) ────────────────────────────
-/** Contenido de una fila de plugin: nombre + meta + descripción. */
+// ── shared rows (install/available tabs) ────────────────────────────
+/** Content of a plugin row: name + meta + description. */
 function pluginContent(p) {
   return (
     <div className={css({ minWidth: 0 })}>
@@ -675,7 +675,7 @@ function pluginContent(p) {
   )
 }
 
-/** Botón Install (o Tag installed) al lado derecho de la fila. */
+/** Install button (or installed Tag) on the right side of the row. */
 function pluginAction(s, p) {
   const installed = !!(s.installed[p.npm] || s.installed[p.name])
   if (installed) return <Tag size="md" variant="success">{t('install.installed')}</Tag>
@@ -691,7 +691,7 @@ function pluginAction(s, p) {
   )
 }
 
-/** Fila de plugin de catálogo (ListRow con acción a la derecha). */
+/** Catalog plugin row (ListRow with the action on the right). */
 function pluginRow(s, p) {
   return (
     <ListRow>
@@ -728,8 +728,8 @@ const page = {
     s.hasConfig = false
     s.plugins = []
     s.build = { entry: 'pum/index.css', output: 'styled-system/styles.css' }
-    // Tamaño del CSS de salida en disco (lo devuelve GET /api/postcss/config y
-    // se refresca con cada /api/rebuild).
+    // On-disk output CSS size (returned by GET /api/postcss/config and
+    // refreshed on every /api/rebuild).
     s.outputStat = null
     s.jsonDrafts = {}
     s.savingConfig = false
@@ -739,7 +739,7 @@ const page = {
     s.rebuildError = null
     s.pickOpen = false
 
-    // Carga inicial: catálogo + available + pipeline en paralelo.
+    // Initial load: catalog + available + pipeline in parallel.
     fetch('/api/postcss/catalog?q=')
       .then((r) => r.json())
       .then((d) => {
@@ -900,10 +900,10 @@ const page = {
                           <Text color="neutral">{t('configure.empty')}</Text>
                         )}
 
-                        {/* Panda es la base del pipeline (PANDA_PLUGIN_ID):
-                            fijo arriba y no arrastrable, así que vive fuera
-                            del List sortable. reorderPipeline lo reinserta
-                            siempre en primera posición al guardar. */}
+                        {/* Panda is the pipeline base (PANDA_PLUGIN_ID):
+                            fixed at the top and not draggable, so it lives outside
+                            the sortable List. reorderPipeline reinserts it
+                            always in the first position when saving. */}
                         {s.plugins.find((pl) => pl.id === PANDA_PLUGIN_ID) && (
                           <div className={css({ marginBottom: '0.5rem' })}>
                             {pluginCollapse(s, s.plugins.find((pl) => pl.id === PANDA_PLUGIN_ID), true)}
@@ -941,7 +941,7 @@ const page = {
                           </div>
                         )}
 
-                        {/* Build: entry + output del pipeline postcss */}
+                        {/* Build: entry + output of the postcss pipeline */}
                         <Card>
                           <CardBody>
                             <Stack gap="md">

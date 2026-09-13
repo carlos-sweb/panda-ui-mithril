@@ -1,21 +1,21 @@
 /**
- * fonts-api — helpers del editor para las fuentes, modelo por paquetes npm.
+ * fonts-api — editor helpers for fonts, npm-package model.
  *
- * Flujo (sin paso intermedio de "instalar"): el proveedor (Fontsource) es el
- * catálogo; "añadir" instala el paquete `@fontsource/{id}` en node_modules
- * (`bun add`) y la fuente queda DISPONIBLE; "asignar" es la ÚNICA operación
- * que carga la fuente al sistema: escribe el token en pum/theme/fonts.ts y
- * emite los @font-face de ESA familia en el `globalFontface` del
- * panda.config.ts (vía nativa de Panda — cssgen los compila DENTRO de
- * styles.css, con src relativo a node_modules).
+ * Flow (no intermediate "install" step): the provider (Fontsource) is the
+ * catalog; "add" installs the `@fontsource/{id}` package into node_modules
+ * (`bun add`) and the font becomes AVAILABLE; "assign" is the ONLY operation
+ * that loads the font into the system: it writes the token in pum/theme/fonts.ts
+ * and emits the @font-face entries of THAT family in the `globalFontface` of
+ * panda.config.ts (Panda's native route — cssgen compiles them INSIDE
+ * styles.css, with src relative to node_modules).
  *
- * Estado del editor (derivado de themeDir → {raiz} = `pum/` o `src/`):
- *   {raiz}/fonts-loaded.json   ← familias CARGADAS (asignadas) con sus faces
- *   node_modules/@fontsource/{id} ← paquetes disponibles
- *   pum/theme/fonts.ts         ← qué token usa cada familia
+ * Editor state (derived from themeDir → {root} = `pum/` or `src/`):
+ *   {root}/fonts-loaded.json   ← LOADED (assigned) families with their faces
+ *   node_modules/@fontsource/{id} ← available packages
+ *   pum/theme/fonts.ts         ← which token each family uses
  *
- * El bloque globalFontface solo contiene familias cargadas Y referenciadas
- * por un token (prune automático) — el CSS no carga fuentes sin uso.
+ * The globalFontface block only contains families loaded AND referenced
+ * by a token (automatic prune) — the CSS does not load unused fonts.
  */
 
 import {
@@ -25,19 +25,19 @@ import { spawnSync } from 'node:child_process'
 import { dirname, join, relative, resolve, sep } from 'node:path'
 import { ensureToken, parseFlat, writeFlatSrc } from './theme-io'
 
-// ── API de Fontsource (catálogo) ────────────────────────────────────────────
+// ── Fontsource API (catalog) ────────────────────────────────────────────
 const LIST_URL = 'https://api.fontsource.org/v1/fonts'
 const FONT_URL = (id: string) => `https://api.fontsource.org/v1/fonts/${id}`
 const FETCH_TIMEOUT = 20_000
 
-// El listado completo (~540 KB) se cachea en memoria y se filtra localmente.
+// The full listing (~540 KB) is cached in memory and filtered locally.
 let listCache: { at: number; data: FontMeta[] } | null = null
 const LIST_TTL = 30 * 60 * 1000
 
-/** Ids de Fontsource: kebab-case, minúsculas, solo [a-z0-9-]. */
+/** Fontsource ids: kebab-case, lowercase, only [a-z0-9-]. */
 const FONT_ID_RE = /^[a-z0-9-]+$/
 
-/** Metadata compacta que devuelve el listado del catálogo. */
+/** Compact metadata returned by the catalog listing. */
 export interface FontMeta {
   id: string
   family: string
@@ -52,7 +52,7 @@ export interface FontMeta {
   type?: string
 }
 
-/** Metadata de un paquete instalado (node_modules/@fontsource/{id}/metadata.json). */
+/** Metadata of an installed package (node_modules/@fontsource/{id}/metadata.json). */
 export interface AvailableFont {
   id: string
   family: string
@@ -62,12 +62,12 @@ export interface AvailableFont {
   styles: string[]
   subsets: string[]
   license: string
-  /** true si el paquete es @fontsource-variable/{id}. La family reportada es
-   * la del CSS del paquete (p. ej. 'Inter Variable') — la que usa la app. */
+  /** true if the package is @fontsource-variable/{id}. The reported family is
+   * the one in the package CSS (e.g. 'Inter Variable') — the one the app uses. */
   variable: boolean
 }
 
-/** Una familia cargada (fonts-loaded.json). key = id, o `v:`+id si variable. */
+/** A loaded family (fonts-loaded.json). key = id, or `v:`+id if variable. */
 export interface LoadedFont {
   family: string
   weights: number[]
@@ -77,20 +77,20 @@ export interface LoadedFont {
 }
 export type LoadedState = Record<string, LoadedFont>
 
-/** Prefijo de clave en fonts-loaded.json para paquetes @fontsource-variable. */
+/** Key prefix in fonts-loaded.json for @fontsource-variable packages. */
 const VKEY = 'v:'
 
-/** Nombre de scope npm de un paquete. */
+/** npm scope name of a package. */
 export function packageScope(variable: boolean): string {
   return variable ? '@fontsource-variable' : '@fontsource'
 }
 
-/** Clave de fonts-loaded.json para un id con su scope. */
+/** fonts-loaded.json key for an id with its scope. */
 export function loadedKey(variable: boolean, id: string): string {
   return variable ? VKEY + id : id
 }
 
-/** Descompone una clave de fonts-loaded.json → { id, variable } o null. */
+/** Splits a fonts-loaded.json key → { id, variable } or null. */
 export function parseLoadedKey(key: string): { id: string; variable: boolean } | null {
   if (key.startsWith(VKEY)) {
     const id = key.slice(VKEY.length)
@@ -99,8 +99,8 @@ export function parseLoadedKey(key: string): { id: string; variable: boolean } |
   return FONT_ID_RE.test(key) ? { id: key, variable: false } : null
 }
 
-// ── Catálogo ────────────────────────────────────────────────────────────────
-/** Listado completo con caché. Lanza si la API de Fontsource falla. */
+// ── Catalog ────────────────────────────────────────────────────────────────
+/** Full cached listing. Throws if the Fontsource API fails. */
 async function fontList(): Promise<FontMeta[]> {
   const now = Date.now()
   if (listCache && now - listCache.at < LIST_TTL) return listCache.data
@@ -111,7 +111,7 @@ async function fontList(): Promise<FontMeta[]> {
   return data
 }
 
-/** Filtra el catálogo por family/id (substring, case-insensitive), ranking. */
+/** Filters the catalog by family/id (substring, case-insensitive), ranking. */
 export async function searchFonts(q: string, limit = 24): Promise<FontMeta[]> {
   const list = await fontList()
   const needle = q.trim().toLowerCase()
@@ -131,7 +131,7 @@ export async function searchFonts(q: string, limit = 24): Promise<FontMeta[]> {
   return scored.slice(0, limit).map((x) => x.f)
 }
 
-/** Metadata completa de una fuente del catálogo; null si no existe. */
+/** Full metadata of a catalog font; null if it does not exist. */
 export async function getFont(id: string): Promise<FontMeta | null> {
   const res = await fetch(FONT_URL(id), { signal: AbortSignal.timeout(FETCH_TIMEOUT) })
   if (res.status === 404) return null
@@ -139,19 +139,19 @@ export async function getFont(id: string): Promise<FontMeta | null> {
   return (await res.json()) as FontMeta
 }
 
-// ── Sanitización ─────────────────────────────────────────────────────────────
-/** Valida y normaliza un id de fuente; null si es inválido. */
+// ── Sanitization ─────────────────────────────────────────────────────────────
+/** Validates and normalizes a font id; null if invalid. */
 export function sanitizeFontId(id: string): string | null {
   const v = (id || '').trim().toLowerCase()
   return FONT_ID_RE.test(v) ? v : null
 }
 
-// ── Paquetes npm (@fontsource y @fontsource-variable) ───────────────────────
+// ── npm packages (@fontsource and @fontsource-variable) ───────────────────────
 export function packageDir(projectRoot: string, id: string, variable = false): string {
   return join(projectRoot, 'node_modules', packageScope(variable), id)
 }
 
-/** Lee metadata.json de un paquete; null si no está instalado. */
+/** Reads a package's metadata.json; null if it is not installed. */
 export function packageMeta(projectRoot: string, id: string, variable = false): AvailableFont | null {
   const safe = sanitizeFontId(id)
   if (!safe) return null
@@ -162,21 +162,21 @@ export function packageMeta(projectRoot: string, id: string, variable = false): 
     const lic = d.license as { type?: string; name?: string } | string | undefined
     const meta: AvailableFont = {
       id: String(d.id || safe),
-      // La family que la app debe usar: para variable es la del CSS del
-      // paquete (p. ej. 'Inter Variable') — se refina abajo.
+      // The family the app must use: for variable it is the one from the
+      // package CSS (e.g. 'Inter Variable') — refined below.
       family: String(d.family || safe),
       version: String(d.version || ''),
       defSubset: String(d.defSubset || 'latin'),
       weights: Array.isArray(d.weights) ? d.weights.map(Number) : [400],
       styles: Array.isArray(d.styles) ? d.styles.map(String) : ['normal'],
       subsets: Array.isArray(d.subsets) ? d.subsets.map(String) : ['latin'],
-      // La licencia de Fontsource es un objeto { type, url, attribution }.
+      // The Fontsource license is an object { type, url, attribution }.
       license: typeof lic === 'string' ? lic : String(lic?.type || lic?.name || ''),
       variable,
     }
     if (variable) {
       const info = variableFontInfo(projectRoot, safe)
-      if (!info) return null // paquete sin css/wght utilizable
+      if (!info) return null // package with no usable css/wght
       meta.family = info.family
       if (meta.subsets.includes('latin')) meta.defSubset = 'latin'
     }
@@ -186,7 +186,7 @@ export function packageMeta(projectRoot: string, id: string, variable = false): 
   }
 }
 
-/** Paquetes @fontsource y @fontsource-variable instalados (los "disponibles"). */
+/** Installed @fontsource and @fontsource-variable packages (the "available" ones). */
 export function availableFonts(projectRoot: string): AvailableFont[] {
   const out: AvailableFont[] = []
   for (const scope of [false, true]) {
@@ -201,16 +201,16 @@ export function availableFonts(projectRoot: string): AvailableFont[] {
   return out.sort((a, b) => a.family.localeCompare(b.family))
 }
 
-// ── Fuentes variable (@fontsource-variable) ──────────────────────────────────
-/** Información base de un paquete variable (leída de su CSS por eje). */
+// ── Variable fonts (@fontsource-variable) ──────────────────────────────────
+/** Base info of a variable package (read from its per-axis CSS). */
 export interface VariableFontInfo {
-  /** family del CSS del paquete (p. ej. 'Inter Variable'). */
+  /** family from the package CSS (e.g. 'Inter Variable'). */
   family: string
-  /** rango de pesos declarado (p. ej. '100 900'). */
+  /** declared weight range (e.g. '100 900'). */
   weightRange: string
 }
 
-/** CSS del eje wght (o index.css si no hay) del paquete variable; null si no. */
+/** CSS for the wght axis (or index.css if missing) of the variable package; null if none. */
 function variableCssText(projectRoot: string, id: string): string | null {
   const dir = packageDir(projectRoot, id, true)
   for (const name of ['wght.css', 'index.css']) {
@@ -221,8 +221,8 @@ function variableCssText(projectRoot: string, id: string): string | null {
 }
 
 /**
- * Family y rango de pesos del paquete variable desde su primer @font-face
- * (font-family 'X Variable', font-weight '100 900'). null si no hay css.
+ * Family and weight range of the variable package from its first @font-face
+ * (font-family 'X Variable', font-weight '100 900'). null if there is no css.
  */
 export function variableFontInfo(projectRoot: string, id: string): VariableFontInfo | null {
   const css = variableCssText(projectRoot, id)
@@ -252,7 +252,7 @@ export function variableFontInfo(projectRoot: string, id: string): VariableFontI
   return { family, weightRange: weight ?? '100 900' }
 }
 
-/** ¿Existe el archivo variable {id}-{subset}-wght-{style}.woff2 en el paquete? */
+/** Does the variable file {id}-{subset}-wght-{style}.woff2 exist in the package? */
 export function variableFaceFileExists(
   projectRoot: string, id: string, subset: string, style: string,
 ): boolean {
@@ -261,14 +261,14 @@ export function variableFaceFileExists(
   return existsSync(join(packageDir(projectRoot, safe, true), 'files', `${safe}-${subset}-wght-${style}.woff2`))
 }
 
-/** ¿Existe el archivo {id}-{subset}-{weight}-{style}.woff2 en el paquete? */
+/** Does the file {id}-{subset}-{weight}-{style}.woff2 exist in the package? */
 export function faceFileExists(projectRoot: string, id: string, subset: string, weight: number, style: string): boolean {
   const safe = sanitizeFontId(id)
   if (!safe) return false
   return existsSync(join(packageDir(projectRoot, safe), 'files', `${safe}-${subset}-${weight}-${style}.woff2`))
 }
 
-/** Resuelve un archivo dentro de node_modules/@fontsource{,-variable}/{id}/files. */
+/** Resolves a file inside node_modules/@fontsource{,-variable}/{id}/files. */
 export function packageFontFilePath(
   projectRoot: string, id: string, file: string, variable = false,
 ): string | null {
@@ -281,12 +281,12 @@ export function packageFontFilePath(
   return p
 }
 
-/** `bun add @fontsource/{id}` (o @fontsource-variable) en la raíz del proyecto. */
+/** `bun add @fontsource/{id}` (or @fontsource-variable) at the project root. */
 export function bunAdd(projectRoot: string, id: string, variable = false): { ok: boolean; output: string } {
   return runBun(projectRoot, ['add', `${packageScope(variable)}/${id}`])
 }
 
-/** `bun remove @fontsource/{id}` (o @fontsource-variable) en la raíz del proyecto. */
+/** `bun remove @fontsource/{id}` (or @fontsource-variable) at the project root. */
 export function bunRemove(projectRoot: string, id: string, variable = false): { ok: boolean; output: string } {
   return runBun(projectRoot, ['remove', `${packageScope(variable)}/${id}`])
 }
@@ -296,7 +296,7 @@ function runBun(projectRoot: string, args: string[]): { ok: boolean; output: str
   return { ok: r.status === 0, output: String(r.stdout || '') + String(r.stderr || '') }
 }
 
-// ── Tokens del theme (pum/theme/fonts.ts) ───────────────────────────────────
+// ── Theme tokens (pum/theme/fonts.ts) ───────────────────────────────────
 export function readFontsTokens(themeDir: string): Record<string, string> {
   try {
     return parseFlat(readFileSync(join(themeDir, 'fonts.ts'), 'utf8'))
@@ -305,10 +305,10 @@ export function readFontsTokens(themeDir: string): Record<string, string> {
   }
 }
 
-/** Garantiza los roles tipográficos canónicos en pum/theme/fonts.ts:
- * inserta `display` (titulares) con el stack actual de `sans` si falta — así
- * el rol existe sin cambiar la apariencia (los títulos heredan sans hasta que
- * se asigne otra familia al rol). Devuelve si cambió el archivo. */
+/** Guarantees the canonical typographic roles in pum/theme/fonts.ts:
+ * inserts `display` (headings) with the current `sans` stack if missing — so
+ * the role exists without changing the appearance (titles inherit sans until
+ * another family is assigned to the role). Returns whether the file changed. */
 export function ensureRoleTokens(themeDir: string): boolean {
   const path = join(themeDir, 'fonts.ts')
   if (!existsSync(path)) return false
@@ -322,17 +322,17 @@ export function ensureRoleTokens(themeDir: string): boolean {
   return true
 }
 
-/** Tokens cuyo stack incluye la familia (p. ej. '"JetBrains Mono", …'). */
+/** Tokens whose stack includes the family (e.g. '"JetBrains Mono", …'). */
 export function tokensForFamily(tokens: Record<string, string>, family: string): string[] {
   return Object.keys(tokens).filter((k) => (tokens[k] || '').includes('"' + family + '"'))
 }
 
-/** Stack genérico de reset al desasignar (token mono → monospace). */
+/** Generic reset stack when unassigning (mono token → monospace). */
 export function defaultStackForToken(token: string): string {
   return token.includes('mono') ? 'monospace' : 'system-ui, sans-serif'
 }
 
-/** Escribe un value en pum/theme/fonts.ts (writeFlatSrc; no-op si no existe). */
+/** Writes a value into pum/theme/fonts.ts (writeFlatSrc; no-op if it does not exist). */
 function writeFontToken(themeDir: string, token: string, value: string): void {
   const path = join(themeDir, 'fonts.ts')
   const src = readFileSync(path, 'utf8')
@@ -340,7 +340,7 @@ function writeFontToken(themeDir: string, token: string, value: string): void {
   if (next !== src) writeFileSync(path, next, 'utf8')
 }
 
-// ── Estado cargado ({raiz}/fonts-loaded.json) ───────────────────────────────
+// ── Loaded state ({root}/fonts-loaded.json) ───────────────────────────────
 export function loadedPath(themeDir: string): string {
   return join(dirname(themeDir), 'fonts-loaded.json')
 }
@@ -377,9 +377,9 @@ export function writeLoaded(themeDir: string, state: LoadedState): void {
 }
 
 /**
- * Elimina del estado las familias cargadas que ningún token referencia ya
- * (quedaron inertes, p. ej. tras una migración o un edit manual de fonts.ts).
- * Devuelve si cambió el estado.
+ * Removes from the state the loaded families no token references anymore
+ * (they became inert, e.g. after a migration or a manual edit of fonts.ts).
+ * Returns whether the state changed.
  */
 export function pruneLoaded(themeDir: string): boolean {
   const loaded = readLoaded(themeDir)
@@ -393,21 +393,21 @@ export function pruneLoaded(themeDir: string): boolean {
   return true
 }
 
-// ── Bloque globalFontface (panda.config.ts del consumidor) ──────────────────
-/** Marker que identifica el bloque gestionado por el editor. */
+// ── globalFontface block (consumer's panda.config.ts) ──────────────────
+/** Marker that identifies the editor-managed block. */
 export const FONTFACE_MARKER = '/* pum:fontfaces */'
 
-/** Lee `outdir: '...'` del panda.config.ts (default 'styled-system'). */
+/** Reads `outdir: '...'` from panda.config.ts (default 'styled-system'). */
 export function readOutdir(pandaConfigSrc: string): string {
   const m = /outdir\s*:\s*['"]([^'"]+)['"]/.exec(pandaConfigSrc)
   return m ? m[1] : 'styled-system'
 }
 
 /**
- * Genera el fuente TS del bloque globalFontface con las familias CARGADAS que
- * además están REFERENCIADAS por un token de fonts.ts. src apunta a los
- * woff2 del paquete en node_modules, relativo a {outdir}/styles.css.
- * Vacío si no hay familias que emitir.
+ * Generates the TS source of the globalFontface block with the LOADED families
+ * that are also REFERENCED by a token in fonts.ts. src points to the package
+ * woff2 files in node_modules, relative to {outdir}/styles.css.
+ * Empty if there are no families to emit.
  */
 export function buildFontfaceSource(themeDir: string, projectRoot: string, pandaConfigSrc: string): string {
   const loaded = readLoaded(themeDir)
@@ -418,12 +418,12 @@ export function buildFontfaceSource(themeDir: string, projectRoot: string, panda
     const parsed = parseLoadedKey(rawKey)
     if (!parsed) continue
     const { id, variable } = parsed
-    // Prune: solo familias que algún token usa de verdad.
+    // Prune: only families some token actually uses.
     if (tokensForFamily(tokens, lf.family).length === 0) continue
     const faces: string[] = []
     if (variable) {
-      // Una cara por subset×estilo: un woff2 variable (eje wght) cubre todo
-      // el rango de pesos (family 'X Variable', font-weight '100 900').
+      // One face per subset×style: a variable woff2 (wght axis) covers the
+      // whole weight range (family 'X Variable', font-weight '100 900').
       const info = variableFontInfo(projectRoot, id)
       if (info) {
         for (const subset of lf.subsets) {
@@ -462,8 +462,8 @@ export function buildFontfaceSource(themeDir: string, projectRoot: string, panda
 }
 
 /**
- * Inserta/actualiza/elimina el bloque marcado en panda.config.ts.
- * Idempotente por marker; devuelve el src nuevo (igual si no se pudo editar).
+ * Inserts/updates/removes the marked block in panda.config.ts.
+ * Idempotent by marker; returns the new src (unchanged if it could not edit).
  */
 export function writeFontfaceConfig(pandaConfigSrc: string, faces: string): string {
   const markerIdx = pandaConfigSrc.indexOf(FONTFACE_MARKER)
@@ -500,12 +500,12 @@ export function writeFontfaceConfig(pandaConfigSrc: string, faces: string): stri
   return pandaConfigSrc
 }
 
-/** true si panda.config.ts tiene el bloque gestionado con ≥1 familia. */
+/** true if panda.config.ts has the managed block with ≥1 family. */
 export function fontfaceWired(pandaConfigSrc: string): boolean {
   return pandaConfigSrc.includes(FONTFACE_MARKER) && pandaConfigSrc.includes('globalFontface:')
 }
 
-/** Rebuild del bloque desde (loaded ∩ referenciadas). Devuelve si cambió. */
+/** Rebuilds the block from (loaded ∩ referenced). Returns whether it changed. */
 export function syncBlock(themeDir: string, projectRoot: string, pandaConfigSrc: string): boolean {
   const faces = buildFontfaceSource(themeDir, projectRoot, pandaConfigSrc)
   const next = writeFontfaceConfig(pandaConfigSrc, faces)
@@ -516,15 +516,15 @@ export function syncBlock(themeDir: string, projectRoot: string, pandaConfigSrc:
   return false
 }
 
-// ── Operaciones ──────────────────────────────────────────────────────────────
+// ── Operations ──────────────────────────────────────────────────────────────
 export type AssignResult =
   | { ok: true; family: string; token: string; value: string; changed: boolean }
   | { ok: false; error: string }
 
 /**
- * Asigna una fuente disponible a un token: escribe fonts.ts + registra la
- * familia en fonts-loaded.json + sincroniza el bloque. Devuelve changed para
- * que el servidor decida si rebuilda.
+ * Assigns an available font to a token: writes fonts.ts + registers the
+ * family in fonts-loaded.json + syncs the block. Returns changed so the
+ * server can decide whether to rebuild.
  */
 export function assignFont(
   themeDir: string,
@@ -532,31 +532,31 @@ export function assignFont(
   opts: { id: string; token: string; weights?: number[]; styles?: string[]; subsets?: string[]; variable?: boolean },
 ): AssignResult {
   const safe = sanitizeFontId(opts.id)
-  if (!safe) return { ok: false, error: `Font id inválido: '${opts.id}'` }
+  if (!safe) return { ok: false, error: `Invalid font id: '${opts.id}'` }
   const variable = !!opts.variable
   const meta = packageMeta(projectRoot, safe, variable)
   if (!meta) {
     return {
       ok: false,
-      error: `'${opts.id}' no está disponible — añade el paquete primero (${packageScope(variable)}/${safe}).`,
+      error: `'${opts.id}' is not available — add the package first (${packageScope(variable)}/${safe}).`,
     }
   }
   const tokens = readFontsTokens(themeDir)
   if (!(opts.token in tokens)) {
-    return { ok: false, error: `El token '${opts.token}' no existe en fonts.ts (${Object.keys(tokens).join(', ')}).` }
+    return { ok: false, error: `The token '${opts.token}' does not exist in fonts.ts (${Object.keys(tokens).join(', ')}).` }
   }
   const styles = pick(opts.styles, meta.styles, ['normal'])
   const subsets = pick(opts.subsets, meta.subsets, [meta.defSubset])
   if (styles.length === 0 || subsets.length === 0) {
     return {
       ok: false,
-      error: `'${meta.family}' no soporta la combinación pedida — estilos [${meta.styles.join(', ')}], subsets [${meta.subsets.join(', ')}].`,
+      error: `'${meta.family}' does not support the requested combination — styles [${meta.styles.join(', ')}], subsets [${meta.subsets.join(', ')}].`,
     }
   }
   const loaded = readLoaded(themeDir)
   if (variable) {
-    // Variable: una cara por subset×estilo (el woff2 cubre todo el rango de
-    // pesos) — verifica que existan los archivos del eje wght.
+    // Variable: one face per subset×style (the woff2 covers the whole weight
+    // range) — verifies that the wght axis files exist.
     const info = variableFontInfo(projectRoot, safe)
     let found = 0
     for (const subset of subsets) {
@@ -567,7 +567,7 @@ export function assignFont(
     if (found === 0) {
       return {
         ok: false,
-        error: `No hay caras variable de '${meta.family}' para subsets [${subsets.join(', ')}] × estilos [${styles.join(', ')}].`,
+        error: `No variable faces for '${meta.family}' for subsets [${subsets.join(', ')}] × styles [${styles.join(', ')}].`,
       }
     }
     const isMono = opts.token.includes('mono')
@@ -584,10 +584,10 @@ export function assignFont(
   if (weights.length === 0) {
     return {
       ok: false,
-      error: `'${meta.family}' no soporta la combinación pedida — disponibles: pesos [${meta.weights.join(', ')}].`,
+      error: `'${meta.family}' does not support the requested combination — available: weights [${meta.weights.join(', ')}].`,
     }
   }
-  // Verifica que al menos un archivo exista en el paquete.
+  // Verifies that at least one file exists in the package.
   let files = 0
   for (const subset of subsets) {
     for (const weight of weights) {
@@ -597,7 +597,7 @@ export function assignFont(
     }
   }
   if (files === 0) {
-    return { ok: false, error: `No hay archivos woff2 de '${meta.family}' en el paquete @fontsource/${safe}.` }
+    return { ok: false, error: `No woff2 files for '${meta.family}' in the @fontsource/${safe} package.` }
   }
 
   const isMono = opts.token.includes('mono')
@@ -617,18 +617,18 @@ export type UnassignResult =
   | { ok: false; error: string }
 
 /**
- * Desasigna una familia: resetea los tokens que la usaban a un stack genérico
- * y la quita de fonts-loaded.json + del bloque.
+ * Unassigns a family: resets the tokens that used it to a generic stack
+ * and removes it from fonts-loaded.json + the block.
  */
 export function unassignFont(
   themeDir: string, projectRoot: string, id: string, variable = false,
 ): UnassignResult {
   const safe = sanitizeFontId(id)
-  if (!safe) return { ok: false, error: `Font id inválido: '${id}'` }
+  if (!safe) return { ok: false, error: `Invalid font id: '${id}'` }
   const loaded = readLoaded(themeDir)
   const key = loadedKey(variable, safe)
   const entry = loaded[key]
-  if (!entry) return { ok: false, error: `'${safe}' no está cargada.` }
+  if (!entry) return { ok: false, error: `'${safe}' is not loaded.` }
 
   const tokens = readFontsTokens(themeDir)
   const resetTokens = tokensForFamily(tokens, entry.family)
@@ -647,30 +647,30 @@ export type RemoveResult =
   | { ok: true; resetTokens: string[]; bunOutput: string; changed: boolean }
   | { ok: false; error: string }
 
-/** Desasigna (si estaba) y ejecuta `bun remove @fontsource{,-variable}/{id}`. */
+/** Unassigns (if it was assigned) and runs `bun remove @fontsource{,-variable}/{id}`. */
 export function removePackage(
   themeDir: string, projectRoot: string, id: string, variable = false,
 ): RemoveResult {
   const safe = sanitizeFontId(id)
-  if (!safe) return { ok: false, error: `Font id inválido: '${id}'` }
+  if (!safe) return { ok: false, error: `Invalid font id: '${id}'` }
   const un = unassignFont(themeDir, projectRoot, safe, variable)
   if (!un.ok) {
-    // No estaba cargada — bun remove igualmente.
+    // It was not loaded — bun remove anyway.
     const r = bunRemove(projectRoot, safe, variable)
-    if (!r.ok) return { ok: false, error: `bun remove falló: ${r.output.slice(-200)}` }
+    if (!r.ok) return { ok: false, error: `bun remove failed: ${r.output.slice(-200)}` }
     return { ok: true, resetTokens: [], bunOutput: r.output, changed: false }
   }
   const r = bunRemove(projectRoot, safe, variable)
-  if (!r.ok) return { ok: false, error: `bun remove falló: ${r.output.slice(-200)}` }
+  if (!r.ok) return { ok: false, error: `bun remove failed: ${r.output.slice(-200)}` }
   return { ok: true, resetTokens: un.resetTokens, bunOutput: r.output, changed: un.changed }
 }
 
-// ── Migración legacy (self-hosted antiguo → paquete npm) ────────────────────
+// ── Legacy migration (old self-hosted → npm package) ────────────────────
 /**
- * Detecta instalaciones antiguas ({raiz}/fonts/{id} con metadata.json) y las
- * migra: `bun add @fontsource/{id}` + registro en fonts-loaded.json con los
- * pesos/estilos/subsets del legacy. Borra el dir self-hosted y {raiz}/fonts.css.
- * Devuelve los ids migrados (vacío si no había legacy).
+ * Detects old installations ({root}/fonts/{id} with metadata.json) and
+ * migrates them: `bun add @fontsource/{id}` + registration in fonts-loaded.json
+ * with the legacy weights/styles/subsets. Deletes the self-hosted dir and {root}/fonts.css.
+ * Returns the migrated ids (empty if there was no legacy).
  */
 export function migrateLegacyFonts(themeDir: string, projectRoot: string): string[] {
   const raiz = dirname(themeDir)
@@ -691,7 +691,7 @@ export function migrateLegacyFonts(themeDir: string, projectRoot: string): strin
     if (!meta || typeof meta.family !== 'string' || !meta.family) continue
     if (!packageMeta(projectRoot, name)) {
       const r = bunAdd(projectRoot, name)
-      if (!r.ok) continue // sin red o paquete inexistente — el legacy queda para otro intento
+      if (!r.ok) continue // no network or nonexistent package — the legacy stays for another attempt
     }
     loaded[name] = {
       family: meta.family,
@@ -709,7 +709,7 @@ export function migrateLegacyFonts(themeDir: string, projectRoot: string): strin
 }
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
-/** Intersección petición/disponible; si no se pidió nada usa defaults. */
+/** Request/available intersection; if nothing was requested it uses defaults. */
 function pick<T>(requested: T[] | undefined, available: T[], defaults: T[]): T[] {
   const src = requested && requested.length > 0 ? requested : defaults
   const set = new Set(src.filter((v) => available.includes(v)))
