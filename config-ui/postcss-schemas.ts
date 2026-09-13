@@ -1,28 +1,28 @@
 /**
- * postcss-schemas — esquemas de OPCIONES por plugin postcss.
+ * postcss-schemas — per-postcss-plugin OPTIONS schemas.
  *
- * El catálogo oficial (postcss.org) no expone qué opciones acepta cada
- * plugin; la información vive en el paquete (README / .d.ts / código con
- * defaults `Object.assign({...}, opts)`). Para que la UI genere un editor
- * tipado por plugin, este módulo mantiene un REGISTRO CURADO: cada plugin
- * declara el esquema de sus opciones (clave, tipo, enum, default…).
+ * The official catalog (postcss.org) does not expose which options each
+ * plugin accepts; that information lives in the package (README / .d.ts /
+ * code with `Object.assign({...}, opts)` defaults). So that the UI can
+ * generate a typed editor per plugin, this module keeps a CURATED REGISTRY:
+ * each plugin declares the schema of its options (key, type, enum, default…).
  *
- * Los tipos de opción modelan lo que se puede persistir en `postcss.json`
- * (JSON puro):
- *   string | number | boolean | enum | array (de strings) |
- *   regex (guardado como texto "/patrón/flags") | json (objeto libre)
+ * The option types model what can be persisted in `postcss.json`
+ * (pure JSON):
+ *   string | number | boolean | enum | array (of strings) |
+ *   regex (stored as the text "/pattern/flags") | json (free object)
  *
- * Las opciones FUNCIÓN (p. ej. postcss-url `url` como callback, import
- * `resolve`/`load`) NO son serializables: se declaran con `editable: false`
- * para mostrarlas con nota de que viven en el código del build, nunca en el
- * JSON del editor.
+ * FUNCTION options (e.g. postcss-url `url` as a callback, import
+ * `resolve`/`load`) are NOT serializable: they are declared with
+ * `editable: false` so they show with a note that they live in the build
+ * code, never in the editor JSON.
  *
- * Plugins sin esquema → la UI usa un editor JSON libre (fallback universal),
- * y `detectOptionsUsage` (heurística sobre el código del paquete instalado)
- * decide si el plugin siquiera "acepta opciones" antes de ofrecer el editor.
+ * Plugins without a schema → the UI uses a free JSON editor (universal
+ * fallback), and `detectOptionsUsage` (a heuristic over the installed
+ * package code) decides whether the plugin even "accepts options" first.
  */
 
-/** Valores válidos para el switch de la UI por tipo de opción. */
+/** Valid values for the UI switch per option type. */
 export type PostcssOptionType =
   | 'string'
   | 'number'
@@ -33,100 +33,100 @@ export type PostcssOptionType =
   | 'json'
   | 'function'
 
-/** Un valor de enum: value real (string|number|boolean) + etiqueta visible. */
+/** An enum entry: real value (string|number|boolean) + visible label. */
 export interface PostcssOptionEnumValue {
   value: string | number | boolean
   label: string
 }
 
-/** Un campo editable del esquema de opciones de un plugin. */
+/** An editable field of a plugin's options schema. */
 export interface PostcssOptionSchema {
-  /** Clave de la opción tal como la lee el plugin (p. ej. `assetsPath`). */
+  /** Option key as the plugin reads it (e.g. `assetsPath`). */
   key: string
-  /** Etiqueta corta para la UI (default: la key). */
+  /** Short label for the UI (default: the key). */
   label?: string
-  /** Descripción breve para tooltip/help. */
+  /** Brief description for tooltip/help. */
   description?: string
-  /** Tipo de edición en la UI + serialización. */
+  /** Edit type in the UI + serialization. */
   type: PostcssOptionType
-  /** Valores permitidos cuando type === 'enum' (value real + label). */
+  /** Allowed values when type === 'enum' (real value + label). */
   enum?: PostcssOptionEnumValue[]
-  /** Default del plugin (solo informativo; no se escribe si no se toca). */
+  /** Plugin default (informational only; not written unless touched). */
   default?: unknown
-  /** Placeholder para inputs. */
+  /** Placeholder for inputs. */
   placeholder?: string
   /**
-   * false → opción no editable desde JSON (funciones, objetos no
-   * serializables): se muestra en la UI como aviso, nunca se persiste.
+   * false → option not editable from JSON (functions, non-serializable
+   * objects): it shows in the UI as a warning, it is never persisted.
    * Default: true.
    */
   editable?: boolean
 }
 
-/** Esquema completo de un plugin del pipeline. */
+/** Full schema of a pipeline plugin. */
 export interface PostcssPluginSchema {
-  /** Paquete npm (id del catálogo/instalado). */
+  /** npm package (catalog/installed id). */
   id: string
-  /** Nombre visible (default: id). */
+  /** Visible name (default: id). */
   name?: string
-  /** Descripción breve del plugin (para el editor). */
+  /** Brief plugin description (for the editor). */
   description?: string
-  /** Opciones editables del plugin, en orden de la UI. */
+  /** Editable plugin options, in UI order. */
   options: PostcssOptionSchema[]
-  /** Notas informativas mostradas bajo el editor (opciones función, etc.). */
+  /** Informational notes shown below the editor (function options, etc.). */
   notes?: string[]
 }
 
-/** Registro curado: id de paquete → esquema. */
+/** Curated registry: package id → schema. */
 const SCHEMAS: Record<string, PostcssPluginSchema> = {}
 
-/** Registra un esquema (evita duplicados silenciosos en el registro). */
+/** Registers a schema (prevents silent duplicates in the registry). */
 function define(schema: PostcssPluginSchema): PostcssPluginSchema {
   if (SCHEMAS[schema.id]) {
-    throw new Error(`postcss-schemas: esquema duplicado para '${schema.id}'`)
+    throw new Error(`postcss-schemas: duplicate schema for '${schema.id}'`)
   }
   SCHEMAS[schema.id] = schema
   return schema
 }
 
-// ── @pandacss/dev/postcss (base de Panda, siempre primera) ───────────────────
-// El plugin de Panda acepta configPath + cwd (igual que build-css.ts del repo
-// con resolve(ROOT, 'panda.config.ts') / ROOT). El runner los resuelve contra
-// el projectRoot; aquí se exponen para fijar manualmente un config file panda
-// distinto del panda.config.ts de la raíz.
+// ── @pandacss/dev/postcss (Panda base, always first) ─────────────────────────
+// The Panda plugin accepts configPath + cwd (same as the repo's build-css.ts
+// with resolve(ROOT, 'panda.config.ts') / ROOT). The runner resolves them
+// against projectRoot; here they are exposed to manually pin a panda config
+// file different from the root panda.config.ts.
 define({
   id: '@pandacss/dev/postcss',
   name: 'Panda (base)',
   description: 'Panda CSS as a PostCSS plugin — emits preflight, tokens, recipes and utilities into the @layer directive.',
   notes: [
-    'Base del pipeline: no se puede quitar. Sin configPath, Panda busca panda.config.{ts,js,mts} en cwd automáticamente.',
+    'Pipeline base: it cannot be removed. Without configPath, Panda looks for panda.config.{ts,js,mts} in cwd automatically.',
   ],
   options: [
     {
       key: 'configPath',
       type: 'string',
       placeholder: 'panda.config.ts',
-      description: 'Ruta al config de Panda (relativa al cwd). Vacío = auto-detección en la raíz del proyecto.',
+      description: 'Path to the Panda config (relative to cwd). Empty = auto-detection at the project root.',
     },
     {
       key: 'cwd',
       type: 'string',
       placeholder: '.',
-      description: 'Directorio base del proyecto de Panda (relativo a la raíz). Vacío = raíz del proyecto.',
+      description: 'Base directory of the Panda project (relative to the root). Empty = project root.',
     },
   ],
 })
 
 // ── postcss-url ──────────────────────────────────────────────────────────────
-// Modos: url: 'rebase' (default) | 'inline' | 'copy' | función (no editable).
-// Filtro: string minimatch | RegExp | función (no editable). copy usa
-// assetsPath (relativo a `to`) + useHash; inline usa maxSize (KB) y fallback.
+// Modes: url: 'rebase' (default) | 'inline' | 'copy' | function (not editable).
+// Filter: minimatch string | RegExp | function (not editable). copy uses
+// assetsPath (relative to `to`) + useHash; inline uses maxSize (KB) and fallback.
 define({
   id: 'postcss-url',
   description: 'Rebase, inline or copy url() assets.',
   notes: [
-    'La opción `url` también acepta una función custom — si la necesitas, configúrala en el código del build (no es editable desde JSON).',
-    'Se puede pasar un ARRAY de configuraciones (cada una con su filter) — el editor gestiona una sola; varias se configuran en código.',
+    'The `url` option also accepts a custom function — if you need it, configure it in the build code (it is not editable from JSON).',
+    'An ARRAY of configurations can be passed (each with its own filter) — the editor manages only one; several are configured in code.',
   ],
   options: [
     {
@@ -135,55 +135,55 @@ define({
       enum: [
         { value: 'rebase', label: 'rebase (default)' },
         { value: 'inline', label: 'inline (base64)' },
-        { value: 'copy', label: 'copy (copia a assetsPath)' },
+        { value: 'copy', label: 'copy (copies to assetsPath)' },
       ],
       default: 'rebase',
-      description: 'Modo de procesado de los url(): rebase relativo, inline en base64 o copia con hash.',
+      description: 'Processing mode for url(): relative rebase, inline base64 or copy with hash.',
     },
     {
       key: 'filter',
       type: 'regex',
       placeholder: '/\\.(woff2?|eot|ttf|otf)(\\?.*)?$/',
-      description: 'Patrón (RegExp o minimatch) que decide qué assets se procesan.',
+      description: 'Pattern (RegExp or minimatch) that decides which assets are processed.',
     },
     {
       key: 'assetsPath',
       type: 'string',
       placeholder: 'fonts',
-      description: 'Carpeta destino de los assets copiados (relativa al CSS de salida).',
+      description: 'Destination folder for copied assets (relative to the output CSS).',
     },
     {
       key: 'useHash',
       type: 'boolean',
       default: false,
-      description: 'Añade un hash al nombre del asset copiado (cache-busting).',
+      description: 'Adds a hash to the copied asset name (cache-busting).',
     },
     {
       key: 'maxSize',
       type: 'number',
       placeholder: '20',
-      description: 'Tamaño máximo en KB para inline (solo modo inline).',
+      description: 'Maximum size in KB for inline (inline mode only).',
     },
     {
       key: 'basePath',
       type: 'string',
-      description: 'Carpeta base para resolver assets (default: dirname del CSS de entrada).',
+      description: 'Base folder for resolving assets (default: dirname of the input CSS).',
     },
     {
       key: 'fallback',
       type: 'string',
-      description: 'URL de respaldo cuando el asset no se puede procesar.',
+      description: 'Fallback URL when the asset cannot be processed.',
     },
     {
       key: 'multi',
       type: 'boolean',
       default: false,
-      description: 'Permite pasar un array de configuraciones (solo con url función).',
+      description: 'Allows passing an array of configurations (only with url as a function).',
     },
     {
       key: 'hashOptions',
       type: 'json',
-      description: 'Opciones del hash (p. ej. { "method": "xxhash32", "shrink": 8 }).',
+      description: 'Hash options (e.g. { "method": "xxhash32", "shrink": 8 }).',
     },
   ],
 })
@@ -197,48 +197,48 @@ define({
       key: 'root',
       type: 'string',
       placeholder: 'process.cwd()',
-      description: 'Raíz para resolver los @import (default: process.cwd()).',
+      description: 'Root for resolving @imports (default: process.cwd()).',
     },
     {
       key: 'path',
       type: 'array',
       default: [],
-      description: 'Carpetas adicionales donde buscar módulos (además de node_modules).',
+      description: 'Additional folders to look for modules in (besides node_modules).',
     },
     {
       key: 'skipDuplicates',
       type: 'boolean',
       default: true,
-      description: 'Evita importar el mismo archivo dos veces.',
+      description: 'Prevents importing the same file twice.',
     },
     {
       key: 'warnOnEmpty',
       type: 'boolean',
       default: true,
-      description: 'Avisa cuando un @import resuelve a un archivo vacío.',
+      description: 'Warns when an @import resolves to an empty file.',
     },
     {
       key: 'addModulesDirectories',
       type: 'array',
       default: [],
-      description: 'Directorios extra tipo node_modules para resolver paquetes.',
+      description: 'Extra node_modules-like directories for resolving packages.',
     },
     {
       key: 'resolve',
       type: 'function',
       editable: false,
-      description: 'Resolvedor custom (id, base, options) => path — no editable desde JSON.',
+      description: 'Custom resolver (id, base, options) => path — not editable from JSON.',
     },
     {
       key: 'load',
       type: 'function',
       editable: false,
-      description: 'Cargador custom de contenido — no editable desde JSON.',
+      description: 'Custom content loader — not editable from JSON.',
     },
     {
       key: 'plugins',
       type: 'json',
-      description: 'Plugins postcss a aplicar sobre el CSS importado (array).',
+      description: 'PostCSS plugins to apply to the imported CSS (array).',
     },
   ],
 })
@@ -253,7 +253,7 @@ define({
       type: 'array',
       default: [],
       placeholder: 'node_modules/**',
-      description: 'Globs de archivos/carpetas a excluir del análisis.',
+      description: 'Globs of files/folders to exclude from the analysis.',
     },
   ],
 })
@@ -267,29 +267,29 @@ define({
       key: 'edition',
       type: 'enum',
       enum: [
-        { value: '2024-02', label: '2024-02 (default, spec actual)' },
-        { value: '2021', label: '2021 (soporta @nest)' },
+        { value: '2024-02', label: '2024-02 (default, current spec)' },
+        { value: '2021', label: '2021 (supports @nest)' },
       ],
       default: '2024-02',
-      description: 'Edición de la spec de CSS Nesting a la que compilar.',
+      description: 'Edition of the CSS Nesting spec to compile to.',
     },
     {
       key: 'noIsPseudoSelector',
       type: 'boolean',
       default: false,
-      description: 'No usar :is() al combinar selectores (selectores repetidos).',
+      description: 'Do not use :is() when combining selectors (repeated selectors).',
     },
     {
       key: 'silenceAtNestWarning',
       type: 'boolean',
       default: false,
-      description: 'Silencia el aviso de que @nest se eliminará en la próxima major.',
+      description: 'Silences the warning that @nest will be removed in the next major.',
     },
   ],
 })
 
 // ── autoprefixer ─────────────────────────────────────────────────────────────
-// Interfaz completa tipada en node_modules/autoprefixer/lib/autoprefixer.d.ts.
+// Full interface typed in node_modules/autoprefixer/lib/autoprefixer.d.ts.
 define({
   id: 'autoprefixer',
   description: 'Add vendor prefixes using data from Can I Use.',
@@ -297,71 +297,71 @@ define({
     {
       key: 'env',
       type: 'string',
-      description: 'Entorno de Browserslist a usar.',
+      description: 'Browserslist environment to use.',
     },
     {
       key: 'cascade',
       type: 'boolean',
       default: true,
-      description: 'Usa el cascade visual si el CSS no está comprimido.',
+      description: 'Uses the visual cascade if the CSS is not minified.',
     },
     {
       key: 'add',
       type: 'boolean',
       default: true,
-      description: 'Añade prefijos.',
+      description: 'Adds prefixes.',
     },
     {
       key: 'remove',
       type: 'boolean',
       default: true,
-      description: 'Elimina prefijos obsoletos.',
+      description: 'Removes obsolete prefixes.',
     },
     {
       key: 'supports',
       type: 'boolean',
       default: true,
-      description: 'Añade prefijos a los parámetros de @supports.',
+      description: 'Adds prefixes to @supports parameters.',
     },
     {
       key: 'flexbox',
       type: 'enum',
       enum: [
         { value: true, label: 'true (default)' },
-        { value: false, label: 'false (sin flexbox)' },
-        { value: 'no-2009', label: 'no-2009 (sin spec 2009)' },
+        { value: false, label: 'false (no flexbox)' },
+        { value: 'no-2009', label: 'no-2009 (without the 2009 spec)' },
       ],
       default: true,
-      description: 'Prefijos de flexbox (acepta boolean o "no-2009").',
+      description: 'Flexbox prefixes (accepts boolean or "no-2009").',
     },
     {
       key: 'grid',
       type: 'enum',
       enum: [
         { value: true, label: 'true (default)' },
-        { value: false, label: 'false (sin grid IE)' },
+        { value: false, label: 'false (no IE grid)' },
         { value: 'autoplace', label: 'autoplace' },
         { value: 'no-autoplace', label: 'no-autoplace' },
       ],
       default: true,
-      description: 'Prefijos de Grid Layout para IE 10-11.',
+      description: 'Grid Layout prefixes for IE 10-11.',
     },
     {
       key: 'stats',
       type: 'json',
-      description: 'Estadísticas de uso custom para queries como "> 10% in my stats".',
+      description: 'Custom usage statistics for queries like "> 10% in my stats".',
     },
     {
       key: 'overrideBrowserslist',
       type: 'array',
       placeholder: 'last 2 versions',
-      description: 'Queries de Browserslist objetivo (mejor en .browserslistrc).',
+      description: 'Target Browserslist queries (better in .browserslistrc).',
     },
     {
       key: 'ignoreUnknownVersions',
       type: 'boolean',
       default: false,
-      description: 'No lanzar error si Browserslist menciona una versión desconocida.',
+      description: 'Do not throw an error if Browserslist mentions an unknown version.',
     },
   ],
 })
@@ -375,49 +375,49 @@ define({
       key: 'clearReportedMessages',
       type: 'boolean',
       default: false,
-      description: 'Limpia los mensajes ya reportados de result.messages.',
+      description: 'Clears messages already reported from result.messages.',
     },
     {
       key: 'clearAllMessages',
       type: 'boolean',
       default: false,
-      description: 'Limpia todos los mensajes tras reportar.',
+      description: 'Clears all messages after reporting.',
     },
     {
       key: 'noIcon',
       type: 'boolean',
       default: false,
-      description: 'No mostrar iconos de color en el log.',
+      description: 'Do not show colored icons in the log.',
     },
     {
       key: 'noPlugin',
       type: 'boolean',
       default: false,
-      description: 'No mostrar el nombre del plugin en cada línea.',
+      description: 'Do not show the plugin name on each line.',
     },
     {
       key: 'sortByPosition',
       type: 'boolean',
       default: false,
-      description: 'Ordena los mensajes por posición en el archivo.',
+      description: 'Sorts messages by position in the file.',
     },
     {
       key: 'plugins',
       type: 'array',
-      placeholder: '!postcss-foo (denylist) o postcss-foo (allowlist)',
-      description: 'Filtro por plugin: allowlist por defecto; prefijo "!" = denylist.',
+      placeholder: '!postcss-foo (denylist) or postcss-foo (allowlist)',
+      description: 'Filter by plugin: allowlist by default; "!" prefix = denylist.',
     },
     {
       key: 'filter',
       type: 'function',
       editable: false,
-      description: 'Filtro custom de mensajes (función) — no editable desde JSON; vive en el código del build.',
+      description: 'Custom message filter (function) — not editable from JSON; it lives in the build code.',
     },
     {
       key: 'formatter',
       type: 'function',
       editable: false,
-      description: 'Formatter custom (función) — no editable desde JSON; vive en el código del build.',
+      description: 'Custom formatter (function) — not editable from JSON; it lives in the build code.',
     },
   ],
 })
@@ -432,34 +432,34 @@ define({
       type: 'enum',
       enum: [
         { value: 'warn', label: 'warn (default)' },
-        { value: false, label: 'false (silencioso)' },
+        { value: false, label: 'false (silent)' },
       ],
       default: 'warn',
-      description: 'Avisa si se usa revert-layer (no transformable a navegadores viejos).',
+      description: 'Warns if revert-layer is used (not transformable for old browsers).',
     },
     {
       key: 'onConditionalRulesChangingLayerOrder',
       type: 'enum',
       enum: [
         { value: 'warn', label: 'warn (default)' },
-        { value: false, label: 'false (silencioso)' },
+        { value: false, label: 'false (silent)' },
       ],
       default: 'warn',
-      description: 'Avisa si @media cambia el orden de las capas (no transformable).',
+      description: 'Warns if @media changes the layer order (not transformable).',
     },
   ],
 })
 
-// ── cssnano (instalado en el repo; preset pack) ──────────────────────────────
-// cssnano solo trae `cssnano-preset-default` como dependencia real; los
-// presets 'lite'/'advanced' requieren instalar cssnano-preset-lite/
-// cssnano-preset-advanced aparte (no están en el catálogo postcss.org, así
-// que la UI no puede instalarlos) → el enum solo ofrece lo que funciona.
+// ── cssnano (installed in the repo; preset pack) ─────────────────────────────
+// cssnano only ships `cssnano-preset-default` as a real dependency; the
+// 'lite'/'advanced' presets require installing cssnano-preset-lite/
+// cssnano-preset-advanced separately (they are not in the postcss.org
+// catalog, so the UI cannot install them) → the enum only offers what works.
 define({
   id: 'cssnano',
   description: 'Optimize CSS for production (preset pack).',
   notes: [
-    'Solo el preset `default` está garantizado (dependencia de cssnano). `lite` y `advanced` requieren instalar el paquete cssnano-preset-lite / cssnano-preset-advanced a mano.',
+    'Only the `default` preset is guaranteed (a cssnano dependency). `lite` and `advanced` require installing the cssnano-preset-lite / cssnano-preset-advanced package by hand.',
   ],
   options: [
     {
@@ -469,12 +469,12 @@ define({
         { value: 'default', label: 'default' },
       ],
       default: 'default',
-      description: 'Preset de optimización de cssnano (default: recomendado).',
+      description: 'cssnano optimization preset (default: recommended).',
     },
   ],
 })
 
-// ── @fullhuman/postcss-purgecss (instalado) ──────────────────────────────────
+// ── @fullhuman/postcss-purgecss (installed) ──────────────────────────────────
 define({
   id: '@fullhuman/postcss-purgecss',
   description: 'Remove unused CSS (PurgeCSS).',
@@ -483,58 +483,58 @@ define({
       key: 'content',
       type: 'array',
       placeholder: './src/**/*.{js,jsx,ts,html}',
-      description: 'Globs de archivos cuyo texto se usa para detectar clases vivas.',
+      description: 'Globs of files whose text is used to detect live classes.',
     },
     {
       key: 'defaultExtractor',
       type: 'function',
       editable: false,
-      description: 'Extractor custom (función) — no editable desde JSON; vive en el código del build.',
+      description: 'Custom extractor (function) — not editable from JSON; it lives in the build code.',
     },
     {
       key: 'safelist',
       type: 'json',
-      description: 'Selectores que nunca se eliminan (array o {standard, deep, greedy}).',
+      description: 'Selectors that are never removed (array or {standard, deep, greedy}).',
     },
     {
       key: 'variables',
       type: 'boolean',
       default: false,
-      description: 'También purga variables CSS no usadas.',
+      description: 'Also purges unused CSS variables.',
     },
     {
       key: 'keyframes',
       type: 'boolean',
       default: false,
-      description: 'También purga keyframes no usados.',
+      description: 'Also purges unused keyframes.',
     },
   ],
 })
 
-/** Plugin base de Panda (siempre primera entrada del bloque gestionado). */
+/** Panda base plugin (always the first entry of the managed block). */
 export const PANDA_PLUGIN_ID = '@pandacss/dev/postcss'
 
-/** Devuelve el esquema curado de un plugin; null si no está registrado. */
+/** Returns a plugin's curated schema; null if not registered. */
 export function schemaFor(id: string): PostcssPluginSchema | null {
   return SCHEMAS[id] || null
 }
 
-/** Ids con esquema curado (para marcar "configurable" en el catálogo). */
+/** Ids with a curated schema (to mark "configurable" in the catalog). */
 export function curatedPluginIds(): string[] {
   return Object.keys(SCHEMAS)
 }
 
-/** Opciones editables (persistibles) de un esquema. */
+/** Editable (persistable) options of a schema. */
 export function editableOptions(schema: PostcssPluginSchema): PostcssOptionSchema[] {
   return schema.options.filter((o) => o.editable !== false)
 }
 
 /**
- * Heurística: ¿el paquete instalado usa opciones? Lee el entry (main) del
- * paquete y busca patrones típicos de defaults/uso de opciones
- * (`options = {...}`, `Object.assign({`, `opts = {}`, accesos `options.`).
- * Sirve para plugins SIN esquema curado: si no hay rastro de opciones, la UI
- * no ofrece editor (plugin zero-config).
+ * Heuristic: does the installed package use options? It reads the package
+ * entry (main) and looks for typical defaults/option-usage patterns
+ * (`options = {...}`, `Object.assign({`, `opts = {}`, `options.` accesses).
+ * It is meant for plugins WITHOUT a curated schema: with no trace of
+ * options, the UI offers no editor (zero-config plugin).
  */
 export function detectOptionsUsage(entrySource: string): boolean {
   if (!entrySource) return false
@@ -549,6 +549,6 @@ export function detectOptionsUsage(entrySource: string): boolean {
     /\(\s*opts\s*=\s*\{\s*\}\)/,
   ]
   if (patterns.some((re) => re.test(head))) return true
-  // Acceso a opciones por propiedad (options.x / opts.x) sin defaults visibles.
+  // Property access to options (options.x / opts.x) with no visible defaults.
   return /\b(?:options|opts)\.[a-zA-Z_$]/.test(head)
 }
