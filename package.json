@@ -1,6 +1,6 @@
 {
   "name": "panda-ui-mithril",
-  "version": "0.5.3",
+  "version": "0.6.0",
   "description": "Mithril.js component library styled with Panda CSS.",
   "author": "carlos-sweb (https://github.com/carlos-sweb)",
   "repository": {
