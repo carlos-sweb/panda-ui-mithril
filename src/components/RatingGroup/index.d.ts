@@ -1,3 +1,4 @@
+import { Component } from 'mithril'
 import type { PumSize, PumColor } from '../../types'
 
 /** Props del RatingGroup — envuelve Rating con label. Delega todas las props de Rating. */
@@ -23,3 +24,11 @@ export interface RatingGroupAttrs {
   /** Clase CSS adicional. */
   className?: string
 }
+
+/**
+ * Wraps `Rating` with a label and an optional value readout. It is re-exported
+ * by the barrel (`panda-ui-mithril`), so the value has to be declared here: a
+ * `.d.ts` that only declares the attrs makes the import fail with
+ * "no exported member 'RatingGroup'".
+ */
+export const RatingGroup: Component<RatingGroupAttrs>

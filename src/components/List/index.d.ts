@@ -1,7 +1,14 @@
 import { Component, Vnode } from 'mithril'
 import { ComponentAttrs } from '../../types'
 
-export interface ListAttrs<T = unknown> extends ComponentAttrs {
+/**
+ * `ComponentAttrs`'s own `key` (Mithril's vnode key, a string or a number) is
+ * omitted on purpose: below, `key` is the DEPRECATED alias of `itemKey` and
+ * takes a function, which is incompatible with the vnode key. Extending the
+ * interface directly is a type error ("incorrectly extends ComponentAttrs")
+ * that `skipLibCheck` hides, so consumers inheriting ListAttrs would hit it.
+ */
+export interface ListAttrs<T = unknown> extends Omit<ComponentAttrs, 'key'> {
   /**
    * Array de datos. Cuando se pasa, el template de fila se repite por item
    * (modo data-driven). Sin `data`, se usan los children explícitos
